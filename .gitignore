@@ -1,0 +1,12 @@
+# Model Whisper qua nang (~1.6GB) - khong dua vao git, xem huong dan tai rieng trong
+# skills/shorts-editor-rbw/assets/models/README.md
+skills/shorts-editor-rbw/assets/models/*.bin
+
+# Python cache
+__pycache__/
+*.pyc
+
+# File tam khi test tren may
+*.tmp
+.DS_Store
+Thumbs.db

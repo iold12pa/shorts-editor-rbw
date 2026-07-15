@@ -1,0 +1,13 @@
+{
+  "name": "roboworld-tools",
+  "owner": {
+    "name": "Roboworld"
+  },
+  "plugins": [
+    {
+      "name": "shorts-editor-rbw",
+      "source": "./",
+      "description": "San xuat shorts video ROBOWORLD tu footage buoi quay theo dung phong cach cong ty."
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+# Chọn kiểu dựng + kiểm tra đủ nguyên liệu — hỏi ngay khi skill được gọi
+
+File này tách riêng để **dễ cập nhật realtime**: thêm/sửa 1 câu hỏi hay 1 điều kiện thì sửa đúng dòng trong bảng bên dưới, không cần đụng SKILL.md hay file style. Đây là bước ĐẦU TIÊN của mọi lần chạy skill, trước cả khi phân tích footage.
+
+## Bước A — Hỏi kiểu dựng (bỏ qua nếu người dùng đã nói rõ ngay từ tin đầu)
+
+Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
+
+> "Bạn muốn tôi dựng video theo hướng nào?
+> **1) Video/clip đã có sẵn** — tôi tự chọn đoạn hay, chèn chữ, ghép nhạc (không cần lời thoại)
+> **2) Video đã có người nói sẵn trong đó rồi** — tôi dựng theo đúng lời đó
+> **3) Ghép nhiều đoạn video lại, rồi thêm lời thuyết minh mới**"
+
+## Bước B — Checklist theo từng kiểu (chỉ hỏi phần CÒN THIẾU, không hỏi lại cái đã có)
+
+### Kiểu 1 — Highlight + chữ + nhạc (không thoại)
+| Cần | Mức độ | Nếu thiếu → hỏi |
+|---|---|---|
+| Source video/folder | **Bắt buộc** | "Cho tôi xin folder hoặc link video nguồn nhé" |
+| Mô tả buổi quay (địa điểm, robot, sự kiện hôm đó) | Nên có | "Buổi quay này ở đâu, quay robot gì, hôm đó có nội dung/sự kiện gì đặc biệt không?" |
+| Chữ đè: tự viết hay để Claude viết | Cần biết | "Bạn muốn tự viết sẵn câu chữ đè lên video, hay để tôi xem nội dung rồi tự viết?" |
+| Nhạc nền: bài cụ thể hay để chọn | Cần biết | "Có bài nhạc cụ thể muốn dùng không, hay để tôi chọn phù hợp?" |
+| Style cụ thể | Xem `references/style-mau.md` |
+
+### Kiểu 2 — Dựng theo lời thoại có sẵn (voice gốc, đồng bộ lúc quay)
+| Cần | Mức độ | Nếu thiếu → hỏi |
+|---|---|---|
+| Source video có thoại | **Bắt buộc** | "Cho tôi xin video/folder nguồn — trong đó đã có người nói sẵn đúng không?" |
+| Xác nhận THẬT SỰ có thoại (không đoán) | **Bắt buộc trước khi viết kịch bản** | Sau khi chạy `analyze_footage.py`, nếu phần lớn clip `has_speech=false` → báo lại: "Tôi nghe thử thì video này không có lời rõ, bạn xác nhận lại giúp, hay muốn chuyển sang Kiểu 1?" — KHÔNG tự chuyển kiểu, phải hỏi. |
+| Bối cảnh (để hiểu đúng ý câu nói, tránh cắt sai/lệch khẩu hình) | Nên có | "Buổi quay này về chuyện gì, để tôi hiểu đúng ngữ cảnh lời thoại?" |
+| Style cụ thể | Xem mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md` |
+
+### Kiểu 3 — Ghép cảnh + thêm voice-over mới (không đồng bộ lúc quay)
+| Cần | Mức độ | Nếu thiếu → hỏi |
+|---|---|---|
+| Source video/clip để ghép | **Bắt buộc** | "Cho tôi xin các video/clip muốn ghép lại" |
+| Voice-over: đã có file sẵn hay chưa | **Bắt buộc phải hỏi rõ, đây là lỗi hay gặp nhất** | "Bạn đã có sẵn file giọng đọc chưa? Nếu chưa, tôi viết kịch bản cho bạn duyệt trước, rồi tạo giọng đọc (AI hoặc bạn tự thu đều được)" |
+| Nếu ĐÃ có voice-over: khớp với video nào | **Bắt buộc** | "File giọng đọc này đi cùng (những) video nào? Có sẵn lời thoại/kịch bản để tôi khớp cảnh theo không?" |
+| Bối cảnh | Nên có | như Kiểu 1/2 |
+| Style cụ thể | Xem `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu kịch bản dạng quảng cáo bán hàng: nêu vấn đề → giới thiệu → thông số → CTA) |
+
+## Bước C — Câu hỏi chung, mọi kiểu đều cần
+- Robot xuất hiện là model nào → tra `references/robot-products.md` trước, chỉ hỏi lại nếu không chắc hoặc model chưa có trong danh mục
+- Đã có ý tưởng nội dung cụ thể chưa, hay muốn Claude tự đề xuất từ footage
+
+## Nguyên tắc validate
+- Thiếu mục **Bắt buộc** → hỏi ngay, KHÔNG viết kịch bản hay tự đoán/tự bịa để lấp chỗ trống
+- Thiếu mục **Nên có** → vẫn làm được, nhưng khi trình kịch bản phải nói rõ chỗ nào đang tự suy đoán để người dùng sửa nếu sai
+- Người dùng đã trả lời sẵn trong tin nhắn đầu tiên → chỉ hỏi tiếp PHẦN CÒN THIẾU, không hỏi lại từ đầu
