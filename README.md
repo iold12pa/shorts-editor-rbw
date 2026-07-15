@@ -20,7 +20,11 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
 
 Mở Claude Code, gõ tự nhiên kiểu: *"dựng video từ folder [tên buổi quay]"* — skill sẽ tự hỏi bạn chọn kiểu dựng + xin thông tin còn thiếu.
 
+## Muốn dùng qua Telegram thay vì gõ trực tiếp vào Claude Code?
+
+Xem `telegram-bot/README.md` — cài thêm (tùy chọn) 1 "cầu nối" chạy trên chính máy bạn, cho phép nhắn tin/gửi video qua Telegram thay vì mở Claude Code gõ tay. Vẫn xử lý hoàn toàn trên máy bạn, không phụ thuộc máy ai khác.
+
 ## Lưu ý quan trọng
 
-- **Đây là bản đóng gói đầu tiên, CHƯA được cài thử end-to-end** — trước khi gửi cho đồng nghiệp, nên tự cài thử trên 1 máy khác (hoặc máy ảo) để chắc luồng `/plugin marketplace add` → `/plugin install` chạy đúng như tài liệu Claude Code mô tả.
+- Cấu trúc gói đã tự kiểm tra bằng `claude plugin validate` — **hợp lệ, không lỗi**. Nhưng đây vẫn là lần đầu đóng gói, CHƯA có ai cài thật qua `/plugin marketplace add` + `/plugin install` để xác nhận toàn bộ luồng — người đầu tiên cài nên báo lại nếu gặp lỗi.
 - Mỗi người dùng cần: (a) `config.json` riêng trỏ đúng folder footage của họ, (b) model Whisper riêng nếu cần Kiểu 2/3, (c) file key ElevenLabs riêng ở `~/.claude/abs6-secrets.env` nếu muốn dùng giọng AI (không bắt buộc).

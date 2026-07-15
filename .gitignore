@@ -6,6 +6,12 @@ skills/shorts-editor-rbw/assets/models/*.bin
 __pycache__/
 *.pyc
 
+# Bi mat + du lieu rieng cua tung nguoi cai bot Telegram ca nhan - KHONG dua len git
+telegram-bot/config.json
+telegram-bot/sessions.json
+telegram-bot/workspaces/
+telegram-bot/bot.log
+
 # File tam khi test tren may
 *.tmp
 .DS_Store

@@ -1,5 +1,6 @@
 {
   "name": "roboworld-tools",
+  "description": "Cong cu noi bo Roboworld cho Claude Code — bat dau voi skill dung shorts video tu footage buoi quay.",
   "owner": {
     "name": "Roboworld"
   },
