@@ -16,7 +16,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
    - **Kiểu 3 — Ghép cảnh + thêm voice-over mới** (giọng AI hoặc thu riêng, không đồng bộ lúc quay; spec: `references/style-voice-karaoke.md` phần karaoke sub, hoặc `references/style-ads-huy.md` nếu kịch bản dạng quảng cáo bán hàng)
    Người dùng nói rõ kiểu + đủ nguyên liệu ngay trong tin đầu thì không hỏi lại — chỉ hỏi đúng phần còn thiếu.
-1. Sau khi đủ nguyên liệu: tìm folder source (tên folder con trong `edit_video_root`, xem config.json). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.
+1. Sau khi đủ nguyên liệu: tìm folder source (tên folder con trong `${user_config.edit_video_root}`). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.
 2. Skill phân tích footage → viết kịch bản cho từng ý tưởng (chưa có ý tưởng cụ thể thì tự đề xuất 2-3 ý hay nhất từ footage, xem thêm `references/chon-canh-highlight.md` để chọn đúng cảnh highlight)
 3. **Trình duyệt kịch bản** (tóm tắt ngắn gọn từng video: hook, mạch cảnh, text đè, nhạc, thời lượng; nêu rõ chỗ nào đang tự suy đoán nếu thông tin "nên có" còn thiếu). OK cái nào dựng cái đó; sửa thì cập nhật rồi dựng luôn theo ý sửa
 4. Dựng tự động toàn bộ, tự nghiệm thu, xuất video final + caption, mở folder giao hàng
@@ -36,7 +36,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ### Bước 1 — Xác định source & lập workspace
 
-- Tìm folder con Sếp nhắc tên trong `edit_video_root` (đọc từ `config.json` — Glob/liệt kê nếu tên không khớp chính xác — folder đặt tên kiểu `NN.Tên sự kiện`, source nằm trong subfolder `Nguồn video`).
+- Tìm folder con Sếp nhắc tên trong `${user_config.edit_video_root}` (Glob/liệt kê nếu tên không khớp chính xác — folder đặt tên kiểu `NN.Tên sự kiện`, source nằm trong subfolder `Nguồn video`).
 - Tạo workspace ngay trong folder buổi quay đó: `<folder buổi quay>\Workspace\` với các thư mục con: `analysis`, `kichban`, `fonts`, `temp`, `output` (thêm `voice\` nếu kịch bản có voiceover).
 - Ghi input của Sếp (mô tả sự kiện, ý tưởng) vào `kichban\00-input.md`.
 - Nguồn là link Google Drive (hiếm) → tải bằng `python -m gdown --folder "<link>" -O <workspace>\source --remaining-ok`.

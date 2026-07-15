@@ -1,8 +1,16 @@
 {
   "name": "shorts-editor-rbw",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "San xuat shorts video thanh pham cho ROBOWORLD tu footage buoi quay — phan tich source, de xuat kich ban theo 3 kieu dung (highlight+nhac / theo loi thoai san co / ghep canh+voice-over), tu dung bang ffmpeg theo dung style Roboworld va xuat video + caption.",
   "author": {
     "name": "Roboworld"
+  },
+  "userConfig": {
+    "edit_video_root": {
+      "type": "directory",
+      "title": "Thư mục Edit Video",
+      "description": "Đường dẫn tới thư mục gốc trên máy bạn chứa các folder buổi quay (source thô, workspace, video thành phẩm) — ví dụ D:\\Video\\Edit video",
+      "required": true
+    }
   }
 }

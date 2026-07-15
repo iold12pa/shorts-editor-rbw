@@ -1,8 +1,6 @@
 {
-  "_comment": "Dien cac gia tri duoi day cho DUNG MAY BAN dang dung, roi luu lai — khong sua code hay SKILL.md.",
-  "edit_video_root": "DIEN_DUONG_DAN_FOLDER_EDIT_VIDEO_CUA_BAN_VAO_DAY",
+  "_comment": "Thu muc footage (edit_video_root) gio hoi qua hop thoai luc cai plugin, KHONG can sua o day nua. File nay chi con dung cho truong hop hiem: ffmpeg khong nam tren PATH he thong.",
   "ffmpeg_path": "",
   "ffprobe_path": "",
-  "_edit_video_root_note": "Duong dan toi thu muc goc chua cac folder buoi quay (source, workspace, video final). Vi du: 'D:\\\\Video\\\\Edit video' hoac 'C:\\\\Users\\\\ten-ban\\\\Videos\\\\Edit video'.",
   "_ffmpeg_path_note": "De trong = tu tim ffmpeg tren PATH he thong (cach chuan, hau het may khong can dien gi o day). Chi dien duong dan .exe day du vao day neu shell bao 'khong tim thay ffmpeg' VA khong muon them ffmpeg vao PATH."
 }
