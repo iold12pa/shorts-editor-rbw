@@ -14,8 +14,9 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    /plugin install shorts-editor-rbw@roboworld-tools
    ```
    **Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Lúc muốn dựng video, chỉ cần nói với Claude đường dẫn đầy đủ tới folder buổi quay (gõ tay, hoặc kéo-thả folder đó thẳng vào khung chat để Windows tự dán đường dẫn).
-3. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`.
-4. **Kiểm tra máy mình đang chạy bản nào / có bản mới hơn không** — gõ đúng 2 lệnh này (an toàn, gõ lúc nào cũng được, không sợ hỏng gì):
+3. **Bật tự động cập nhật (làm 1 lần, đỡ phải gõ lệnh cập nhật tay về sau)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Bật xong, mỗi lần Sếp sửa skill và đẩy lên GitHub, chỉ cần **đóng Claude Code rồi mở lại** là tự nhận bản mới — không cần gõ lệnh gì cả. Repo đã public nên cơ chế này chạy ổn định.
+4. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`. (Thực ra bước này skill tự làm khi cần — xem mục "Lưu ý quan trọng" bên dưới.)
+5. **Muốn tự kiểm tra/cập nhật bằng tay bất cứ lúc nào** (không bắt buộc nếu đã bật auto-update ở bước 3) — gõ đúng 2 lệnh này, an toàn, không sợ hỏng gì:
    ```
    /plugin marketplace update roboworld-tools
    /plugin update shorts-editor-rbw@roboworld-tools
@@ -25,9 +26,8 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    - `updated from <bản cũ> to <bản mới>. Restart to apply changes.` → máy bạn **vừa được cập nhật**, đóng Claude Code mở lại là dùng được bản mới.
 
    (Kỹ thuật phía sau: mỗi lần Sếp sửa gì trong skill và đẩy lên GitHub tính là 1 "bản" mới tự động theo đúng lần lưu đó, không cần Sếp phải nhớ tăng số phiên bản tay — tránh trường hợp quên tăng số khiến máy đồng nghiệp tưởng nhầm là "chưa có gì mới".)
-   - **Auto-update (tùy chọn, đỡ phải tự gõ)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Repo đã public nên cơ chế tự cập nhật chạy nền hoạt động ổn định, không còn giới hạn như lúc còn private.
 
-Vậy chỉ còn **1 việc chính** (cài Claude Code là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, xong là dùng được ngay — không có bước nào khác. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
+Vậy chỉ còn **2 việc chính** (cài Claude Code là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, bật auto-update ở bước 3 — xong là dùng được ngay và tự cập nhật mãi về sau, không cần làm gì thêm.
 
 ## Kiểm tra sau khi cài (test nhanh, 4 bước)
 
