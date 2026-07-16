@@ -19,13 +19,33 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    ```
    Cài xong, Claude Code sẽ **tự hiện 1 hộp thoại hỏi bạn chọn thư mục** chứa footage buổi quay của bạn — chọn đúng thư mục đó là xong, không cần mở file gì để sửa tay.
 3. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`.
-4. Muốn nhận bản cập nhật mới nhất mỗi lần Sếp sửa skill: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT vì đây không phải marketplace chính thức của Anthropic).
+4. **Nhận bản cập nhật mới nhất mỗi khi Sếp sửa skill** — có 2 cách:
+   - **Cách chắc ăn nhất**: thỉnh thoảng gõ lệnh `/plugin marketplace update roboworld-tools` (đặc biệt sau khi Sếp báo có bản mới) — luôn tải đúng bản mới nhất.
+   - **Auto-update (tùy chọn)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Lưu ý: vì repo đang ở chế độ private, cơ chế tự cập nhật chạy nền của Claude Code **không đảm bảo chạy đúng 100% mỗi lần** (đây là giới hạn đã ghi trong tài liệu chính thức của Claude Code khi marketplace là repo riêng tư, không phải lỗi của gói này) — nếu thấy skill có vẻ chưa cập nhật, dùng cách chắc ăn ở trên.
 
 Vậy chỉ còn **2 việc chính** (cài Claude Code + được mời vào repo đã tính là điều kiện có sẵn từ trước): gõ 2 lệnh ở bước 1-2, rồi chọn thư mục footage khi được hỏi. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
 
-## Dùng thử
+## Kiểm tra sau khi cài (test nhanh, 4 bước)
 
-Mở Claude Code, gõ tự nhiên kiểu: *"dựng video từ folder [tên buổi quay]"* — skill sẽ tự hỏi bạn chọn kiểu dựng + xin thông tin còn thiếu.
+Làm đúng 4 bước này để chắc chắn đã cài thành công, không phải đoán:
+
+1. **Xác nhận plugin đã cài đúng**: gõ `/plugin` → tab **Installed** → thấy `shorts-editor-rbw` trạng thái **enabled** là đạt bước 1.
+2. **Xác nhận thư mục footage đã lưu đúng**: gõ `/plugin` → chọn `shorts-editor-rbw` → xem mục cấu hình (`edit_video_root`) có đúng thư mục bạn đã chọn lúc cài không. Sai thì sửa lại ngay tại đây, không cần cài lại từ đầu.
+3. **Test bằng 1 buổi quay nhỏ có thật**: gõ *"dựng video từ folder [tên 1 buổi quay bất kỳ trong thư mục của bạn]"* — skill phải tự hỏi bạn chọn 1 trong 3 kiểu dựng (không tự đoán bừa) và liệt kê đúng tên các clip trong folder đó. Nếu bước này báo "không tìm thấy folder" → quay lại bước 2 kiểm tra đường dẫn.
+4. **Dựng thử 1 video hoàn chỉnh**: đi hết quy trình tới lúc có file `.mp4` xuất ra — mở file lên xem đúng khung dọc 9:16, có logo, không bị giật/lỗi hình là đạt. Đây là bước xác nhận chắc chắn nhất, các bước 1-3 chỉ là kiểm tra nhanh trước khi tốn thời gian dựng thật.
+
+Nếu dùng Kiểu 2/3 (cần nghe thoại) hoặc giọng AI, kiểm tra thêm:
+- Model Whisper đã tải đúng vị trí `skills/shorts-editor-rbw/assets/models/` (xem README trong đó) — thiếu thì bước phân tích thoại sẽ báo lỗi rõ, không chạy ngầm sai.
+- Key ElevenLabs riêng (nếu dùng) đã có ở `~/.claude/abs6-secrets.env` trên máy bạn — mỗi người 1 key riêng, không dùng chung key của Sếp.
+
+## Cài lỗi giữa chừng? Gỡ sạch rồi cài lại
+
+Không cần gỡ Claude Code hay cài lại máy — chỉ cần 2 lệnh, dữ liệu footage của bạn không hề bị đụng tới:
+```
+/plugin uninstall shorts-editor-rbw@roboworld-tools
+/plugin marketplace remove roboworld-tools
+```
+Rồi quay lại làm đúng bước 1-2 ở trên từ đầu.
 
 ## Muốn dùng qua Telegram thay vì gõ trực tiếp vào Claude Code?
 
