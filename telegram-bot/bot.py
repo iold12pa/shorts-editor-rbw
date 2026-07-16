@@ -23,6 +23,7 @@ viet code nay) - xem README.md truoc khi chay lan dau.
 Usage:
     python bot.py
 """
+import asyncio
 import glob
 import json
 import logging
@@ -88,6 +89,17 @@ def save_sessions(sessions):
 CONFIG = load_config()
 SESSIONS = load_sessions()  # { "<telegram_chat_id>": "<claude_session_id_da_dung_lan_dau>" }
 ALLOWED_USERS = set(str(u) for u in (CONFIG.get("allowed_user_ids") or []))
+OAUTH_TOKEN = (CONFIG.get("claude_oauth_token") or "").strip()
+
+
+def subprocess_env():
+    """claude.exe goi qua subprocess KHONG tu ke thua dang nhap cua phien
+    Claude Desktop - phai tu truyen token dai han (sinh boi `claude
+    setup-token`) qua bien moi truong CLAUDE_CODE_OAUTH_TOKEN moi lan goi."""
+    env = os.environ.copy()
+    if OAUTH_TOKEN and not OAUTH_TOKEN.startswith("DIEN_"):
+        env["CLAUDE_CODE_OAUTH_TOKEN"] = OAUTH_TOKEN
+    return env
 
 
 def find_claude_binary():
@@ -113,8 +125,12 @@ CLAUDE_BIN = find_claude_binary()
 
 def check_claude_ready():
     """Kiem tra truoc khi bot nhan tin nhan dau tien: co tim thay claude.exe
-    khong, va da dang nhap (setup-token) chua. Bao loi ro ngay tu dau thay vi
-    de moi tin nhan cua nguoi dung deu loi am tham."""
+    khong, va token dang nhap dai han (CLAUDE_CODE_OAUTH_TOKEN, sinh boi
+    `claude setup-token`) co dung khong. KHONG dung `claude auth status` -
+    lenh do kiem tra kieu dang nhap tuong tac (Desktop), khong phan anh dung
+    token nay; phai tu goi thu 1 cau that moi biet token co chay duoc khong.
+    Bao loi ro ngay tu dau thay vi de moi tin nhan cua nguoi dung deu loi am
+    tham."""
     if not CLAUDE_BIN:
         sys.exit(
             "Khong tim thay claude.exe (khong co tren PATH, khong thay trong "
@@ -122,19 +138,31 @@ def check_claude_ready():
             "'claude_binary_path'). Xem README.md muc cai dat."
         )
     log.info("Dung claude.exe tai: %s", CLAUDE_BIN)
-    r = subprocess.run([CLAUDE_BIN, "auth", "status"], capture_output=True, text=True, timeout=30)
-    try:
-        status = json.loads(r.stdout or r.stderr or "{}")
-    except json.JSONDecodeError:
-        status = {}
-    if not status.get("loggedIn"):
+    if not OAUTH_TOKEN or OAUTH_TOKEN.startswith("DIEN_"):
         sys.exit(
-            "claude.exe TIM THAY nhung CHUA DANG NHAP cho tien trinh chay rieng "
-            "(khac voi phien chat Desktop). Sep can tu chay 1 lan trong PowerShell:\n"
-            '  & "%s" setup-token\n'
-            "roi chay lai bot nay. Xem README.md." % CLAUDE_BIN
+            "config.json chua co 'claude_oauth_token' hop le. Sep can tu chay 1 lan "
+            'trong PowerShell: & "%s" setup-token — copy chuoi token dai in ra man '
+            "hinh, dan vao config.json muc 'claude_oauth_token'. Xem README.md." % CLAUDE_BIN
         )
-    log.info("claude.exe da dang nhap, san sang.")
+    log.info("Dang tu goi thu claude.exe bang token de xac nhan hoat dong that...")
+    try:
+        r = subprocess.run(
+            [CLAUDE_BIN, "-p", "ping", "--output-format", "json"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+            timeout=60, env=subprocess_env(),
+        )
+    except subprocess.TimeoutExpired:
+        sys.exit("Goi thu claude.exe qua 60s khong xong - kiem tra mang/token roi thu lai.")
+    try:
+        data = json.loads(r.stdout)
+    except json.JSONDecodeError:
+        sys.exit(
+            "Goi thu claude.exe that bai (token co the sai/het han).\nstdout=%r\nstderr=%r\n"
+            "Chay lai 'claude setup-token' de lay token moi." % (r.stdout[:500], r.stderr[:500])
+        )
+    if data.get("is_error"):
+        sys.exit("Goi thu claude.exe bao loi: %s" % data.get("result"))
+    log.info("Token hop le, claude.exe san sang.")
     if not ALLOWED_USERS:
         log.warning(
             "!!! config.json chua co 'allowed_user_ids' -> bot dang tra loi "
@@ -157,9 +185,13 @@ def workspace_for(chat_id):
 
 
 def is_allowed(update: Update):
-    if not ALLOWED_USERS:
-        return True  # chua cau hinh -> tam cho qua, da canh bao lon luc khoi dong
     uid = str(update.effective_user.id)
+    if not ALLOWED_USERS:
+        log.info(
+            "Tin nhan tu user_id=%s username=@%s ten=%s (chua khoa allowed_user_ids, dang cho qua).",
+            uid, update.effective_user.username, update.effective_user.full_name,
+        )
+        return True  # chua cau hinh -> tam cho qua, da canh bao lon luc khoi dong
     if uid in ALLOWED_USERS:
         return True
     log.warning(
@@ -195,6 +227,7 @@ def ask_claude(chat_id, user_text):
         r = subprocess.run(
             cmd, cwd=workspace_for(chat_id), capture_output=True, text=True,
             encoding="utf-8", errors="replace", timeout=CLAUDE_TIMEOUT_S,
+            env=subprocess_env(),
         )
     except subprocess.TimeoutExpired:
         return ("Việc này mất quá lâu (>%d phút), có thể do xử lý video dài. "
@@ -250,7 +283,7 @@ async def on_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     text = update.message.text or ""
     await context.bot.send_chat_action(chat_id=chat_id, action="typing")
-    reply, files, _is_error = await context.application.loop.run_in_executor(None, ask_claude, chat_id, text)
+    reply, files, _is_error = await asyncio.get_running_loop().run_in_executor(None, ask_claude, chat_id, text)
     await send_reply(update, reply, files)
 
 
@@ -274,7 +307,7 @@ async def on_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     caption = update.message.caption or ""
     note = "Đã nhận file, lưu tại: %s. %s" % (dest, caption)
     await context.bot.send_chat_action(chat_id=chat_id, action="typing")
-    reply, files, _is_error = await context.application.loop.run_in_executor(None, ask_claude, chat_id, note)
+    reply, files, _is_error = await asyncio.get_running_loop().run_in_executor(None, ask_claude, chat_id, note)
     await send_reply(update, reply, files)
 
 
@@ -284,7 +317,13 @@ def main():
         sys.exit("config.json chua dien bot_token that. Xem README.md.")
     check_claude_ready()
     os.makedirs(WORKSPACES_DIR, exist_ok=True)
-    app = Application.builder().token(token).build()
+    app = (
+        Application.builder().token(token)
+        .connect_timeout(30)  # mang co the chap chon - mac dinh qua ngan, gay ConnectTimeout gia
+        .read_timeout(30)
+        .write_timeout(30)
+        .build()
+    )
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
     app.add_handler(MessageHandler(filters.Document.ALL | filters.VIDEO | filters.PHOTO, on_file))
     log.info("Bot dang chay — bam Ctrl+C de dung.")

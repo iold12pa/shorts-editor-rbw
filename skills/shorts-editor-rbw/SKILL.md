@@ -7,7 +7,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x1920, 30-60s) theo đúng style video mẫu của Roboworld. Mỗi lần chạy: phân tích source → **đề xuất kịch bản → Sếp duyệt** → dựng N video thành phẩm + caption.
 
-**Phạm vi làm việc:** đọc `edit_video_root` trong `config.json` (cùng thư mục với file này) để biết thư mục gốc trên MÁY ĐANG CHẠY — mỗi người dùng skill có thể để ở ổ đĩa/tên khác nhau, đừng giả định `D:\VIDEO RBW\Edit video\` là cố định (đó chỉ là giá trị mặc định trên máy gốc). Mọi thứ của quy trình này (source, workspace, video final, tài nguyên chung) nằm trong thư mục đó — KHÔNG tạo file ở nơi khác (trừ file tạm trong scratchpad nếu cần). Mỗi buổi quay là 1 folder con đánh số (vd `29.Đi bảo dưỡng robot\Nguồn video`). Tài nguyên dùng chung (logo, nhạc, outro, SFX) nằm ở `02.Tài nguyên chung\` bên trong thư mục gốc đó — xem chi tiết bên dưới.
+**Phạm vi làm việc:** thư mục gốc trên MÁY ĐANG CHẠY là `${user_config.edit_video_root}` (người dùng chọn 1 lần lúc cài plugin qua hộp thoại, không đọc từ config.json nữa) — mỗi người dùng skill có thể để ở ổ đĩa/tên khác nhau, đừng giả định `D:\VIDEO RBW\Edit video\` là cố định (đó chỉ là ví dụ trên máy gốc). Mọi thứ của quy trình này (source, workspace, video final, tài nguyên chung) nằm trong thư mục đó — KHÔNG tạo file ở nơi khác (trừ file tạm trong scratchpad nếu cần). Mỗi buổi quay là 1 folder con đánh số (vd `29.Đi bảo dưỡng robot\Nguồn video`). Tài nguyên dùng chung (logo, nhạc, outro, SFX) nằm ở `02.Tài nguyên chung\` bên trong thư mục gốc đó — xem chi tiết bên dưới.
 
 ## Workflow tổng quát (3 điểm dừng: chọn KIỂU DỰNG + đủ nguyên liệu ngay đầu → duyệt kịch bản → giao hàng)
 
