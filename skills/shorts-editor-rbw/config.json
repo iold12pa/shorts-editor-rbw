@@ -1,5 +1,5 @@
 {
-  "_comment": "Thu muc footage (edit_video_root) gio hoi qua hop thoai luc cai plugin, KHONG can sua o day nua. File nay chi con dung cho truong hop hiem: ffmpeg khong nam tren PATH he thong.",
+  "_comment": "File nay chi con dung cho truong hop hiem: ffmpeg khong nam tren PATH he thong. Duong dan footage gio nguoi dung tu dua truc tiep moi lan dung video, khong can cau hinh gi o day.",
   "ffmpeg_path": "",
   "ffprobe_path": "",
   "_ffmpeg_path_note": "De trong = tu tim ffmpeg tren PATH he thong (cach chuan, hau het may khong can dien gi o day). Chi dien duong dan .exe day du vao day neu shell bao 'khong tim thay ffmpeg' VA khong muon them ffmpeg vao PATH."

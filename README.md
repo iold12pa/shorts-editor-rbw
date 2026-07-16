@@ -17,7 +17,7 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    ```
    /plugin install shorts-editor-rbw@roboworld-tools
    ```
-   Cài xong, Claude Code sẽ **tự hiện 1 hộp thoại hỏi bạn chọn thư mục** chứa footage buổi quay của bạn — chọn đúng thư mục đó là xong, không cần mở file gì để sửa tay.
+   **Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Lúc muốn dựng video, chỉ cần nói với Claude đường dẫn đầy đủ tới folder buổi quay (gõ tay, hoặc kéo-thả folder đó thẳng vào khung chat để Windows tự dán đường dẫn).
 3. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`.
 4. **Kiểm tra máy mình đang chạy bản nào / có bản mới hơn không** — gõ đúng 2 lệnh này (an toàn, gõ lúc nào cũng được, không sợ hỏng gì):
    ```
@@ -31,16 +31,15 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    (Kỹ thuật phía sau: mỗi lần Sếp sửa gì trong skill và đẩy lên GitHub tính là 1 "bản" mới tự động theo đúng lần lưu đó, không cần Sếp phải nhớ tăng số phiên bản tay — tránh trường hợp quên tăng số khiến máy đồng nghiệp tưởng nhầm là "chưa có gì mới".)
    - **Auto-update (tùy chọn, đỡ phải tự gõ)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Lưu ý: vì repo đang ở chế độ private, cơ chế tự cập nhật chạy nền của Claude Code **không đảm bảo chạy đúng 100% mỗi lần** (giới hạn đã ghi trong tài liệu chính thức của Claude Code khi marketplace là repo riêng tư, không phải lỗi của gói này) — thấy nghi ngờ chưa cập nhật thì cứ gõ lại 2 lệnh ở trên cho chắc.
 
-Vậy chỉ còn **2 việc chính** (cài Claude Code + được mời vào repo đã tính là điều kiện có sẵn từ trước): gõ 2 lệnh ở bước 1-2, rồi chọn thư mục footage khi được hỏi. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
+Vậy chỉ còn **2 việc chính** (cài Claude Code + được mời vào repo đã tính là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, xong là dùng được ngay — không có bước nào khác. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
 
 ## Kiểm tra sau khi cài (test nhanh, 4 bước)
 
 Làm đúng 4 bước này để chắc chắn đã cài thành công, không phải đoán:
 
 1. **Xác nhận plugin đã cài đúng**: gõ `/plugin` → tab **Installed** → thấy `shorts-editor-rbw` trạng thái **enabled** là đạt bước 1.
-2. **Xác nhận thư mục footage đã lưu đúng**: gõ `/plugin` → chọn `shorts-editor-rbw` → xem mục cấu hình (`edit_video_root`) có đúng thư mục bạn đã chọn lúc cài không. Sai thì sửa lại ngay tại đây, không cần cài lại từ đầu.
-3. **Test bằng 1 buổi quay nhỏ có thật**: gõ *"dựng video từ folder [tên 1 buổi quay bất kỳ trong thư mục của bạn]"* — skill phải tự hỏi bạn chọn 1 trong 3 kiểu dựng (không tự đoán bừa) và liệt kê đúng tên các clip trong folder đó. Nếu bước này báo "không tìm thấy folder" → quay lại bước 2 kiểm tra đường dẫn.
-4. **Dựng thử 1 video hoàn chỉnh**: đi hết quy trình tới lúc có file `.mp4` xuất ra — mở file lên xem đúng khung dọc 9:16, có logo, không bị giật/lỗi hình là đạt. Đây là bước xác nhận chắc chắn nhất, các bước 1-3 chỉ là kiểm tra nhanh trước khi tốn thời gian dựng thật.
+2. **Test bằng 1 buổi quay nhỏ có thật**: gõ *"dựng video từ [đường dẫn đầy đủ tới 1 folder buổi quay bất kỳ]"* (hoặc kéo-thả folder đó vào khung chat) — skill phải tự hỏi bạn chọn 1 trong 3 kiểu dựng (không tự đoán bừa) và liệt kê đúng tên các clip trong folder đó. Nếu báo "không tìm thấy folder" → kiểm tra lại đường dẫn đã đưa đúng chưa.
+3. **Dựng thử 1 video hoàn chỉnh**: đi hết quy trình tới lúc có file `.mp4` xuất ra — mở file lên xem đúng khung dọc 9:16, có logo, không bị giật/lỗi hình là đạt. Đây là bước xác nhận chắc chắn nhất, các bước 1-2 chỉ là kiểm tra nhanh trước khi tốn thời gian dựng thật.
 
 Nếu dùng Kiểu 2/3 (cần nghe thoại) hoặc giọng AI, kiểm tra thêm:
 - Model Whisper đã tải đúng vị trí `skills/shorts-editor-rbw/assets/models/` (xem README trong đó) — thiếu thì bước phân tích thoại sẽ báo lỗi rõ, không chạy ngầm sai.
@@ -61,5 +60,7 @@ Xem `telegram-bot/README.md` — cài thêm (tùy chọn) 1 "cầu nối" chạy
 
 ## Lưu ý quan trọng
 
-- Đã tự chạy thật `/plugin marketplace add` + `/plugin install` (2026-07-15) từ repo GitHub thật, trên máy sạch chưa cài gì — cả 2 lệnh chạy đúng, plugin cài xong có đủ file, `config.json` sạch không lộ dữ liệu riêng. Vẫn khuyến khích người đầu tiên cài thật báo lại nếu gặp lỗi khác máy khác môi trường.
-- Mỗi người dùng cần: (a) chọn đúng thư mục footage của họ khi được hỏi lúc cài (hộp thoại `userConfig`, không phải sửa file tay nữa), (b) model Whisper riêng nếu cần Kiểu 2/3, (c) file key ElevenLabs riêng ở `~/.claude/abs6-secrets.env` nếu muốn dùng giọng AI (không bắt buộc).
+- Đã tự chạy thật `/plugin marketplace add` + `/plugin install` (2026-07-16) từ repo GitHub thật, trên máy sạch chưa cài gì — cả 2 lệnh chạy đúng, cài xong dùng được ngay không cần cấu hình gì thêm. Vẫn khuyến khích người đầu tiên cài thật báo lại nếu gặp lỗi khác máy khác môi trường.
+- Mỗi lần dựng video, tự đưa đường dẫn đầy đủ tới folder buổi quay (không có bước cấu hình cố định lúc cài) — footage để ở ổ đĩa/thư mục nào cũng được, miễn đưa đúng đường dẫn.
+- Mỗi người dùng cần thêm: (a) model Whisper riêng nếu cần Kiểu 2/3, (b) file key ElevenLabs riêng ở `~/.claude/abs6-secrets.env` nếu muốn dùng giọng AI (không bắt buộc).
+- Lần đầu Claude thao tác vào 1 thư mục footage mới (ngoài thư mục đang mở Claude Code), Windows/Claude Code sẽ hiện 1 hộp thoại hỏi xin quyền — chọn "luôn cho phép", chỉ hỏi đúng 1 lần cho mỗi thư mục.

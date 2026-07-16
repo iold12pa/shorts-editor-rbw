@@ -7,7 +7,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x1920, 30-60s) theo đúng style video mẫu của Roboworld. Mỗi lần chạy: phân tích source → **đề xuất kịch bản → Sếp duyệt** → dựng N video thành phẩm + caption.
 
-**Phạm vi làm việc:** thư mục gốc trên MÁY ĐANG CHẠY là `${user_config.edit_video_root}` (người dùng chọn 1 lần lúc cài plugin qua hộp thoại, không đọc từ config.json nữa) — mỗi người dùng skill có thể để ở ổ đĩa/tên khác nhau, đừng giả định `D:\VIDEO RBW\Edit video\` là cố định (đó chỉ là ví dụ trên máy gốc). Mọi thứ của quy trình này (source, workspace, video final, tài nguyên chung) nằm trong thư mục đó — KHÔNG tạo file ở nơi khác (trừ file tạm trong scratchpad nếu cần). Mỗi buổi quay là 1 folder con đánh số (vd `29.Đi bảo dưỡng robot\Nguồn video`). Tài nguyên dùng chung (logo, nhạc, outro, SFX) đóng gói sẵn trong skill tại `assets/tai-nguyen-chung/`, KHÔNG nằm trong thư mục gốc này — xem chi tiết bên dưới.
+**Phạm vi làm việc:** KHÔNG có thư mục gốc cố định nào được cấu hình sẵn — mỗi lần người dùng nhờ dựng video, họ tự đưa **đường dẫn đầy đủ** tới folder buổi quay (gõ tay hoặc kéo-thả folder vào khung chat để Windows tự dán đường dẫn). Nếu người dùng chỉ nói 1 cái tên ngắn (vd "buổi GGG Hà Nội") mà không kèm đường dẫn, HỎI LẠI xin đường dẫn đầy đủ hoặc nhờ họ kéo-thả folder vào — đừng tự đoán đường dẫn. Mọi thứ của video đó (workspace, video final) tạo NGAY BÊN TRONG folder buổi quay được đưa — KHÔNG tạo file ở nơi khác (trừ file tạm trong scratchpad nếu cần). Tài nguyên dùng chung (logo, nhạc, outro, SFX) đóng gói sẵn trong skill tại `assets/tai-nguyen-chung/`, độc lập với đường dẫn footage của người dùng — xem chi tiết bên dưới.
 
 ## Workflow tổng quát (3 điểm dừng: chọn KIỂU DỰNG + đủ nguyên liệu ngay đầu → duyệt kịch bản → giao hàng)
 
@@ -16,7 +16,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
    - **Kiểu 3 — Ghép cảnh + thêm voice-over mới** (giọng AI hoặc thu riêng, không đồng bộ lúc quay; spec: `references/style-voice-karaoke.md` phần karaoke sub, hoặc `references/style-ads-huy.md` nếu kịch bản dạng quảng cáo bán hàng)
    Người dùng nói rõ kiểu + đủ nguyên liệu ngay trong tin đầu thì không hỏi lại — chỉ hỏi đúng phần còn thiếu.
-1. Sau khi đủ nguyên liệu: tìm folder source (tên folder con trong `${user_config.edit_video_root}`). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.
+1. Sau khi đủ nguyên liệu: xác nhận đã có đường dẫn đầy đủ tới folder source (nếu chưa, hỏi xin ngay — xem mục "Phạm vi làm việc" ở trên). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.
 2. Skill phân tích footage → viết kịch bản cho từng ý tưởng (chưa có ý tưởng cụ thể thì tự đề xuất 2-3 ý hay nhất từ footage, xem thêm `references/chon-canh-highlight.md` để chọn đúng cảnh highlight)
 3. **Trình duyệt kịch bản** (tóm tắt ngắn gọn từng video: hook, mạch cảnh, text đè, nhạc, thời lượng; nêu rõ chỗ nào đang tự suy đoán nếu thông tin "nên có" còn thiếu). OK cái nào dựng cái đó; sửa thì cập nhật rồi dựng luôn theo ý sửa
 4. Dựng tự động toàn bộ, tự nghiệm thu, xuất video final + caption, mở folder giao hàng
@@ -27,7 +27,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 - **Python 3.9** + `gdown` + `edge-tts`
 - **Voice AI (khi kịch bản có voiceover)**: ưu tiên **ElevenLabs** qua `scripts/elevenlabs_tts.py` (giọng tự nhiên hơn + trả timestamp TỪNG TỪ → làm được sub karaoke; key đọc từ `~/.claude/abs6-secrets.env`, dòng `ELEVENLABS_API_KEY=`). Key trống/hết quota → script tự báo lỗi rõ, khi đó **fallback edge-tts** như cũ. KHÔNG bao giờ in key ra chat/log.
 - **Font Anton** (style CapCut, Sếp chỉ định): `assets/fonts/Anton-Regular.ttf` trong thư mục skill — copy vào workspace mỗi lần dựng (xem recipes)
-- **Tài nguyên dùng chung** (logo, outro, nhạc, SFX, ảnh sản phẩm) đóng gói SẴN trong skill tại `assets/tai-nguyen-chung/` (không nằm trong `${user_config.edit_video_root}` của người dùng nữa — mỗi người cài Plugin đều có sẵn bộ này giống hệt nhau, tự cập nhật cùng lúc skill cập nhật):
+- **Tài nguyên dùng chung** (logo, outro, nhạc, SFX, ảnh sản phẩm) đóng gói SẴN trong skill tại `assets/tai-nguyen-chung/` (độc lập hoàn toàn với đường dẫn footage người dùng đưa — mỗi người cài Plugin đều có sẵn bộ này giống hệt nhau, tự cập nhật cùng lúc skill cập nhật):
   - **Logo**: `assets/tai-nguyen-chung/Logo + Outro/Logo ngang trắng.png` (dùng overlay giữa-trên) — logo TRẮNG, không dùng bản đỏ (bản đỏ chỉ dùng trong outro có sẵn).
   - **Outro dọc**: `assets/tai-nguyen-chung/Logo + Outro/outro dọc.mp4` (2160x3840, ~9s, có sẵn nhạc/audio riêng) — nối vào cuối MỌI video bằng crossfade, xem `references/ffmpeg-recipes.md` mục 4d. Đừng tự bịa outro khác khi đã có file này.
   - **Nhạc nền**: nguồn chính là **YouTube Studio → Thư viện âm thanh → tab "Âm nhạc"** (an toàn bản quyền tuyệt đối, không cần đăng nhập kênh Roboworld — kênh cá nhân nào cũng dùng được vì giấy phép áp dụng chung). Có sẵn kho tải tại `assets/tai-nguyen-chung/Kho nhạc free YT/` — ưu tiên dùng file có sẵn ở đây trước, hết mới tải thêm (xem cách tải trong ffmpeg-recipes mục 1b). KHÔNG dùng nhạc trend/có bản quyền thương mại tải rời — rủi ro Content ID cho kênh doanh nghiệp.
@@ -38,7 +38,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ### Bước 1 — Xác định source & lập workspace
 
-- Tìm folder con Sếp nhắc tên trong `${user_config.edit_video_root}` (Glob/liệt kê nếu tên không khớp chính xác — folder đặt tên kiểu `NN.Tên sự kiện`, source nằm trong subfolder `Nguồn video`).
+- Dùng đúng đường dẫn đầy đủ người dùng đã đưa (gõ tay hoặc kéo-thả). Nếu bên trong có subfolder rõ ràng chứa clip nguồn (vd `Nguồn video\`), dùng đúng subfolder đó làm source; nếu clip nằm ngay cấp ngoài, dùng luôn folder đó.
 - Tạo workspace ngay trong folder buổi quay đó: `<folder buổi quay>\Workspace\` với các thư mục con: `analysis`, `kichban`, `fonts`, `temp`, `output` (thêm `voice\` nếu kịch bản có voiceover).
 - Ghi input của Sếp (mô tả sự kiện, ý tưởng) vào `kichban\00-input.md`.
 - Nguồn là link Google Drive (hiếm) → tải bằng `python -m gdown --folder "<link>" -O <workspace>\source --remaining-ok`.
