@@ -11,6 +11,8 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ## Workflow tổng quát (3 điểm dừng: chọn KIỂU DỰNG + đủ nguyên liệu ngay đầu → duyệt kịch bản → giao hàng)
 
+**Ngay khi skill được gọi lần đầu trong phiên** (trước hoặc song song với bước 0 dưới đây): kiểm tra và tự cài/tải sẵn FFmpeg + model Whisper theo đúng hướng dẫn ở mục "Môi trường" bên dưới — không đợi tới lúc thật sự cần mới làm, để người dùng không phải chờ giữa chừng lúc đang dựng video.
+
 0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
@@ -24,6 +26,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 ## Môi trường (đã cài & kiểm chứng trên máy này)
 
 - **ffmpeg/ffprobe**: gọi `ffmpeg` trực tiếp; nếu shell báo không tìm thấy VÀ `ffmpeg_path`/`ffprobe_path` trong `config.json` (cùng thư mục file này) cũng để trống — **TỰ CÀI LUÔN, đừng hỏi trước "bạn có muốn cài không"**: báo 1 câu ngắn ("máy chưa có FFmpeg, tôi cài luôn nhé — vài phút"), chạy `winget install ffmpeg -e --source winget` (nguồn cài đặt chính thức của Windows, an toàn). Cài xong lệnh `ffmpeg` có thể CHƯA được nhận diện ngay trong phiên đang chạy (PATH chỉ cập nhật cho phiên/cửa sổ mới) — nếu gọi thử vẫn báo "không tìm thấy", báo người dùng mở lại phiên làm việc mới (đóng Claude Code, mở lại) rồi tiếp tục. Chỉ hỏi lại người dùng nếu `winget` báo lỗi thật (máy không có winget, mạng chặn...) — đây là bước bắt buộc để dùng được skill, không phải tùy chọn.
+- **Model Whisper** (`assets/models/ggml-large-v3-turbo.bin`, ~1.6GB, dùng để nghe lời thoại — cần cho Kiểu 2/3): kiểm tra ngay khi skill được gọi lần đầu trong phiên (không đợi tới lúc biết chắc là Kiểu 2/3) — nếu chưa có file này, **TỰ TẢI LUÔN, đừng hỏi trước "bạn có muốn tải không"**: báo 1 câu ngắn ("cần tải thêm bộ nghe giọng nói ~1.6GB, đợi tôi 1-2 phút"), chạy đúng lệnh trong `assets/models/README.md` (`Invoke-WebRequest` tới file `.bin` trên Hugging Face, lưu vào `assets/models/`). Tải xong dùng được ngay cho mọi kiểu dựng về sau, không phải tải lại. Chỉ hỏi lại người dùng nếu lệnh tải lỗi thật (mạng chặn, hết dung lượng).
 - **Python 3.9** + `gdown` + `edge-tts`
 - **Voice AI (khi kịch bản có voiceover)**: ưu tiên **ElevenLabs** qua `scripts/elevenlabs_tts.py` (giọng tự nhiên hơn + trả timestamp TỪNG TỪ → làm được sub karaoke; key đọc từ `~/.claude/abs6-secrets.env`, dòng `ELEVENLABS_API_KEY=`). Key trống/hết quota → script tự báo lỗi rõ, khi đó **fallback edge-tts** như cũ. KHÔNG bao giờ in key ra chat/log.
 - **Font Anton** (style CapCut, Sếp chỉ định): `assets/fonts/Anton-Regular.ttf` trong thư mục skill — copy vào workspace mỗi lần dựng (xem recipes)
@@ -45,7 +48,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ### Bước 2 — Phân tích footage (v2: khung thông minh + voice + index tái sử dụng)
 
-**Nếu kịch bản cần nghe lời thoại (Kiểu 2/3) và chưa thấy file model** (`assets/models/ggml-large-v3-turbo.bin`, kiểm tra bằng Test-Path) — **TỰ TẢI LUÔN, đừng bắt người dùng tự tải tay**: báo 1 câu ngắn ("cần tải thêm bộ nghe giọng nói ~1.6GB, đợi tôi 1-2 phút"), rồi chạy đúng lệnh trong `assets/models/README.md` (`Invoke-WebRequest` tới file `.bin` trên Hugging Face, lưu vào `assets/models/`), sau đó chạy tiếp bình thường. Chỉ hỏi lại người dùng nếu lệnh tải lỗi thật (mạng chặn, hết dung lượng) — đừng hỏi trước "bạn có muốn tải không", việc này là bắt buộc để dùng được Kiểu 2/3.
+Model Whisper đã được kiểm tra/tự tải sẵn từ đầu phiên (xem mục "Môi trường" ở trên) — không cần kiểm tra lại ở bước này.
 
 ```powershell
 python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\analysis"
