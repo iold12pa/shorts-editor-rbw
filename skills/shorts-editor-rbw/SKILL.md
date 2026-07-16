@@ -43,6 +43,8 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ### Bước 2 — Phân tích footage (v2: khung thông minh + voice + index tái sử dụng)
 
+**Nếu kịch bản cần nghe lời thoại (Kiểu 2/3) và chưa thấy file model** (`assets/models/ggml-large-v3-turbo.bin`, kiểm tra bằng Test-Path) — **TỰ TẢI LUÔN, đừng bắt người dùng tự tải tay**: báo 1 câu ngắn ("cần tải thêm bộ nghe giọng nói ~1.6GB, đợi tôi 1-2 phút"), rồi chạy đúng lệnh trong `assets/models/README.md` (`Invoke-WebRequest` tới file `.bin` trên Hugging Face, lưu vào `assets/models/`), sau đó chạy tiếp bình thường. Chỉ hỏi lại người dùng nếu lệnh tải lỗi thật (mạng chặn, hết dung lượng) — đừng hỏi trước "bạn có muốn tải không", việc này là bắt buộc để dùng được Kiểu 2/3.
+
 ```powershell
 python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\analysis"
 ```

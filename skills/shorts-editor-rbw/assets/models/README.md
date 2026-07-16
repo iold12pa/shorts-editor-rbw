@@ -1,8 +1,10 @@
 # Model Whisper — tải riêng, không nằm trong gói cài
 
-File model (`ggml-large-v3-turbo.bin`, ~1.6GB) dùng để nghe tiếng Việt trong footage (Whisper). File này quá lớn để đưa vào gói cài qua Git, nên cần tải riêng **1 lần duy nhất** sau khi cài plugin.
+File model (`ggml-large-v3-turbo.bin`, ~1.6GB) dùng để nghe tiếng Việt trong footage (Whisper). File này quá lớn để đưa vào gói cài qua Git, nên cần tải riêng.
 
-## Cách tải (chọn 1 trong 2)
+**Không cần tự tải tay**: Claude sẽ TỰ ĐỘNG tải file này lần đầu tiên bạn dựng video theo Kiểu 2 hoặc Kiểu 3 (video có thoại) — chỉ cần đợi 1-2 phút, không phải làm gì. Chỉ cần tự tải theo hướng dẫn dưới đây nếu muốn chuẩn bị trước, hoặc nếu Claude báo lỗi khi tự tải (mạng chặn, v.v).
+
+## Cách tải tay (chỉ cần khi muốn chuẩn bị trước hoặc Claude tự tải bị lỗi)
 
 **Cách 1 — PowerShell (khuyên dùng):**
 ```powershell
