@@ -23,7 +23,7 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 ## Môi trường (đã cài & kiểm chứng trên máy này)
 
-- **ffmpeg/ffprobe**: gọi `ffmpeg` trực tiếp; nếu shell báo không tìm thấy, đọc `ffmpeg_path`/`ffprobe_path` trong `config.json` (cùng thư mục file này) — để trống nghĩa là chưa cần, chỉ điền khi thật sự gặp lỗi "không tìm thấy ffmpeg" trên máy đó.
+- **ffmpeg/ffprobe**: gọi `ffmpeg` trực tiếp; nếu shell báo không tìm thấy VÀ `ffmpeg_path`/`ffprobe_path` trong `config.json` (cùng thư mục file này) cũng để trống — **TỰ CÀI LUÔN, đừng hỏi trước "bạn có muốn cài không"**: báo 1 câu ngắn ("máy chưa có FFmpeg, tôi cài luôn nhé — vài phút"), chạy `winget install ffmpeg -e --source winget` (nguồn cài đặt chính thức của Windows, an toàn). Cài xong lệnh `ffmpeg` có thể CHƯA được nhận diện ngay trong phiên đang chạy (PATH chỉ cập nhật cho phiên/cửa sổ mới) — nếu gọi thử vẫn báo "không tìm thấy", báo người dùng mở lại phiên làm việc mới (đóng Claude Code, mở lại) rồi tiếp tục. Chỉ hỏi lại người dùng nếu `winget` báo lỗi thật (máy không có winget, mạng chặn...) — đây là bước bắt buộc để dùng được skill, không phải tùy chọn.
 - **Python 3.9** + `gdown` + `edge-tts`
 - **Voice AI (khi kịch bản có voiceover)**: ưu tiên **ElevenLabs** qua `scripts/elevenlabs_tts.py` (giọng tự nhiên hơn + trả timestamp TỪNG TỪ → làm được sub karaoke; key đọc từ `~/.claude/abs6-secrets.env`, dòng `ELEVENLABS_API_KEY=`). Key trống/hết quota → script tự báo lỗi rõ, khi đó **fallback edge-tts** như cũ. KHÔNG bao giờ in key ra chat/log.
 - **Font Anton** (style CapCut, Sếp chỉ định): `assets/fonts/Anton-Regular.ttf` trong thư mục skill — copy vào workspace mỗi lần dựng (xem recipes)
