@@ -19,9 +19,17 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    ```
    Cài xong, Claude Code sẽ **tự hiện 1 hộp thoại hỏi bạn chọn thư mục** chứa footage buổi quay của bạn — chọn đúng thư mục đó là xong, không cần mở file gì để sửa tay.
 3. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`.
-4. **Nhận bản cập nhật mới nhất mỗi khi Sếp sửa skill** — có 2 cách:
-   - **Cách chắc ăn nhất**: thỉnh thoảng gõ lệnh `/plugin marketplace update roboworld-tools` (đặc biệt sau khi Sếp báo có bản mới) — luôn tải đúng bản mới nhất.
-   - **Auto-update (tùy chọn)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Lưu ý: vì repo đang ở chế độ private, cơ chế tự cập nhật chạy nền của Claude Code **không đảm bảo chạy đúng 100% mỗi lần** (đây là giới hạn đã ghi trong tài liệu chính thức của Claude Code khi marketplace là repo riêng tư, không phải lỗi của gói này) — nếu thấy skill có vẻ chưa cập nhật, dùng cách chắc ăn ở trên.
+4. **Kiểm tra máy mình đang chạy bản nào / có bản mới hơn không** — gõ đúng 2 lệnh này (an toàn, gõ lúc nào cũng được, không sợ hỏng gì):
+   ```
+   /plugin marketplace update roboworld-tools
+   /plugin update shorts-editor-rbw@roboworld-tools
+   ```
+   Lệnh 1 tải thông tin mới nhất về từ GitHub, lệnh 2 tự so sánh rồi báo thẳng 1 trong 2 kết quả — không cần đoán:
+   - `shorts-editor-rbw is already at the latest version (...)` → máy bạn **đã là bản mới nhất**, không cần làm gì thêm.
+   - `updated from <bản cũ> to <bản mới>. Restart to apply changes.` → máy bạn **vừa được cập nhật**, đóng Claude Code mở lại là dùng được bản mới.
+
+   (Kỹ thuật phía sau: mỗi lần Sếp sửa gì trong skill và đẩy lên GitHub tính là 1 "bản" mới tự động theo đúng lần lưu đó, không cần Sếp phải nhớ tăng số phiên bản tay — tránh trường hợp quên tăng số khiến máy đồng nghiệp tưởng nhầm là "chưa có gì mới".)
+   - **Auto-update (tùy chọn, đỡ phải tự gõ)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Lưu ý: vì repo đang ở chế độ private, cơ chế tự cập nhật chạy nền của Claude Code **không đảm bảo chạy đúng 100% mỗi lần** (giới hạn đã ghi trong tài liệu chính thức của Claude Code khi marketplace là repo riêng tư, không phải lỗi của gói này) — thấy nghi ngờ chưa cập nhật thì cứ gõ lại 2 lệnh ở trên cho chắc.
 
 Vậy chỉ còn **2 việc chính** (cài Claude Code + được mời vào repo đã tính là điều kiện có sẵn từ trước): gõ 2 lệnh ở bước 1-2, rồi chọn thư mục footage khi được hỏi. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
 
