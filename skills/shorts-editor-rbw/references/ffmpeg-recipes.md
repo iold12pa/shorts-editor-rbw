@@ -156,7 +156,7 @@ ffmpeg -y -i main_sequence.mp4 -i ending_scene.mp4 `
 
 ## 4d. Nối outro dọc vào cuối video
 
-Outro dọc là file có sẵn (`02.Tài nguyên chung\Logo + Outro...\outro dọc.mp4`, 2160x3840, ~9s, có sẵn nhạc/audio riêng). Luôn nối vào cuối mọi video (trừ khi Sếp nói không cần). Trình tự:
+Outro dọc là file có sẵn (`assets/tai-nguyen-chung/Logo + Outro/outro dọc.mp4`, 2160x3840, ~9s, có sẵn nhạc/audio riêng). Luôn nối vào cuối mọi video (trừ khi Sếp nói không cần). Trình tự:
 
 1. Scale outro về đúng khung 1080x1920 (chia đúng 1/2, không méo):
 ```powershell
