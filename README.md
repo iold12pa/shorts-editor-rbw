@@ -56,7 +56,8 @@ Xem `telegram-bot/README.md` — cài thêm (tùy chọn) 1 "cầu nối" chạy
 
 ## Lưu ý quan trọng
 
-- Đã tự chạy thật `/plugin marketplace add` + `/plugin install` (2026-07-16) từ repo GitHub thật, trên máy sạch chưa cài gì — cả 2 lệnh chạy đúng, cài xong dùng được ngay không cần cấu hình gì thêm. Vẫn khuyến khích người đầu tiên cài thật báo lại nếu gặp lỗi khác máy khác môi trường.
+- Đã tự chạy thật `/plugin marketplace add` + `/plugin install` (2026-07-16) từ repo GitHub thật, trên máy sạch chưa cài gì — cả 2 lệnh chạy đúng, cài xong dùng được ngay không cần cấu hình gì thêm.
+- **Đã xác nhận đầu-cuối với người dùng thật khác máy** (2026-07-16, Cao Đắc Chiến) — cài qua chính app Claude (không cần mở terminal riêng), phát hiện và tự sửa 3 vấn đề thật ngay trong lần đầu: cú pháp `/plugin` không chạy trong app Claude thường (phải dùng câu nói tự nhiên nhờ Claude tự gọi lệnh), thiếu bước tự cài FFmpeg, model Whisper tải trễ tới lúc cần Kiểu 2/3 thay vì tải ngay từ đầu — cả 3 đã vá trong skill, không phải chỉ ghi chú suông.
 - Mỗi lần dựng video, tự đưa đường dẫn đầy đủ tới folder buổi quay (không có bước cấu hình cố định lúc cài) — footage để ở ổ đĩa/thư mục nào cũng được, miễn đưa đúng đường dẫn.
 - Mỗi người dùng cần thêm: (a) model Whisper riêng nếu cần Kiểu 2/3, (b) file key ElevenLabs riêng ở `~/.claude/abs6-secrets.env` nếu muốn dùng giọng AI (không bắt buộc).
 - Lần đầu Claude thao tác vào 1 thư mục footage mới (ngoài thư mục đang mở Claude Code), Windows/Claude Code sẽ hiện 1 hộp thoại hỏi xin quyền — chọn "luôn cho phép", chỉ hỏi đúng 1 lần cho mỗi thư mục.
