@@ -5,7 +5,8 @@ Usage:
     python elevenlabs_tts.py <input_txt_utf8> <output_mp3> [--voice VOICE_ID] [--srt out.srt] [--words out.json]
 
 - Doc API key tu bien moi truong ELEVENLABS_API_KEY, hoac tu file
-  C:/Users/legion/.claude/abs6-secrets.env (dong ELEVENLABS_API_KEY=...).
+  ~/.claude/abs6-secrets.env (dong ELEVENLABS_API_KEY=...) - duong dan tu
+  gian ve thu muc nguoi dung tren MAY DANG CHAY, khong co dinh rieng cho 1 may.
 - Goi endpoint /with-timestamps -> tra ve mp3 + timing TUNG KY TU.
 - Xuat kem: .srt (cum 4-7 tu, cho sub thuong) va .json word-level (cho sub karaoke ASS).
 - Het quota / loi mang -> bao ro va exit 1, de skill fallback sang edge-tts.

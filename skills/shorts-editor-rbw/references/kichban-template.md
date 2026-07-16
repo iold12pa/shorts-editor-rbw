@@ -10,7 +10,7 @@ Mỗi ý tưởng video → 1 file `kichban/video-N-<slug>.md` theo đúng cấu
 
 ## Thông số
 - Thời lượng mục tiêu: ~<X>s
-- Giọng đọc: vi-VN-NamMinhNeural / vi-VN-HoaiMyNeural
+- Giọng đọc: ElevenLabs <voice ID, ưu tiên số 1 — xem SKILL.md> — hoặc fallback edge-tts: vi-VN-NamMinhNeural / vi-VN-HoaiMyNeural (chỉ dùng khi ElevenLabs lỗi/hết quota)
 - Nhạc nền: <file hoặc "không">
 - Đối tượng xem: <chủ nhà hàng / chủ nhà máy / ...>
 
