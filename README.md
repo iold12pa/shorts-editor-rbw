@@ -13,10 +13,9 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    ```
    /plugin install shorts-editor-rbw@roboworld-tools
    ```
-   **Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Lúc muốn dựng video, chỉ cần nói với Claude đường dẫn đầy đủ tới folder buổi quay (gõ tay, hoặc kéo-thả folder đó thẳng vào khung chat để Windows tự dán đường dẫn).
-3. **Bật tự động cập nhật (làm 1 lần, đỡ phải gõ lệnh cập nhật tay về sau)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Bật xong, mỗi lần Sếp sửa skill và đẩy lên GitHub, chỉ cần **đóng Claude Code rồi mở lại** là tự nhận bản mới — không cần gõ lệnh gì cả. Repo đã public nên cơ chế này chạy ổn định.
-4. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`. (Thực ra bước này skill tự làm khi cần — xem mục "Lưu ý quan trọng" bên dưới.)
-5. **Muốn tự kiểm tra/cập nhật bằng tay bất cứ lúc nào** (không bắt buộc nếu đã bật auto-update ở bước 3) — gõ đúng 2 lệnh này, an toàn, không sợ hỏng gì:
+   **Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Ngay lần đầu tiên nhờ Claude dựng video, skill sẽ **tự kiểm tra và tự bật auto-update** cho `roboworld-tools` (không cần tự vào `/plugin` bấm menu) — từ đó về sau chỉ cần đóng/mở lại Claude Code là tự nhận bản mới nhất, không cần gõ lệnh gì cả.
+3. **Tải model Whisper riêng** (bắt buộc nếu muốn dùng Kiểu 2/3 — video có thoại, cần Claude "nghe" được lời nói trong video): xem hướng dẫn trong `skills/shorts-editor-rbw/assets/models/README.md`. (Thực ra bước này skill cũng tự làm khi cần — xem mục "Lưu ý quan trọng" bên dưới.)
+4. **Muốn tự kiểm tra/cập nhật bằng tay bất cứ lúc nào** (không bắt buộc, vì bước 2 đã tự bật auto-update) — gõ đúng 2 lệnh này, an toàn, không sợ hỏng gì:
    ```
    /plugin marketplace update roboworld-tools
    /plugin update shorts-editor-rbw@roboworld-tools
@@ -27,7 +26,7 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
 
    (Kỹ thuật phía sau: mỗi lần Sếp sửa gì trong skill và đẩy lên GitHub tính là 1 "bản" mới tự động theo đúng lần lưu đó, không cần Sếp phải nhớ tăng số phiên bản tay — tránh trường hợp quên tăng số khiến máy đồng nghiệp tưởng nhầm là "chưa có gì mới".)
 
-Vậy chỉ còn **2 việc chính** (cài Claude Code là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, bật auto-update ở bước 3 — xong là dùng được ngay và tự cập nhật mãi về sau, không cần làm gì thêm.
+Vậy chỉ còn **1 việc chính** (cài Claude Code là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2 — xong là dùng được ngay và tự cập nhật mãi về sau, không cần làm gì thêm.
 
 ## Kiểm tra sau khi cài (test nhanh, 4 bước)
 
