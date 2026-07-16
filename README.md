@@ -4,11 +4,7 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
 
 ## Cài đặt (máy đã có Claude Code)
 
-0. **Điều kiện trước khi bắt đầu**:
-   - Đã cài Claude Code và có gói subscription (Sếp là người cấp/hướng dẫn nếu chưa có).
-   - Đã được Sếp mời làm **collaborator** trên GitHub cho repo này (repo để ở chế độ riêng tư — private — chỉ người được mời mới xem/tải được, không phải ai có link cũng vào được). Sếp sẽ gửi lời mời qua email gắn với tài khoản GitHub của bạn, bạn chỉ cần bấm **Accept**.
-   - Kiểm tra đã có quyền chưa: mở https://github.com/iold12pa/shorts-editor-rbw trên trình duyệt (đã đăng nhập GitHub) — vào xem được nội dung là đã có quyền, còn báo "404 Not Found" nghĩa là chưa được mời hoặc chưa bấm Accept.
-   - Máy cần có sẵn chương trình **Git** (công cụ tải code, đa số máy lập trình đã có sẵn) và đã đăng nhập GitHub trên Git — cách kiểm tra nhanh: mở PowerShell, gõ `git clone https://github.com/iold12pa/shorts-editor-rbw.git` ở một thư mục bất kỳ, nếu tải về được (không báo lỗi quyền truy cập) là ổn, sau đó xoá thư mục vừa tải thử đi cũng được (không cần dùng tới, bước cài thật ở dưới làm khác).
+0. **Điều kiện trước khi bắt đầu**: đã cài Claude Code và có gói subscription (Sếp là người cấp/hướng dẫn nếu chưa có). Repo `shorts-editor-rbw` giờ để ở chế độ **công khai (public)** — không cần được mời, không cần tài khoản GitHub, không cần đăng nhập git gì cả, ai có link cũng cài được ngay.
 1. Mở Claude Code, gõ lệnh sau để "chỉ đường" cho Claude biết kho công cụ nội bộ Roboworld nằm ở đâu (gọi là "marketplace" — chỉ là 1 kho chứa nhiều plugin, ở đây kho này hiện có đúng 1 plugin):
    ```
    /plugin marketplace add https://github.com/iold12pa/shorts-editor-rbw
@@ -29,9 +25,9 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
    - `updated from <bản cũ> to <bản mới>. Restart to apply changes.` → máy bạn **vừa được cập nhật**, đóng Claude Code mở lại là dùng được bản mới.
 
    (Kỹ thuật phía sau: mỗi lần Sếp sửa gì trong skill và đẩy lên GitHub tính là 1 "bản" mới tự động theo đúng lần lưu đó, không cần Sếp phải nhớ tăng số phiên bản tay — tránh trường hợp quên tăng số khiến máy đồng nghiệp tưởng nhầm là "chưa có gì mới".)
-   - **Auto-update (tùy chọn, đỡ phải tự gõ)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Lưu ý: vì repo đang ở chế độ private, cơ chế tự cập nhật chạy nền của Claude Code **không đảm bảo chạy đúng 100% mỗi lần** (giới hạn đã ghi trong tài liệu chính thức của Claude Code khi marketplace là repo riêng tư, không phải lỗi của gói này) — thấy nghi ngờ chưa cập nhật thì cứ gõ lại 2 lệnh ở trên cho chắc.
+   - **Auto-update (tùy chọn, đỡ phải tự gõ)**: vào `/plugin` → tab **Marketplaces** → bật auto-update cho `roboworld-tools` (mặc định TẮT). Repo đã public nên cơ chế tự cập nhật chạy nền hoạt động ổn định, không còn giới hạn như lúc còn private.
 
-Vậy chỉ còn **2 việc chính** (cài Claude Code + được mời vào repo đã tính là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, xong là dùng được ngay — không có bước nào khác. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
+Vậy chỉ còn **1 việc chính** (cài Claude Code là điều kiện có sẵn từ trước): gõ đúng 2 lệnh ở bước 1-2, xong là dùng được ngay — không có bước nào khác. Bước 3 (Whisper) chỉ cần nếu dùng Kiểu 2/3.
 
 ## Kiểm tra sau khi cài (test nhanh, 4 bước)
 
