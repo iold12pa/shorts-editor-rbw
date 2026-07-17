@@ -21,7 +21,14 @@
    - Exit khác 0 (máy không có card NVIDIA, hoặc driver cũ — lỗi thường gặp: "Driver does not support the required nvenc API version") → giữ nguyên `libx264` như mọi lệnh mẫu bên dưới, không hỏng gì. **KHÔNG tin danh sách `ffmpeg -encoders`** — bản ffmpeg nào cũng liệt kê nvenc kể cả máy không chạy được; chỉ tin test-encode thật ở trên.
    - **Probe fail nhưng máy CÓ card NVIDIA** (gõ `nvidia-smi` thấy tên card): chạy `python "<skill-dir>\scripts\cai_driver_nvidia.py" --check` — nếu báo `CAN_NANG_DRIVER` thì **hỏi người dùng đúng 1 câu đời thường** (gộp cùng đợt câu hỏi bước 0 nếu đang ở đầu phiên): *"Máy bạn có card đồ họa NVIDIA nhưng bộ điều khiển đang cũ nên render chậm. Cho phép tôi tải bản mới từ NVIDIA (~1GB, miễn phí) và cài giúp bạn nhé? Bạn chỉ cần bấm YES 1 lần khi Windows hiện hộp thoại xanh — xong render nhanh gấp 2-5 lần."* Người dùng OK → chạy lại script **không có** `--check` (chạy NỀN, việc dựng vẫn tiếp tục bằng libx264 trong lúc chờ), nhắc họ để ý bấm Yes; script tự lo hết phần còn lại (tra đúng bản theo tên card, tải, cài im lặng, tự bật lại hộp thoại nếu bị trôi, tối đa 3 lần). KHÔNG OK → thôi, dùng libx264, không hỏi lại trong phiên.
    - Input là footage 4K/HEVC: thêm `-hwaccel auto` TRƯỚC `-i` (GPU lo giải mã — thắng lớn nhất ở bước cắt/chuẩn hóa, dùng được cả khi encoder vẫn là libx264).
-   - Số đo thật trên laptop dựng chính (legion, GTX 1650 Ti, đo 2026-07-17): driver NVIDIA 516.94 quá cũ so với yêu cầu ≥610 của ffmpeg 8.x → probe fail, đang chạy libx264; nếu driver được nâng cấp thì probe sẽ tự pass và phiên sau tự dùng NVENC, không cần sửa gì thêm. Mốc libx264 để so sau này (video test 24s, 3 cảnh + xfade outro + ASS + mix loudnorm): cắt 3 cảnh ~16s, xfade ~11s, burn ASS ~10s, mix final ~11s — tổng ~48s render.
+   - **Số đo THẬT trên laptop dựng chính (legion, GTX 1650 Ti, driver 610.74, đo 2026-07-17)** — cùng 1 video test 24s (3 cảnh + xfade outro + ASS + mix loudnorm), chất lượng nghiệm thu tương đương (-13.9 LUFS, hình sắc nét):
+     | Bước | libx264 (CPU) | NVENC (GPU) | Nhanh hơn |
+     |---|---|---|---|
+     | Cắt + chuẩn hóa 3 cảnh (kèm `-hwaccel auto`) | 16.0s | 10.5s | 1.5× |
+     | xfade nối outro | 10.7s | 3.7s | 2.9× |
+     | Burn ASS | 9.9s | 2.6s | 3.8× |
+     | Mix final (logo+nhạc+loudnorm) | 10.8s | 3.2s | 3.4× |
+     | **Tổng** | **~48s** | **~20s** | **2.4×** |
 
 ## 1a. Voiceover ElevenLabs (ƯU TIÊN khi có key — giọng tự nhiên + timestamp từng từ)
 
