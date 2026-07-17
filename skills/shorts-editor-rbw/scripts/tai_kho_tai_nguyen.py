@@ -111,16 +111,9 @@ def main():
 
     total_mb = sum(got.values()) / 1048576
     print("Drive khai bao %d file — tai duoc %d file / %.1f MB." % (len(declared), len(got), total_mb))
-    if missing:
-        print("\nTHIEU %d FILE (bao dich danh):" % len(missing))
-        for m in missing:
-            print("  - %s" % m)
-        if re.search(r"many accesses|Cannot retrieve", log):
-            print("\n-> Nguyen nhan: Google chan tam vi tai don dap. DOI 15-30 PHUT roi chay lai"
-                  " script nay (co --continue, chi tai not phan thieu).")
-        sys.exit(2)
 
-    # Du roi -> don ve cho ben (copy de merge, khong xoa thu gi co san o dich)
+    # Don phan DA TAI DUOC ve cho ben ngay (ke ca khi con thieu — logo/nhac co san van dung duoc);
+    # copy de merge, khong xoa thu gi co san o dich
     os.makedirs(DEST, exist_ok=True)
     moved = 0
     for rel, size in got.items():
@@ -131,6 +124,18 @@ def main():
         os.makedirs(os.path.dirname(dstp), exist_ok=True)
         shutil.copy2(srcp, dstp)
         moved += 1
+
+    if missing:
+        print("Da don %d file tai duoc ve %s (dung tam duoc)." % (len(got), DEST))
+        print("\nTHIEU %d FILE (bao dich danh):" % len(missing))
+        for m in missing:
+            print("  - %s" % m)
+        if re.search(r"many accesses|Cannot retrieve", log):
+            print("\n-> Nguyen nhan: Google chan tam vi tai don dap. DOI 15-30 PHUT roi chay lai"
+                  " script nay (co --continue, chi tai not phan thieu). Manifest CHUA ghi"
+                  " (chi ghi khi kho day du).")
+        sys.exit(2)
+
     write_manifest(got)
     print("XONG: kho day du %d file / %.1f MB tai %s (%d file moi/cap nhat)."
           % (len(got), total_mb, DEST, moved))

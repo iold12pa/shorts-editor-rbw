@@ -20,7 +20,7 @@
    - Exit `0` → máy có card NVIDIA dùng được: file trung gian (`temp\sNN.mp4`, ghép, xfade) dùng `-c:v h264_nvenc -preset p5 -rc vbr -cq 19 -b:v 0 -pix_fmt yuv420p` thay cho `libx264 -crf 18`; file final giữ `libx264 -crf 20` nếu muốn chắc chất lượng, hoặc `h264_nvenc -cq 18` (đủ cho social 1080x1920). **NVENC dùng `-cq`, KHÔNG có `-crf` — đừng trộn 2 cờ.**
    - Exit khác 0 (máy không có card NVIDIA, hoặc driver cũ — lỗi thường gặp: "Driver does not support the required nvenc API version") → giữ nguyên `libx264` như mọi lệnh mẫu bên dưới, không hỏng gì. **KHÔNG tin danh sách `ffmpeg -encoders`** — bản ffmpeg nào cũng liệt kê nvenc kể cả máy không chạy được; chỉ tin test-encode thật ở trên.
    - Input là footage 4K/HEVC: thêm `-hwaccel auto` TRƯỚC `-i` (GPU lo giải mã — thắng lớn nhất ở bước cắt/chuẩn hóa, dùng được cả khi encoder vẫn là libx264).
-   - Số đo thật trên laptop dựng chính (legion, GTX 1650 Ti, đo 2026-07-17): driver NVIDIA 516.94 quá cũ so với yêu cầu ≥610 của ffmpeg 8.x → probe fail, đang chạy libx264; nếu driver được nâng cấp thì probe sẽ tự pass và phiên sau tự dùng NVENC, không cần sửa gì thêm.
+   - Số đo thật trên laptop dựng chính (legion, GTX 1650 Ti, đo 2026-07-17): driver NVIDIA 516.94 quá cũ so với yêu cầu ≥610 của ffmpeg 8.x → probe fail, đang chạy libx264; nếu driver được nâng cấp thì probe sẽ tự pass và phiên sau tự dùng NVENC, không cần sửa gì thêm. Mốc libx264 để so sau này (video test 24s, 3 cảnh + xfade outro + ASS + mix loudnorm): cắt 3 cảnh ~16s, xfade ~11s, burn ASS ~10s, mix final ~11s — tổng ~48s render.
 
 ## 1a. Voiceover ElevenLabs (ƯU TIÊN khi có key — giọng tự nhiên + timestamp từng từ)
 
