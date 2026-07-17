@@ -7,6 +7,27 @@ skills/shorts-editor-rbw/assets/models/*.part
 # (nhac trend co ban quyen khong duoc phat tan tren repo public + repo phai nhe de cai nhanh)
 skills/shorts-editor-rbw/assets/tai-nguyen-chung/
 
+# CHONG TAI DIEN "repo beo phi -> phai viet lai lich su -> moi may phai cai lai plugin":
+# CAM commit file media/nang vao repo — moi thu nang di duong Google Drive (kho tai nguyen).
+# Can them file le (vd 1 anh nho cho README): dung ngoai le co chu dich `!ten-file` ngay duoi day.
+*.mp4
+*.mov
+*.mts
+*.avi
+*.mkv
+*.webm
+*.mp3
+*.wav
+*.aac
+*.flac
+*.zip
+*.rar
+*.7z
+*.bin
+*.pdf
+*.psd
+*.ai
+
 # Python cache
 __pycache__/
 *.pyc

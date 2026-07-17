@@ -50,6 +50,14 @@ Chạy giúp tôi 2 lệnh sau qua Bash rồi báo kết quả: 1) claude plugin
 
 Rồi cài lại như mục "Cách cài" ở trên. Model Whisper + kho tài nguyên nằm ở chỗ bền `~/.claude/roboworld-assets/` nên KHÔNG bị mất khi gỡ-cài-lại — không phải tải lại 1.6GB.
 
+## Quy tắc bảo trì repo (cho người/phiên Claude quản lý — người dùng thường bỏ qua mục này)
+
+Mục tiêu tối thượng: **mọi bản cập nhật, kể cả nâng cấp lớn, máy đồng nghiệp chỉ cần update — KHÔNG BAO GIỜ phải gỡ-cài-lại nữa** (chỉ đạo của Huy 17/07/2026). Update chỉ gãy khi lịch sử git bị viết lại, và lý do duy nhất từng phải viết lại là file nặng lỡ nằm trong lịch sử. Vậy nên 3 luật cứng:
+
+1. **Cấm commit file nặng/media vào repo** — mọi thứ nặng (nhạc, video, ảnh, model, zip) đi đường kho Google Drive. `.gitignore` đã chặn sẵn các đuôi media; máy quản lý có thêm hook `pre-push` tự chặn mọi file ≥5MB.
+2. **Cấm force push / viết lại lịch sử / amend commit đã đẩy** — hook `pre-push` trên máy quản lý tự chặn. Trường hợp cực hiếm bắt buộc: hẹn trước mọi máy qua Zalo, tạm gỡ hook, đẩy, cài lại hook.
+3. **Chỉ commit đích danh file, cấm `git add -A`** — tránh vô tình cuốn file rác/file nặng vào commit.
+
 ## Lưu ý quan trọng
 
 - Đã xác nhận đầu-cuối với người dùng thật khác máy (2026-07-16, Cao Đắc Chiến) — cài qua chính app Claude, không cần mở terminal riêng.
