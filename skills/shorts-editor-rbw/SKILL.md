@@ -38,6 +38,26 @@ Nếu không đọc/sửa được file (hiếm, quyền file bị chặn) thì 
 
 Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ dựng video, mọi bước trên vẫn tự chạy như cũ; lệnh này chỉ để chuẩn bị chủ động ngay sau khi cài + biết trạng thái máy bất cứ lúc nào.
 
+**Lệnh "HỌC KIẾN THỨC MỚI" (khi Sếp/người dùng nói bất kỳ dạng nào: "học cái này", "ghi nhớ luật này", "từ nay làm thế này", "train cho tool", hoặc góp ý sửa sau khi duyệt/xem video)** — đây là cách tool được huấn luyện, làm NGHIÊM TÚC từng bước:
+1. **Tìm đúng file đích** theo bảng (đừng nhét bừa vào SKILL.md):
+   | Loại kiến thức | Ghi vào |
+   |---|---|
+   | Luật chọn cảnh nào lên hình / cảnh nào bỏ | `references/chon-canh-highlight.md` |
+   | Style hình/chữ/nhạc Kiểu 1 (highlight) | `references/style-mau.md` |
+   | Luật voice gốc / sub karaoke / Kiểu 2-3 | `references/style-voice-karaoke.md` |
+   | Style video quảng cáo bán hàng | `references/style-ads-huy.md` |
+   | Câu hỏi đầu vào / checklist thiếu-đủ | `references/chon-kieu-dung.md` |
+   | Caption / hashtag / từ khóa | `references/caption-format.md` |
+   | Thông số robot | `references/robot-products.md` |
+   | Số liệu khách hàng thật (proof point) | `references/case-studies.md` |
+   | Lệnh ffmpeg / kỹ thuật dựng | `references/ffmpeg-recipes.md` |
+   | Quy trình tổng / luật vận hành | `SKILL.md` |
+2. Viết luật **ngắn, kèm lý do + ngày + ai dạy** (vd "— Sếp Huy chỉnh 2026-07-17 sau video X"), đặt đúng mục có sẵn trong file, không phá cấu trúc.
+3. Luật mới **mâu thuẫn luật cũ** → chỉ ra chỗ mâu thuẫn, hỏi người dạy chốt rồi mới ghi đè (ghi cả dòng "thay luật cũ ngày ...").
+4. **Sửa CẢ 2 BẢN trên máy quản trị** (bản sống `~/.claude/skills/shorts-editor-rbw/` + bản repo trong `AI Boss\shorts-editor-rbw-plugin\`) — máy đồng nghiệp không có bản repo thì chỉ sửa được bản trên máy họ + NHẮC họ báo Sếp để đưa vào bản chung.
+5. Trên máy quản trị: commit đích danh file vừa sửa + push + thêm 1 dòng CHANGELOG nếu luật đáng chú ý → báo lại: *"đã khắc luật vào <file>, đã đẩy lên — cả team nhận khi mở lại app"*.
+6. **Không đưa vào repo**: bí mật (API key), đường dẫn riêng của 1 máy, sở thích cá nhân 1 người — những thứ đó chỉ ghi máy cục bộ.
+
 0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)

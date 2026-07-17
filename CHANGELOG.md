@@ -3,6 +3,7 @@
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
 ## 2026-07-17
+- **Lệnh "HỌC" — train kiến thức edit thành quy trình chính thức**: nói "học cái này / ghi nhớ luật này / từ nay làm thế này" → tool tự tìm đúng file kiến thức, khắc luật kèm lý do + ngày, phát hiện mâu thuẫn với luật cũ, đồng bộ 2 bản, đẩy GitHub — cả team nhận khi mở lại app.
 - **Cài đặt = 1 câu dán, tự cài TRỌN BỘ từ đầu** (chỉ đạo Huy sau lần cài máy đồng nghiệp): câu cài mới trỏ Claude đọc `references/cai-dat-lan-dau.md` — báo trước mất khoảng bao lâu, tự cài plugin + FFmpeg + bộ nghe 1.6GB + kho ~180MB (chạy nền) + dò GPU, xong mục nào báo mục đó, chốt bằng bảng trạng thái + tổng thời gian thật.
 - **Lệnh "chuẩn bị máy" / "kiểm tra máy đủ đồ chưa"**: rà lại từng mục bất cứ lúc nào, in bảng trạng thái — hết cảnh cài xong không biết máy mình đủ đồ chưa.
 - **Tự dò + cài giúp driver NVIDIA** (script `cai_driver_nvidia.py`): máy có card NVIDIA nhưng driver cũ → skill hỏi đúng 1 câu đời thường, người dùng OK là tự tải bản chuẩn từ nvidia.com + cài im lặng, chỉ cần bấm Yes 1 lần trên hộp thoại Windows (trôi hộp thoại thì tự bật lại, tối đa 3 lần) — xong render nhanh 2-5 lần. Không bao giờ tự cài khi chưa được OK.
