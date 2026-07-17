@@ -1,6 +1,11 @@
 # Model Whisper qua nang (~1.6GB) - khong dua vao git, xem huong dan tai rieng trong
 # skills/shorts-editor-rbw/assets/models/README.md
 skills/shorts-editor-rbw/assets/models/*.bin
+skills/shorts-editor-rbw/assets/models/*.part
+
+# Kho tai nguyen dung chung da chuyen sang Google Drive (2026-07-17) - CAM dua lai vao git
+# (nhac trend co ban quyen khong duoc phat tan tren repo public + repo phai nhe de cai nhanh)
+skills/shorts-editor-rbw/assets/tai-nguyen-chung/
 
 # Python cache
 __pycache__/

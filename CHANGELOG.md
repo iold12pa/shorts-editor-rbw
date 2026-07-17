@@ -2,6 +2,17 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-07-17
+- **Kho tài nguyên chung chuyển sang Google Drive** (không còn nằm trong gói cài): cài plugin nhẹ hơn hẳn; Sếp thêm nhạc = kéo file vào Drive; script mới `tai_kho_tai_nguyen.py` tải về chỗ bền `~/.claude/roboworld-assets/` và TỰ KIỂM ĐẾM — thiếu file nào báo đích danh file đó. Model Whisper cũng chuyển về chỗ bền này (gỡ-cài-lại plugin không phải tải lại 1.6GB).
+- **Vá 3 lỗi "hỏng im lặng"** trong script phân tích: (a) ffmpeg thiếu filter whisper giờ báo RÕ + index ghi "chưa nghe được" thay vì ghi nhầm "không có thoại"; (b) clip trùng tên giữa 2 thẻ nhớ hết ghi đè sheet của nhau (định danh theo đường dẫn tương đối, index cũ tự migration giữ nguyên phần đã điền); (c) lỗi mạng ElevenLabs báo tiếng Việt dễ hiểu thay vì văng lỗi thô.
+- **Chuẩn -14 LUFS vào thẳng lệnh xuất final + bước nghiệm thu đo thật** (trước đây chỉ nằm trong file style karaoke — video Kiểu 1 dễ giao thiếu chuẩn).
+- **Chọn encoder GPU (NVENC) đầu phiên dựng** bằng test-encode thật — máy có card NVIDIA + driver mới tự render nhanh 2-5 lần, máy khác tự về libx264 như cũ.
+- **Cài lần đầu mượt hơn**: FFmpeg cài xong dùng ngay không bắt đóng/mở lại Claude Code (tự ghi đường dẫn vào config.json); model tải NỀN kiểu `.part` an toàn; câu hỏi khởi động gộp 1 lượt + phân tích footage chạy nền song song.
+- **Đọc footage tiết kiệm**: sàng lọc shortlist từ index trước, chỉ đọc sheet của clip liên quan (folder 58 clip không còn đốt 70-90k token khi chỉ cần 1 video); vá bug chia-0 + bug timeout clip dài >30 phút; số khung trích tự co theo độ dài clip.
+- **Giọng đọc**: George là giọng mặc định chính thức (chạy được gói Free); Kiểu 3 hỏi rõ muốn giọng nam/nữ; cảnh báo lỗi 402 (giọng Voice Library cần gói trả phí) ghi đúng chỗ.
+- **Nhạc**: luật mới — bài thuộc diện nhạc trend/thương mại thì nhắc đúng 1 câu rủi ro bản quyền tại điểm dừng duyệt kịch bản rồi làm theo quyết định người dùng; thêm `elevenlabs_music.py` (sinh nhạc không lời đo ni theo video — option mở rộng, cần gói ElevenLabs trả phí).
+- **Sửa tài liệu lệch thực tế**: bảng hashtag thêm BellaBot + SH1, sửa tag Phantas sai; template kịch bản viết lại theo 3 kiểu dựng (Kiểu 2 có mục "take nghi vấn cần nghe kiểm"); "3 điểm dừng" → đúng 2 điểm dừng; README viết lại đường cài 1-câu-dán + key ElevenLabs dùng chung gửi Zalo.
+
 ## 2026-07-16
 - **Tự động hoá cài đặt hoàn toàn**: skill tự cài FFmpeg (winget), tự tải model Whisper (~1.6GB), tự bật auto-update cho marketplace ngay lần đầu được gọi — người dùng không phải cài tay bất kỳ thứ gì ngoài 2 lệnh cài plugin ban đầu.
 - **Hỏi phiên bản = kiểm tra GitHub thật**: khi người dùng hỏi "đang bản nào / có bản mới không", skill tự chạy lệnh cập nhật rồi báo số bản thực tế, không trả lời suông theo bản đang nằm trên máy.

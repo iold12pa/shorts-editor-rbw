@@ -13,6 +13,14 @@
 3. File trung gian đặt trong `temp\`, đặt tên có số thứ tự (`s01.mp4`, `s02.mp4`...) đúng thứ tự kịch bản.
 4. Mọi file trung gian encode cùng một chuẩn (1080x1920, 30fps, h264, yuv420p, aac 48kHz) — concat mới không lỗi.
 5. File text cho ffmpeg (concat list, .ass, .srt) ghi bằng **UTF-8** — PowerShell `Out-File` mặc định UTF-16 sẽ hỏng; luôn dùng `-Encoding utf8` hoặc viết bằng tool Write.
+6. **Chọn encoder cho CẢ PHIÊN (GPU nếu có)** — chạy đúng 1 lần ở đầu phiên dựng, rồi dùng thống nhất cho mọi lệnh (quy tắc 0.4 cần các segment trung gian cùng chuẩn để `concat -c copy`):
+   ```powershell
+   ffmpeg -hide_banner -loglevel error -f lavfi -i color=c=black:s=256x256:d=1 -c:v h264_nvenc -f null -; $LASTEXITCODE
+   ```
+   - Exit `0` → máy có card NVIDIA dùng được: file trung gian (`temp\sNN.mp4`, ghép, xfade) dùng `-c:v h264_nvenc -preset p5 -rc vbr -cq 19 -b:v 0 -pix_fmt yuv420p` thay cho `libx264 -crf 18`; file final giữ `libx264 -crf 20` nếu muốn chắc chất lượng, hoặc `h264_nvenc -cq 18` (đủ cho social 1080x1920). **NVENC dùng `-cq`, KHÔNG có `-crf` — đừng trộn 2 cờ.**
+   - Exit khác 0 (máy không có card NVIDIA, hoặc driver cũ — lỗi thường gặp: "Driver does not support the required nvenc API version") → giữ nguyên `libx264` như mọi lệnh mẫu bên dưới, không hỏng gì. **KHÔNG tin danh sách `ffmpeg -encoders`** — bản ffmpeg nào cũng liệt kê nvenc kể cả máy không chạy được; chỉ tin test-encode thật ở trên.
+   - Input là footage 4K/HEVC: thêm `-hwaccel auto` TRƯỚC `-i` (GPU lo giải mã — thắng lớn nhất ở bước cắt/chuẩn hóa, dùng được cả khi encoder vẫn là libx264).
+   - Số đo thật trên laptop dựng chính (legion, GTX 1650 Ti, đo 2026-07-17): driver NVIDIA 516.94 quá cũ so với yêu cầu ≥610 của ffmpeg 8.x → probe fail, đang chạy libx264; nếu driver được nâng cấp thì probe sẽ tự pass và phiên sau tự dùng NVENC, không cần sửa gì thêm.
 
 ## 1a. Voiceover ElevenLabs (ƯU TIÊN khi có key — giọng tự nhiên + timestamp từng từ)
 
@@ -23,7 +31,7 @@ python "<skill-dir>\scripts\elevenlabs_tts.py" voice\video-1-script.txt voice\vi
 
 - Key: file `~/.claude/abs6-secrets.env` dòng `ELEVENLABS_API_KEY=sk_...`. Script tự đọc, không truyền key qua tham số.
 - Lời đọc ghi vào file .txt UTF-8 bằng tool Write (giống quy tắc edge-tts).
-- Đổi giọng: `--voice <voice_id>` (mặc định George nam trầm, model multilingual v2 đọc được tiếng Việt; chọn giọng khác ở elevenlabs.io/app/voice-library).
+- Đổi giọng: `--voice <voice_id>` (mặc định George nam trầm, model multilingual v2 đọc được tiếng Việt; chọn giọng khác ở elevenlabs.io/app/voice-library). **Cảnh báo lỗi 402**: giọng lấy từ Voice Library (như 2 giọng Việt Sếp từng chọn) bị chặn ở gói Free — chỉ giọng premade (George, Bella...) chạy được miễn phí. Gặp 402 với giọng được chỉ định đích danh → DỪNG BÁO, không tự thay giọng (luật trong SKILL.md).
 - Output: mp3 + `.srt` (cụm 6 từ, sub thường) + `-words.json` (timing từng từ → làm sub karaoke ASS: mỗi từ 1 Dialogue event, hoặc dùng `\k` tags).
 - Script lỗi (chưa có key/hết quota/mất mạng) → nó exit 1 kèm lý do → chuyển sang edge-tts mục 1 bên dưới, KHÔNG dừng cả quy trình.
 - Free tier ~10k credits/tháng (~10 phút audio) — voiceover shorts ~35s tốn ít, nhưng đừng gọi thử nhiều lần vô ích; test bằng câu ngắn.
@@ -183,7 +191,7 @@ Logo Roboworld bản TRẮNG, **giữa-trên** (học từ video mẫu): rộng 
 
 ```powershell
 ffmpeg -y -i temp\ghep_sub.mp4 -i logo.png -stream_loop -1 -i nhac.mp3 `
-  -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50[v];[0:a]volume=0.25[orig];[2:a]volume=0.85[bgm];[orig][bgm]amix=inputs=2:duration=first:normalize=0[a]" `
+  -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50[v];[0:a]volume=0.25[orig];[2:a]volume=0.85[bgm];[orig][bgm]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]" `
   -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p `
   -c:a aac -b:a 192k -shortest output\video-1-ten-video.mp4
 ```
@@ -199,11 +207,13 @@ Tùy biến:
 ```powershell
 ffmpeg -y -i temp\full_video_with_outro_sub.mp4 -i logo.png -i nhac.mp3 `
   -i "sfx1.mp3" -i "sfx2.mp3" -i "outro dọc.mp4" `
-  -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50:enable='lt(t,<offset>)'[v];[2:a]volume=0.5,afade=t=out:st=<offset-0.6>:d=0.6[bgm];[3:a]volume=0.9,adelay=<t1_ms>|<t1_ms>[a1];[4:a]volume=0.85,adelay=<t2_ms>|<t2_ms>[a2];[5:a]adelay=<offset_ms>|<offset_ms>[a3];[bgm][a1][a2][a3]amix=inputs=4:duration=longest:normalize=0[a]" `
+  -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50:enable='lt(t,<offset>)'[v];[2:a]volume=0.5,afade=t=out:st=<offset-0.6>:d=0.6[bgm];[3:a]volume=0.9,adelay=<t1_ms>|<t1_ms>[a1];[4:a]volume=0.85,adelay=<t2_ms>|<t2_ms>[a2];[5:a]adelay=<offset_ms>|<offset_ms>[a3];[bgm][a1][a2][a3]amix=inputs=4:duration=longest:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]" `
   -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest output\video-final.mp4
 ```
 
 Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào làm nguồn audio — chỉ cần `[5:a]`, không cần `[5:v]` vì phần hình outro đã ghép sẵn vào input 0 từ bước 4d. `amix duration=longest` để không cắt cụt track outro; `-shortest` ở lệnh xuất cuối mới là thứ thật sự khớp độ dài với video.
+
+**Chuỗi `loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000` ở cuối filter audio là BẮT BUỘC trong lệnh xuất final** (chuẩn giao hàng -14 LUFS của Sếp — áp cho MỌI kiểu dựng, không riêng video có voice). `aresample=48000` đi kèm vì loudnorm tự đổi sample rate lên 192kHz. Video có voiceover: vẫn loudnorm cả mix như trên, RIÊNG track giọng MC thu nhiều khoảng cách mic khác nhau thì loudnorm I=-16 trên track voice ghép TRƯỚC khi mix (luật trong style-voice-karaoke.md).
 - **Có voiceover** (khi kịch bản được duyệt có lời dẫn): thêm input `voice\video-N.mp3`, voiceover volume 1.0, nhạc nền hạ còn 0.15-0.2, `amix=inputs=3`.
 - Nhạc ngắn hơn video: `-stream_loop -1` đã lo; nhạc dài hơn: `-shortest` đã lo.
 
@@ -215,3 +225,11 @@ ffmpeg -y -i output\video-1-ten-video.mp4 -vf "fps=1/8,scale=480:-2" -q:v 5 temp
 ```
 
 Read các file `temp\check_*.jpg` và kiểm: hook hiện đúng 3s đầu, sub không tràn mép/không bị logo đè, hình không méo, không có frame đen. Nghe thử không được thì tin timing: tổng thời lượng video phải ≥ thời lượng voiceover.
+
+**Đo âm lượng giao hàng (bắt buộc, chuẩn -14 LUFS ±1):**
+
+```powershell
+ffmpeg -hide_banner -i output\video-1-ten-video.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -
+```
+
+Đọc dòng **`Input Integrated:`** trong kết quả — đó là âm lượng THẬT của file (các dòng "Output..." chỉ là mô phỏng nếu chạy loudnorm thêm lần nữa, bỏ qua). Đạt: -15 đến -13 LUFS. Lệch hơn → quay lại lệnh xuất final kiểm tra đã có chuỗi loudnorm chưa, mix lại. Ghi con số đo được vào báo cáo bàn giao.

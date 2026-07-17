@@ -36,6 +36,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Source video/clip để ghép | **Bắt buộc** | "Cho tôi xin các video/clip muốn ghép lại" |
 | Voice-over: đã có file sẵn hay chưa | **Bắt buộc phải hỏi rõ, đây là lỗi hay gặp nhất** | "Bạn đã có sẵn file giọng đọc chưa? Nếu chưa, tôi viết kịch bản cho bạn duyệt trước, rồi tạo giọng đọc (AI hoặc bạn tự thu đều được)" |
 | Nếu ĐÃ có voice-over: khớp với video nào | **Bắt buộc** | "File giọng đọc này đi cùng (những) video nào? Có sẵn lời thoại/kịch bản để tôi khớp cảnh theo không?" |
+| Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ? (mặc định tôi dùng giọng nam George — tự nhiên, đọc tiếng Việt tốt)" |
 | Bối cảnh | Nên có | như Kiểu 1/2 |
 | Style cụ thể | Xem `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu kịch bản dạng quảng cáo bán hàng: nêu vấn đề → giới thiệu → thông số → CTA) |
 

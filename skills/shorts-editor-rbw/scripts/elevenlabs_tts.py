@@ -95,7 +95,17 @@ def main():
             resp = json.loads(r.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", "replace")[:300]
+        if e.code == 402:
+            sys.exit("ElevenLabs loi HTTP 402 (giong nay can goi TRA PHI — giong Voice Library"
+                     " bi chan o goi Free): %s\n-> Giong duoc chi dinh dich danh thi DUNG BAO,"
+                     " khong tu thay giong khac (luat SKILL.md)." % body)
         sys.exit("ElevenLabs loi HTTP %s: %s\n-> Kiem tra key/quota. Skill co the fallback edge-tts." % (e.code, body))
+    except urllib.error.URLError as e:
+        sys.exit("ElevenLabs KHONG GOI DUOC (loi mang/DNS/proxy): %s\n"
+                 "-> Kiem tra mang roi chay lai; van loi thi fallback edge-tts theo luat SKILL.md." % e.reason)
+    except (TimeoutError, OSError) as e:
+        sys.exit("ElevenLabs QUA GIO/dut ket noi giua chung: %s\n"
+                 "-> Thu chay lai 1 lan; van loi thi fallback edge-tts theo luat SKILL.md." % e)
 
     with open(mp3_path, "wb") as f:
         f.write(base64.b64decode(resp["audio_base64"]))

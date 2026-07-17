@@ -1,36 +1,70 @@
-# Mẫu kịch bản shorts Roboworld
+# Mẫu kịch bản shorts Roboworld — theo 3 KIỂU DỰNG
 
-Mỗi ý tưởng video → 1 file `kichban/video-N-<slug>.md` theo đúng cấu trúc này. Kịch bản là hợp đồng giữa phần "viết" và phần "dựng": mỗi dòng bảng phân cảnh phải đủ thông tin để dựng mà không cần mở lại footage.
+Mỗi ý tưởng video → 1 file `kichban/video-N-<slug>.md`. Kịch bản là hợp đồng giữa phần "viết" và phần "dựng": mỗi dòng bảng phân cảnh phải đủ thông tin để dựng mà không cần mở lại footage. Dùng đúng khối theo KIỂU đã chọn ở bước 0 — đừng bắt Kiểu 1 (không thoại) phải có mục "kịch bản voiceover".
+
+## Khung chung (mọi kiểu đều có)
 
 ```markdown
-# Video N — <Tên video>
+# Video N — <Tên video>  (Kiểu <1/2/3>)
 
-## Ý tưởng gốc (lời Sếp)
-<chép nguyên văn ý tưởng Sếp đưa, hoặc ghi "skill tự đề xuất" + lý do>
+## Ý tưởng gốc (lời người dùng)
+<chép nguyên văn ý tưởng được đưa, hoặc ghi "skill tự đề xuất" + lý do>
 
 ## Thông số
 - Thời lượng mục tiêu: ~<X>s
-- Giọng đọc: ElevenLabs <voice ID, ưu tiên số 1 — xem SKILL.md> — hoặc fallback edge-tts: vi-VN-NamMinhNeural / vi-VN-HoaiMyNeural (chỉ dùng khi ElevenLabs lỗi/hết quota)
-- Nhạc nền: <file hoặc "không">
+- Nhạc nền: <file trong kho / "giữ âm gốc" / "không">
 - Đối tượng xem: <chủ nhà hàng / chủ nhà máy / ...>
 
 ## Hook (0-3s)
 - Chữ trên màn hình: "<HOOK NGẮN, GÂY SỐC HOẶC GÂY TÒ MÒ>"
 - Cảnh nền: <clip + timecode — chọn cảnh MẠNH nhất của cả buổi quay>
 
-## Kịch bản voiceover (đọc liền mạch)
-<toàn bộ lời đọc, viết như nói chuyện, câu ngắn. Đây là phần đưa vào edge-tts.>
-
 ## Bảng phân cảnh
-| # | Lời đọc (câu) | Clip nguồn | Timecode in-out | Xử lý |
+| # | Nội dung (text đè / câu thoại) | Clip nguồn | Timecode in-out | Xử lý |
 |---|---|---|---|---|
-| 1 | <câu 1> | clip03.mp4 | 01:23.5 - 01:27.0 | crop giữa |
-| 2 | <câu 2> | clip07.mp4 | 00:05.0 - 00:09.0 | blur-pad, giữ âm gốc 25% |
-| 3 | ... | ... | ... | tăng tốc 2x |
+| 1 | <...> | clip03.mp4 | 01:23.5 - 01:27.0 | crop giữa |
+| 2 | <...> | clip07.mp4 | 00:05.0 - 00:09.0 | blur-pad, giữ âm gốc 25% |
 
 ## CTA (câu chốt)
 <câu kết + thông tin Roboworld — website roboworld.com.vn>
 ```
+
+## Khối bổ sung theo kiểu
+
+### Kiểu 1 — Highlight + chữ + nhạc (KHÔNG thoại)
+- Không có mục voiceover. Cột "Nội dung" trong bảng phân cảnh = dòng text đè (IN HOA, 5-9 từ).
+- Ghi rõ: nhạc nào (bài trong kho / âm gốc), SFX dự kiến ở khoảnh khắc nào (nếu có).
+
+### Kiểu 2 — Dựng theo lời thoại có sẵn (voice gốc MC)
+Thêm 2 mục BẮT BUỘC:
+
+```markdown
+## Các đoạn thoại dùng (từ transcript index.json)
+| # | Clip | Câu thoại | Mốc Whisper (chỉ để TÌM) | Ghi chú |
+|---|---|---|---|---|
+
+## Take nghi vấn cần NGƯỜI DÙNG NGHE KIỂM trước khi dựng
+<liệt kê các câu: chỉ có 1 take (nhất là voice-off), có từ chèn lặp ("à à", "tiếp tục lại..."),
+hoặc transcript sạch nhưng chưa chắc take sạch — kèm clip + mốc thời gian để nghe đúng đoạn.
+KHÔNG có đoạn nghi vấn nào thì ghi rõ "không có". Đây là 1 phần của điểm dừng duyệt kịch bản.>
+```
+
+- Luật cắt: mốc Whisper chỉ để tìm câu — trước khi cắt PHẢI đo lại bằng `silencedetect=noise=-27dB:d=0.3` trên đúng vùng đó (chi tiết: style-voice-karaoke.md, mục Quy tắc VOICE GỐC MC).
+
+### Kiểu 3 — Ghép cảnh + voice-over mới
+Thêm mục:
+
+```markdown
+## Kịch bản voiceover (đọc liền mạch)
+<toàn bộ lời đọc, viết như nói chuyện, câu ngắn — đưa vào ElevenLabs/edge-tts>
+
+## Giọng đọc
+- ElevenLabs: George (JBFqnCBsd6RMkjVDRZzb — giọng nam mặc định, chạy được gói Free);
+  người dùng muốn giọng khác → ghi voice ID được chọn ở đây
+- Fallback edge-tts: vi-VN-NamMinhNeural (nam) / vi-VN-HoaiMyNeural (nữ) — chỉ dùng khi ElevenLabs lỗi/hết quota
+```
+
+- Cột "Nội dung" trong bảng phân cảnh = câu voiceover tương ứng cảnh đó.
 
 ## Nguyên tắc viết cho khách của Roboworld
 
