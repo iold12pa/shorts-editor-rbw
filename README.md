@@ -6,27 +6,21 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
 
 **Điều kiện trước khi bắt đầu**: đã cài Claude Code và có gói subscription (Sếp là người cấp/hướng dẫn nếu chưa có). Repo này ở chế độ **công khai (public)** — không cần tài khoản GitHub, không cần đăng nhập git.
 
-**Cách cài — dán đúng 1 câu này vào app Claude (mục Code) rồi Enter:**
+**Cách cài — dán đúng 1 câu này vào app Claude (mục Code) rồi Enter. Cài TRỌN BỘ tự động (~10-20 phút tùy mạng, Claude tự báo tiến độ + thời gian từng mục):**
 
 ```
-Chạy giúp tôi 2 lệnh sau qua Bash rồi báo kết quả: 1) claude plugin marketplace add https://github.com/iold12pa/shorts-editor-rbw 2) claude plugin install shorts-editor-rbw@roboworld-tools
+Cài bộ công cụ dựng video Roboworld cho tôi: chạy qua Bash 2 lệnh 1) claude plugin marketplace add https://github.com/iold12pa/shorts-editor-rbw 2) claude plugin install shorts-editor-rbw@roboworld-tools — xong ĐỌC file ~/.claude/plugins/marketplaces/roboworld-tools/skills/shorts-editor-rbw/references/cai-dat-lan-dau.md và làm đúng theo file đó: cài tự động trọn bộ, báo tôi tiến độ và tổng thời gian ước tính.
 ```
+
+Claude sẽ tự cài đủ: plugin → FFmpeg (nếu thiếu) → bộ nghe giọng nói 1.6GB (tải ngầm) → kho logo/nhạc công ty ~180MB (tải ngầm) → dò card đồ họa (có card NVIDIA thì hỏi bạn 1 câu để tăng tốc render) → chốt bằng **bảng trạng thái từng mục** + báo tổng thời gian thật. Xong đóng/mở lại app 1 lần là dựng video được ngay.
 
 **LƯU Ý**: đừng gõ trực tiếp `/plugin marketplace add ...` vào app Claude — cú pháp `/plugin` chỉ chạy trong cửa sổ terminal, gõ vào app sẽ báo "isn't available in this environment" (đã có người gặp thật). Cứ dán nguyên câu trên là Claude tự chạy đúng.
 
-**Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Ngay lần đầu nhờ Claude dựng video, skill tự lo nốt mọi thứ còn lại (xem "Lần đầu dựng video" bên dưới).
+**Muốn kiểm tra máy đủ đồ chưa (bất cứ lúc nào về sau)**: nhắn *"kiểm tra máy đủ đồ chưa"* hoặc *"chuẩn bị công cụ dựng video"* — Claude rà lại từng mục và in bảng trạng thái.
 
-**Khuyên làm luôn sau khi cài** (không bắt buộc): đóng/mở lại app Claude, rồi nhắn:
+## Lần đầu dựng video — lưới an toàn (nếu lúc cài có mục nào chưa xong)
 
-```
-chuẩn bị công cụ dựng video cho máy này
-```
-
-Claude sẽ báo trước những gì sắp tải (kho logo/nhạc của công ty ~180MB + bộ nghe giọng nói ~1.6GB — chạy nền, bạn không phải chờ), dò card đồ họa, rồi chốt bằng **bảng trạng thái từng mục** để bạn biết máy đủ đồ chưa. Bỏ qua bước này cũng được — lần đầu nhờ dựng video nó tự làm y hệt, chỉ là bạn sẽ phải đợi lâu hơn ở lần đó.
-
-## Lần đầu dựng video — skill TỰ làm, bạn chỉ chờ vài phút
-
-Lần đầu tiên bạn nói "dựng video từ [folder]...", skill tự động:
+Từ bản 17/07, mọi thứ dưới đây được cài NGAY lúc chạy câu cài đặt ở trên. Mục này là lưới an toàn: nếu máy nào cài kiểu cũ hoặc lúc cài lỡ thiếu mục nào, thì lần đầu tiên bạn nói "dựng video từ [folder]...", skill vẫn tự động:
 1. **Tự cài FFmpeg** (bộ xử lý video, qua kho ứng dụng chính thức của Windows) nếu máy chưa có — không cần đóng/mở lại gì cả, skill tự tìm đường dẫn vừa cài và dùng ngay.
 2. **Tự tải "bộ nghe giọng nói"** (model Whisper ~1.6GB — để Claude nghe được lời thoại tiếng Việt trong video) — tải nền, bạn cứ trả lời các câu hỏi dựng video song song. Lưu ở chỗ bền `~/.claude/roboworld-assets/` — sau này gỡ/cài lại plugin KHÔNG phải tải lại.
 3. **Tự tải kho tài nguyên chung** (logo, outro, nhạc, hiệu ứng âm thanh, ảnh sản phẩm — từ Google Drive của Sếp) về cùng chỗ bền đó. Script tải tự kiểm đếm từng file, thiếu file nào báo đích danh file đó.
@@ -48,15 +42,13 @@ Lần đầu tiên bạn nói "dựng video từ [folder]...", skill tự độn
 
 Hỏi Claude bất kỳ dạng nào: "đang bản nào", "có bản mới không" — skill tự kiểm tra GitHub thật, tự cập nhật nếu có bản mới rồi báo số bản cụ thể (quy tắc nằm trong SKILL.md, không trả lời suông).
 
-## Cài lỗi giữa chừng? Gỡ sạch rồi cài lại
-
-Dán câu này vào app Claude:
+## Cài lỗi giữa chừng / cần gỡ-cài-lại? Dán 1 câu này
 
 ```
-Chạy giúp tôi 2 lệnh sau qua Bash rồi báo kết quả: 1) claude plugin uninstall shorts-editor-rbw@roboworld-tools 2) claude plugin marketplace remove roboworld-tools
+Cài lại bộ công cụ dựng video Roboworld cho tôi: chạy qua Bash 4 lệnh 1) claude plugin uninstall shorts-editor-rbw@roboworld-tools 2) claude plugin marketplace remove roboworld-tools 3) claude plugin marketplace add https://github.com/iold12pa/shorts-editor-rbw 4) claude plugin install shorts-editor-rbw@roboworld-tools — xong ĐỌC file ~/.claude/plugins/marketplaces/roboworld-tools/skills/shorts-editor-rbw/references/cai-dat-lan-dau.md và làm đúng theo file đó: cài tự động trọn bộ, báo tôi tiến độ và tổng thời gian ước tính.
 ```
 
-Rồi cài lại như mục "Cách cài" ở trên. Model Whisper + kho tài nguyên nằm ở chỗ bền `~/.claude/roboworld-assets/` nên KHÔNG bị mất khi gỡ-cài-lại — không phải tải lại 1.6GB.
+Model Whisper + kho tài nguyên nằm ở chỗ bền `~/.claude/roboworld-assets/` nên KHÔNG bị mất khi gỡ-cài-lại — kịch bản cài sẽ thấy "có sẵn" và bỏ qua, chỉ mất ~1 phút.
 
 ## Quy tắc bảo trì repo (cho người/phiên Claude quản lý — người dùng thường bỏ qua mục này)
 
