@@ -16,6 +16,14 @@ Chạy giúp tôi 2 lệnh sau qua Bash rồi báo kết quả: 1) claude plugin
 
 **Cài xong là dùng được luôn** — không cần chọn thư mục hay cấu hình gì thêm. Ngay lần đầu nhờ Claude dựng video, skill tự lo nốt mọi thứ còn lại (xem "Lần đầu dựng video" bên dưới).
 
+**Khuyên làm luôn sau khi cài** (không bắt buộc): đóng/mở lại app Claude, rồi nhắn:
+
+```
+chuẩn bị công cụ dựng video cho máy này
+```
+
+Claude sẽ báo trước những gì sắp tải (kho logo/nhạc của công ty ~180MB + bộ nghe giọng nói ~1.6GB — chạy nền, bạn không phải chờ), dò card đồ họa, rồi chốt bằng **bảng trạng thái từng mục** để bạn biết máy đủ đồ chưa. Bỏ qua bước này cũng được — lần đầu nhờ dựng video nó tự làm y hệt, chỉ là bạn sẽ phải đợi lâu hơn ở lần đó.
+
 ## Lần đầu dựng video — skill TỰ làm, bạn chỉ chờ vài phút
 
 Lần đầu tiên bạn nói "dựng video từ [folder]...", skill tự động:

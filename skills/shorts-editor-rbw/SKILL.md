@@ -23,6 +23,21 @@ Nếu không đọc/sửa được file (hiếm, quyền file bị chặn) thì 
 
 **Nhân tiện mỗi lần kiểm phiên bản: dọn cache bản cũ** — thư mục `~/.claude/plugins/cache/roboworld-tools/shorts-editor-rbw/` chứa mỗi bản đã cài 1 folder con (tên = mã bản); các bản CŨ (khác mã bản đang dùng theo `claude plugin list`) là rác chiếm chỗ vô ích (máy cài từ thời kho tài nguyên còn trong repo có thể đọng hàng trăm MB) — xóa hết folder bản cũ, GIỮ đúng folder bản đang dùng, báo 1 câu đã giải phóng bao nhiêu.
 
+**Lệnh "CHUẨN BỊ MÁY" (khi người dùng nói bất kỳ dạng nào: "chuẩn bị máy", "chuẩn bị công cụ dựng video", "setup công cụ", "cài đặt ban đầu", "kiểm tra máy đủ đồ chưa"...)**: chạy TOÀN BỘ phần chuẩn bị của mục "Môi trường" ngay lập tức, không đợi tới lúc dựng video đầu tiên. Trình tự bắt buộc:
+1. **BÁO TRƯỚC danh sách sắp làm + dung lượng** (đừng âm thầm): cài FFmpeg nếu thiếu; tải bộ nghe giọng nói ~1.6GB (nền); tải kho logo/nhạc/SFX/ảnh của công ty ~180MB từ Google Drive (nền); dò card đồ họa NVIDIA (nếu cần nâng driver thì hỏi — xem mục Môi trường); kiểm key giọng đọc AI.
+2. Việc nặng chạy NỀN, xong mục nào báo mục đó.
+3. Chốt bằng **bảng trạng thái máy** để người dùng nhìn 1 phát biết đủ/thiếu:
+   | Hạng mục | Trạng thái |
+   |---|---|
+   | FFmpeg | ✅ bản x.x / ❌ đang cài |
+   | Bộ nghe giọng nói (Whisper 1.6GB) | ✅ có sẵn / ⏳ đang tải nền / ❌ lỗi + lý do |
+   | Kho tài nguyên công ty | ✅ đủ x/x file theo manifest / ⏳ đang tải / ❌ thiếu (liệt kê) |
+   | Render GPU (NVENC) | ✅ chạy tốt / ⚙️ cần nâng driver (đã hỏi) / ➖ máy không có card |
+   | Giọng đọc AI (ElevenLabs) | ✅ có key / ➖ chưa có key (dùng giọng dự phòng được) |
+4. Kết bằng 1 câu rõ ràng: "Máy đã sẵn sàng dựng video" hoặc "Còn đang tải X (nền) — dựng Kiểu 1 được ngay, Kiểu 2/3 chờ tải xong".
+
+Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ dựng video, mọi bước trên vẫn tự chạy như cũ; lệnh này chỉ để chuẩn bị chủ động ngay sau khi cài + biết trạng thái máy bất cứ lúc nào.
+
 0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
