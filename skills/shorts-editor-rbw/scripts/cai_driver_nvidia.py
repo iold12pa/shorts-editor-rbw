@@ -150,6 +150,33 @@ def installer_running():
     return "setup.exe" in (r.stdout or "")
 
 
+# 0xE4000020 = "NVIDIA Installer cannot continue: can KHOI DONG LAI may truoc" (may treo
+# thay doi he thong cho reboot — vd Windows Update). Python/PowerShell co the tra dang
+# so am hoac duong cua cung DWORD nay -> liet ke ca 2.
+REBOOT_CODES = {-469762016, 3825205280}
+UAC_DECLINED = 999999
+
+
+def launch_elevated_wait(dest):
+    """Chay installer quyen admin, DOI xong, tra exit code (UAC_DECLINED neu bi tu choi/troi)."""
+    ps = ("$ErrorActionPreference='Stop'; try { $p = Start-Process -FilePath '%s'"
+          " -ArgumentList '-s','-noreboot','Display.Driver' -Verb RunAs -Wait -PassThru;"
+          " exit $p.ExitCode } catch { exit %d }") % (dest, UAC_DECLINED)
+    r = run(["powershell", "-NoProfile", "-Command", ps], timeout=1800)
+    return r.returncode
+
+
+def register_runonce(dest):
+    """Dang ky driver TU CAI 1 lan ngay sau lan dang nhap toi (sau khi nguoi dung restart)."""
+    home_copy = os.path.join(os.path.expanduser("~"), os.path.basename(dest))
+    if os.path.abspath(home_copy).lower() != os.path.abspath(dest).lower():
+        import shutil
+        shutil.copy2(dest, home_copy)
+    run(["reg", "add", r"HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce",
+         "/v", "RBW-NVIDIA-Driver", "/t", "REG_SZ",
+         "/d", '"%s" -s -noreboot Display.Driver' % home_copy, "/f"])
+
+
 def current_driver():
     try:
         r = run(["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"])
@@ -188,27 +215,24 @@ def main():
         download(url, dest)
     print("Tai xong. Bat dau cai IM LANG (chi Display Driver, khong app phu).")
 
+    code = None
     for attempt in range(1, 4):
-        print("\n>>> HOP THOAI XANH CUA WINDOWS SAP HIEN — NGUOI DUNG BAM 'YES' GIUP NHE! (lan %d/3)" % attempt,
-              flush=True)
-        run(["powershell", "-NoProfile", "-Command",
-             "Start-Process -FilePath '%s' -ArgumentList '-s','-noreboot','Display.Driver' -Verb RunAs" % dest])
-        deadline = time.time() + 240
-        while time.time() < deadline:
-            time.sleep(20)
-            if current_driver() == new_ver:
-                break
-            if not installer_running():
-                # chua thay installer chay -> co the hop thoai bi troi; cho them chut roi thu lai
-                pass
-        if current_driver() == new_ver:
+        print("\n>>> Neu Windows hien HOP THOAI XANH hoi quyen — BAM 'YES' giup nhe!"
+              " (nhieu may se tu chay luon, khong hoi gi) — lan %d/3" % attempt, flush=True)
+        code = launch_elevated_wait(dest)
+        if current_driver() == new_ver or code == 0:
             break
-        if installer_running():
-            # dang cai that -> cho them toi 10 phut
-            deadline2 = time.time() + 600
-            while time.time() < deadline2 and current_driver() != new_ver:
-                time.sleep(20)
-            break
+        if code in REBOOT_CODES:
+            # May dang treo thay doi he thong cho khoi dong lai -> installer tu choi chay.
+            # Gan RunOnce: driver TU CAI ngay sau lan dang nhap toi, nguoi dung khong phai lam gi.
+            register_runonce(dest)
+            print("\nMAY CAN KHOI DONG LAI TRUOC (Windows dang treo thay doi he thong cho reboot).")
+            print("-> DA GAN SAN: chi can KHOI DONG LAI MAY, dang nhap xong driver TU CAI"
+                  " (~2-5 phut, man hinh co the chop den — binh thuong). Khong phai bam gi them.")
+            sys.exit(6)
+        if code == UAC_DECLINED:
+            continue  # hop thoai bi troi/tu choi -> thu lai
+        break  # ma loi khac -> khong lap vo ich
 
     final = current_driver()
     if final == new_ver:
@@ -216,8 +240,12 @@ def main():
         print("\nXONG: driver %s da vao. NVENC: %s" % (final, "CHAY TOT — tu phien dung sau render nhanh 2-5 lan" if ok
                                                        else "van chua bat duoc (thu khoi dong lai may roi probe lai)"))
         sys.exit(0)
-    print("\nCHUA CAI DUOC (driver van %s) — kha nang hop thoai Yes chua duoc bam du 3 lan."
-          " Chay lai script nay khi nguoi dung san sang, hoac mo file %s cai tay." % (final or "?", dest))
+    if code == UAC_DECLINED:
+        print("\nCHUA CAI DUOC — hop thoai xin quyen chua duoc bam Yes du 3 lan."
+              " Chay lai script nay khi nguoi dung san sang, hoac mo file %s cai tay." % dest)
+    else:
+        print("\nCHUA CAI DUOC — installer tra ma loi %s. Cach chac an nhat: khoi dong lai may"
+              " roi chay lai script nay; van loi thi mo file %s cai tay (bam Next mac dinh)." % (code, dest))
     sys.exit(5)
 
 
