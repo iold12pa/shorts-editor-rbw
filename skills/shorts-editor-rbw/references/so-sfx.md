@@ -61,6 +61,17 @@
 | Khoảnh khắc "phép màu"/twinkle | `Magic Chime` (9.8s — atrim từng khúc) | lấy 1-1.5s, đừng dùng cả file |
 | Pop nhẹ vật thể xuất hiện | `04 - Pop` (0.4s) | vật thể THẬT xuất hiện (ảnh SP bay vào), không phải text |
 
+## NGUYÊN TẮC VÀNG từ giáo lý sound design (tra cứu nguồn ngành 17/07/2026 — bồi thêm cho cây quyết định)
+
+1. **"Ngũ hành" SFX chuẩn ngành** khớp với kho mình: Whoosh (chuyển động/reveal) — Hit (chốt cú cắt mạnh/title slam) — Riser (dẫn lên đỉnh) — Ambience (nền không gian) — Braaam (trailer đại cảnh, ít hợp shorts Roboworld).
+2. **Đỉnh riser phải TRÙNG CHÍNH XÁC mốc reveal** — đặt riser sao cho điểm cao trào rơi đúng frame cắt/hiện thẻ, không phải "bắt đầu riser tại mốc".
+3. **IM LẶNG LÀ VŨ KHÍ**: hạ nhạc/im ~0.3-0.5s NGAY TRƯỚC cú hit → hit đấm mạnh gấp bội. Đừng lấp đầy mọi giây bằng âm thanh.
+4. **Layering tạo chất riêng**: whoosh trơn + 1 lớp mỏng đặc trưng bên dưới. Gợi ý chữ ký Roboworld: whoosh + beep robot rất nhẹ = "whoosh robot" nhận diện thương hiệu (chờ Sếp duyệt thử).
+5. **Giọng người là VUA**: SFX không bao giờ được đè lên từ quan trọng MC đang nói — đặt SFX vào khoảng nghỉ giữa câu, hoặc hạ volume SFX khi trùng thoại (ducking áp cho cả SFX, không riêng nhạc).
+6. **Sai số cho phép tính bằng chục mili-giây**: transient (đầu tiếng) phải khớp frame hành động — khớp luật đo-frame sẵn có của mình.
+
+Nguồn: SFX Engine — Ultimate Guide to Sound Effects for Video Editing; Krotos — What is sound design; Editors Keys — Ultimate Guide to Sound Design.
+
 ## Nguồn bổ sung khi kho thiếu (xếp theo độ ưu tiên)
 
 1. **Kho 38 file hiện tại** — nguồn chính. LƯU Ý license: phần lớn gốc YouTube Audio Library — về lý giấy phép chỉ chắc chắn cho YouTube; với FB/TikTok là vùng xám (rủi ro thấp với SFX ngắn, nhưng biết để không cãi được thì thay dần).

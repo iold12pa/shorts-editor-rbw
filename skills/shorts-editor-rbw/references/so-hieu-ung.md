@@ -81,6 +81,20 @@
 - **LƯU Ý tương thích**: rembg/cv2 cần `numpy<2` — máy legion đã hạ numpy 1.26.4; máy mới cài rembg nhớ kèm `pip install "numpy<2"`.
 - **Kỹ thuật lõi 2 dòng chuyển cảnh mới**: (a) luma wipe = bộ mask PNG 18 khung (PIL sinh) + `maskedmerge`; (b) GL = trích 18 khung giao thoa mỗi bên → shader render qua moderngl → ráp lại. Cả 2 đều đóng gói được thành lệnh `noi-2-canh --kieu <tên>` khi Sếp chấm xong.
 
+## NGUYÊN TẮC DÙNG từ giáo lý dựng phim + motion design (tra cứu nguồn ngành 17/07/2026)
+
+**Chọn điểm cắt — Rule of Six của Walter Murch (editor huyền thoại, giản lược cho shorts):** khi phân vân cắt ở đâu, ưu tiên theo thứ tự: **CẢM XÚC (quan trọng nhất, đáng hơn cả 5 tiêu chí còn lại cộng lại) > tiến câu chuyện > đúng nhịp > hướng mắt người xem đang nhìn**. Phải hy sinh thì hy sinh từ dưới lên — không bao giờ hy sinh cảm xúc.
+
+**Ngữ pháp chuyển cảnh (điện ảnh kinh điển — chống lưng cho luật sẵn có của mình):** cắt cứng = mặc định kể chuyện; crossfade/dissolve = báo hiệu ĐỔI thời gian/không gian; chuyển cảnh mạnh (GL cube, glitch, luma...) = bước ngoặt lớn — **1-2 lần/video là tối đa**, dùng nhiều thành TVC chợ.
+
+**Timing chữ động (chuẩn motion design):**
+- Chữ VÀO hoàn tất trong **0.3-0.8s** (pop-in demo của mình 0.36s — đạt chuẩn); lâu hơn = ì.
+- **Ease-out khi VÀO** (nhanh trước chậm sau — tự nhiên), **ease-in khi RA** (tăng tốc thoát); tuyến tính đều đều = máy móc.
+- Nhiều dòng/nhiều từ: so le mỗi phần tử **0.05-0.15s** tạo nhịp sóng.
+- Hiệu ứng che diện tích màn hình LỚN cần thời lượng dài hơn hiệu ứng nhỏ.
+
+Nguồn: StudioBinder/NoFilmSchool — Walter Murch Rule of Six; Material Design — Easing and duration; NN/g — Executing UX Animations; Demotion — Text Animation Secrets.
+
 ## Việc còn nợ trong sổ này
 
 1. Sếp chấm 3 demo → đánh dấu món ĐẬU, ghi recipe chi tiết + luật liều lượng (hook→pop-in, số liệu→nhảy số, chuyển cảnh mạnh chỉ ở bước ngoặt, WOW tối đa 1-2 lần/video...).
