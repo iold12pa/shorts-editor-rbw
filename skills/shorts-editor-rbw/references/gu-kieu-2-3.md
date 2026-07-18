@@ -62,7 +62,29 @@ Cấu trúc 9 nhịp đã kiểm chứng:
 | Giới thiệu dải SP không có câu chuyện khách | 3A showcase |
 | Có buổi bàn giao/khảo sát khách thật | 3B case study (9 nhịp) |
 
-## Nợ vòng 2 (đã có sẵn bản đối chiếu, đọc bổ sung khi đụng dạng tương ứng)
-- Cặp 09.Cuốn Corner / 10.Vinschool / 19.Du lịch (Kiểu 3 dạng đời thường/sự kiện) + nam-son; thống kê Kiểu 1 gold (11/41/48/video-ngắn) để bồi thêm style-mau.md.
-- Dựng thử 1 video Kiểu 2 (công thức 2C) + 1 video Kiểu 3 (3A) từ folder 30 → Sếp chấm → tinh chỉnh sổ.
-- Lưu ý kỹ thuật: cặp VNPT/APX source chứa sẵn bản final (match 100% tự thân) — cấu trúc vẫn chuẩn nhưng vòng 2 nên bổ sung cặp có source thô thật để soi thêm luật CHỌN CẢNH cho Kiểu 3.
+## BỔ SUNG VÒNG 2 (đã khai thác đủ 15/15 bản đối chiếu — 17/07 chiều)
+
+### Kiểu 3 có thêm công thức thứ 3
+**3C — "PHÓNG SỰ SỰ KIỆN + PIVOT THƯƠNG HIỆU"** (mẫu vàng: 19.Du lịch 87.7s, biến thể branding mềm: 10.Vinschool 125.2s)
+- Cấu trúc: đặt mình giữa sự kiện lớn ("em được ngồi giữa những người đang dẫn dắt sự thay đổi") → tóm nội dung sự kiện như NGƯỜI THAM DỰ kể lại (không phải MC đọc thông cáo) → nhận định cá nhân ("ngồi nghe cả buổi em nhận ra...") → **PIVOT 1 câu về Roboworld** ("và Roboworld chúng em cũng có mặt ở đó") → SP liên quan → CTA đúng chân dung ngành.
+- Biến thể BRANDING MỀM (Vinschool): hook tò mò xã hội ("học phí cả trăm triệu/năm... học sinh học gì nhỉ?"), robot chỉ là bạn đồng hành ("mang em BellaBot đến tham dự"), humor tự trào ("hồi cấp 2 mình đang làm gì nhỉ?"), **KHÔNG CTA bán hàng cứng** — video xây thương hiệu, không phải video bán.
+- Nhịp cắt sự kiện hội thảo chậm hơn (8.8s); sự kiện động thì 3.4s.
+
+### Kho hook Kiểu 3 mở rộng (từ các mẫu vàng)
+| Dạng hook | Mẫu nguyên văn |
+|---|---|
+| Tuyên bố phản trực giác | "AI không chỉ nằm trên bảng hiệu..." (VNPT) |
+| Câu hỏi khả thi + hẹn trả lời | "Liệu có khả thi?... câu trả lời ở cuối video" (Nam Sơn, Dragon TB) |
+| Insight nghề (phân công người-máy) | "Giao tiếp, tư vấn món... chỉ con người làm tốt; còn bưng bê lặp lại — đó là lý do đưa robot vào" (Cuốn Corner) |
+| Tò mò xã hội | "Học phí cả trăm triệu một năm... học sinh học gì nhỉ?" (Vinschool) |
+| Danh tiếng khách + bước ngoặt | "Tập đoàn nhựa sinh học lớn nhất VN... ngày nói lời tạm biệt xe có người lái" (APX) |
+- Luật nỗi đau: phải là **NỖI ĐAU NGÀNH CỤ THỂ** người trong nghề gật gù ("chỉ thừa bám vào thành phẩm, mất thời gian gỡ chỉ khỏi áo" — Nam Sơn), không nói nỗi đau chung chung.
+
+### Kiểu 1 chuẩn vàng — 2 nhánh nhịp (bồi cho style-mau.md khi dựng)
+- **Nhánh montage nhịp**: cắt 2.7-3.9s/cảnh (19.5, 20.5, 48.Omnie) — dạng ads/khoe nhiều cảnh.
+- **Nhánh "1 cú máy đẹp + text"**: 0-2 điểm cắt cho cả video (T300 tiệc cưới 29.6s KHÔNG cắt lần nào; 41.Bella 14s/cảnh; 11.Vinschool 22s/cảnh) — cảnh đẹp thì ĐỂ YÊN cho chạy, text + nhạc gánh nhịp. ĐỪNG mặc định Kiểu 1 là phải cắt nhiều.
+- **Chữ ký mở màn "Ok, let's go"**: 1 câu thoại cực ngắn làm phát súng lệnh rồi vào nhạc (xuất hiện 2 mẫu: 18.5 Quái vật + 48.Omnie) — được phép dùng thoại "1 câu mồi" trong video Kiểu 1.
+
+### Còn nợ
+- Dựng thử 1 video Kiểu 2 (2C) + 1 video Kiểu 3 (3A) từ folder 30 → Sếp chấm → tinh chỉnh sổ.
+- Cặp VNPT/APX/Nam Sơn source chứa sẵn bản final (match tự thân) — cấu trúc chuẩn nhưng muốn học luật CHỌN CẢNH Kiểu 3 sâu hơn thì cần cặp có source thô thật (Cuốn Corner/Du lịch/Vinschool source thô ĐÃ index đủ, dùng được).
