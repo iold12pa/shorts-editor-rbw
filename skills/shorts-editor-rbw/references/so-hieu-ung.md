@@ -30,8 +30,9 @@
 |---|---|---|---|
 | B1-B8 | Chớp trắng, zoom xuyên, quét tròn, vỡ pixel/glitch, quét ngang mượt, trượt dọc, mờ ngang (whip), quét kim đồng hồ | ✅ DEMO#1 phần 2 | ffmpeg xfade |
 | B9 | **Chuyển cảnh theo hình LOGO ROBOWORLD** (độc quyền thương hiệu) | ✅ BONUS-3 | mask PIL + maskedmerge — CapCut KHÔNG có món này |
-| B10 | ~40 kiểu xfade còn lại (quét chéo, tan chữ thập, thu nhỏ, dissolve, fadegrays...) | 🔧 | có sẵn, demo thêm khi Sếp muốn xem hết |
-| B11 | Chuyển cảnh 3D (lật khối, gương vỡ, bay qua) | ❌ tạm | cần bản ffmpeg build đặc biệt, lợi không bõ công |
+| B10 | TOÀN BỘ 48 kiểu xfade còn lại | ✅ DEMO#6 (catalog 127s, nhãn XF 1-48) | ffmpeg có sẵn |
+| B11 | **Luma wipe dựng sẵn** (mực loang, quét chéo mềm, iris, rèm, sóng lượn) | ✅ DEMO#4 (LUMA 1-5) | mask PIL 18 khung + maskedmerge; kho mở rộng vô hạn (tự sinh mẫu hoặc nạp pack luma free) |
+| B12 | **GL-TRANSITIONS — kho ~80 chuyển cảnh pro của giới editor** (khối 3D xoay, cửa lùa, gợn sóng, giọt nước, morph, glitch ký ức, zoom xuyên, mơ màng, gió cuốn, tổ ong...) | ✅ ĐÃ CÀI + DEMO#5 10 kiểu tuyển (GL 1-10) | chạy shader chính thức gl-transitions trên GPU máy qua `moderngl`; runner: `temp gl_runner.py` (sẽ đóng chính thức vào scripts/ sau khi Sếp chấm); muốn kiểu nào trong ~70 kiểu còn lại chỉ cần tải 1 file .glsl từ repo gl-transitions |
 
 ## C. HIỆU ỨNG HÌNH / TỐC ĐỘ
 
@@ -76,7 +77,9 @@
 ## Đồ đã cài thêm cho mảng này (2026-07-17, đều miễn phí, chạy local)
 
 - `librosa` (dò beat/tempo), `rembg` + model u2net ~170MB tại `~/.u2net/` (tách nền AI), `onnxruntime`.
+- `moderngl` (chạy shader GL-Transitions trên GPU — đã xác minh chạy tốt trên GTX 1650 Ti); shader nguồn tải từ `github.com/gl-transitions/gl-transitions` (giấy phép mở, dùng thương mại OK).
 - **LƯU Ý tương thích**: rembg/cv2 cần `numpy<2` — máy legion đã hạ numpy 1.26.4; máy mới cài rembg nhớ kèm `pip install "numpy<2"`.
+- **Kỹ thuật lõi 2 dòng chuyển cảnh mới**: (a) luma wipe = bộ mask PNG 18 khung (PIL sinh) + `maskedmerge`; (b) GL = trích 18 khung giao thoa mỗi bên → shader render qua moderngl → ráp lại. Cả 2 đều đóng gói được thành lệnh `noi-2-canh --kieu <tên>` khi Sếp chấm xong.
 
 ## Việc còn nợ trong sổ này
 
