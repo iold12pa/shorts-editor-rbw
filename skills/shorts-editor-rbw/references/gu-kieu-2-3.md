@@ -22,6 +22,12 @@
 - Cấu trúc ads: hook vấn đề "Top 1..." → nỗi đau CÓ SỐ CỤ THỂ ("bỏ cả chục củ thuê PG, khách vẫn ngó lơ") → "thử ngay cách này" → tên SP đứng riêng 1 câu → tính năng BẮN LIÊN THANH (câu cực ngắn 1-2s: "Màn hình 18.5 inch" / "Banner quảng cáo di động") → lợi ích theo tình huống khách → giá/thuê ("không cần đầu tư mấy trăm triệu...") → CTA inbox.
 - Nhịp ~3.0s/cảnh; thoại phủ ~80%; câu ngắn 1-2s chính là "phát súng" tạo nhịp.
 
+### BÀI HỌC XƯƠNG MÁU video thi 17/07 (Sếp chấm trượt bản đầu — 4 lỗi, khắc thành luật)
+1. **Silencedetect KHÔNG ĐƯỢC đi tắt**: mọi biên cắt thoại phải đo silencedetect thật, cấm tin mốc Whisper + đệm cố định — đệm cố định = cắt vấp.
+2. **Mối nối 2 take khác clip PHẢI được che**: bằng B-roll đè hoặc chuyển cảnh — cấm để 2 cảnh MC đứng nhảy cắt cạnh nhau (lộ vấp cả hình lẫn nhịp giọng).
+3. **Track thoại ghép đa take**: thêm `dynaudnorm` nhẹ san mức mic giữa các take + `acrossfade` ~50ms tại mối nối tiếng.
+4. **Phải DÙNG kho chuyển cảnh + SFX đã học** (sổ hiệu ứng + sổ SFX + giáo lý riser/im lặng/hit): video "sạch nhưng nhạt" cũng là trượt — đúng liều nhưng phải CÓ.
+
 ### Luật chung Kiểu 2 (cả 3 công thức)
 - **HOOK: KHÔNG BAO GIỜ mở bằng "Xin chào"** — mở bằng vấn đề/câu hỏi/tuyên bố; câu chào (nếu giữ) đứng SAU hook (mẫu 47: "Đi Bà Nà thì chơi cái gì ạ?" rồi mới "Xin chào anh chị").
 - CTA 2 kiểu được duyệt: inbox/liên hệ + "đăng ký dùng thử miễn phí" (45), hoặc câu hỏi FOMO (38).
