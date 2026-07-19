@@ -2,7 +2,7 @@
 
 File này là NƠI DUY NHẤT nên ghi các thay đổi quy tắc dựng video do người dùng máy này yêu cầu qua hội thoại — không sửa trực tiếp SKILL.md hay các file references/*.md khác, vì bản gốc do team dùng chung quản lý và sẽ bị auto-update ghi đè.
 
-Cách dùng: copy file này thành `tuy-chinh-rieng.md` (bỏ đuôi `.example`) trong cùng thư mục `references/`, rồi ghi tùy chỉnh vào đó theo dạng danh sách bên dưới. File `tuy-chinh-rieng.md` không nằm trong git — ở lại riêng trên máy này mãi mãi, không bị mất khi skill có bản cập nhật mới, và cũng không đẩy lên GitHub cho máy khác.
+Cách dùng: copy file này thành `tuy-chinh-rieng.md` (bỏ đuôi `.example`) và đặt tại **`~/.claude/roboworld-assets/tuy-chinh-rieng.md`** (CHỖ BỀN — cùng thư mục với model + kho tài nguyên), rồi ghi tùy chỉnh vào đó theo dạng danh sách bên dưới. KHÔNG đặt trong `references/` của skill: thư mục skill bị thay cả folder mỗi lần plugin lên bản mới nên file để đó sẽ mất. File ở chỗ bền không nằm trong git — ở lại riêng trên máy này mãi mãi, sống sót qua mọi lần update/gỡ-cài-lại, và không đẩy lên GitHub cho máy khác.
 
 ## Danh sách tùy chỉnh đang áp dụng
 
