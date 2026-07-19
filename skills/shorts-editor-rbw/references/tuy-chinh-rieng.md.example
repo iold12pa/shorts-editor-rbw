@@ -1,0 +1,12 @@
+# Tùy chỉnh riêng của máy này
+
+File này là NƠI DUY NHẤT nên ghi các thay đổi quy tắc dựng video do người dùng máy này yêu cầu qua hội thoại — không sửa trực tiếp SKILL.md hay các file references/*.md khác, vì bản gốc do team dùng chung quản lý và sẽ bị auto-update ghi đè.
+
+Cách dùng: copy file này thành `tuy-chinh-rieng.md` (bỏ đuôi `.example`) trong cùng thư mục `references/`, rồi ghi tùy chỉnh vào đó theo dạng danh sách bên dưới. File `tuy-chinh-rieng.md` không nằm trong git — ở lại riêng trên máy này mãi mãi, không bị mất khi skill có bản cập nhật mới, và cũng không đẩy lên GitHub cho máy khác.
+
+## Danh sách tùy chỉnh đang áp dụng
+
+<!-- Ví dụ:
+- 2026-07-19: Hook màu xanh #00A3FF thay vì vàng #FFD200 mặc định — theo yêu cầu người dùng máy này.
+- 2026-07-19: Không dùng outro dọc mặc định, dùng file outro-rieng.mp4 trong assets/ của máy này thay thế.
+-->
