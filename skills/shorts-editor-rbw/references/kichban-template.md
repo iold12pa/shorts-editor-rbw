@@ -59,7 +59,7 @@ Thêm mục:
 <toàn bộ lời đọc, viết như nói chuyện, câu ngắn — đưa vào ElevenLabs/edge-tts>
 
 ## Giọng đọc
-- ElevenLabs: George (JBFqnCBsd6RMkjVDRZzb — giọng nam mặc định, chạy được gói Free);
+- ElevenLabs: **MC Xuân Tú** (`7XOKiK112QRZRSLbCfMc` — nam, giọng Bắc) hoặc **Thanh Ngọc** (`Na15FlRRkMEDtEW4nVVP` — nữ, giọng Nam). Cả 2 cần gói trả phí; còn Free thì lui edge-tts giọng Việt. George chỉ dùng khi lời đọc là tiếng Anh;
   người dùng muốn giọng khác → ghi voice ID được chọn ở đây
 - Fallback edge-tts: vi-VN-NamMinhNeural (nam) / vi-VN-HoaiMyNeural (nữ) — chỉ dùng khi ElevenLabs lỗi/hết quota
 ```

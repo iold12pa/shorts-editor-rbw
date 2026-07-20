@@ -46,7 +46,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Source video/clip để ghép | **Bắt buộc** | "Cho tôi xin các video/clip muốn ghép lại" |
 | Voice-over: đã có file sẵn hay chưa | **Bắt buộc phải hỏi rõ, đây là lỗi hay gặp nhất** | "Bạn đã có sẵn file giọng đọc chưa? Nếu chưa, tôi viết kịch bản cho bạn duyệt trước, rồi tạo giọng đọc (AI hoặc bạn tự thu đều được)" |
 | Nếu ĐÃ có voice-over: khớp với video nào | **Bắt buộc** | "File giọng đọc này đi cùng (những) video nào? Có sẵn lời thoại/kịch bản để tôi khớp cảnh theo không?" |
-| Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ? (mặc định tôi dùng giọng nam George — tự nhiên, đọc tiếng Việt tốt)" |
+| Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ?" — mặc định giờ là **giọng VIỆT** (MC Xuân Tú nam / Thanh Ngọc nữ). Gói ElevenLabs còn Free thì 2 giọng này bị chặn 402 → tự lui về edge-tts giọng Việt. **Tuyệt đối không lui về George** — đó là giọng Anh, đọc tiếng Việt méo cả câu thường |
 | Bối cảnh | Nên có | như Kiểu 1/2 |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức 3A showcase / 3B case study 9 nhịp) + `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu dạng quảng cáo bán hàng) |
 

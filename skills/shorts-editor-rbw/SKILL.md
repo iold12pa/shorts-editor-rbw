@@ -112,7 +112,21 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 - **Model Whisper** (`ggml-large-v3-turbo.bin`, ~1.6GB, dùng để nghe lời thoại — cần cho Kiểu 2/3): chỗ lưu chuẩn là **`~/.claude/roboworld-assets/models/`** (chỗ bền — gỡ/cài lại plugin KHÔNG mất, không phải tải lại 1.6GB); máy cũ có sẵn model ở `assets/models/` trong skill vẫn dùng được bình thường (script tự tìm cả 2 nơi, ưu tiên chỗ bền). Kiểm tra ngay khi skill được gọi lần đầu trong phiên — nếu cả 2 nơi đều chưa có, **TỰ TẢI LUÔN, đừng hỏi trước**: báo 1 câu ngắn ("cần tải thêm bộ nghe giọng nói ~1.6GB, tôi tải nền — bạn cứ trả lời tiếp, không phải chờ"), rồi chạy NỀN lệnh trong `assets/models/README.md` (`Invoke-WebRequest` tới file `.bin` trên Hugging Face, lưu vào `~/.claude/roboworld-assets/models/`). **Quy tắc bắt buộc khi tải**: tải vào tên file tạm đuôi `.part` rồi mới `Rename-Item` thành `.bin` khi xong — kẻo script phân tích vớ nhầm file tải dở. **Kiểu 2/3 phải CHỜ model tải xong mới chạy phân tích thoại** (chạy phân tích khi thiếu model sẽ ghi nhầm "không có thoại" vào index); Kiểu 1 không cần chờ. Chỉ hỏi lại người dùng nếu lệnh tải lỗi thật (mạng chặn, hết dung lượng).
 - **Python 3.9** + `gdown` + `edge-tts`
 - **Card đồ họa NVIDIA (nếu máy có)**: đầu phiên dựng đầu tiên, chạy `python "<skill-dir>\scripts\cai_driver_nvidia.py" --check` (im lặng, 2 giây). Báo `CAN_NANG_DRIVER` → hỏi người dùng 1 câu (mẫu câu + luồng đầy đủ trong ffmpeg-recipes mục 0.6, GỘP vào đợt câu hỏi bước 0) — họ OK thì script tự tải + cài, họ chỉ bấm Yes 1 lần. Báo `GPU_SAN_SANG` hay `KHONG_CO_CARD` → không nói gì thêm, dựng bình thường. **Không bao giờ tự cài driver khi chưa được OK.**
-- **Voice AI (khi kịch bản có voiceover)**: ưu tiên **ElevenLabs** qua `scripts/elevenlabs_tts.py` (giọng tự nhiên hơn + trả timestamp TỪNG TỪ → làm được sub karaoke; key đọc từ `~/.claude/abs6-secrets.env`, dòng `ELEVENLABS_API_KEY=`). **Giọng mặc định chính thức: George** (`JBFqnCBsd6RMkjVDRZzb`, nam trầm, chạy được cả gói Free) — người dùng muốn giọng khác thì hỏi/nhận voice ID. **Lưu ý lỗi 402**: giọng lấy từ Voice Library (không phải premade) bị chặn ở gói Free — gặp 402 với giọng người dùng chỉ định đích danh thì DỪNG BÁO "giọng này cần gói ElevenLabs trả phí", không tự thay giọng khác. Key trống/hết quota → script tự báo lỗi rõ, khi đó **fallback edge-tts** như cũ. KHÔNG bao giờ in key ra chat/log.
+- **Voice AI (khi kịch bản có voiceover)** — `scripts/elevenlabs_tts.py`, key đọc từ `~/.claude/abs6-secrets.env` dòng `ELEVENLABS_API_KEY=`. **KHÔNG BAO GIỜ in key ra chat/log.**
+
+  **Thứ tự chọn giọng (cập nhật 20/07/2026 — đã đo thật, đừng làm ngược):**
+
+  | Ưu tiên | Giọng | Khi nào |
+  |---|---|---|
+  | 1 | **MC Xuân Tú** `7XOKiK112QRZRSLbCfMc` (nam, Bắc) · **Thanh Ngọc** `Na15FlRRkMEDtEW4nVVP` (nữ, Nam) | Mặc định cho **mọi lời tiếng Việt**. Đã có sẵn trong tài khoản công ty. Cần gói trả phí |
+  | 2 | **edge-tts** `vi-VN-NamMinhNeural` / `vi-VN-HoaiMyNeural` | Khi gói còn Free (2 giọng trên trả 402). Miễn phí, đọc câu tiếng Việt thuần rất sạch |
+  | 3 | **George** `JBFqnCBsd6RMkjVDRZzb` | **CHỈ khi lời đọc là tiếng Anh** |
+
+  **George KHÔNG còn là mặc định** — đó là giọng Anh. Cho Whisper nghe lại bản George đọc tiếng Việt: *"Thử cách này"* → *"Thú káč nai"*, *"Khai trương thì bùng nổ doanh số"* → *"Cái truong thị bùng no đoàn so"*. Gặp 402 mà lui về George là làm hỏng video.
+
+  **Gặp 402**: script tự in hướng dẫn đầy đủ. Nếu giọng do người dùng **chỉ định đích danh** → DỪNG BÁO, chờ họ quyết, không tự đổi giọng. Nếu là giọng mặc định → lui edge-tts giọng Việt, báo 1 câu.
+
+  **Luôn nhớ luật viết lời cho TTS**: tên sản phẩm/thương hiệu/thông số **không cho máy đọc**, đẩy lên thẻ chữ — mọi giọng máy đều đọc sai mấy từ đó (xem `style-voice-karaoke.md`).
 - **Font Anton** (style CapCut, Sếp chỉ định): `assets/fonts/Anton-Regular.ttf` trong thư mục skill — copy vào workspace mỗi lần dựng (xem recipes)
 - **Tài nguyên dùng chung** (logo, outro, nhạc, SFX, ảnh sản phẩm) — kho chính thức nằm trên **Google Drive của Sếp** (Sếp thêm nhạc/logo mới bằng cách kéo file vào Drive, không cần đụng GitHub), link cố định:
   `https://drive.google.com/drive/folders/1eofLwPIE6XtoMPI6Wo19gf48KwM1OYIr`
@@ -166,6 +180,21 @@ Miễn phí, chạy offline, không gọi API, ~1-2 giây/clip. Đo **độ nét
 Đọc cờ: `mo` = bỏ · `hoi-mo` = xem lại · **`net-tung-doan` = clip có đoạn nét có đoạn mờ, phải chọn ĐÚNG đoạn** · `canh-tinh` = hợp làm nền hơn làm cảnh chính.
 
 **Đây là cờ cảnh báo, không phải án quyết định** — bokeh hay motion blur cố ý cũng bị chấm "mờ". Dùng để thu hẹp việc phải xem, không thay việc xem.
+
+**Bước 2c — MẮT AI GEMINI (tuỳ chọn, TỐN TIỀN — chỉ chạy khi cần hiểu nội dung)**:
+
+```powershell
+python "<skill-dir>\scripts\quet_mat_ai.py" --src "<folder buổi quay>" --index "<workspace>\analysis\index.json" --limit 10
+```
+
+Gemini **xem** clip (không chỉ nghe) rồi trả về: có robot không, robot dòng nào, đang làm gì, bối cảnh, chất lượng hình, **`co_nguoi_dang_noi`**, khoảnh khắc đáng dùng. Ghi vào index, tự resume, ngắt giữa chừng không mất gì.
+
+- **Tự bỏ qua clip đã bị bước 2b chấm "mờ"** — không tốn tiền hỏi về clip không dùng được. Muốn quét cả thì thêm `--quet-ca-clip-mo`.
+- Chi phí ~150-200đ/phút video (Gemini 2.5 Flash); gói free có trần ~20 lượt/ngày, chạm trần thì script nghỉ lùi dần rồi dừng — **chạy lại là quét tiếp**, không làm lại từ đầu.
+- Trường **`co_nguoi_dang_noi` chính là thứ hỗ trợ luật cấm cảnh MC-cutaway** — dùng để lọc ứng viên B-roll trước khi soi khung bằng mắt.
+- Quét 1 clip lẻ: `python "<skill-dir>\scripts\gemini_vision.py" --video CLIP.mp4`
+
+**Thứ tự đúng của cả 3 bước**: `analyze_footage` (nghe + đổi cảnh) → `do_ky_thuat` (đo, miễn phí, 100% clip) → `quet_mat_ai` (hiểu, tốn tiền, chỉ clip đã lọc). Làm ngược là vừa chậm vừa tốn.
 
 Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là phần tốn nhất, đừng đọc cả kho khi chỉ cần 1 video**:
 1. **Lập shortlist 0 token trước**: đọc `index.json` (transcript, độ dài, tên file, số điểm đổi cảnh, `content`/`tags` đã điền từ lần trước) để khoanh ~10-20 clip liên quan nhất tới video đang định dựng. Kiểu 2/3 lọc theo transcript; Kiểu 1 lọc theo độ dài/điểm đổi cảnh/`content` cũ.

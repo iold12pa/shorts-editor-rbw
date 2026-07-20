@@ -21,9 +21,24 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ENV_FILE = os.path.expanduser("~/.claude/abs6-secrets.env")
-# Giong mac dinh: "George" (nam, tram am) - model multilingual doc duoc tieng Viet.
-# Doi giong: truyen --voice <id> (xem danh sach: https://elevenlabs.io/app/voice-library)
-DEFAULT_VOICE = "JBFqnCBsd6RMkjVDRZzb"
+
+# ===== GIONG DOC — CAP NHAT 20/07/2026, DOC KY TRUOC KHI DOI =====
+#
+# BAI HOC DA DO THAT: "George" tung la giong mac dinh, NHUNG do la giong ANH.
+# Cho Whisper nghe lai ban George doc tieng Viet: "Thu cach nay" -> "Thu kac nai",
+# "Khai truong thi bung no doanh so" -> "Cai truong thi bung no doan so". Khong dung duoc.
+# => KHONG dung George cho loi tieng Viet nua. George chi dung khi loi doc la tieng Anh.
+#
+# Tai khoan cong ty DA CO san 2 giong Viet chuyen nghiep (kiem 20/07 qua API):
+GIONG_VIET_NAM = "7XOKiK112QRZRSLbCfMc"   # MC Xuan Tu - VIP (nam, giong Bac)
+GIONG_VIET_NU = "Na15FlRRkMEDtEW4nVVP"    # Thanh Ngoc - Warm & Trusted (nu, giong Nam)
+#
+# NHUNG: goi Free bi chan 2 giong nay (402 paid_plan_required - "Free users cannot use
+# library voices via the API"). Nang goi la dung duoc ngay, khong phai doi giong khac.
+# Trong luc con goi Free -> script bao ro rang roi thoat, de skill lui ve edge-tts
+# giong vi-VN (doc cau tieng Viet thuan rat sach, xem style-voice-karaoke.md).
+GIONG_ANH = "JBFqnCBsd6RMkjVDRZzb"        # George (nam, Anh) - CHI cho loi tieng Anh
+DEFAULT_VOICE = GIONG_VIET_NAM
 MODEL = "eleven_multilingual_v2"
 
 
@@ -96,9 +111,21 @@ def main():
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", "replace")[:300]
         if e.code == 402:
-            sys.exit("ElevenLabs loi HTTP 402 (giong nay can goi TRA PHI — giong Voice Library"
-                     " bi chan o goi Free): %s\n-> Giong duoc chi dinh dich danh thi DUNG BAO,"
-                     " khong tu thay giong khac (luat SKILL.md)." % body)
+            sys.exit(
+                "ElevenLabs 402 — giong nay can GOI TRA PHI (giong Voice Library bi chan o goi Free).\n"
+                "  Chi tiet: %s\n"
+                "\n"
+                "  DAY LA TINH HUONG DA BIET TRUOC, khong phai hong:\n"
+                "  - Tai khoan cong ty DA CO 2 giong Viet: MC Xuan Tu (nam) va Thanh Ngoc (nu),\n"
+                "    nang goi ElevenLabs la dung duoc ngay, khong phai di tim giong khac.\n"
+                "  - Trong luc con goi Free: LUI VE edge-tts giong vi-VN-NamMinhNeural /\n"
+                "    vi-VN-HoaiMyNeural (mien phi, doc cau tieng Viet thuan rat sach).\n"
+                "  - TUYET DOI khong lui ve giong George: do la giong ANH, doc tieng Viet meo\n"
+                "    ca cau thuong (da do that 20/07).\n"
+                "  - Nho luat viet loi cho TTS: ten san pham/thuong hieu/thong so KHONG cho may\n"
+                "    doc, day len the chu (xem style-voice-karaoke.md).\n"
+                "  - Nguoi dung chi dinh DICH DANH 1 giong ma gap 402 -> DUNG BAO, cho ho quyet,\n"
+                "    khong tu doi giong (luat SKILL.md)." % body)
         sys.exit("ElevenLabs loi HTTP %s: %s\n-> Kiem tra key/quota. Skill co the fallback edge-tts." % (e.code, body))
     except urllib.error.URLError as e:
         sys.exit("ElevenLabs KHONG GOI DUOC (loi mang/DNS/proxy): %s\n"

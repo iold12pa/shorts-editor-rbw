@@ -54,7 +54,7 @@ Cấu trúc 9 nhịp đã kiểm chứng:
 - Chi tiết đời thường được GIỮ (gặp bạn cũ trong nhà máy, cô chú công nhân hỏi đùa "thay lao công à") — chất human là gu của kênh, đừng gọt sạch.
 
 ### Luật chung Kiểu 3
-- Câu voice 8-15 từ (khớp kichban-template); giọng George/giọng Sếp chọn.
+- Câu voice 8-15 từ (khớp kichban-template); giọng Việt (MC Xuân Tú / Thanh Ngọc) hoặc giọng Sếp chọn — không dùng George cho lời tiếng Việt.
 - Dạng lai (MC trên hình + voice-off chèn — như Dragon TB) = hợp lệ: phần MC theo luật Kiểu 2, phần voice-off theo Kiểu 3, chọn cảnh theo chon-canh-highlight.
 
 ## Bảng chọn công thức nhanh
