@@ -155,6 +155,18 @@ python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\a
 
 Script tự: bắt điểm đổi cảnh để trích khung đúng khoảnh khắc (không rải mù), ghép 1 ảnh lưới/clip có **nhãn timecode trên từng khung** (`analysis\sheets\`), nhận dạng lời nói trong clip bằng Whisper (transcript + timestamp, cần model trong `assets/models/` — chưa có thì tự bỏ qua), và ghi tất cả vào `analysis\index.json`. **Clip đã có trong index sẽ tự bỏ qua** — folder cũ thêm clip mới chỉ tốn phân tích phần mới.
 
+**Bước 2b — ĐO KỸ THUẬT (chạy ngay sau khi index xong, trước khi đọc sheet)** — luật 20/07/2026:
+
+```powershell
+python "<skill-dir>\scripts\do_ky_thuat.py" --src "<folder-source>" --index "<workspace>\analysis\index.json"
+```
+
+Miễn phí, chạy offline, không gọi API, ~1-2 giây/clip. Đo **độ nét** (clip có khoảnh khắc nào dùng được không) và **độ chuyển động**, ghi cờ cảnh báo vào index. Mục đích: **loại bớt clip hỏng TRƯỚC khi tốn công đọc sheet hoặc tốn tiền gọi mắt AI**.
+
+Đọc cờ: `mo` = bỏ · `hoi-mo` = xem lại · **`net-tung-doan` = clip có đoạn nét có đoạn mờ, phải chọn ĐÚNG đoạn** · `canh-tinh` = hợp làm nền hơn làm cảnh chính.
+
+**Đây là cờ cảnh báo, không phải án quyết định** — bokeh hay motion blur cố ý cũng bị chấm "mờ". Dùng để thu hẹp việc phải xem, không thay việc xem.
+
 Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là phần tốn nhất, đừng đọc cả kho khi chỉ cần 1 video**:
 1. **Lập shortlist 0 token trước**: đọc `index.json` (transcript, độ dài, tên file, số điểm đổi cảnh, `content`/`tags` đã điền từ lần trước) để khoanh ~10-20 clip liên quan nhất tới video đang định dựng. Kiểu 2/3 lọc theo transcript; Kiểu 1 lọc theo độ dài/điểm đổi cảnh/`content` cũ.
 2. **Chỉ Read ảnh sheet của shortlist** rồi điền index cho đúng các clip đó: `content` (1-2 câu mô tả), `tags` (robot/hành động/bối cảnh), `key_moments` (list `{t, mota}` — lấy đúng timecode in trên khung), `quality` ("tot"/"rung"/"toi"/"bo"). Index đầy dần qua các lần dựng — folder dùng nhiều thì tự nhiên xem đủ hết.
