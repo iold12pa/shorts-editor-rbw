@@ -217,7 +217,7 @@ Mỗi SFX là 1 input riêng, canh thời điểm bằng `adelay` (đơn vị mi
 ```powershell
 ffmpeg -y -i video.mp4 -i logo.png -i nhac.mp3 -i "whoosh.mp3" -i "wrench.mp3" -i "chime.mp3" `
   -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50[v];[2:a]volume=0.55,afade=t=out:st=42:d=1[bgm];[3:a]volume=0.9,adelay=0|0[wh];[4:a]volume=0.9,adelay=9300|9300[wr];[5:a]atrim=0:1.8,volume=0.8,adelay=31300|31300[ch];[bgm][wh][wr][ch]amix=inputs=4:duration=first:normalize=0[a]" `
-  -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest output\video.mp4
+  -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest ..\Final\video.mp4
 ```
 
 `adelay=9300|9300` = SFX phát ở giây 9.3 của timeline cuối cùng (không phải timeline riêng của SFX). `atrim=0:1.8` cắt bớt SFX dài (vd chime 9.8s) xuống còn phần đầu cần dùng. Nhạc nền hạ nhẹ volume (0.55 thay vì 0.85) khi có nhiều SFX chồng lên để không rối.
@@ -273,7 +273,7 @@ Logo Roboworld bản TRẮNG, **giữa-trên** (học từ video mẫu): rộng 
 ffmpeg -y -i temp\ghep_sub.mp4 -i logo.png -stream_loop -1 -i nhac.mp3 `
   -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50[v];[0:a]volume=0.25[orig];[2:a]volume=0.85[bgm];[orig][bgm]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]" `
   -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p `
-  -c:a aac -b:a 192k -shortest output\video-1-ten-video.mp4
+  -c:a aac -b:a 192k -shortest ..\Final\video-1-ten-video.mp4
 ```
 
 (`logo.png`, `nhac.mp3` copy sẵn vào workspace để dùng đường dẫn tương đối.)
@@ -288,7 +288,7 @@ Tùy biến:
 ffmpeg -y -i temp\full_video_with_outro_sub.mp4 -i logo.png -i nhac.mp3 `
   -i "sfx1.mp3" -i "sfx2.mp3" -i "outro dọc.mp4" `
   -filter_complex "[1:v]scale=480:-1[lg];[0:v][lg]overlay=(W-w)/2:50:enable='lt(t,<offset>)'[v];[2:a]volume=0.5,afade=t=out:st=<offset-0.6>:d=0.6[bgm];[3:a]volume=0.9,adelay=<t1_ms>|<t1_ms>[a1];[4:a]volume=0.85,adelay=<t2_ms>|<t2_ms>[a2];[5:a]adelay=<offset_ms>|<offset_ms>[a3];[bgm][a1][a2][a3]amix=inputs=4:duration=longest:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[a]" `
-  -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest output\video-final.mp4
+  -map "[v]" -map "[a]" -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest ..\Final\video-final.mp4
 ```
 
 Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào làm nguồn audio — chỉ cần `[5:a]`, không cần `[5:v]` vì phần hình outro đã ghép sẵn vào input 0 từ bước 4d. `amix duration=longest` để không cắt cụt track outro; `-shortest` ở lệnh xuất cuối mới là thứ thật sự khớp độ dài với video.
@@ -300,8 +300,8 @@ Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào là
 ## 6. Tự nghiệm thu (bắt buộc trước khi bàn giao)
 
 ```powershell
-ffprobe -v error -show_entries format=duration -show_entries stream=width,height -of default=noprint_wrappers=1 output\video-1-ten-video.mp4
-ffmpeg -y -i output\video-1-ten-video.mp4 -vf "fps=1/8,scale=480:-2" -q:v 5 temp\check_%02d.jpg
+ffprobe -v error -show_entries format=duration -show_entries stream=width,height -of default=noprint_wrappers=1 ..\Final\video-1-ten-video.mp4
+ffmpeg -y -i ..\Final\video-1-ten-video.mp4 -vf "fps=1/8,scale=480:-2" -q:v 5 temp\check_%02d.jpg
 ```
 
 Read các file `temp\check_*.jpg` và kiểm: hook hiện đúng 3s đầu, sub không tràn mép/không bị logo đè, hình không méo, không có frame đen. Nghe thử không được thì tin timing: tổng thời lượng video phải ≥ thời lượng voiceover.
@@ -309,7 +309,7 @@ Read các file `temp\check_*.jpg` và kiểm: hook hiện đúng 3s đầu, sub 
 **Đo âm lượng giao hàng (bắt buộc, chuẩn -14 LUFS ±1):**
 
 ```powershell
-ffmpeg -hide_banner -i output\video-1-ten-video.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -
+ffmpeg -hide_banner -i ..\Final\video-1-ten-video.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -
 ```
 
 Đọc dòng **`Input Integrated:`** trong kết quả — đó là âm lượng THẬT của file (các dòng "Output..." chỉ là mô phỏng nếu chạy loudnorm thêm lần nữa, bỏ qua). Đạt: -15 đến -13 LUFS. Lệch hơn → quay lại lệnh xuất final kiểm tra đã có chuỗi loudnorm chưa, mix lại. Ghi con số đo được vào báo cáo bàn giao.

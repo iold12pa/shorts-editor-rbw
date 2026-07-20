@@ -2,6 +2,23 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-07-20
+- **Video + caption giao ra thẳng `<folder buổi quay>\Final\`** (chỉ đạo Huy): trước đây thành phẩm nằm lẫn trong `Workspace\output` giữa đồ nghề trung gian, phải lục mới thấy. Giờ `Final` chỉ chứa `.mp4` + caption `.md` của chính video đó; `Workspace` giữ riêng phần trung gian.
+- **Kiểu 1 BẮT BUỘC hỏi loại nhạc trước khi chọn bài**: nhạc **trend** (folder `Nhạc hot` — bắt tai nhưng chỉ nên đăng Facebook page, YouTube dễ dính bản quyền) hay nhạc **không bản quyền** (đăng được mọi nền tảng).
+- **Công cụ tách nhạc `tach_bai_tu_mix.py`**: Sếp đổ vào kho các bản mix dài ~1 tiếng kiểu "Top 20 nhạc hot TikTok" → script tách thành từng bài + tự chọn **đoạn hay nhất** mỗi bài (chấm điểm năng lượng + mật độ nhịp, nắn về phách). Cần file `tracklist.txt` lấy từ mô tả video gốc — các bản mix này crossfade liền mạch nên không tách tự động được.
+- **Luật SFX mới ghi đè luật cũ 03/07**: mỗi thẻ chữ đều kèm 1 SFX "pop" hợp nghĩa (kiểu TikTok/Reels), kèm **bảng lead-in 13 file SFX đã đo thật** + công thức `offset = mốc hành động − lead-in` (đặt theo đỉnh âm, không theo đầu file).
+- **Luật cấm cảnh "MC-cutaway"** (Sếp bắt lỗi 2 lần/1 ngày ở 2 kiểu dựng): cấm dùng cảnh người đang nói/nhìn trực diện máy quay làm B-roll nếu tiếng phát tại đó không phải giọng gốc đồng bộ của chính họ. Thành bước rà bắt buộc trước khi chốt mọi video.
+- **Luật viết lời cho giọng AI**: mọi giọng TTS đều đọc sai tên thương hiệu (BellaBot Pro → "Bella Popper", Roboworld → "Robo uống") → lời cho TTS chỉ viết tiếng Việt thuần, tên sản phẩm/thông số/brand đẩy lên thẻ chữ.
+- **Cài đặt: bổ sung bộ thư viện Python còn thiếu** (`librosa`, `moderngl`, `pillow`, `numpy<2`) — máy cài theo kịch bản cũ không chạy được cắt-bám-phách, chuyển cảnh GL, thẻ chữ động.
+- **Update chủ động ngay đầu phiên** + **tự dọn cache bản cũ đầu phiên**: máy thứ 2 của Sếp từng tích 13 bản cache = 10.2 GB do auto-update không bao giờ xóa bản cũ. Kiến trúc từ 17/07 đã giảm còn ~0.44 MB/bản, nay thêm lớp dọn tự động.
+
+## 2026-07-18 → 19
+- **Kho chuyển cảnh mở rộng**: ~80 kiểu GL-Transitions + luma wipe dựng sẵn + 48 kiểu xfade (`scripts/fx`, `assets/glsl`).
+- **Sổ gu Kiểu 2 & 3** rút từ đối chiếu thật 15 cặp source↔final của Sếp: Kiểu 2 có 3 công thức con (2A một-mạch / 2B listicle / 2C ads-ghép-đa-take), Kiểu 3 có 3 (3A showcase / 3B case-study 9 nhịp / 3C phóng sự-sự kiện). Luật đinh: hook không bao giờ mở bằng "Xin chào".
+- **Sổ SFX**: cây quyết định "khoảnh khắc nào dùng tiếng nào" trên 38 file có sẵn.
+- **Cơ chế "tùy chỉnh riêng theo máy"**: mỗi máy ghi luật riêng vào `~/.claude/roboworld-assets/tuy-chinh-rieng.md` — sống sót qua mọi lần update, không bị bản chung ghi đè.
+- **Bài học kỹ thuật**: xfade ffmpeg 8.x phải `fps=30,settb=AVTB` cả 2 nhánh; khoảng im ≥0.3s không chắc là hết câu (từng cắt mất "BellaBot Pro") → phải whisper lại chính lát cắt; sub karaoke Whisper phải rà tay từng cụm trước khi burn.
+
 ## 2026-07-17
 - **Lệnh "HỌC" — train kiến thức edit thành quy trình chính thức**: nói "học cái này / ghi nhớ luật này / từ nay làm thế này" → tool tự tìm đúng file kiến thức, khắc luật kèm lý do + ngày, phát hiện mâu thuẫn với luật cũ, đồng bộ 2 bản, đẩy GitHub — cả team nhận khi mở lại app.
 - **Cài đặt = 1 câu dán, tự cài TRỌN BỘ từ đầu** (chỉ đạo Huy sau lần cài máy đồng nghiệp): câu cài mới trỏ Claude đọc `references/cai-dat-lan-dau.md` — báo trước mất khoảng bao lâu, tự cài plugin + FFmpeg + bộ nghe 1.6GB + kho ~180MB (chạy nền) + dò GPU, xong mục nào báo mục đó, chốt bằng bảng trạng thái + tổng thời gian thật.

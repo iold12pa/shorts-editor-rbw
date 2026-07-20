@@ -1,6 +1,6 @@
 # Format caption đăng bài (nhúng trong skill edit — độc lập với skill reels-caption-rbw)
 
-Sau khi mỗi video dựng xong, tạo 1 bộ caption theo đúng 5 phần dưới đây, lưu `output/video-N-caption.md`. Thông tin lấy thẳng từ kịch bản video (robot gì, địa điểm, điểm nổi bật) — không hỏi lại Sếp.
+Sau khi mỗi video dựng xong, tạo 1 bộ caption theo đúng 5 phần dưới đây, lưu **`<folder buổi quay>\Final\<tên video>-caption.md`** — cùng chỗ với file .mp4 và đặt tên khớp tên video, để Sếp mở `Final` là thấy video nào đi với caption nào (luật 20/07/2026). Thông tin lấy thẳng từ kịch bản video (robot gì, địa điểm, điểm nổi bật) — không hỏi lại Sếp.
 
 ## PHẦN 1 – 10 HOOK GỢI Ý
 10 hook khác nhau, mix dạng: câu hỏi / con số / tuyên bố táo bạo / so sánh / reveal bất ngờ. Cụ thể với nội dung video, chạm pain point chủ nhà hàng/nhà máy. Format: `**Hook 1: NỘI DUNG IN HOA TOÀN BỘ**`

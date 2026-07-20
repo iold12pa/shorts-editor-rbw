@@ -40,7 +40,11 @@ Từ bản 17/07, mọi thứ dưới đây được cài NGAY lúc chạy câu 
 
 ## Cập nhật phiên bản
 
-Hỏi Claude bất kỳ dạng nào: "đang bản nào", "có bản mới không" — skill tự kiểm tra GitHub thật, tự cập nhật nếu có bản mới rồi báo số bản cụ thể (quy tắc nằm trong SKILL.md, không trả lời suông).
+**Bình thường bạn không phải làm gì** — từ bản 20/07, mỗi lần bạn nhờ dựng video, tool tự kiểm tra GitHub và tự kéo bản mới ngay đầu phiên. Nếu vừa có bản mới, nó báo bạn 1 câu và nhắc đóng/mở lại app.
+
+**Cần chủ động kiểm** (vd Sếp báo "vừa có luật mới"): nhắn *"kiểm tra phiên bản tool"* hoặc *"có bản mới không"* — tool kiểm tra thật với GitHub, tự cập nhật, rồi báo mã bản cụ thể.
+
+**Điều quan trọng cần biết**: Claude Code chỉ nạp plugin lúc **khởi động app**. Nên khi tool báo "vừa cập nhật", phiên đang mở vẫn chạy bản cũ — **đóng/mở lại app 1 lần** thì bản mới mới có hiệu lực. Đây không phải lỗi, là cách Claude Code hoạt động.
 
 ## Cài lỗi giữa chừng / cần gỡ-cài-lại? Dán 1 câu này
 

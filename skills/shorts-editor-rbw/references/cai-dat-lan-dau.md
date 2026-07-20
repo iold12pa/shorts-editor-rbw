@@ -22,7 +22,20 @@ Rồi làm tuần tự bên dưới. Đường dẫn gốc của gói (dùng cho
 ## Bước 1 — Nền tảng: Python + FFmpeg (làm trước, nhanh)
 
 1. Kiểm `python --version` — chưa có thì `winget install Python.Python.3.12 -e --source winget` (báo 1 câu).
-2. Kiểm `python -m gdown --version` — chưa có thì `python -m pip install -U gdown edge-tts` (im lặng, vài giây).
+2. **Cài BỘ THƯ VIỆN PYTHON (bắt buộc — thiếu là mất nửa số tính năng)**, im lặng, ~1-3 phút:
+   ```powershell
+   python -m pip install -U gdown edge-tts pillow moderngl librosa "numpy<2"
+   ```
+   | Thư viện | Thiếu thì mất gì |
+   |---|---|
+   | `gdown` | không tải được kho tài nguyên từ Drive |
+   | `edge-tts` | không có giọng đọc dự phòng (Kiểu 3 chết khi chưa có key ElevenLabs) |
+   | `librosa` | **không dò được phách/BPM** → mất cắt-bám-phách và mất tính năng tách nhạc từ mix dài |
+   | `moderngl` | không chạy được chuyển cảnh GL (~80 kiểu) |
+   | `pillow` | không làm được luma wipe, thẻ chữ động, mask logo |
+   | `numpy<2` | **phải ghim <2** — numpy 2.x làm hỏng rembg/cv2 (đã dính thật) |
+
+   Không cài trong lệnh trên: **`rembg`** (tách nền AI) — nó kéo theo `onnxruntime` + model u2net ~170MB, chỉ cần khi dựng cảnh cutout. Để dành, khi nào thật sự cần thì `python -m pip install rembg` rồi báo người dùng mất thêm ~2 phút.
 3. Kiểm `ffmpeg -version` — chưa có thì báo 1 câu rồi `winget install ffmpeg -e --source winget`.
    Cài xong nếu lệnh `ffmpeg` chưa nhận trong phiên này: tự tìm `ffmpeg.exe`/`ffprobe.exe` trong
    `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg*\` (đệ quy, lấy trong thư mục `bin`) và dùng
@@ -48,6 +61,12 @@ Nếu nó báo thiếu + "Google chặn tạm": báo người dùng "kho về th
   cũ nên render chậm. Cho tôi tải bản mới từ NVIDIA (~1GB, miễn phí) cài giúp nhé? Nếu Windows hiện
   hộp thoại xanh thì bấm YES — nhiều máy tự chạy không hỏi. Xong render nhanh 2-5 lần."* — OK thì chạy
   nền script đó KHÔNG có `--check` (nó tự lo hết, kể cả ca máy cần khởi động lại — sẽ tự báo).
+
+## Bước 4b — BẬT AUTO-UPDATE (bắt buộc, vài giây — đừng bỏ qua)
+
+Sửa `~/.claude/settings.json`: đặt `extraKnownMarketplaces."roboworld-tools".autoUpdate = true` (giữ nguyên mọi trường khác, nhất là `source`). Không tạo file backup (chính sách chủ repo — xem SKILL.md).
+
+**Vì sao phải làm ngay ở bước cài, không đợi lần dựng video đầu tiên**: đây là công cụ nội bộ được cập nhật liên tục; máy nào không bật cờ này sẽ đứng yên ở bản cài ban đầu, dựng theo luật cũ mà không ai biết. Đã có tiền lệ 2 máy kẹt bản cũ nhiều ngày.
 
 ## Bước 5 — Chốt: bảng trạng thái + dặn dò (khi bước 2-3 xong hết)
 
