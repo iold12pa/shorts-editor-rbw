@@ -36,5 +36,30 @@ Chỉ dùng cảnh "chuẩn bị/hành chính" (mở hộp đồ, xếp dụng c
 - **Text KHÔNG bắt buộc đổi theo từng cut** — 1 dòng text có thể giữ nguyên xuyên qua 2-3 lần cắt cảnh bên dưới nếu vẫn cùng 1 ý (đo được ở Vinschool: "THU HÚT SỰ CHÚ Ý CỦA MỌI NGƯỜI" giữ nguyên qua nhiều giây dù hình đổi). Đổi text theo NHỊP THÔNG ĐIỆP, không phải nhịp cắt hình.
 - **Đo màu vàng thực tế** (pixel, không phải lý thuyết): 2 video đo được ra `#EFFC00` (vàng-chanh hơi khác `#FFD200` gốc) — chấp nhận cả 2 sắc trong khoảng "vàng thương hiệu", không cần tuyệt đối khớp mã hex nếu do nén video.
 
+## Kho nhạc trend (chỉ Kiểu 1 — luật Sếp Huy 20/07/2026)
+
+**Kiểu 1 luôn phải hỏi trước: nhạc trend hay nhạc không bản quyền** (câu hỏi nguyên văn trong `chon-kieu-dung.md` bước B). Kho nhạc chia 2 loại rõ ràng:
+
+| Loại | Lấy ở đâu | Đăng được ở đâu |
+|---|---|---|
+| **Nhạc trend** (hot TikTok) | `Kho nhạc free YT/Nhạc hot/` | **CHỈ Facebook page** — đăng YouTube khả năng cao dính bản quyền / bị tắt tiếng |
+| **Nhạc không bản quyền** | các folder còn lại (`Chill nhẹ + vui vẻ`, `POP tươi sáng`...) | mọi nền tảng, kể cả YouTube |
+
+### Cách dùng folder `Nhạc hot` — KHÔNG phải file bài lẻ
+
+Sếp đổ vào đây các **bản mix dài ~1 tiếng** kiểu "Top 20 nhạc hot TikTok" tải từ YouTube (sẽ đẩy thêm dần). Không dùng thẳng file 1 tiếng được, phải tách ra trước:
+
+```powershell
+python "<skill-dir>\scripts\tach_bai_tu_mix.py" "<đường dẫn file mix.mp3>" --dai 30
+```
+
+Script tự tách thành từng bài + tự chọn **đoạn hay nhất** (30s mặc định) của mỗi bài, xuất ra thư mục `<tên mix>_tach/` gồm `bai/`, `doan-hay/` và `danh-muc.json` để tra cứu. **Chạy 1 lần cho mỗi file mix mới**, lần sau dùng lại kết quả, không tách lại.
+
+**BẮT BUỘC có tracklist**: các bản mix này là **DJ mix liền mạch có crossfade — KHÔNG có một khoảng im nào giữa 2 bài** (đo thật 20/07: `silencedetect` trả về 0 sự kiện trên file 65 phút), nên không có cách nào tách tự động đáng tin. Cách chắc chắn: copy tracklist trong phần mô tả video gốc trên YouTube (chủ kênh luôn ghi sẵn) vào file `tracklist.txt` đặt cạnh file mp3, mỗi dòng `00:04:16  Tên bài - Ca sĩ`. Không có tracklist → hỏi người dùng lấy giúp, đừng tự đoán mốc bài.
+
+**Cách script chọn "đoạn hay nhất"** (đo bằng số, không cảm tính): trượt cửa sổ 30s, chấm điểm `0.7 × năng lượng RMS + 0.3 × mật độ onset` (chuẩn hoá 0-1), bỏ 12s đầu (intro) và 8s cuối (vùng crossfade sang bài sau), rồi **nắn điểm bắt đầu về phách gần nhất** để cắt không lệch nhịp. Điệp khúc/drop gần như luôn là cửa sổ điểm cao nhất — nghiệm thu thật trên 16 bài đầu tiên: 15 bài đoạn chọn mạnh hơn mặt bằng cả bài 6-16%, 1 bài 4% (đạt).
+
+**Đã tách sẵn (20/07/2026)**: `NHẠC REMIX TIKTOK TRIỆU VIEW - BXH Nhạc Trẻ Remix Hay Nhất Hiện Nay - Top 20 Nhạc Hot TikTok 2026.mp3` → 16 bài, toàn bộ mix cùng BPM (136 hoặc 143.6) nên ghép/cắt theo phách rất dễ.
+
 ## Outro
 2 video mẫu đều có outro nền đen→đỏ (logo đỏ animation lắp ráp dần + card hotline/địa chỉ/FB/web, 6s cuối). **Sếp đã yêu cầu KHÔNG dùng intro/outro** → mặc định bỏ, dùng outro dọc hiện có của skill thay thế. Nếu Sếp đổi ý muốn dùng lại đúng outro này: đây KHÔNG phải dựng tay — có sẵn file `assets/tai-nguyen-chung/Logo+outro Uyên/Logo Animation_1.mp4` (xác nhận 2026-07-15, cùng file xuất hiện lặp lại ở ít nhất 6 video khác trong HUY MKT — CC1 ads, Vinschool ×2, Phúc Yên ×2, Unbox Omnie — nên là asset dùng chung thật, không phải trùng hợp). File này có bản card cá nhân hóa "Phương Uyên" — nếu dùng cho video khác cần hỏi Sếp có bản card công ty chung hay phải làm lại card riêng.

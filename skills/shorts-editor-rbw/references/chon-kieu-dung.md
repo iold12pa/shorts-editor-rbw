@@ -19,8 +19,18 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Source video/folder | **Bắt buộc** | "Cho tôi xin folder hoặc link video nguồn nhé" |
 | Mô tả buổi quay (địa điểm, robot, sự kiện hôm đó) | Nên có | "Buổi quay này ở đâu, quay robot gì, hôm đó có nội dung/sự kiện gì đặc biệt không?" |
 | Chữ đè: tự viết hay để Claude viết | Cần biết | "Bạn muốn tự viết sẵn câu chữ đè lên video, hay để tôi xem nội dung rồi tự viết?" |
+| **LOẠI NHẠC: trend hay không bản quyền** | **Bắt buộc hỏi — luật Sếp Huy 20/07/2026** | Xem khối ngay bên dưới |
 | Nhạc nền: bài cụ thể hay để chọn | Cần biết | "Có bài nhạc cụ thể muốn dùng không, hay để tôi chọn phù hợp?" |
 | Style cụ thể | Xem `references/style-mau.md` |
+
+**Câu hỏi BẮT BUỘC của Kiểu 1 — loại nhạc** (chỉ Kiểu 1 mới hỏi, vì đây là kiểu "nhạc + chữ", nhạc là phần xương sống):
+
+> "Video này bạn muốn dùng **nhạc trend** (nhạc hot TikTok — bắt tai, dễ lên tương tác, **nhưng chỉ nên đăng Facebook page**, đăng YouTube khả năng cao dính bản quyền/bị tắt tiếng), hay **nhạc không bản quyền** (đăng được mọi nền tảng kể cả YouTube, an toàn tuyệt đối)?"
+
+- Chọn **nhạc trend** → lấy từ `Kho nhạc free YT/Nhạc hot/` (xem cách dùng kho này ở `references/style-mau.md`, mục "Kho nhạc trend").
+- Chọn **nhạc không bản quyền** → lấy từ các folder còn lại trong `Kho nhạc free YT/` (`Chill nhẹ + vui vẻ`, `POP tươi sáng`...).
+- Người dùng chỉ định đích danh 1 bài → dùng đúng bài đó, không hỏi lại loại nhạc.
+- Đã hỏi rồi thì **không nhắc lại rủi ro bản quyền lần 2** trong cùng video (luật cũ: nhắc đúng 1 câu tại điểm duyệt kịch bản).
 
 ### Kiểu 2 — Dựng theo lời thoại có sẵn (voice gốc, đồng bộ lúc quay)
 | Cần | Mức độ | Nếu thiếu → hỏi |
