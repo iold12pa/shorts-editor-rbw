@@ -104,7 +104,14 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 ### Bước 1 — Xác định source & lập workspace
 
 - Dùng đúng đường dẫn đầy đủ người dùng đã đưa (gõ tay hoặc kéo-thả). Nếu bên trong có subfolder rõ ràng chứa clip nguồn (vd `Nguồn video\`), dùng đúng subfolder đó làm source; nếu clip nằm ngay cấp ngoài, dùng luôn folder đó.
-- Tạo workspace ngay trong folder buổi quay đó: `<folder buổi quay>\Workspace\` với các thư mục con: `analysis`, `kichban`, `fonts`, `temp`, `output` (thêm `voice\` nếu kịch bản có voiceover).
+- **Chỗ để hàng giao (luật Sếp Huy 20/07/2026) — TÁCH RÕ 2 NƠI:**
+  | Thư mục | Chứa gì | Ai xem |
+  |---|---|---|
+  | **`<folder buổi quay>\Final\`** | **CHỈ 2 thứ: video thành phẩm (.mp4) + file caption (.md) của chính video đó** | Sếp — mở là thấy hàng, không phải lục |
+  | `<folder buổi quay>\Workspace\` | Toàn bộ đồ nghề trung gian: `analysis`, `kichban`, `fonts`, `temp`, `voice`, `build-*.ps1` | Chỉ Claude dùng lại ở phiên sau |
+
+  Bộ khung folder buổi quay của Sếp **vốn đã có sẵn thư mục `Final` (để trống)** — dùng đúng thư mục đó, không tạo thêm tên khác. Chưa có thì tạo. **TUYỆT ĐỐI không để file trung gian, file tạm, ảnh sheet, log hay script vào `Final`** — vào đó là làm rối đúng chỗ Sếp cần gọn nhất.
+- Tạo workspace ngay trong folder buổi quay đó: `<folder buổi quay>\Workspace\` với các thư mục con: `analysis`, `kichban`, `fonts`, `temp` (thêm `voice\` nếu kịch bản có voiceover). **Không tạo `output\` nữa** — thành phẩm đi thẳng ra `Final\`.
 - Ghi input của Sếp (mô tả sự kiện, ý tưởng) vào `kichban\00-input.md`.
 - Nguồn là link Google Drive (hiếm) → tải bằng `python -m gdown --folder --continue "<link>" -O <workspace>\source` (nhớ đặt `PYTHONUTF8=1` nếu tên folder có dấu tiếng Việt; gdown bản mới ≥5.2 đã bỏ trần 50 file — nếu máy đang gdown cũ thì `pip install -U gdown` trước).
 
@@ -140,7 +147,7 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 3. Burn text ASS font Anton (hook vàng + text trắng, vị trí dưới logo — spec trong style-mau.md); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
 4. Nối **outro dọc** vào cuối bằng crossfade (xem mục 4d trong recipes) — luôn có, trừ khi Sếp nói rõ không cần lần này.
 5. Overlay logo giữa-trên (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — edge-tts, nhớ dùng `--file` UTF-8) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
-6. Xuất `output\video-N-<slug>.mp4` (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
+6. Xuất thẳng ra **`<folder buổi quay>\Final\video-N-<slug>.mp4`** (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
 7. **Tự nghiệm thu bắt buộc**: trích 4-5 frame (rải cả trong thân video lẫn đoạn outro) + Read kiểm tra (chữ đủ to, không tràn viền, không thừa dấu câu, logo không đè text và tự ẩn đúng lúc trước outro, hình không méo, không frame đen); ffprobe xác nhận thời lượng; **đo âm lượng bằng loudnorm** (lệnh đo trong ffmpeg-recipes mục 6) — chuẩn giao hàng là **-14 LUFS (±1)**, lệch thì mix lại. Sai thì sửa và dựng lại trước khi bàn giao.
 
    **3 phép rà bắt buộc thêm (bài học 19/07/2026 — Sếp bắt lỗi thật, xem `chon-canh-highlight.md` mục 3b + `style-voice-karaoke.md`):**
@@ -152,8 +159,8 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 
 ### Bước 5 — Bàn giao (LUÔN làm đủ cả 2 phần, không chỉ giao video)
 
-1. **Caption**: tạo bộ caption cho TỪNG video theo đúng `references/caption-format.md` (5 phần: 10 hook, caption FB, footnote cố định, hashtag, từ khóa + hook YouTube) → lưu `output/video-N-caption.md`. Đây là phần bàn giao bắt buộc đi kèm video, không phải tùy chọn — thiếu caption coi như chưa xong việc.
-2. `explorer "<workspace>\output"` để mở folder video final cho Sếp.
+1. **Caption**: tạo bộ caption cho TỪNG video theo đúng `references/caption-format.md` (5 phần: 10 hook, caption FB, footnote cố định, hashtag, từ khóa + hook YouTube) → lưu **`<folder buổi quay>\Final\video-N-<slug>-caption.md`**, đặt tên khớp đúng tên video để nhìn là biết caption của bài nào. Đây là phần bàn giao bắt buộc đi kèm video, không phải tùy chọn — thiếu caption coi như chưa xong việc.
+2. `explorer "<folder buổi quay>\Final"` để mở folder hàng giao cho Sếp. **Trước khi mở, rà lại: trong `Final` chỉ được có .mp4 và .md — thấy thứ gì khác thì dọn về `Workspace\` ngay.**
 3. Báo cáo: mỗi video ý tưởng gì, hook nào, thời lượng, cảnh đắt nhất; kèm nhận xét footage còn thiếu gì cho buổi quay sau.
 
 ## Quy chuẩn thành phẩm (theo video mẫu — chi tiết trong style-mau.md)
