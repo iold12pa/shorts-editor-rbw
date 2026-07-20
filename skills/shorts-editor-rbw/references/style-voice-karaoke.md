@@ -64,6 +64,29 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
    Rà bắt buộc trước khi burn: đọc soát toàn bộ sub, soi kỹ mọi tên riêng (Roboworld, Tràng An, BellaBot, PUDU, tên khách hàng) và mọi từ tiếng Anh.
 
+   **CÁCH VÁ (bài học 20/07/2026 — lần đầu vá hụt mất nửa số dòng)**: trong file .ass karaoke, **tag màu `{\c...}` nằm CHEN GIỮA các từ** (vd `nhà sách {\c&H00D2FF&}Trang{\c&HFFFFFF&} An`) → tìm chuỗi liên tục `"Trang An"` sẽ **sót** đúng những dòng đang tô từ đó. Phải thay theo **TOKEN TỪ** (regex biên từ) trên cả dòng, mới quét đủ mọi event.
+
+   **2 lỗi Whisper phải bắt bằng mắt, không có cách tự động (20/07/2026)**:
+   - **Whisper BỊA chữ trên đoạn im**: đoạn không có tiếng hay bị gán câu quảng cáo YouTube ("Hãy subscribe cho kênh Ghiền Mì Gõ...", "Cảm ơn các bạn đã theo dõi") — đây KHÔNG phải thoại thật, thấy là xoá.
+   - **Whisper GÁN NHẦM câu vào đoạn B-roll không tiếng**: ca thật video K2 — cụm "Chính xác luôn" bị kéo dài **19.93 → 31.53 (12 giây)** phủ hết đoạn B-roll, trong khi câu đó thực tế nằm ở giây 29.6. Cách sửa: dồn lại đúng mốc cảnh có thoại, giữ nguyên số event + tag màu.
+
+## LUẬT VIẾT LỜI CHO GIỌNG AI (Kiểu 3) — đo thật 20/07/2026
+
+**Mọi giọng TTS hiện có đều đọc SAI tên thương hiệu và thuật ngữ nước ngoài.** Đã kiểm chứng khách quan bằng cách cho Whisper nghe lại bản đọc:
+
+| Giọng | Kết quả |
+|---|---|
+| **ElevenLabs "George"** (giọng mặc định trong skill, `JBFqnCBsd6RMkjVDRZzb`) | **KHÔNG dùng được cho tiếng Việt** — là giọng Anh, đọc tiếng Việt méo cả câu thường: "Thử cách này" → nghe ra *"Thú káč nai"*, "Khai trương thì bùng nổ doanh số" → *"Cái truong thị bùng no đoàn so"*. Chỉ dùng George khi lời đọc là tiếng Anh. |
+| **edge-tts `vi-VN-NamMinhNeural`** (giọng Việt, miễn phí) | Câu tiếng Việt thuần đọc **sạch**. Nhưng từ nước ngoài vẫn sai: "thuê PG" → *"thuê pin"*, "BellaBot Pro" → *"Bella Popper"*, "banner" → *"BN"*, "đề can" → *"DK"*, "Roboworld" → *"Robo uống"*. |
+| Viết phiên âm ("Bê la Bốt Pro") | **TỆ HƠN** — ra *"B là bố"*. Đừng chữa bằng phiên âm. |
+
+**→ LUẬT: lời cho giọng AI chỉ viết TIẾNG VIỆT THUẦN. Tên sản phẩm, thông số, tên thương hiệu, từ tiếng Anh → ĐẨY LÊN THẺ CHỮ trên hình, không cho TTS đọc.** Vừa chắc đúng, vừa dễ nhớ hơn cho người xem. Ví dụ đã dùng thật (video K3 20/07): voice đọc *"một em robot phục vụ sự kiện"* + thẻ chữ **BELLABOT PRO**; voice đọc *"màn hình quảng cáo lớn, di động"* + thẻ chữ **MÀN HÌNH 18.5 INCH**; voice đọc *"nhắn tin ngay cho chúng tôi"* + thẻ chữ **INBOX ROBOWORLD**.
+
+**Mẹo kèm theo**:
+- Sub karaoke cho Kiểu 3 nên **sinh từ CHÍNH LỜI GỐC đã viết + mốc câu của TTS** (edge-tts xuất kèm file `.srt`), **không cho Whisper nghe lại rồi làm sub** — lời gốc thì chắc chắn đúng chữ, Whisper thì thêm lỗi nghe.
+- **edge-tts báo `NoAudioReceived` là lỗi TẠM của dịch vụ Microsoft**, không phải sai tham số — cứ thử lại 2-3 lần là chạy (đã dính 20/07, lần 1 hỏng, lần 2 OK). Nhớ kiểm dung lượng file > 10KB rồi mới dùng, kẻo dựng nhầm file rỗng.
+- Trước khi dựng, **luôn cho Whisper nghe lại bản TTS** để bắt từ đọc sai — rẻ và nhanh hơn nhiều so với phát hiện sau khi đã dựng xong.
+
 ## Khi nào KHÔNG dùng karaoke tô màu (rút từ khảo sát 2026-07-15, 10 folder HUY MKT)
 
 So sánh video hướng dẫn kỹ thuật (`28.Hướng dẫn sử dụng SH1`, `30.Hướng dẫn vs SH1` — nhân viên thao tác trực tiếp + tự thuyết minh) với video marketing/review (`34.Nhà sách Tràng An`, nhóm ADS) cho thấy 2 mục đích dùng 2 kiểu phụ đề khác nhau:

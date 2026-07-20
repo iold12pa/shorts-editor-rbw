@@ -181,6 +181,8 @@ adelay_offset = mốc_hành_động − lead_in_đo_được
 | `24 - Glitch.mp3` | 0.10 | 2.0 | |
 | `29 - Boom.mp3` | **0.60** | 1.2 | |
 | `09 - Game point.mp3` | 0.05 | 1.4 | |
+| `21 - Kids yeyy.mp3` | **0.70** | 1.2 | đo 20/07/2026 — tiếng trẻ reo, hợp cảnh bé tương tác robot |
+| `22 - Display digits.mp3` | **0.50** | 1.3 | đo 20/07/2026 — hợp thẻ chữ có SỐ LIỆU (thông số, giá) |
 
 **Đo lead-in cho 1 file SFX mới** (chưa có trong bảng) — dùng đường bao biên độ, **KHÔNG dùng `silencedetect` ngưỡng đơn** (từng cho số SAI với "Ding" vì bắt nhầm đoạn nhiễu cuối file):
 
@@ -190,6 +192,16 @@ ffmpeg -i "file.mp3" -t 1.0 -af "asetnsamples=n=2205,astats=metadata=1:reset=1,a
 → tìm khung 50ms có dB cao nhất, đó là lead-in.
 
 **Mốc âm lượng chuẩn**: lấy đỉnh thoại sau `dynaudnorm` (mean ≈ -14.5dB) làm chuẩn so sánh; SFX phải ngang hoặc nhỉnh hơn mốc đó mới nghe rõ. Kiểm bằng `volumedetect`.
+
+### Luật 3 — 3 cái bẫy khi mix (đều đã dính thật ngày 20/07/2026)
+
+1. **`amix=duration=first` CẮT MẤT OUTRO**: nếu nhánh audio đầu tiên là track âm gốc (dài đúng bằng thân video), `duration=first` khiến audio kết thúc ở cuối thân → `-shortest` cắt luôn phần outro khỏi video final (đo ra 38.3s thay vì 46.7s). **Luôn dùng `amix=duration=longest`** khi mix có track outro trễ (`adelay`).
+2. **Trích khung để soi chữ ASS: `-ss` đặt TRƯỚC `-i` là chữ KHÔNG hiện** — seek đầu vào làm timestamp output về 0 nên filter `ass` không thấy sự kiện nào ở mốc đó. Cách đúng: **burn ASS vào video trước, rồi mới trích khung từ video đã burn** (bước burn dù sao cũng cần).
+3. **`loudnorm` 1 lượt có thể trượt chuẩn**: bản K3 20/07 chạy 1 lượt ra **-15.35 LUFS** (ngoài -14 ±1). Nghiệm thu bắt được → phải chạy **lượt 2** với số đã đo, video giữ nguyên (`-c:v copy`, chỉ mã hoá lại audio):
+   ```powershell
+   ffmpeg -y -i final.mp4 -af "loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=-15.35:measured_TP=-1.41:measured_LRA=4.80:measured_thresh=-25.89:offset=0.67:linear=true" -c:v copy -c:a aac -b:a 192k fix.mp4
+   ```
+   → đo lại ra -14.38 LUFS, đạt. **Luôn đo sau khi mix; lệch quá ±1 thì chạy lượt 2, đừng bỏ qua.**
 
 Mỗi SFX là 1 input riêng, canh thời điểm bằng `adelay` (đơn vị milliseconds, ghi 2 lần cách nhau `|` cho stereo) rồi gộp cùng nhạc nền bằng `amix`:
 
