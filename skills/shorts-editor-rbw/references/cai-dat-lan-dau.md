@@ -24,7 +24,7 @@ Rồi làm tuần tự bên dưới. Đường dẫn gốc của gói (dùng cho
 1. Kiểm `python --version` — chưa có thì `winget install Python.Python.3.12 -e --source winget` (báo 1 câu).
 2. **Cài BỘ THƯ VIỆN PYTHON (bắt buộc — thiếu là mất nửa số tính năng)**, im lặng, ~1-3 phút:
    ```powershell
-   python -m pip install -U gdown edge-tts pillow moderngl librosa "numpy<2"
+   python -m pip install -U gdown edge-tts pillow moderngl librosa opencv-python google-genai "numpy<2"
    ```
    | Thư viện | Thiếu thì mất gì |
    |---|---|
@@ -33,6 +33,8 @@ Rồi làm tuần tự bên dưới. Đường dẫn gốc của gói (dùng cho
    | `librosa` | **không dò được phách/BPM** → mất cắt-bám-phách và mất tính năng tách nhạc từ mix dài |
    | `moderngl` | không chạy được chuyển cảnh GL (~80 kiểu) |
    | `pillow` | không làm được luma wipe, thẻ chữ động, mask logo |
+   | `opencv-python` | không chấm được điểm kỹ thuật clip (độ nét / chuyển động) → mất bước lọc clip hỏng |
+   | `google-genai` | không chạy được **mắt AI Gemini** (`quet_mat_ai.py`, `gemini_vision.py`) |
    | `numpy<2` | **phải ghim <2** — numpy 2.x làm hỏng rembg/cv2 (đã dính thật) |
 
    Không cài trong lệnh trên: **`rembg`** (tách nền AI) — nó kéo theo `onnxruntime` + model u2net ~170MB, chỉ cần khi dựng cảnh cutout. Để dành, khi nào thật sự cần thì `python -m pip install rembg` rồi báo người dùng mất thêm ~2 phút.

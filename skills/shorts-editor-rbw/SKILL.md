@@ -181,7 +181,13 @@ Miễn phí, chạy offline, không gọi API, ~1-2 giây/clip. Đo **độ nét
 
 **Đây là cờ cảnh báo, không phải án quyết định** — bokeh hay motion blur cố ý cũng bị chấm "mờ". Dùng để thu hẹp việc phải xem, không thay việc xem.
 
-**Bước 2c — MẮT AI GEMINI (tuỳ chọn, TỐN TIỀN — chỉ chạy khi cần hiểu nội dung)**:
+**Bước 2c — MẮT AI GEMINI (TUỲ CHỌN — TỐN TIỀN THẬT + GỬI CLIP LÊN CLOUD)**
+
+> ⚠️ **HAI ĐIỀU PHẢI HỎI NGƯỜI DÙNG TRƯỚC KHI CHẠY, KHÔNG ĐƯỢC TỰ Ý:**
+> 1. **Tốn tiền thật** trên tài khoản Google của chủ key (~150-200đ/phút video). Quét cả một buổi quay 15 phút ≈ 3.000đ; quét cả kho 35 folder ≈ vài trăm nghìn. **Không bao giờ tự quét cả folder** khi chưa được đồng ý — mặc định chỉ chạy khi người dùng nói rõ, và nên kèm `--limit` cho lần đầu.
+> 2. **Clip được UPLOAD lên máy chủ Google** (script tự xoá ngay sau mỗi clip, nhưng dữ liệu vẫn đã rời khỏi máy). Footage quay tại nhà máy/bệnh viện/trường học của khách hàng có thể thuộc diện ràng buộc bảo mật — **hỏi trước khi gửi footage của khách lên cloud.**
+>
+> Bước này KHÔNG bắt buộc. Không có nó thì vẫn dựng video bình thường (đọc sheet bằng mắt như cũ).
 
 ```powershell
 python "<skill-dir>\scripts\quet_mat_ai.py" --src "<folder buổi quay>" --index "<workspace>\analysis\index.json" --limit 10
