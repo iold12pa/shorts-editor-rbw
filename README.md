@@ -71,4 +71,3 @@ Mục tiêu tối thượng: **mọi bản cập nhật, kể cả nâng cấp l
 - Đã xác nhận đầu-cuối với người dùng thật khác máy (2026-07-16, Cao Đắc Chiến) — cài qua chính app Claude, không cần mở terminal riêng.
 - Mỗi lần dựng video, tự đưa đường dẫn đầy đủ tới folder buổi quay (không có bước cấu hình cố định lúc cài) — footage để ở ổ đĩa/thư mục nào cũng được.
 - Lần đầu Claude thao tác vào 1 thư mục footage mới, Windows/Claude Code sẽ hiện hộp thoại xin quyền — chọn "luôn cho phép", chỉ hỏi 1 lần cho mỗi thư mục.
-- Muốn dùng qua Telegram thay vì gõ trực tiếp: xem `telegram-bot/README.md` (tùy chọn, đang gác lại — chưa khuyến khích dùng).

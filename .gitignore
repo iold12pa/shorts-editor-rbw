@@ -32,12 +32,6 @@ skills/shorts-editor-rbw/assets/tai-nguyen-chung/
 __pycache__/
 *.pyc
 
-# Bi mat + du lieu rieng cua tung nguoi cai bot Telegram ca nhan - KHONG dua len git
-telegram-bot/config.json
-telegram-bot/sessions.json
-telegram-bot/workspaces/
-telegram-bot/bot.log
-
 # Tuy chinh rieng theo may (moi may co ban rieng qua hoi thoai, KHONG dung chung/KHONG len git)
 # Ban mau .example van duoc commit binh thuong de may nao cung thay huong dan cach dung
 skills/shorts-editor-rbw/references/tuy-chinh-rieng.md
