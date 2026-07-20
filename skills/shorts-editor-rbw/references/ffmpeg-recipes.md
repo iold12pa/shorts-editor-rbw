@@ -154,7 +154,7 @@ ffmpeg -y -i temp\ghep.mp4 -vf "ass=temp/video-1.ass:fontsdir=fonts" -c:v libx26
 
 ## 4b. Sound effect (SFX) — dùng DÀY theo kiểu TikTok/Reels
 
-Nguồn an toàn: **YouTube Studio → Thư viện âm thanh → tab "Hiệu ứng âm thanh"** (`https://studio.youtube.com/channel/<id>/music`, cùng tài khoản/cùng cách tải với nhạc nền — nút "Tải xuống" xuất hiện khi hover từng dòng, xem mục 1b). Tìm bằng từ khoá tiếng Anh mô tả âm thanh (vd "whoosh", "wrench", "chime", "click") vì thư viện không có bản tiếng Việt. Kho sẵn có: `assets/tai-nguyen-chung/SFX/Bo 35 SFX` — cây quyết định chọn tiếng nào xem `so-sfx.md`.
+Nguồn an toàn: **YouTube Studio → Thư viện âm thanh → tab "Hiệu ứng âm thanh"** (`https://studio.youtube.com/channel/<id>/music`, cùng tài khoản/cùng cách tải với nhạc nền — nút "Tải xuống" xuất hiện khi hover từng dòng, xem mục 1b). Tìm bằng từ khoá tiếng Anh mô tả âm thanh (vd "whoosh", "wrench", "chime", "click") vì thư viện không có bản tiếng Việt. Kho sẵn có: `kho tài nguyên: tìm theo tên thư mục SFX/Bo 35 SFX trong ~/.claude/roboworld-assets/tai-nguyen-chung/` — cây quyết định chọn tiếng nào xem `so-sfx.md`.
 
 ### Luật 1 — MỖI thẻ chữ đều kèm 1 SFX "pop" (Sếp Huy chốt 19/07/2026, THAY luật cũ 03/07/2026)
 
@@ -244,7 +244,7 @@ Và `offset` phải lấy từ duration **ĐO SAU KHI concat** (`ffprobe` trên 
 
 ## 4d. Nối outro dọc vào cuối video
 
-Outro dọc là file có sẵn (`assets/tai-nguyen-chung/Logo + Outro/outro dọc.mp4`, 2160x3840, ~9s, có sẵn nhạc/audio riêng). Luôn nối vào cuối mọi video (trừ khi Sếp nói không cần). Trình tự:
+Outro dọc là file có sẵn (`tìm theo TÊN FILE outro dọc.mp4 trong ~/.claude/roboworld-assets/tai-nguyen-chung/`, 2160x3840, ~9s, có sẵn nhạc/audio riêng). Luôn nối vào cuối mọi video (trừ khi Sếp nói không cần). Trình tự:
 
 1. Scale outro về đúng khung 1080x1920 (chia đúng 1/2, không méo):
 ```powershell

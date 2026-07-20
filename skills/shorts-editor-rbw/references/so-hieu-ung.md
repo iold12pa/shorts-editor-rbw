@@ -83,6 +83,30 @@
 - **BẪY đường dẫn chứa `[ ]` (lỗi IM LẶNG)**: `glob.glob` của Python hiểu `[ ]` là dải-ký-tự nên trả **rỗng**, `gl_runner.py` từng chạy xong vẫn in "OK ... 0 khung" và `exit 0` như thành công (đã vá bằng `glob.escape` + thoát lỗi rõ ràng). **PowerShell `Get-ChildItem` cũng dính** — phải thêm `-LiteralPath`. **Nhưng `ffmpeg`/`ffprobe` thì KHÔNG dính** (đo lại 20/07/2026, bản ghi 19/07 nói ngược là sai) → **không cần copy footage ra đường dẫn sạch**, chỉ cần dùng đúng hàm liệt kê file. Bảng đầy đủ ở `ffmpeg-recipes.md` mục 0.3.
 - **`xfade` trên ffmpeg 8.x**: bắt buộc `fps=30,settb=AVTB` (fps TRƯỚC settb) ở CẢ 2 nhánh, offset lấy từ duration đo SAU concat — chi tiết ở `ffmpeg-recipes.md` mục 4c.
 
+## BỘ SCRIPT HIỆU ỨNG có sẵn trong skill — `scripts/fx/` (bổ sung tài liệu 20/07/2026)
+
+> **Vì sao mục này tồn tại**: 6 script dưới đây nằm trong skill từ 18/07 nhưng **không tài liệu nào nhắc tới**, nên phiên Claude sau không biết chúng có mà dùng. Hậu quả thật: ngày 20/07 tôi ngồi viết lại code dò phách trong scratchpad, trong khi `find_beats.py` đã nằm sẵn ngay đây. Ghi lại để không lặp lại.
+
+| Script | Làm gì | Tình trạng |
+|---|---|---|
+| **`find_beats.py`** | Đo BPM + mốc từng phách của bài nhạc, **in luôn gợi ý độ dài cảnh** (cắt mỗi 8 phách = ?s/cảnh) | ✅ **Dùng được ngay**, đã nâng cấp 20/07 |
+| `gl_runner.py` | Chạy shader GL-Transitions giữa 2 clip → chuỗi khung PNG giao thoa | ✅ dùng được (nhận tham số) |
+| `make_luma.py` | Sinh 5 bộ mask luma-wipe (18 khung/bộ) cho chuyển cảnh quét | ⚠️ demo, đường dẫn cứng |
+| `make_logomask.py` | Mask logo phóng to dần → chuyển cảnh xuyên qua logo | ⚠️ demo, đường dẫn cứng |
+| `make_title.py` | Vẽ tiêu đề gradient vàng→trắng + bóng đổ kiểu poster | ⚠️ demo, chữ cứng "ROBOWORLD" |
+| `make_product.py` | Ghép ảnh sản phẩm không nền + bóng đổ mềm | ⚠️ demo, tìm cứng ảnh SH1 |
+| `make_cutout.py` | Tách nền robot khỏi 75 khung bằng rembg | ⚠️ demo + cần cài thêm `rembg` |
+
+**Đọc cột "tình trạng" cho đúng**: 5 script gắn ⚠️ là **script demo viết cho một buổi**, đường dẫn đầu vào ghi cứng trong code (`nhac.mp3`, `logo.png`, `temp/fg9/`). Muốn dùng lại phải mở ra sửa đường dẫn — đừng gọi thẳng rồi tưởng nó hỏng.
+
+**Cách dùng `find_beats.py`** (hay dùng nhất — mọi video Kiểu 1 dùng nhạc trend đều nên chạy):
+
+```powershell
+python "<skill-dir>\scripts\fx\find_beats.py" "<file nhac.mp3>" --tu 52 --dai 45
+```
+
+`--tu` = giây bắt đầu đọc (dùng khi chỉ lấy "đoạn hay" giữa bài). Script in ra BPM, mốc từng phách, và bảng gợi ý: *cắt mỗi 8 phách → 3.53s/cảnh, mỗi 12 phách → 5.29s/cảnh*. **Lấy đúng mấy con số đó làm độ dài từng cảnh** là mọi cú cắt rơi vào nhịp. Cảnh hook và cảnh CTA nên để dài hơn (12 phách), cảnh giữa chạy nhanh (8 phách).
+
 ## NGUYÊN TẮC DÙNG từ giáo lý dựng phim + motion design (tra cứu nguồn ngành 17/07/2026)
 
 **Chọn điểm cắt — Rule of Six của Walter Murch (editor huyền thoại, giản lược cho shorts):** khi phân vân cắt ở đâu, ưu tiên theo thứ tự: **CẢM XÚC (quan trọng nhất, đáng hơn cả 5 tiêu chí còn lại cộng lại) > tiến câu chuyện > đúng nhịp > hướng mắt người xem đang nhìn**. Phải hy sinh thì hy sinh từ dưới lên — không bao giờ hy sinh cảm xúc.

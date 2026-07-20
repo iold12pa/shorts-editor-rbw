@@ -2,6 +2,10 @@
 
 Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage buổi quay, theo đúng phong cách công ty (học từ hàng chục video mẫu thật). Hỏi bạn chọn 1 trong 3 kiểu dựng, kiểm tra đủ nguyên liệu, đề xuất kịch bản cho duyệt, rồi tự dựng bằng ffmpeg.
 
+> ### 👉 Người mới đọc file này trước: **[HUONG-DAN-NGUOI-MOI.md](HUONG-DAN-NGUOI-MOI.md)**
+> Hướng dẫn cài + dùng cơ bản, viết cho người không rành kỹ thuật, đọc 5 phút.
+> File README bạn đang đọc thiên về kỹ thuật và quy tắc bảo trì repo.
+
 ## Cài đặt (máy đã có Claude Code)
 
 **Điều kiện trước khi bắt đầu**: đã cài Claude Code và có gói subscription (Sếp là người cấp/hướng dẫn nếu chưa có). Repo này ở chế độ **công khai (public)** — không cần tài khoản GitHub, không cần đăng nhập git.
