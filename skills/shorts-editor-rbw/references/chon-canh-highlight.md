@@ -28,6 +28,18 @@ Từ buổi quay này, các loại cảnh sau **hoàn toàn không lên video fi
 
 Nguyên tắc: khi rà source, GẠCH BỎ SỚM 2 loại này khỏi danh sách ứng viên để đỡ mất công cân nhắc.
 
+## 3b. LUẬT CẤM CẢNH "MC-CUTAWAY" — áp dụng CẢ 3 KIỂU DỰNG (Sếp bắt lỗi 19/07/2026, 2 lần)
+
+**Luật**: TUYỆT ĐỐI không dùng cảnh **"người đang đứng nói / nhìn trực diện máy quay"** làm B-roll/cutaway, nếu âm thanh phát tại chính giây đó **không phải giọng gốc đồng bộ của chính khoảnh khắc đó**. Khán giả thấy miệng người ta mấp máy mà tiếng lại là của người khác/của voice-over → lộ ngay là ghép ẩu.
+
+**Vẫn được phép**:
+- (a) Đúng đoạn đang dùng voice gốc của MC → chèn cảnh **MINH HỌA nội dung đang nói** (MC nói "thu hút khách" → cắt sang cảnh khách vây quanh robot).
+- (b) Cảnh **"mọi người nói chuyện với nhau"**, không nhìn máy quay, không rõ đang phát ngôn nội dung nào → dùng trám bình thường.
+
+**Vì sao thành luật cứng**: Sếp bắt đúng lỗi này **2 lần trong 1 ngày, ở 2 kiểu dựng khác nhau** — video-1 (Kiểu 2C có thoại, giây 29.0-30.5: nhân viên áo xanh + bé trai đứng trực diện máy quay trong khi voice đang đọc nốt câu của MC khác) và video-2 (Kiểu 1 không thoại, giây 23.5-26.17, cùng 1 diễn viên áo xanh). Lặp ở 2 kiểu = **lỗi hệ thống trong logic chọn cutaway**, không phải sơ suất lẻ.
+
+**Bước rà soát BẮT BUỘC trước khi chốt mọi video (cả 3 kiểu)**: duyệt lại từng cảnh cutaway, tự hỏi *"trong khung này có ai đang nói/nhìn thẳng máy quay không, và tiếng đang phát có đúng là của chính họ tại chính lúc đó không?"* — sai một trong hai thì thay cảnh. Cảnh thay thế an toàn nhất đã dùng thực tế: người tương tác với robot (trẻ em chạm robot, khách nhảy nhót cạnh quầy).
+
 ## 4. Cảnh dài (60s+) chỉ bị "khai thác" vài giây, không dùng nguyên clip
 
 Buổi quay có nhiều clip rất dài do MC nói liên tục nhiều đoạn kịch bản trong 1 lần bấm quay (0023: 118.5s, 0035: 86.5s, 0051: 60.8s, 0045: 44.5s). Video final chỉ trích ra ĐÚNG câu cần dùng từ mỗi clip dài này, cắt bỏ phần còn lại (kể cả khi phần còn lại cũng có thoại).

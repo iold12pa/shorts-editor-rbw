@@ -11,6 +11,7 @@
    ```
    (`config.json` mặc định để trống — chỉ cần điền khi ffmpeg không có sẵn trên PATH hệ thống, xem ghi chú trong chính file đó)
 3. File trung gian đặt trong `temp\`, đặt tên có số thứ tự (`s01.mp4`, `s02.mp4`...) đúng thứ tự kịch bản.
+   - **CẤM đường dẫn chứa ngoặc vuông `[ ]`** (bài học 19/07/2026, mất thời gian truy lỗi): `glob.glob` của Python coi `[ ]` là ký tự dải-ký-tự nên trả về **rỗng** — script chạy xong vẫn `exit 0`, in "OK ... 0 khung", **lỗi hoàn toàn im lặng**. Chiều 19/07 xác nhận **`ffmpeg -i` cũng hỏng y hệt** trên path có `[ ]`. Nếu footage của Sếp nằm trong folder kiểu `D:\...\[EDIT]\...` → **copy file ra đường dẫn sạch trước khi xử lý**, đừng cố xử lý tại chỗ. (Script trong skill đã vá bằng `glob.escape` + báo lỗi thay vì im lặng, nhưng lệnh gõ tay vẫn dính.)
 4. Mọi file trung gian encode cùng một chuẩn (1080x1920, 30fps, h264, yuv420p, aac 48kHz) — concat mới không lỗi.
 5. File text cho ffmpeg (concat list, .ass, .srt) ghi bằng **UTF-8** — PowerShell `Out-File` mặc định UTF-16 sẽ hỏng; luôn dùng `-Encoding utf8` hoặc viết bằng tool Write.
 6. **Chọn encoder cho CẢ PHIÊN (GPU nếu có)** — chạy đúng 1 lần ở đầu phiên dựng, rồi dùng thống nhất cho mọi lệnh (quy tắc 0.4 cần các segment trung gian cùng chuẩn để `concat -c copy`):
@@ -142,11 +143,53 @@ Burn vào video (đường dẫn TƯƠNG ĐỐI + fontsdir, xem quy tắc 0.1):
 ffmpeg -y -i temp\ghep.mp4 -vf "ass=temp/video-1.ass:fontsdir=fonts" -c:v libx264 -preset fast -crf 18 -c:a copy temp\ghep_sub.mp4
 ```
 
-## 4b. Sound effect (SFX) — tuỳ chọn, dùng thưa
+## 4b. Sound effect (SFX) — dùng DÀY theo kiểu TikTok/Reels
 
-Nguồn an toàn: **YouTube Studio → Thư viện âm thanh → tab "Hiệu ứng âm thanh"** (`https://studio.youtube.com/channel/<id>/music`, cùng tài khoản/cùng cách tải với nhạc nền — nút "Tải xuống" xuất hiện khi hover từng dòng, xem mục 1b). Tìm bằng từ khoá tiếng Anh mô tả âm thanh (vd "whoosh", "wrench", "chime", "click") vì thư viện không có bản tiếng Việt.
+Nguồn an toàn: **YouTube Studio → Thư viện âm thanh → tab "Hiệu ứng âm thanh"** (`https://studio.youtube.com/channel/<id>/music`, cùng tài khoản/cùng cách tải với nhạc nền — nút "Tải xuống" xuất hiện khi hover từng dòng, xem mục 1b). Tìm bằng từ khoá tiếng Anh mô tả âm thanh (vd "whoosh", "wrench", "chime", "click") vì thư viện không có bản tiếng Việt. Kho sẵn có: `assets/tai-nguyen-chung/SFX/Bo 35 SFX` — cây quyết định chọn tiếng nào xem `so-sfx.md`.
 
-Nguyên tắc dùng (quan trọng, đã bị nhắc nhở khi làm sai — ngày 03/07/2026): **mỗi SFX phải khớp với một hành động/khoảnh khắc CỤ THỂ đang diễn ra trong hình** (tiếng cờ lê khi tay đang vặn ốc, tiếng whoosh khi hình đang chuyển cảnh, tiếng chime khi câu chữ báo "hoàn tất"). KHÔNG gắn SFX chỉ vì text vừa xuất hiện trên màn hình — nếu hành động trong hình không tạo ra âm thanh đó một cách tự nhiên thì đừng thêm, dù nghe "cho vui tai" đến đâu. Trước khi thêm 1 SFX, tự hỏi: "âm thanh này có match với thứ đang xảy ra trên hình không, hay chỉ đang lấp chỗ trống?" — nếu là lấp chỗ trống thì bỏ. Số lượng SFX không quan trọng bằng độ khớp; 1 video có thể chỉ cần 3-5 SFX thật sự đắt, không cần rải đều mỗi lần đổi chữ.
+### Luật 1 — MỖI thẻ chữ đều kèm 1 SFX "pop" (Sếp Huy chốt 19/07/2026, THAY luật cũ 03/07/2026)
+
+> **Luật cũ ngày 03/07/2026 nay KHÔNG còn hiệu lực**: luật đó ghi "KHÔNG gắn SFX chỉ vì text vừa xuất hiện — SFX phải khớp hành động cụ thể trong hình", chốt liều 3-5 SFX/video. Sếp xem video-1 Tràng An bản v3 (19/07) thấy còn thưa, được hỏi rõ "luật mới mâu thuẫn luật cũ, chọn cái nào" → **Sếp chọn luật mới thành chuẩn**.
+
+**Luật hiện hành**: **mỗi thẻ chữ xuất hiện đều được gắn 1 SFX "pop"** phù hợp NGHĨA của chữ (không random) — đây là cảm giác dày SFX kiểu TikTok/Reels. Mật độ thực tế đã dựng: **14 lớp SFX / 55 giây** (video-1 v4).
+
+- **Chọn loại tiếng theo nghĩa**: chữ hook → `04 - Pop`; tên sản phẩm/thông báo → `14 - Apple notification`; chữ mang cảm giác công nghệ ("CUSTOMIZE...") → `24 - Glitch`; chữ mang nghĩa bùng nổ ("KHAI TRƯƠNG BÙNG NỔ") → `29 - Boom`; còn lại → Pop/chime.
+- **Chỉ dùng "sound quốc dân" AN TOÀN cho brand B2B** (pop/notification/boom/glitch/chime). **CẤM** loại troll/meme (Bruh, Wasted, SpongeBob...) — không hợp thương hiệu Roboworld + có rủi ro bản quyền (nghiên cứu 19/07).
+- **Ngoại lệ (giữ nguyên, KHÔNG bị luật mới thay)**: thẻ chữ nào trùng mốc (~trong 1s) với 1 SFX hành động/transition đã có sẵn (riser, ding, fire, hit...) thì **KHÔNG thêm pop chồng lên** — vẫn giữ luật "không chồng quá 2 lớp SFX cùng lúc". Thực tế video-1 v4: 8/11 thẻ được gắn pop, 3 thẻ bỏ qua vì trùng mốc.
+- SFX gắn với **hành động trong hình** (whoosh lúc chuyển cảnh, ding lúc chốt) vẫn giữ nguyên như cũ — luật mới chỉ THÊM lớp text-pop, không bỏ lớp hành động.
+
+### Luật 2 — Đặt SFX theo ĐỈNH âm, không theo đầu file (Peak Impact Rule)
+
+Mọi file SFX đều có một đoạn **"lead-in"** câm/nhỏ ở đầu trước khi tới đỉnh thật. Đặt `adelay` bằng đúng mốc hành động là **SAI** — tiếng sẽ nổ muộn hơn hình. Nguyên tắc ngành (WeVideo/whitenoisestudio): **đỉnh TO NHẤT của SFX phải trùng khoảnh khắc hành động**, không phải điểm bắt đầu phát.
+
+```
+adelay_offset = mốc_hành_động − lead_in_đo_được
+```
+
+**Bảng lead-in đã ĐO THẬT (19/07/2026) — dùng lại cho mọi video, KHÔNG cần đo lại:**
+
+| File SFX | Lead-in (giây) | Volume khuyên dùng | Ghi chú |
+|---|---|---|---|
+| `01 - riser-metallic-sound-effect.mp3` | **1.80** | 1.05 | File có ~1s đệm câm ở CUỐI — cấm dùng full `ffprobe duration` để tính offset (từng lệch 964ms) |
+| `01 - Whoosh.mp3` | 0.10 | 0.95 | |
+| `19 - Whoosh 2.mp3` | 0.10 | 0.90 | |
+| `34 - Ding.mp3` | 0.25 | 1.40 | Volume cũ 0.75 quá nhỏ (đỉnh -6.4dB, thấp hơn thoại 6dB → không nghe thấy "keng") |
+| `08 - Woosh fire transition.mp3` | 0.20 | 0.90 | |
+| `26 - Cinematic hit.mp3` | **0.50** | 0.85 | Gần nửa giây "room tone" trước cú hit chính |
+| `04 - Pop.mp3` | 0.05 | 1.9 | |
+| `14 - Apple notification.mp3` | 0.30 | 2.2 | |
+| `24 - Glitch.mp3` | 0.10 | 2.0 | |
+| `29 - Boom.mp3` | **0.60** | 1.2 | |
+| `09 - Game point.mp3` | 0.05 | 1.4 | |
+
+**Đo lead-in cho 1 file SFX mới** (chưa có trong bảng) — dùng đường bao biên độ, **KHÔNG dùng `silencedetect` ngưỡng đơn** (từng cho số SAI với "Ding" vì bắt nhầm đoạn nhiễu cuối file):
+
+```powershell
+ffmpeg -i "file.mp3" -t 1.0 -af "asetnsamples=n=2205,astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file=-" -f null -
+```
+→ tìm khung 50ms có dB cao nhất, đó là lead-in.
+
+**Mốc âm lượng chuẩn**: lấy đỉnh thoại sau `dynaudnorm` (mean ≈ -14.5dB) làm chuẩn so sánh; SFX phải ngang hoặc nhỉnh hơn mốc đó mới nghe rõ. Kiểm bằng `volumedetect`.
 
 Mỗi SFX là 1 input riêng, canh thời điểm bằng `adelay` (đơn vị milliseconds, ghi 2 lần cách nhau `|` cho stereo) rồi gộp cùng nhạc nền bằng `amix`:
 
@@ -169,6 +212,14 @@ ffmpeg -y -i main_sequence.mp4 -i ending_scene.mp4 `
 ```
 
 `offset` = thời điểm (giây) trong `main_sequence.mp4` mà transition bắt đầu — lấy bằng `ffprobe` đo duration của main_sequence rồi trừ đi duration của transition (0.5-0.8s là đủ mượt mà không lê thê). Burn text ASS **sau** bước xfade này, dùng timeline của video ĐÃ GHÉP để mọi mốc thời gian trong .ass khớp đúng.
+
+**BẮT BUỘC với ffmpeg 8.x (bài học 19/07/2026)**: `xfade` đòi **timebase 2 nhánh phải khớp nhau**, không khớp thì transition ra sai chỗ hoặc lỗi thẳng. Luôn chuẩn hoá CẢ 2 nhánh trước khi xfade, **`fps` đặt TRƯỚC `settb`**:
+
+```powershell
+-filter_complex "[0:v]fps=30,settb=AVTB[a];[1:v]fps=30,settb=AVTB[b];[a][b]xfade=transition=fade:duration=0.6:offset=<offset>,format=yuv420p"
+```
+
+Và `offset` phải lấy từ duration **ĐO SAU KHI concat** (`ffprobe` trên chính file đã ghép), không cộng dồn thời lượng từng clip trên giấy — sai số concat tích lại làm lệch mốc.
 
 ## 4d. Nối outro dọc vào cuối video
 

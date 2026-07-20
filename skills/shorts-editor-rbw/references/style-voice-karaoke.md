@@ -44,8 +44,25 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 1. **Cấm ghép tiếng take A vào hình take B nếu trong hình có người đang nói** — dù là cùng câu kịch bản, nhịp 2 take khác nhau → lệch khẩu hình lộ liễu. Trước khi dùng 1 clip làm B-roll đè voice, PHẢI xem sheet xác nhận không ai trong hình đang nói (index tag `on-camera`/`noi-mic` = cảnh báo đỏ).
 2. **Pattern chuẩn cho mỗi đoạn thoại**: mở bằng chính người nói trên hình 2-3s đầu (tiếng + hình CÙNG take → khớp môi tuyệt đối), sau đó mới cắt sang B-roll trong khi voice chạy tiếp. Voice-off 100% chỉ khi clip nguồn vốn là narration sau camera (0031/0039 kiểu lia kệ sách).
 3. **Mốc transcript Whisper trong index chỉ để TÌM câu thoại, không phải để cắt** — trước khi cắt phải đo lại biên bằng `silencedetect=noise=-27dB:d=0.3` trên đúng vùng đó (Whisper hay tính cả khoảng lặng/hơi thở, có khi lệch nguyên một take).
+   - **NHƯNG: khoảng im ≥0.3s KHÔNG chắc là hết câu** (bài học 19/07/2026, ca thật clip 0049): `silencedetect` báo im tại 21.38s nên biên cắt chốt ở đó — thực tế MC chỉ **ngắt hơi giữa câu**, cụm **"BellaBot Pro"** nằm ngay SAU đó và bị cắt mất, video thi giao đi thiếu nguyên tên sản phẩm. Biên đúng của 0049 là **19.10 → 23.06**.
+   - **Luật bắt buộc**: với khối thoại định dùng làm "câu đứng riêng", sau khi chốt biên bằng silencedetect phải **cho Whisper nghe LẠI CHÍNH LÁT CẮT đó** xác nhận đủ chữ, đủ nghĩa rồi mới dùng. Cấm tin mỗi silencedetect. (Và cấm đi tắt bỏ qua silencedetect — 2 việc này bổ sung cho nhau, không thay thế nhau.)
 4. **Sau khi ghép voice track, chạy Whisper lại trên chính track thành phẩm** để lấy mốc sub thật — không đặt sub theo tỉ lệ ước lượng.
 5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take: (a) câu có NHIỀU take → lấy take CUỐI (thường là bản đạt); (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.
+
+6. **Sub karaoke do Whisper sinh ra PHẢI rà tay từng cụm trước khi burn** (bài học 19/07/2026 — 1 buổi dựng bắt **11 lỗi nghe** trong sub tự động). Whisper nghe tiếng Việt sai nhiều nhất ở **tên riêng, tên thương hiệu và thuật ngữ tiếng Anh** — đúng những chữ không được phép sai:
+
+   | Whisper nghe ra | Đúng phải là |
+   |---|---|
+   | hội trợ | hội chợ |
+   | danh số | doanh số |
+   | Automate | Customize |
+   | Piri | PG |
+   | Trà Ngan | Tràng An |
+   | Full Ngoan | Fanpage Roboworld |
+
+   **Cách vá mà KHÔNG mất tô màu karaoke**: file .ass karaoke chia chữ theo từng event có tag `\k`, nên **không được thay cả dòng** — phải sửa **đúng từ theo VỊ TRÍ TỪ trong từng event**, giữ nguyên số cụm và các mốc `\k`. Thay cả dòng là mất đồng bộ tô màu toàn câu.
+
+   Rà bắt buộc trước khi burn: đọc soát toàn bộ sub, soi kỹ mọi tên riêng (Roboworld, Tràng An, BellaBot, PUDU, tên khách hàng) và mọi từ tiếng Anh.
 
 ## Khi nào KHÔNG dùng karaoke tô màu (rút từ khảo sát 2026-07-15, 10 folder HUY MKT)
 

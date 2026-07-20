@@ -1,14 +1,20 @@
 # Sổ SFX — cây quyết định "khoảnh khắc nào dùng tiếng nào" (lập 2026-07-17)
 
-> Nền móng là LUẬT GỐC Sếp đặt 03/07/2026 (ghi ở ffmpeg-recipes mục 4b): **mỗi SFX phải khớp một hành động/khoảnh khắc CỤ THỂ đang diễn ra TRONG HÌNH** — hành động không tự nhiên tạo ra âm đó thì KHÔNG thêm, dù "vui tai" đến đâu. KHÔNG gắn SFX chỉ vì text vừa hiện. Sổ này biến luật đó thành quy trình chọn CHÍNH XÁC từng tiếng.
+> ⚠️ **CẬP NHẬT 19/07/2026 — luật nền của sổ này ĐÃ ĐỔI.** Luật gốc 03/07/2026 ("KHÔNG gắn SFX chỉ vì text vừa hiện", liều 3-5 SFX/video) **đã bị Sếp Huy thay** bằng luật mới: **mỗi thẻ chữ đều kèm 1 SFX pop hợp nghĩa** (kiểu TikTok/Reels, thực tế 14 lớp/55s) — xem `ffmpeg-recipes.md` mục 4b. Cây quyết định + ma trận bên dưới **vẫn dùng tốt cho lớp SFX-theo-hành-động**, nhưng phần liều lượng ở bước 4 đã lỗi thời, đọc theo bản vá ngay bên dưới.
+
+> Phần vẫn còn nguyên giá trị: **SFX khớp hành động cụ thể trong hình** (tiếng cờ lê khi vặn ốc, whoosh khi chuyển cảnh) — luật mới THÊM lớp text-pop chứ không bỏ lớp này.
 
 ## CÂY QUYẾT ĐỊNH (đi từ trên xuống, fail bước nào dừng bước đó)
 
-1. **Trong hình có hành động/khoảnh khắc gì đang XẢY RA THẬT?** Không có → KHÔNG SFX. (Text hiện ≠ hành động.)
+1. **Trong hình có hành động/khoảnh khắc gì đang XẢY RA THẬT?** Có → đi tiếp lấy SFX hành động. Không có nhưng **có thẻ chữ xuất hiện** → gắn 1 SFX **pop hợp nghĩa chữ** (luật mới 19/07, xem bước 4 bản vá).
 2. **Khoảnh khắc đó có ÂM GỐC hay không?** (trẻ em cười, robot beep thật, tiếng khách reo) → DÙNG ÂM GỐC (volume 0.2-0.3 theo chuẩn), KHÔNG đè SFX giả lên tiếng thật hay.
 3. **Tra ma trận bên dưới** → chọn NHÓM → chọn FILE theo tiêu chí: thời lượng khớp khoảnh khắc (tiếng ngắn cho hành động chớp nhoáng, riser dài cho build-up), tông video (nghiêm túc vs vui).
-4. **Kiểm liều lượng cả video**: tối đa 3-5 SFX/video; không chồng quá 2 lớp tiếng cùng lúc; 2 SFX cùng loại không đứng sát nhau <5s.
-5. **Canh timing bằng số liệu, không áng chừng**: lấy mốc hành động từ sheet/scene_changes của index (hoặc soi frame), `adelay=<ms>|<ms>`, volume 0.8-0.9, tiếng dài cắt bằng `atrim` lấy phần cần.
+4. **Kiểm liều lượng cả video — BẢN VÁ 19/07/2026** (thay dòng "tối đa 3-5 SFX/video" cũ):
+   - Mỗi thẻ chữ = 1 pop hợp nghĩa (hook→Pop, tên sản phẩm→notification, chữ công nghệ→Glitch, chữ bùng nổ→Boom).
+   - **Vẫn giữ**: không chồng quá 2 lớp tiếng cùng lúc → thẻ chữ trùng mốc (~1s) với SFX hành động sẵn có (riser/ding/hit) thì **BỎ pop**, không chồng.
+   - **Vẫn giữ**: 2 SFX cùng loại không đứng sát nhau <5s.
+   - Chỉ dùng "sound quốc dân" an toàn cho B2B; **cấm** troll/meme (Bruh, Wasted, SpongeBob) — lệch thương hiệu + rủi ro bản quyền.
+5. **Canh timing bằng số liệu, không áng chừng**: lấy mốc hành động từ sheet/scene_changes của index (hoặc soi frame), rồi đặt `adelay` theo công thức **`offset = mốc hành động − lead-in`** (mọi file SFX đều có đoạn câm ở đầu; bảng lead-in 11 file đã đo sẵn ở `ffmpeg-recipes.md` mục 4b — riser lệch tới 964ms nếu đặt sai). Tiếng dài cắt bằng `atrim` lấy phần cần.
 
 ## MA TRẬN: khoảnh khắc Roboworld → SFX trong kho (38 file, đã đo thời lượng)
 

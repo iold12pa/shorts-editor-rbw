@@ -133,9 +133,16 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 2. Ghép cảnh (concat)
 3. Burn text ASS font Anton (hook vàng + text trắng, vị trí dưới logo — spec trong style-mau.md); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
 4. Nối **outro dọc** vào cuối bằng crossfade (xem mục 4d trong recipes) — luôn có, trừ khi Sếp nói rõ không cần lần này.
-5. Overlay logo giữa-trên (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — edge-tts, nhớ dùng `--file` UTF-8) + sound effect ở đúng khoảnh khắc khớp hành động trong hình (nguồn: YouTube Studio "Hiệu ứng âm thanh" hoặc kho `Bo 35 SFX` có sẵn, xem mục 4b trong recipes — chỉ thêm khi thật sự khớp, không thêm cho có)
+5. Overlay logo giữa-trên (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — edge-tts, nhớ dùng `--file` UTF-8) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
 6. Xuất `output\video-N-<slug>.mp4` (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
 7. **Tự nghiệm thu bắt buộc**: trích 4-5 frame (rải cả trong thân video lẫn đoạn outro) + Read kiểm tra (chữ đủ to, không tràn viền, không thừa dấu câu, logo không đè text và tự ẩn đúng lúc trước outro, hình không méo, không frame đen); ffprobe xác nhận thời lượng; **đo âm lượng bằng loudnorm** (lệnh đo trong ffmpeg-recipes mục 6) — chuẩn giao hàng là **-14 LUFS (±1)**, lệch thì mix lại. Sai thì sửa và dựng lại trước khi bàn giao.
+
+   **3 phép rà bắt buộc thêm (bài học 19/07/2026 — Sếp bắt lỗi thật, xem `chon-canh-highlight.md` mục 3b + `style-voice-karaoke.md`):**
+   - **Rà cutaway**: duyệt từng cảnh chèn, loại mọi cảnh có người đang nói/nhìn trực diện máy quay mà tiếng phát tại đó không phải giọng gốc đồng bộ của chính họ. Áp dụng cho CẢ 3 kiểu dựng (Sếp đã bắt lỗi này ở cả Kiểu 1 lẫn Kiểu 2C).
+   - **Rà sub karaoke**: đọc soát toàn bộ sub Whisper trước khi burn, soi kỹ tên riêng + từ tiếng Anh (Roboworld, Tràng An, BellaBot, PUDU, Customize...) — 1 buổi từng có 11 lỗi nghe. Sửa theo VỊ TRÍ TỪ trong từng event, không thay cả dòng (mất tô màu).
+   - **Rà biên cắt thoại**: mọi lát cắt "câu đứng riêng" phải cho Whisper nghe lại chính lát cắt đó xác nhận đủ chữ — khoảng im ≥0.3s có thể chỉ là MC ngắt hơi giữa câu (ca thật: cắt mất "BellaBot Pro").
+
+8. **Lưu công thức dựng** (luật từ 19/07/2026): ghi lại toàn bộ chuỗi lệnh ffmpeg đã dùng thành `<workspace>\build.ps1` (kèm tên clip + mốc thời gian mỗi bước) — **không cần chạy lại tự động, chỉ để tham chiếu**. Lý do: khi Sếp yêu cầu sửa 1 lỗi cụ thể sau đó, có script gốc thì chỉ cần đọc + sửa 1 tham số; không có thì phải dò ngược bằng cách trích hàng loạt frame + đối chiếu timestamp thủ công (đã xảy ra thật ngày 19/07, rất tốn thời gian).
 
 ### Bước 5 — Bàn giao (LUÔN làm đủ cả 2 phần, không chỉ giao video)
 

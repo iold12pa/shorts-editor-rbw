@@ -72,9 +72,13 @@ vao = ctx.vertex_array(prog, [(vbo, "2f", "in_pos")])
 fbo = ctx.simple_framebuffer((W, H), components=4)
 fbo.use()
 
-fa = sorted(glob.glob(os.path.join(dir_a, "f_*.png")))
-fb = sorted(glob.glob(os.path.join(dir_b, "f_*.png")))
+# glob.escape: duong dan chua [ ] (vd "D:\Trang an\[EDIT]\...") lam glob tra RONG
+# -> script chay xong bao "OK ... 0 khung" ma exit 0, khong ai biet la loi (bai hoc 19/07/2026)
+fa = sorted(glob.glob(os.path.join(glob.escape(dir_a), "f_*.png")))
+fb = sorted(glob.glob(os.path.join(glob.escape(dir_b), "f_*.png")))
 n = min(len(fa), len(fb))
+if n == 0:
+    sys.exit("LOI: khong tim thay khung f_*.png trong %r hoac %r" % (dir_a, dir_b))
 for i in range(n):
     # PIL luu top-down; GL texture coi hang dau la v=0 (bottom) -> lat khi nap va lat lai khi doc
     ia = Image.open(fa[i]).convert("RGBA").transpose(Image.FLIP_TOP_BOTTOM)
