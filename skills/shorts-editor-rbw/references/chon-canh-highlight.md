@@ -40,6 +40,16 @@ Nguyên tắc: khi rà source, GẠCH BỎ SỚM 2 loại này khỏi danh sách
 
 **Bước rà soát BẮT BUỘC trước khi chốt mọi video (cả 3 kiểu)**: duyệt lại từng cảnh cutaway, tự hỏi *"trong khung này có ai đang nói/nhìn thẳng máy quay không, và tiếng đang phát có đúng là của chính họ tại chính lúc đó không?"* — sai một trong hai thì thay cảnh. Cảnh thay thế an toàn nhất đã dùng thực tế: người tương tác với robot (trẻ em chạm robot, khách nhảy nhót cạnh quầy).
 
+## 3c. SOI ĐÚNG ĐOẠN SẼ CẮT, không tin khung đại diện của clip (bài học 20/07/2026)
+
+Khi rà nhiều clip cùng lúc, cách nhanh là ghép mỗi clip 1 khung đại diện thành ảnh lưới. **Nhưng khung đó thường lấy ở giữa clip (~45%), còn đoạn định cắt lại nằm ở chỗ khác** — nội dung có thể khác hoàn toàn.
+
+Ca thật (video MT1, buổi bàn giao An Phát Xanh): lưới cho thấy clip `0023` là **người ngồi lái máy chà sàn cũ** — đúng cảnh "cách làm cũ" cần cho hook. Nhưng đoạn cắt đặt ở giây 6-11 lại ra **cảnh xe nâng bốc hàng**, chẳng liên quan. Cảnh đúng nằm ở giây 22. Dựng xong nghiệm thu mới phát hiện, phải dựng lại.
+
+**Luật**: sau khi chốt danh sách cảnh + mốc bắt đầu, **trích 1 khung ở GIỮA từng đoạn sẽ cắt** rồi xem lại một lượt, trước khi chạy dựng. Rẻ hơn nhiều so với dựng lại. Dùng `scratchpad/soi_doan.py` hoặc lệnh tương đương.
+
+**Kèm theo**: tên file clip có phần timestamp rất dễ gõ nhầm (`..._122541_0062_D` vs `..._122749_0062_D`). Tìm clip theo **mã 4 số** (`_0062_D`) chắc hơn gõ cả tên.
+
 ## 4. Cảnh dài (60s+) chỉ bị "khai thác" vài giây, không dùng nguyên clip
 
 Buổi quay có nhiều clip rất dài do MC nói liên tục nhiều đoạn kịch bản trong 1 lần bấm quay (0023: 118.5s, 0035: 86.5s, 0051: 60.8s, 0045: 44.5s). Video final chỉ trích ra ĐÚNG câu cần dùng từ mỗi clip dài này, cắt bỏ phần còn lại (kể cả khi phần còn lại cũng có thoại).

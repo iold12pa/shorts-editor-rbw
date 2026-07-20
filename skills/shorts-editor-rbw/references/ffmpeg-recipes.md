@@ -11,7 +11,16 @@
    ```
    (`config.json` mặc định để trống — chỉ cần điền khi ffmpeg không có sẵn trên PATH hệ thống, xem ghi chú trong chính file đó)
 3. File trung gian đặt trong `temp\`, đặt tên có số thứ tự (`s01.mp4`, `s02.mp4`...) đúng thứ tự kịch bản.
-   - **CẤM đường dẫn chứa ngoặc vuông `[ ]`** (bài học 19/07/2026, mất thời gian truy lỗi): `glob.glob` của Python coi `[ ]` là ký tự dải-ký-tự nên trả về **rỗng** — script chạy xong vẫn `exit 0`, in "OK ... 0 khung", **lỗi hoàn toàn im lặng**. Chiều 19/07 xác nhận **`ffmpeg -i` cũng hỏng y hệt** trên path có `[ ]`. Nếu footage của Sếp nằm trong folder kiểu `D:\...\[EDIT]\...` → **copy file ra đường dẫn sạch trước khi xử lý**, đừng cố xử lý tại chỗ. (Script trong skill đã vá bằng `glob.escape` + báo lỗi thay vì im lặng, nhưng lệnh gõ tay vẫn dính.)
+   - **Đường dẫn chứa ngoặc vuông `[ ]` — ĐO LẠI CHÍNH XÁC 20/07/2026** (bản ghi 19/07 nói "ffmpeg cũng hỏng" là **SAI**, đã kiểm chứng lại trên folder thật `05.An Phát Xanh\[24.04.26] Bàn giao MT1...`):
+
+     | Cách gọi | Path có `[ ]` | Cách xử lý |
+     |---|---|---|
+     | `ffmpeg -i "<path>"`, `ffprobe` | ✅ **CHẠY BÌNH THƯỜNG** | không phải làm gì |
+     | concat demuxer (file list) | ✅ chạy bình thường | không phải làm gì |
+     | Python `glob.glob` | ❌ trả **rỗng**, lỗi IM LẶNG | `glob.escape(dir)` — hoặc dùng `os.walk`/`os.listdir` |
+     | PowerShell `Get-ChildItem` | ❌ trả **0 file** dù thư mục có file | thêm **`-LiteralPath`** |
+
+     → **KHÔNG cần copy footage ra đường dẫn sạch** (bản ghi cũ khuyên vậy, làm mất công copy hàng GB vô ích). Chỉ cần dùng đúng hàm liệt kê file. Riêng path nằm **trong filter** (`ass=`, `subtitles=`, `movie=`) vẫn phải escape dấu `:` như quy tắc 0.1 — lỗi đó do dấu hai chấm, không liên quan ngoặc vuông.
 4. Mọi file trung gian encode cùng một chuẩn (1080x1920, 30fps, h264, yuv420p, aac 48kHz) — concat mới không lỗi.
 5. File text cho ffmpeg (concat list, .ass, .srt) ghi bằng **UTF-8** — PowerShell `Out-File` mặc định UTF-16 sẽ hỏng; luôn dùng `-Encoding utf8` hoặc viết bằng tool Write.
 6. **Chọn encoder cho CẢ PHIÊN (GPU nếu có)** — chạy đúng 1 lần ở đầu phiên dựng, rồi dùng thống nhất cho mọi lệnh (quy tắc 0.4 cần các segment trung gian cùng chuẩn để `concat -c copy`):
