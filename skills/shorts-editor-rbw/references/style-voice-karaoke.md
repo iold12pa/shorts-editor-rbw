@@ -37,7 +37,31 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
   ```
   Nghiệm thu: đo lại bằng `ffmpeg -i final.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -` — Input Integrated phải ra ≈ -14 (±1). Ghi kết quả đo vào báo cáo bàn giao.
 - Giọng: ElevenLabs (scripts/elevenlabs_tts.py, xuất words.json làm karaoke) — giọng do Sếp chỉ định; lỗi/chặn thì DỪNG BÁO, fallback edge-tts chỉ khi Sếp đồng ý (edge-tts không có word-timestamp chuẩn từng từ, sub karaoke sẽ kém chính xác hơn — nói rõ điều này khi xin ý kiến).
-- SFX vẫn theo nguyên tắc cũ (khớp hành động cụ thể, mục 4b ffmpeg-recipes).
+- SFX theo **luật hiện hành 19/07/2026**: mỗi thẻ chữ 1 SFX "pop" hợp nghĩa + các SFX khớp hành động trong hình (mục 4b ffmpeg-recipes). *(Câu cũ ở đây ghi "vẫn theo nguyên tắc cũ, khớp hành động cụ thể" — đó là luật 03/07 đã bị bãi bỏ, sửa 21/07.)*
+
+> ## 🔴 TRƯỚC KHI CHỌN NHẠC CHO KIỂU 2/3 — ĐỌC LUẬT NÀY
+>
+> **Nhạc cho Kiểu 2/3 KHÔNG chọn tự do.** Luật Sếp Huy 21/07/2026 chia 2 nhóm theo **mức phủ giọng**:
+>
+> | Nhóm | Khi nào | Nhạc |
+> |---|---|---|
+> | **A** — giọng dẫn **xuyên suốt** (MC nói cả bài, hoặc voice-over phủ phần lớn) | phần lớn video Kiểu 2/3 | **TUYỆT ĐỐI KHÔNG LỜI**, áp cho CẢ video kể cả đoạn cuối không ai nói. **CẤM folder `Nhạc hot`.** Không hỏi "trend hay không bản quyền" |
+> | **B** — giọng chỉ **1-2 câu mở đầu** rồi im hẳn | ít gặp | Được nhạc có lời/nhạc hot. PHẢI hỏi "trend hay không bản quyền". Nhạc nhỏ 0.15-0.2 lúc nói → dâng ~0.55 đến hết (công thức ffmpeg-recipes mục 5b) |
+>
+> **Câu hỏi bắt buộc hỏi người dùng ngay khi chốt Kiểu 2 hoặc 3:**
+> *"Video này giọng nói phủ tới đâu — dẫn xuyên suốt cả bài, hay chỉ 1-2 câu mở đầu rồi phần sau để cảnh robot chạy với nhạc?"*
+>
+> **Lý do**: hai giọng chồng nhau bắt tai người nghe chia sự chú ý, lời dẫn bị nuốt. **Hạ volume nhạc KHÔNG cứu được** — vấn đề là có 2 giọng, không phải nhạc to.
+>
+> **Không chắc bài có giọng hát không → kiểm bằng máy, đừng đoán theo tên file:**
+> ```powershell
+> python "<skill-dir>\scripts\kiem_nhac_co_loi.py" --folder "<thư mục nhạc>"
+> ```
+> Folder "nhạc không bản quyền" vẫn lẫn bài có lời (`POP tươi sáng` có ít nhất 2 bài hát thật).
+>
+> **Luật đầy đủ + bảng chi tiết**: `chon-kieu-dung.md` mục "Luật nhạc theo mức phủ giọng".
+>
+> *(Khối này thêm 21/07/2026 sau một ca thật: phiên dựng đọc đúng file này để làm Kiểu 2 + Kiểu 3, nhưng file khi đó không nhắc gì luật nhạc → chọn nhầm nhạc trend có lời đè lên giọng MC cho cả 2 video, phải mix lại. Luật có ở `chon-kieu-dung.md` là chưa đủ — người dựng Kiểu 2/3 mở thẳng file này.)*
 
 ## Quy tắc VOICE GỐC MC (format ③ — học từ lỗi video-3, 2026-07-13)
 
@@ -46,6 +70,22 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 3. **Mốc transcript Whisper trong index chỉ để TÌM câu thoại, không phải để cắt** — trước khi cắt phải đo lại biên bằng `silencedetect=noise=-27dB:d=0.3` trên đúng vùng đó (Whisper hay tính cả khoảng lặng/hơi thở, có khi lệch nguyên một take).
    - **NHƯNG: khoảng im ≥0.3s KHÔNG chắc là hết câu** (bài học 19/07/2026, ca thật clip 0049): `silencedetect` báo im tại 21.38s nên biên cắt chốt ở đó — thực tế MC chỉ **ngắt hơi giữa câu**, cụm **"BellaBot Pro"** nằm ngay SAU đó và bị cắt mất, video thi giao đi thiếu nguyên tên sản phẩm. Biên đúng của 0049 là **19.10 → 23.06**.
    - **Luật bắt buộc**: với khối thoại định dùng làm "câu đứng riêng", sau khi chốt biên bằng silencedetect phải **cho Whisper nghe LẠI CHÍNH LÁT CẮT đó** xác nhận đủ chữ, đủ nghĩa rồi mới dùng. Cấm tin mỗi silencedetect. (Và cấm đi tắt bỏ qua silencedetect — 2 việc này bổ sung cho nhau, không thay thế nhau.)
+
+   - **NGOẠI LỆ ĐÃ ĐO THẬT 21/07/2026 — môi trường ồn liên tục thì `silencedetect` VÔ DỤNG, không phải mình làm sai.**
+     Ca thật: buổi quay trong nhà máy dập (folder 33, BG1 King Duan). Tiếng máy dập + gió vào mic làm **nền tiếng không bao giờ tụt xuống dưới ngưỡng**. Đo thật trên clip 0148: `mean_volume -16.6 dB`, và `silencedetect` trả **0 sự kiện ở MỌI ngưỡng đã thử: -27dB, -18dB, -15dB, -12dB** (d=0.25).
+     **Dấu hiệu nhận biết sớm**: chạy silencedetect trên 5-6 vùng khác nhau mà vùng nào cũng ra "không có khoảng im" → dừng ngay, đừng nới ngưỡng thêm, chuyển sang quy trình dưới.
+
+     **Quy trình thay thế (đã dùng thật, chốt được đủ 6 lát trong 2 vòng):**
+     1. Lấy mốc thô từ `transcript` trong `index.json`, cộng/trừ đệm ~0.3s.
+     2. Cắt thử ra file `.wav` rồi **cho Whisper nghe lại chính lát cắt đó**.
+     3. Đọc kết quả theo 3 dấu hiệu:
+        - Câu **cụt giữa chừng / hết đột ngột** → biên PHẢI quá sớm, nới thêm.
+        - **Bắt đầu bằng nửa từ** (vd nghe ra *"bước bg1"* trong khi lời thật là *"quan tâm đến PUDU BG1"*) → biên TRÁI quá muộn, lùi lại.
+        - Xuất hiện **câu bịa** (xem mục "2 lỗi Whisper phải bắt bằng mắt") → đuôi lát cắt đang là ĐOẠN IM → cắt ngắn lại. **Đây là tín hiệu tốt, dùng nó để dò biên phải.**
+     4. Lặp lại bước 2-3 cho tới khi nghe ra đủ câu, đủ nghĩa, không có câu bịa ở đuôi.
+
+     **Kèm theo — Whisper nghe lát NGẮN kém hơn hẳn lát RỘNG** (cùng một đoạn tiếng): cắt 33.8→45.3 ra *"Về giá thì em nghĩ nó phải tương đương với lại trước xe ô tô đấy"*, nhưng nới thành 30.2→45.3 thì ra đúng *"Bên Roboworld mà em từng cung cấp, và giá thành của một chú robot này thì em nghĩ là nó phải tương đương với lại một chiếc xe ô tô đấy"*. **Whisper cần ngữ cảnh hai bên mới nghe đúng.**
+     → Khi kiểm 1 lát nghi vấn, **nghe thử ở cửa sổ RỘNG hơn dự định trước** để biết lời thật là gì, rồi mới thu về biên cần dùng. Đừng vội kết luận "take này hỏng" chỉ vì lát hẹp nghe ra chữ vô nghĩa — rất dễ loại oan một take tốt.
 4. **Sau khi ghép voice track, chạy Whisper lại trên chính track thành phẩm** để lấy mốc sub thật — không đặt sub theo tỉ lệ ước lượng.
 5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take: (a) câu có NHIỀU take → lấy take CUỐI (thường là bản đạt); (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.
 
@@ -68,6 +108,17 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
    **2 lỗi Whisper phải bắt bằng mắt, không có cách tự động (20/07/2026)**:
    - **Whisper BỊA chữ trên đoạn im**: đoạn không có tiếng hay bị gán câu quảng cáo YouTube ("Hãy subscribe cho kênh Ghiền Mì Gõ...", "Cảm ơn các bạn đã theo dõi") — đây KHÔNG phải thoại thật, thấy là xoá.
+
+     **Bộ câu bịa đã gặp thật — dùng làm danh sách nhận diện (bổ sung 21/07/2026):**
+     | Nghe tiếng Việt | Nghe tiếng Anh (`language=en`, hay gặp khi cho nghe NHẠC) |
+     |---|---|
+     | "Hãy subscribe cho kênh Ghiền Mì Gõ" · "Để không bỏ lỡ những video hấp dẫn" · "Cảm ơn các bạn đã theo dõi" · "Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng tôi nhé" | "Thank you." · "Bye." · "you" · "*music*" · "Applause" · "Please subscribe" |
+
+     **Hai cách dùng danh sách này:**
+     1. **Lọc bỏ** trước khi làm sub — đây không phải lời thật.
+     2. **Dùng làm tín hiệu**: câu bịa xuất hiện ở ĐUÔI một lát cắt = đuôi đó đang là đoạn im → biên phải đang quá dài, cắt ngắn lại (xem quy trình dò biên ở mục 3).
+
+     ⚠️ **Cảnh báo ngược — đừng chấm "có lời" chỉ vì Whisper trả về nhiều chữ.** Ca thật 21/07: cho Whisper nghe 6 bản nhạc để lọc bài có giọng hát, bài KHÔNG LỜI vẫn trả về đầy chữ ("Thank you. Bye. Bye. *music*...") nên bị chấm nhầm là "có giọng hát" cả 6/6. **Phải lọc bộ câu bịa ở trên ra trước, phần còn lại mới là lời hát thật.** Có script làm sẵn việc này: `scripts/kiem_nhac_co_loi.py` (xem `style-mau.md`).
    - **Whisper GÁN NHẦM câu vào đoạn B-roll không tiếng**: ca thật video K2 — cụm "Chính xác luôn" bị kéo dài **19.93 → 31.53 (12 giây)** phủ hết đoạn B-roll, trong khi câu đó thực tế nằm ở giây 29.6. Cách sửa: dồn lại đúng mốc cảnh có thoại, giữ nguyên số event + tag màu.
 
 ## LUẬT VIẾT LỜI CHO GIỌNG AI (Kiểu 3) — đo thật 20/07/2026

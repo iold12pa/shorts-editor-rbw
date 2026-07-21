@@ -16,7 +16,9 @@
    - Chỉ dùng "sound quốc dân" an toàn cho B2B; **cấm** troll/meme (Bruh, Wasted, SpongeBob) — lệch thương hiệu + rủi ro bản quyền.
 5. **Canh timing bằng số liệu, không áng chừng**: lấy mốc hành động từ sheet/scene_changes của index (hoặc soi frame), rồi đặt `adelay` theo công thức **`offset = mốc hành động − lead-in`** (mọi file SFX đều có đoạn câm ở đầu; bảng lead-in 11 file đã đo sẵn ở `ffmpeg-recipes.md` mục 4b — riser lệch tới 964ms nếu đặt sai). Tiếng dài cắt bằng `atrim` lấy phần cần.
 
-## MA TRẬN: khoảnh khắc Roboworld → SFX trong kho (38 file, đã đo thời lượng)
+## MA TRẬN: khoảnh khắc Roboworld → SFX trong kho (đã đo thời lượng)
+
+> **Đếm lại thật 21/07/2026**: `SFX/Bo 35 SFX/` có **36 file**, cộng **3 file rời** ngay ngoài `SFX/` = **39 file**. Con số "38" ghi trước đây và tên folder "Bo 35 SFX" đều không khớp — khi cần chắc chắn thì liệt kê thư mục, đừng trích số từ tài liệu.
 
 ### Nhóm CHUYỂN ĐỘNG (robot/camera lướt)
 | Khoảnh khắc trong hình | File | Ghi chú |

@@ -23,7 +23,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Nhạc nền: bài cụ thể hay để chọn | Cần biết | "Có bài nhạc cụ thể muốn dùng không, hay để tôi chọn phù hợp?" |
 | Style cụ thể | Xem `references/style-mau.md` |
 
-**Câu hỏi BẮT BUỘC của Kiểu 1 — loại nhạc** (chỉ Kiểu 1 mới hỏi, vì đây là kiểu "nhạc + chữ", nhạc là phần xương sống):
+**Câu hỏi BẮT BUỘC của Kiểu 1 — loại nhạc** (Kiểu 1 thì LUÔN hỏi câu này; Kiểu 2/3 chỉ hỏi khi rơi vào **Nhóm B** — xem "Luật nhạc theo mức phủ giọng" bên dưới. Sửa 21/07: chỗ này từng ghi "chỉ Kiểu 1 mới hỏi", nay không còn đúng):
 
 > "Video này bạn muốn dùng **nhạc trend** (nhạc hot TikTok — bắt tai, dễ lên tương tác, **nhưng chỉ nên đăng Facebook page**, đăng YouTube khả năng cao dính bản quyền/bị tắt tiếng), hay **nhạc không bản quyền** (đăng được mọi nền tảng kể cả YouTube, an toàn tuyệt đối)?"
 

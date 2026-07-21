@@ -87,11 +87,22 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    | Thông số robot | `references/robot-products.md` |
    | Số liệu khách hàng thật (proof point) | `references/case-studies.md` |
    | Lệnh ffmpeg / kỹ thuật dựng | `references/ffmpeg-recipes.md` |
+   | Hiệu ứng / chuyển cảnh / script `scripts/fx/` | `references/so-hieu-ung.md` |
+   | Chọn tiếng SFX theo khoảnh khắc | `references/so-sfx.md` |
    | Quy trình tổng / luật vận hành | `SKILL.md` |
 2. Viết luật **ngắn, kèm lý do + ngày + ai dạy** (vd "— Sếp Huy chỉnh 2026-07-17 sau video X"), đặt đúng mục có sẵn trong file, không phá cấu trúc.
 3. Luật mới **mâu thuẫn luật cũ** → chỉ ra chỗ mâu thuẫn, hỏi người dạy chốt rồi mới ghi đè (ghi cả dòng "thay luật cũ ngày ...").
 4. **Sửa CẢ 2 BẢN trên máy quản trị** (bản sống `~/.claude/skills/shorts-editor-rbw/` + bản repo trong `AI Boss\shorts-editor-rbw-plugin\`) — máy đồng nghiệp không có bản repo thì chỉ sửa được bản trên máy họ + NHẮC họ báo Sếp để đưa vào bản chung.
 5. Trên máy quản trị: commit đích danh file vừa sửa + **push NGAY, TỰ ĐỘNG — không hỏi "có đẩy không"** (chỉ đạo Sếp Huy 17/07/2026: "học được cái gì là auto đẩy lên"; điểm dừng duy nhất là bước 3 khi luật mới mâu thuẫn luật cũ). Kể cả đang giữa buổi dựng video cũng khắc + đẩy luôn rồi dựng tiếp, đừng để dồn cuối buổi rồi quên. Thêm 1 dòng CHANGELOG nếu luật đáng chú ý → báo lại 1 câu: *"đã khắc luật vào <file>, đã đẩy lên — cả team nhận khi mở lại app"*.
+
+   🔴 **BẮT BUỘC KÈM THEO — TĂNG SỐ BẢN, nếu không thì luật vừa khắc KHÔNG tới được máy nào cả.**
+   Sửa bất cứ file nào trong `skills/` thì **phải sửa luôn `version` trong `.claude-plugin/plugin.json`** thành ngày hôm nay, định dạng `YYYY.MM.DD` (vd `2026.07.21`). Commit chung một lần với file luật.
+
+   *Vì sao*: lệnh `claude plugin update` **so sánh đúng trường `version` đó**, không nhìn mã commit. Version không đổi → mọi máy chạy update đều nhận câu *"already at the latest version"* và **không kéo gì về**, dù GitHub đã có luật mới.
+
+   *Đã dính thật 21/07/2026*: 2 commit luật mới (nhạc Kiểu 2/3) push lên GitHub lúc 10:09 và 10:17 nhưng quên tăng version → nằm kẹt trên GitHub, không máy nào nhận. Phát hiện ra khi Sếp hỏi "tool cập nhật tới đâu rồi".
+
+   *Chốt chặn đã cài*: hook `.git/hooks/pre-push` trên máy legion **chặn push** nếu có sửa trong `skills/` mà không đổi version (đã test đúng ca này). ⚠️ Hook **không tự lan sang máy khác** — máy quản trị nào clone mới phải copy hook theo, hoặc tự nhớ luật này.
 6. **Không đưa vào repo**: bí mật (API key), đường dẫn riêng của 1 máy, sở thích cá nhân 1 người — những thứ đó chỉ ghi máy cục bộ.
 
 0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
@@ -145,7 +156,8 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
       - **Lý do luật gốc**: 2 giọng chồng lên nhau bắt tai người nghe chia sự chú ý, lời dẫn bị nuốt — hạ volume nhạc KHÔNG cứu được. Nhóm B thoát luật vì sau 1-2 câu đầu không còn giọng nào để chồng lên nữa.
       - Không chắc bài có giọng hát hay không → **nghe kiểm trước khi dùng** (folder `POP tươi sáng` có lẫn bài có lời). **Kiểu 1 không áp luật này.**
   - **Nhạc sinh bằng AI (ElevenLabs Music — option mở rộng, cần gói trả phí)**: chỉ dùng khi (a) người dùng chủ động yêu cầu "nhạc đo ni theo video", hoặc (b) kho không có bài hợp VÀ người dùng đồng ý. Chạy `python "<skill-dir>\scripts\elevenlabs_music.py" "<mô tả nhạc>" <output.mp3> --length-ms <độ dài video>` — gói Free sẽ lỗi, khi đó DỪNG BÁO "cần gói ElevenLabs trả phí", không tự thay bằng nguồn nhạc khác.
-  - **Sound effect**: kho 35 SFX đã tách file + đặt tên rõ trong folder `SFX/Bo 35 SFX` (vd `08 - Woosh fire transition.mp3`) — ưu tiên dùng kho này trước khi tải thêm. **Chỉ dùng SFX khi nó khớp với một hành động/khoảnh khắc CỤ THỂ trong hình** (xem nguyên tắc chi tiết ở ffmpeg-recipes mục 4b) — đừng gắn SFX chỉ vì text vừa xuất hiện.
+  - **Sound effect**: kho SFX trong `SFX/Bo 35 SFX` (vd `08 - Woosh fire transition.mp3`) — ưu tiên dùng kho này trước khi tải thêm. **Đếm thật 21/07/2026: 36 file trong folder đó + 3 file rời ngay ngoài `SFX/` = 39 file.** Tên folder "Bo 35 SFX" và các con số "35"/"38" trong tài liệu cũ đều KHÔNG khớp thực tế — đừng tin số, cứ liệt kê thư mục khi cần. **Luật hiện hành (19/07/2026): MỖI thẻ chữ đều kèm 1 SFX "pop" hợp nghĩa, CỘNG các SFX khớp hành động trong hình** — mật độ kiểu TikTok/Reels, ~14 lớp/55s. Chi tiết + bảng lead-in đã đo sẵn: ffmpeg-recipes mục 4b; cây chọn tiếng: `so-sfx.md`.
+    > ⚠️ Luật cũ 03/07/2026 ("chỉ dùng SFX khi khớp hành động cụ thể, đừng gắn SFX chỉ vì text vừa xuất hiện") **đã bị Sếp Huy bãi bỏ ngày 19/07** sau khi xem video-1 Tràng An thấy SFX còn thưa. Câu đó từng còn sót ở đây tới 21/07 — nếu gặp lại ở file nào khác thì đó là tàn dư, gỡ đi.
   - **Ảnh sản phẩm không nền**: folder `Ảnh sản phẩm ko nền/<tên robot>/` — dùng khi kịch bản cần ghép ảnh sản phẩm rời (không phải cảnh quay), vd làm thumbnail hoặc card thông số.
 
 ## Quy trình chi tiết
@@ -257,7 +269,7 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 | Logo | Trắng, giữa-trên, rộng ~480px, cách mép trên ~50px, hiện suốt PHẦN THÂN video, tự ẩn trước khi outro bắt đầu |
 | Intro/Outro | Không dùng intro. **Outro dọc luôn có** (file có sẵn, nối bằng crossfade — mục 4d recipes) |
 | Dấu câu | Viết gọn, không thừa dấu (vd "ROBOT?" chứ không "ROBOT?!") — rà lại trước khi burn text |
-| Âm thanh | Nhạc nền là chính; âm gốc footage 0-30% khi có tiếng hay (robot, tiếng cười); SFX chỉ khi khớp hành động cụ thể |
+| Âm thanh | Nhạc nền là chính; âm gốc footage 0-30% khi có tiếng hay (robot, tiếng cười); **SFX: mỗi thẻ chữ 1 pop + SFX khớp hành động** (luật 19/07, xem mục Sound effect ở trên) |
 
 ## Xử lý sự cố nhanh
 

@@ -85,7 +85,11 @@
 
 ## BỘ SCRIPT HIỆU ỨNG có sẵn trong skill — `scripts/fx/` (bổ sung tài liệu 20/07/2026)
 
-> **Vì sao mục này tồn tại**: 6 script dưới đây nằm trong skill từ 18/07 nhưng **không tài liệu nào nhắc tới**, nên phiên Claude sau không biết chúng có mà dùng. Hậu quả thật: ngày 20/07 tôi ngồi viết lại code dò phách trong scratchpad, trong khi `find_beats.py` đã nằm sẵn ngay đây. Ghi lại để không lặp lại.
+> **Vì sao mục này tồn tại**: 7 script dưới đây nằm trong skill từ 18/07 nhưng **không tài liệu nào nhắc tới**, nên phiên Claude sau không biết chúng có mà dùng. Hậu quả thật: ngày 20/07 tôi ngồi viết lại code dò phách trong scratchpad, trong khi `find_beats.py` đã nằm sẵn ngay đây. Ghi lại để không lặp lại.
+>
+> **Trớ trêu — chính file này cũng từng mồ côi** (phát hiện 21/07/2026): `SKILL.md` không hề trỏ tới `so-hieu-ung.md`, nên cả cụm `scripts/fx/` lẫn `assets/glsl/` thành vùng chết về tra cứu — đúng cái bẫy mà đoạn trên viết ra để phòng. Đã thêm dòng trỏ vào bảng file đích của lệnh HỌC trong `SKILL.md`. **Bài học chung: viết tài liệu cho một thứ chưa đủ — phải kiểm xem có đường nào từ `SKILL.md` đi tới tài liệu đó không.**
+
+> **Kho shader có sẵn (bổ sung 21/07/2026)**: skill đã ship sẵn **11 file `.glsl`** trong `assets/glsl/` — dùng thẳng với `gl_runner.py`, KHÔNG cần tải từ repo gl-transitions về nữa. Liệt kê thư mục đó để xem có kiểu nào.
 
 | Script | Làm gì | Tình trạng |
 |---|---|---|

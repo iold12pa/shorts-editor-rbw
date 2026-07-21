@@ -2,6 +2,29 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-07-21
+
+**Vá lỗi phát hành — quan trọng nhất đợt này.** Sửa file trong `skills/` mà quên tăng `version` trong `.claude-plugin/plugin.json` thì `claude plugin update` báo "đã là bản mới nhất" và **không máy nào nhận được luật mới**. Đã dính thật: 2 commit luật nhạc sáng 21/07 nằm kẹt trên GitHub. Nay: (a) luật bắt buộc tăng version ghi vào SKILL.md, (b) hook `pre-push` trên máy quản trị **chặn push** nếu quên — đã test đúng ca lỗi.
+
+**Gỡ 5 chỗ luật cũ mâu thuẫn luật mới** (rà bằng máy toàn bộ 16 file tài liệu):
+- `SKILL.md` 2 chỗ vẫn ghi luật SFX cũ 03/07 ("chỉ dùng SFX khi khớp hành động") — đã bị bãi bỏ 19/07 mà chưa gỡ.
+- `chon-kieu-dung.md` + `style-mau.md` vẫn ghi nhạc trend "chỉ Kiểu 1 mới hỏi" — sai từ khi có luật Nhóm A/B ngày 21/07.
+- `ffmpeg-recipes.md` vẫn khai George là "giọng mặc định" và gợi ý lui về George khi lỗi 402 — đúng cái SKILL.md cấm.
+- `style-mau.md` ghi logo "hiện suốt video" (viết hồi chưa có outro dọc) và "cấm mọi hiệu ứng chuyển cảnh" (mâu thuẫn luật luôn crossfade khi nối outro).
+
+**`style-voice-karaoke.md` — file spec chính của Kiểu 2/3 — trước đây KHÔNG hề nhắc luật nhạc 21/07.** Đã thêm khối luật Nhóm A/B ngay đầu mục âm thanh. Đây là nguyên nhân thật khiến một buổi dựng chọn nhầm nhạc có lời đè lên giọng MC cho 2 video.
+
+**Script mới `scripts/kiem_nhac_co_loi.py`** — kiểm bài nhạc có giọng hát hay không bằng máy, để luật "nhạc Nhóm A phải không lời" thực sự thi hành được. Kèm kết quả đã kiểm sẵn 6 bài trong kho (ghi trong `style-mau.md`): chỉ **4 bài không lời** dùng được cho Nhóm A. Bẫy đã gặp: 2 file **trùng tên** `Wildfire - Jessie Villa.mp3` ở 2 thư mục nhưng một bản có lời, một bản không.
+
+**Bài học kỹ thuật mới:**
+- **`[ ]` trong đường dẫn**: luật đúng là **MỌI cmdlet PowerShell nhận `-Path`** đều dính (không riêng `Get-ChildItem`) — `Copy-Item` báo "No such file" dù file có thật. Dùng `-LiteralPath` mặc định.
+- **`silencedetect` VÔ DỤNG ở môi trường ồn liên tục** (nhà máy): đo thật 0 sự kiện ở mọi ngưỡng từ -27dB tới -12dB. Đã ghi quy trình thay thế: cắt thử → Whisper nghe lại → chỉnh biên, kèm 3 dấu hiệu đọc kết quả.
+- **Whisper nghe lát NGẮN kém hơn lát RỘNG** — dễ loại oan một take tốt. Kiểm ở cửa sổ rộng trước rồi mới thu về biên cần dùng.
+- **Bộ câu Whisper hay bịa** (tiếng Việt + tiếng Anh) lập thành bảng; dùng làm **tín hiệu dò biên phải** (câu bịa ở đuôi = đuôi đang là đoạn im).
+- **Máy dựng không chạy được `drawtext`** (thiếu fontconfig, crash) và **`-pattern_type glob`** — ghi rõ dùng gì thay.
+
+**Sửa số liệu sai + tham chiếu chết:** kho SFX thật là **36 file + 3 file rời = 39** (tài liệu ghi 35 và 38, đều sai); 2 đường dẫn tìm logo trong `style-mau.md` đều đã chết; `chon-canh-highlight.md` trỏ vào script trong thư mục scratchpad tạm (phiên sau không có) → thay bằng 3 lệnh viết tại chỗ; `so-hieu-ung.md` là **tài liệu mồ côi** (SKILL.md không trỏ tới) khiến 7 script `scripts/fx/` + 11 shader `assets/glsl/` thành vùng chết → đã thêm vào bảng file đích.
+
 ## 2026-07-20
 - **Video + caption giao ra thẳng `<folder buổi quay>\Final\`** (chỉ đạo Huy): trước đây thành phẩm nằm lẫn trong `Workspace\output` giữa đồ nghề trung gian, phải lục mới thấy. Giờ `Final` chỉ chứa `.mp4` + caption `.md` của chính video đó; `Workspace` giữ riêng phần trung gian.
 - **Kiểu 1 BẮT BUỘC hỏi loại nhạc trước khi chọn bài**: nhạc **trend** (folder `Nhạc hot` — bắt tai nhưng chỉ nên đăng Facebook page, YouTube dễ dính bản quyền) hay nhạc **không bản quyền** (đăng được mọi nền tảng).

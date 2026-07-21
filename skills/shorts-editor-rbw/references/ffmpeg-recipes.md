@@ -19,6 +19,10 @@
      | concat demuxer (file list) | ✅ chạy bình thường | không phải làm gì |
      | Python `glob.glob` | ❌ trả **rỗng**, lỗi IM LẶNG | `glob.escape(dir)` — hoặc dùng `os.walk`/`os.listdir` |
      | PowerShell `Get-ChildItem` | ❌ trả **0 file** dù thư mục có file | thêm **`-LiteralPath`** |
+     | **PowerShell `Copy-Item` / `Move-Item` / `Test-Path` / `Remove-Item`** | ❌ **báo "No such file or directory"** dù file có thật | thêm **`-LiteralPath`** (bổ sung 21/07/2026) |
+
+     > **Bổ sung 21/07/2026 — luật đúng là: MỌI cmdlet PowerShell nhận tham số `-Path` đều diễn giải `[ ]` là ký tự đại diện (wildcard), không riêng `Get-ChildItem`.** Ca thật: copy 1 file nhạc tên `...Orinn Mix [doan hay].mp3` bằng `Copy-Item -Path` → báo *"No such file or directory"*, tưởng thiếu file trong kho, suýt đi tải lại cả kho. Đổi sang `-LiteralPath` là chạy ngay.
+     > **Cách nhớ gọn**: file/thư mục của Sếp rất hay có `[ ]` (tên buổi quay, tên bài nhạc tách từ mix) → **mặc định dùng `-LiteralPath` cho mọi cmdlet thao tác file**, chỉ bỏ ra khi thật sự cần wildcard.
 
      → **KHÔNG cần copy footage ra đường dẫn sạch** (bản ghi cũ khuyên vậy, làm mất công copy hàng GB vô ích). Chỉ cần dùng đúng hàm liệt kê file. Riêng path nằm **trong filter** (`ass=`, `subtitles=`, `movie=`) vẫn phải escape dấu `:` như quy tắc 0.1 — lỗi đó do dấu hai chấm, không liên quan ngoặc vuông.
 4. Mọi file trung gian encode cùng một chuẩn (1080x1920, 30fps, h264, yuv420p, aac 48kHz) — concat mới không lỗi.
@@ -40,6 +44,15 @@
      | Mix final (logo+nhạc+loudnorm) | 10.8s | 3.2s | 3.4× |
      | **Tổng** | **~48s** | **~20s** | **2.4×** |
 
+## 0.7. Hai thứ KHÔNG chạy trên máy dựng (đo thật 21/07/2026 — đừng phí thời gian thử lại)
+
+| Thứ | Triệu chứng | Dùng gì thay |
+|---|---|---|
+| **`drawtext`** (ghi chữ lên ảnh/video) | `Fontconfig error: Cannot load default config file` rồi ffmpeg **crash mã 3221225477** | Ghép lưới có nhãn thì dùng filter **`tile`** hoặc `hstack`/`vstack`. Cần chữ THẬT lên video thì dùng **ASS** (`ass=`) như mục 4 — vốn là cách chuẩn của skill này, `drawtext` chỉ tiện cho ảnh nháp |
+| **`-pattern_type glob`** | `Pattern type 'glob' was selected but globbing is not supported by this libavformat build` | Liệt kê file bằng Python (`glob.glob`) rồi truyền **từng `-i` một**; hoặc đặt tên file theo dãy số và dùng `-i "check_%02d.jpg"` |
+
+Cả 2 đều là giới hạn của bản ffmpeg đang cài (gyan.dev full build), không phải lỗi câu lệnh — thử lại kiểu khác vẫn hỏng.
+
 ## 1a. Voiceover ElevenLabs (ƯU TIÊN khi có key — giọng tự nhiên + timestamp từng từ)
 
 ```powershell
@@ -49,7 +62,11 @@ python "<skill-dir>\scripts\elevenlabs_tts.py" voice\video-1-script.txt voice\vi
 
 - Key: file `~/.claude/abs6-secrets.env` dòng `ELEVENLABS_API_KEY=sk_...`. Script tự đọc, không truyền key qua tham số.
 - Lời đọc ghi vào file .txt UTF-8 bằng tool Write (giống quy tắc edge-tts).
-- Đổi giọng: `--voice <voice_id>` (mặc định George nam trầm, model multilingual v2 đọc được tiếng Việt; chọn giọng khác ở elevenlabs.io/app/voice-library). **Cảnh báo lỗi 402**: giọng lấy từ Voice Library (như 2 giọng Việt Sếp từng chọn) bị chặn ở gói Free — chỉ giọng premade (George, Bella...) chạy được miễn phí. Gặp 402 với giọng được chỉ định đích danh → DỪNG BÁO, không tự thay giọng (luật trong SKILL.md).
+- Đổi giọng: `--voice <voice_id>`. **Giọng mặc định cho MỌI lời tiếng Việt là giọng Việt** — `MC Xuân Tú` `7XOKiK112QRZRSLbCfMc` (nam) / `Thanh Ngọc` `Na15FlRRkMEDtEW4nVVP` (nữ). Bảng ưu tiên đầy đủ ở SKILL.md mục Voice AI.
+  > ⚠️ **George `JBFqnCBsd6RMkjVDRZzb` KHÔNG phải mặc định** — đó là giọng ANH, đọc tiếng Việt méo cả câu thường ("Thử cách này" → *"Thú káč nai"*). Chỉ dùng George khi lời đọc là tiếng Anh. *(Sửa 21/07: dòng này từng ghi "mặc định George nam trầm" — tàn dư trước luật 20/07.)*
+- **Cảnh báo lỗi 402**: 2 giọng Việt trên nằm ở Voice Library, bị chặn khi tài khoản còn gói Free. Gặp 402:
+  - giọng do Sếp **chỉ định đích danh** → DỪNG BÁO, chờ Sếp quyết, không tự thay giọng;
+  - giọng mặc định → lui về **edge-tts `vi-VN-NamMinhNeural` / `vi-VN-HoaiMyNeural`** (miễn phí, đọc tiếng Việt thuần rất sạch), báo 1 câu. **TUYỆT ĐỐI không lui về George.**
 - Output: mp3 + `.srt` (cụm 6 từ, sub thường) + `-words.json` (timing từng từ → làm sub karaoke ASS: mỗi từ 1 Dialogue event, hoặc dùng `\k` tags).
 - Script lỗi (chưa có key/hết quota/mất mạng) → nó exit 1 kèm lý do → chuyển sang edge-tts mục 1 bên dưới, KHÔNG dừng cả quy trình.
 - Free tier ~10k credits/tháng (~10 phút audio) — voiceover shorts ~35s tốn ít, nhưng đừng gọi thử nhiều lần vô ích; test bằng câu ngắn.

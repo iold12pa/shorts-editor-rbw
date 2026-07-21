@@ -1,6 +1,6 @@
 # Quy tắc chọn cảnh (highlight) từ nguồn thô — áp dụng chung cho cả 3 kiểu dựng
 
-Viết 2026-07-15, dựa trên bằng chứng THẬT (không suy đoán): đối chiếu trực tiếp 1 buổi quay thô — `D:\VIDEO RBW\Edit video\30.Nhà sách Tràng An` (58 clip DJI, quay 2026-07-02) — với **2 video final khác nhau** dựng ra từ đúng nguồn đó: `HUY MKT\34.Nhà sách Tràng An (review)` và `HUY MKT\35.Uyên ads thuê` (quảng cáo cho thuê sự kiện). Cùng 1 buổi quay, 2 mục đích khác nhau → 2 cách chọn cảnh khác nhau, nhưng theo chung 1 bộ nguyên tắc bên dưới.
+Viết 2026-07-15, dựa trên bằng chứng THẬT (không suy đoán): đối chiếu trực tiếp 1 buổi quay thô — `D:\VIDEO RBW\Edit video\30.Nhà sách Tràng An` (58 clip DJI, quay 2026-07-02) — với **2 video final khác nhau** dựng ra từ đúng nguồn đó: `HUY MKT\34.Nhà sách Tràng An (rv nhà sách)` và `HUY MKT\35.Uyên ads thuê` (quảng cáo cho thuê sự kiện). Cùng 1 buổi quay, 2 mục đích khác nhau → 2 cách chọn cảnh khác nhau, nhưng theo chung 1 bộ nguyên tắc bên dưới.
 
 **Con số thực tế cần nhớ**: 58 clip thô (tổng ~15-20 phút) → 2 video final ~52-63 giây MỖI VIDEO. Tỷ lệ "chọn lọc" cực gắt — phần lớn footage quay được sẽ KHÔNG được dùng, kể cả footage "đẹp". Đừng kỳ vọng dùng hết footage hay, việc của mình là CHỌN ĐÚNG, không phải DÙNG NHIỀU.
 
@@ -46,7 +46,16 @@ Khi rà nhiều clip cùng lúc, cách nhanh là ghép mỗi clip 1 khung đại
 
 Ca thật (video MT1, buổi bàn giao An Phát Xanh): lưới cho thấy clip `0023` là **người ngồi lái máy chà sàn cũ** — đúng cảnh "cách làm cũ" cần cho hook. Nhưng đoạn cắt đặt ở giây 6-11 lại ra **cảnh xe nâng bốc hàng**, chẳng liên quan. Cảnh đúng nằm ở giây 22. Dựng xong nghiệm thu mới phát hiện, phải dựng lại.
 
-**Luật**: sau khi chốt danh sách cảnh + mốc bắt đầu, **trích 1 khung ở GIỮA từng đoạn sẽ cắt** rồi xem lại một lượt, trước khi chạy dựng. Rẻ hơn nhiều so với dựng lại. Dùng `scratchpad/soi_doan.py` hoặc lệnh tương đương.
+**Luật**: sau khi chốt danh sách cảnh + mốc bắt đầu, **trích 1 khung ở GIỮA từng đoạn sẽ cắt** rồi xem lại một lượt, trước khi chạy dựng. Rẻ hơn nhiều so với dựng lại.
+
+Cách làm (không có script sẵn — viết tại chỗ, ~10 dòng; *sửa 21/07: chỗ này từng trỏ `scratchpad/soi_doan.py`, nhưng scratchpad là thư mục tạm của MỘT phiên, phiên sau không có file đó*):
+1. Với mỗi cảnh, tính `mid = bắt_đầu + độ_dài/2`.
+2. `ffmpeg -y -ss <mid> -i "<clip>" -frames:v 1 -vf scale=340:-2 soi_sNN.jpg`
+3. Ghép các khung thành 1 ảnh lưới bằng filter **`tile`** rồi xem một lượt:
+   `ffmpeg -y -i "soi_s%02d.jpg" -vf "scale=340:-2,tile=4x3:padding=6:color=white" -frames:v 1 LUOI.jpg`
+   (đừng dùng `drawtext` để dán nhãn — máy dựng thiếu fontconfig nên nó crash, xem `ffmpeg-recipes.md` mục 0.7)
+
+**Hiệu quả đo thật 21/07/2026** (buổi dựng folder 33): bước này bắt được **3/11 cảnh sai** trước khi dựng — 1 cảnh hook yếu, 1 cảnh hoá ra là lưng áo che kín khung chứ không phải nội dung tưởng, 1 cảnh có vật lạ trong khung. Không soi thì cả 3 lọt vào bản final.
 
 **Kèm theo**: tên file clip có phần timestamp rất dễ gõ nhầm (`..._122541_0062_D` vs `..._122749_0062_D`). Tìm clip theo **mã 4 số** (`_0062_D`) chắc hơn gõ cả tên.
 
