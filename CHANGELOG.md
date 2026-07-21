@@ -23,6 +23,8 @@ File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở
 - **Bộ câu Whisper hay bịa** (tiếng Việt + tiếng Anh) lập thành bảng; dùng làm **tín hiệu dò biên phải** (câu bịa ở đuôi = đuôi đang là đoạn im).
 - **Máy dựng không chạy được `drawtext`** (thiếu fontconfig, crash) và **`-pattern_type glob`** — ghi rõ dùng gì thay.
 
+**Đính chính trong ngày (bản ghi đầu tiên của mục 21/07 này ghi SAI):** tôi từng kết luận "kho nhạc trên Drive thiếu bài đầy đủ, cần Sếp upload thêm" — **sai**. Hỏi thẳng Drive thì Drive có đủ (129 file, gồm 15 bài đầy đủ + mix gốc). Cái thiếu là **bản kho tải về trên máy legion đã cũ** (tải 17/07, nhạc tách xong 20/07). Nguyên nhân sai: kết luận về Drive bằng cách nhìn bản sao trên máy + `manifest.json` (cả hai đều là ảnh chụp của lần tải cũ). **Luật rút ra, đã ghi vào `style-mau.md`: thiếu file trong kho thì chạy lệnh "cập nhật kho tài nguyên" hỏi Drive trước, đừng kết luận Drive thiếu từ bản sao trên máy.**
+
 **Sửa số liệu sai + tham chiếu chết:** kho SFX thật là **36 file + 3 file rời = 39** (tài liệu ghi 35 và 38, đều sai); 2 đường dẫn tìm logo trong `style-mau.md` đều đã chết; `chon-canh-highlight.md` trỏ vào script trong thư mục scratchpad tạm (phiên sau không có) → thay bằng 3 lệnh viết tại chỗ; `so-hieu-ung.md` là **tài liệu mồ côi** (SKILL.md không trỏ tới) khiến 7 script `scripts/fx/` + 11 shader `assets/glsl/` thành vùng chết → đã thêm vào bảng file đích.
 
 ## 2026-07-20

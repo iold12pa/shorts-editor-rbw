@@ -66,7 +66,7 @@ Cần cho luật Nhóm A (Kiểu 2/3 giọng dẫn xuyên suốt → bắt buộ
 
 > ⚠️ **Bẫy thật**: hai file **trùng tên `Wildfire - Jessie Villa.mp3`** ở 2 thư mục nhưng **khác nội dung** (185s không lời vs 190s có lời). → **Không bao giờ kết luận có lời/không lời theo TÊN FILE.** Kiểm bằng script, và khi copy nhớ ghi rõ lấy ở thư mục nào.
 
-> **Kết luận thực dụng**: kho hiện chỉ có **4 bài không lời** dùng được cho Nhóm A. Nếu Sếp làm nhiều video Kiểu 2/3, nên bổ sung thêm nhạc không lời vào Drive.
+> **Lưu ý về con số**: bảng trên đếm trên **kho ĐANG CÓ trên máy legion**, mà kho đó cũ hơn Drive. Drive còn khai báo ít nhất **3 bài chưa tải về máy** — `Coconut Groove.MP3`, `Energetic Upbeat.MP3`, `Playfull Beaty Lifestyle House.MP3` (tên đúng dạng nhạc nền không lời, rất có thể dùng được cho Nhóm A). **Chạy "cập nhật kho tài nguyên" rồi kiểm lại 3 bài đó bằng `kiem_nhac_co_loi.py` trước khi kết luận kho thiếu nhạc không lời.**
 
 ### Cách dùng folder `Nhạc hot` — KHÔNG phải file bài lẻ
 
@@ -84,12 +84,13 @@ Script tự tách thành từng bài + tự chọn **đoạn hay nhất** (30s m
 
 **Đã tách sẵn (20/07/2026)**: `NHẠC REMIX TIKTOK TRIỆU VIEW - BXH Nhạc Trẻ Remix Hay Nhất Hiện Nay - Top 20 Nhạc Hot TikTok 2026.mp3` → 16 bài, toàn bộ mix cùng BPM (136 hoặc 143.6) nên ghép/cắt theo phách rất dễ.
 
-> 🔴 **KHO TRÊN DRIVE ĐANG THIẾU BÀI ĐẦY ĐỦ (phát hiện 21/07/2026 — chưa khắc phục, cần Sếp upload).**
-> Kết quả tách gồm 2 thư mục: `bai/` (bài đầy đủ, ~4-5 phút) và `doan-hay/` (đoạn 30 giây). **Chỉ `doan-hay/` được đẩy lên Drive**, nên máy nào tải kho từ Drive về cũng chỉ có **file 30 giây**.
-> - Hệ quả: **không dựng được video Kiểu 1 dài quá 30s bằng nhạc trend** trên bất kỳ máy nào ngoài legion.
-> - Bài đầy đủ hiện chỉ nằm ở kho gốc trên máy legion: `D:\VIDEO RBW\Edit video\02.Tài nguyên chung\Kho nhạc free YT\Nhạc hot\<tên mix>_tach\bai\`.
-> - **Việc cần làm**: Sếp kéo thêm thư mục `bai/` lên Drive, rồi chạy lệnh "cập nhật kho tài nguyên".
-> - **Trong lúc chưa có**: máy legion lấy thẳng từ kho gốc ổ D:; máy khác thì dùng nhạc không bản quyền (các bài đó đầy đủ độ dài).
+> ⚠️ **KHO TRÊN MÁY DỄ BỊ CŨ HƠN DRIVE — kiểm nguồn, đừng kết luận từ bản sao (bài học 21/07/2026).**
+> Kết quả tách gồm 2 thư mục: `bai/` (bài đầy đủ ~4-5 phút) và `doan-hay/` (đoạn 30 giây). **Drive có ĐỦ cả hai** (đã hỏi thẳng Drive 21/07: khai báo 129 file, gồm 15 bài đầy đủ + file mix gốc).
+> - **Nhưng bản kho tải về máy có thể chỉ có `doan-hay/`** nếu máy đó tải kho từ trước ngày Sếp upload phần tách (legion tải 17/07, nhạc tách xong 20/07 → kho trên legion thiếu bài đầy đủ suốt 4 ngày mà không ai biết).
+> - **Triệu chứng**: cần nhạc cho video dài 40-60s mà trong `Nhạc hot` bài nào cũng đúng 30.0 giây.
+> - **Cách xử lý**: chạy lệnh **"cập nhật kho tài nguyên"** (`scripts/tai_kho_tai_nguyen.py`) — nó kéo phần thiếu về. KHÔNG phải đi upload lại lên Drive.
+>
+> **Bài học chung, áp cho mọi thứ trong kho chứ không riêng nhạc**: `~/.claude/roboworld-assets/` là **bản sao chụp tại thời điểm tải**, không tự đồng bộ. Thiếu file nào thì **hỏi Drive trước** (chạy script), đừng kết luận "Drive thiếu" từ bản sao trên máy. `manifest.json` cũng ghi số liệu của lần tải cũ nên không dùng làm bằng chứng về Drive được.
 >
 > **Cách canh đoạn hay khi dùng bài đầy đủ**: file `danh-muc.json` cạnh thư mục `bai/` ghi sẵn `doan_hay_trong_bai` (giây điệp khúc bắt đầu trong chính bài đó). Muốn điệp khúc nổ đúng lúc hết hook thì `-ss = doan_hay_trong_bai − độ_dài_hook`. Đã dùng thật 21/07: hook 5.3s, điệp khúc ở 169.97 → `-ss 164.67`.
 
