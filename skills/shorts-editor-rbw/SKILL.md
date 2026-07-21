@@ -282,6 +282,17 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 3. **Lối thoát**: không có tín hiệu lọc nào (folder mới tinh chưa có content, không transcript, tên file không gợi ý — thường gặp ở Kiểu 1 folder lạ) → đọc hết như cũ, chấp nhận tốn 1 lần.
 4. **Luật cứng giữ nguyên**: clip CHƯA XEM SHEET thì không được đưa vào kịch bản. Đừng viết kịch bản khi chưa xem footage — kịch bản bịa cảnh không có thật là lỗi nặng nhất của skill này.
 
+### Bước 2d — ĐẾM TƯ LIỆU + CHỌN CẢNH theo quy trình chuẩn (BẮT BUỘC, trước khi viết kịch bản)
+
+🔴 **Đọc `references/quy-trinh-chon-canh.md` và làm đúng theo đó.** File này là quy trình chuẩn Sếp chốt 21/07 sau khi bắt 3 lỗi nội dung mà hệ nghiệm thu kỹ thuật báo "đạt" hết.
+
+Tóm tắt 4 điều không được bỏ:
+
+1. **Công cụ nào dẫn tuỳ loại đoạn** — đoạn giữ nguyên lời người nói thì `loc_thoai_that` (âm thanh) dẫn; đoạn không thoại thì **ảnh lưới + Gemini** (hình) dẫn. Công cụ còn lại chuyển sang vai đối chiếu, **không được lờ đi khi nó mâu thuẫn**.
+2. **Lọc cảnh có người đang nói bằng `gemini.co_nguoi_dang_noi`, KHÔNG bằng `has_speech`** — `has_speech` là cờ âm thanh, người mấp máy môi mà mic không bắt được thì lọt (đo thật: sót 4/21 clip).
+3. **ĐẾM tư liệu TRƯỚC khi viết kịch bản.** Số clip qua được cổng lọc × ~3 giây = thời lượng tối đa dựng được không lặp. **Thiếu thì DỪNG BÁO người dùng** — thiếu tư liệu là một dạng bị chặn, tự xoay xở bằng cách lấy lại clip cũ là sai quy trình.
+4. **Chưa mở ảnh lưới của clip thì không được đưa clip đó vào kịch bản.** Mô tả bằng chữ của Gemini dùng để thu hẹp danh sách, **không thay được việc nhìn** (ca thật: Gemini tả "cúi xuống bấm màn hình", ảnh lưới cho thấy người đó đang đứng nói vào máy quay).
+
 ### Bước 3 — Viết kịch bản & TRÌNH SẾP DUYỆT
 
 Đọc file style theo KIỂU đã chọn ở bước 0 (xem link style tương ứng trong `references/chon-kieu-dung.md`), cùng `references/kichban-template.md`, `references/robot-products.md` (thông số robot chính xác — không bịa số), `references/case-studies.md` (số liệu khách hàng thật, dùng làm proof point cho hook/CTA khi đúng ngữ cảnh) và `references/chon-canh-highlight.md` (quy tắc chọn cảnh nào lên hình, cảnh nào bỏ — đúc kết từ đối chiếu source thô thật với video final thật) trước khi viết.
@@ -300,6 +311,8 @@ Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là
 5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — edge-tts, nhớ dùng `--file` UTF-8) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
 6. Xuất thẳng ra **`<folder buổi quay>\Final\video-N-<slug>.mp4`** (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
 7. **Tự nghiệm thu bắt buộc**: trích 4-5 frame (rải cả trong thân video lẫn đoạn outro) + Read kiểm tra (chữ đủ to, không tràn viền, không thừa dấu câu, logo không đè text và tự ẩn đúng lúc trước outro, hình không méo, không frame đen); ffprobe xác nhận thời lượng; **đo âm lượng bằng loudnorm** (lệnh đo trong ffmpeg-recipes mục 6) — chuẩn giao hàng là **-14 LUFS (±1)**, lệch thì mix lại. Sai thì sửa và dựng lại trước khi bàn giao.
+
+   🔴 **NGHIỆM THU TẦNG B — NỘI DUNG (bắt buộc, luật 21/07)**: mọi thứ ở trên là **tầng kỹ thuật máy đo được**. Ba lỗi Sếp bắt ngày 21/07 **không lỗi nào máy đo được**, mà mọi con số đều xanh. Trích 6-8 khung **ở 340px trở lên** rồi tự trả lời 5 câu trong `references/quy-trinh-chon-canh.md` mục 6: có cảnh nào thấy quen (lặp) không · có ai đang nói mà không nghe tiếng họ không · robot có phải nhân vật chính không · thẻ chữ có rơi đúng cảnh không · nhạc có át lời hoặc quá bé không. **Đừng báo "đạt chuẩn" khi mới chạy xong tầng kỹ thuật.**
 
    **3 phép rà bắt buộc thêm (bài học 19/07/2026 — Sếp bắt lỗi thật, xem `chon-canh-highlight.md` mục 3b + `style-voice-karaoke.md`):**
    - **Rà cutaway**: duyệt từng cảnh chèn, loại mọi cảnh có người đang nói/nhìn trực diện máy quay mà tiếng phát tại đó không phải giọng gốc đồng bộ của chính họ. Áp dụng cho CẢ 3 kiểu dựng (Sếp đã bắt lỗi này ở cả Kiểu 1 lẫn Kiểu 2C).

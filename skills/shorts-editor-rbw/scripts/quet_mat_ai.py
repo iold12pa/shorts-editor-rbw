@@ -98,6 +98,12 @@ def main():
     ap.add_argument("--quet-ca-clip-mo", action="store_true",
                     help="quet ca clip da bi do_ky_thuat cham 'mo' (mac dinh: bo qua cho do ton tien)")
     ap.add_argument("--sleep", type=float, default=7.0)
+    # Mac dinh 3 hinh/giay + do net THAP = ton dung bang 1 hinh/giay + do net mac dinh.
+    # Muon quay ve cach cu: --fps 0 --do-net MEDIA_RESOLUTION_MEDIUM
+    ap.add_argument("--fps", type=float, default=3.0,
+                    help="so hinh/giay Gemini lay (0 = de mac dinh cua Google, tuc 1)")
+    ap.add_argument("--do-net", default="MEDIA_RESOLUTION_LOW",
+                    help="MEDIA_RESOLUTION_LOW (~100 token/khung) | _MEDIUM (~300)")
     a = ap.parse_args()
 
     from google import genai
@@ -160,10 +166,24 @@ def main():
                         f = client.files.get(name=f.name)
                         if w > 300:
                             raise RuntimeError("processing qua lau")
+                    # ---- TANG SO KHUNG HINH/GIAY (luat Sep Huy 21/07/2026) ----
+                    # Gemini MAC DINH chi lay 1 hinh/giay. Clip khong thoai thi Gemini la
+                    # CON MAT DUY NHAT — 1 hinh/giay bo lot khoanh khac nhanh (be nhin robot,
+                    # nhan vien tha tay, robot ne nguoi). Clip CO thoai thi moc cat da co
+                    # loc_thoai_that lo, Gemini chi can hieu noi dung -> giu 1 hinh/giay cho re.
+                    #
+                    # DOI NGANG cho khoi ton them tien: ha media_resolution xuong THAP
+                    # (~100 token/khung thay vi ~300) roi dung phan tiet kiem do de mua
+                    # gap 3 so khung. Sep da xac nhan KHONG can doc chu nho tren man hinh
+                    # robot, nen ha do net khong mat gi.
+                    vm = types.VideoMetadata(fps=a.fps) if a.fps else None
+                    phan = types.Part(file_data=types.FileData(
+                        file_uri=f.uri, mime_type=f.mime_type), video_metadata=vm) if vm else f
                     r = client.models.generate_content(
-                        model=a.model, contents=[f, PROMPT],
+                        model=a.model, contents=[phan, PROMPT],
                         config=types.GenerateContentConfig(
-                            response_mime_type="application/json", temperature=0.2))
+                            response_mime_type="application/json", temperature=0.2,
+                            media_resolution=a.do_net))
                     try:
                         client.files.delete(name=f.name)
                     except Exception:
