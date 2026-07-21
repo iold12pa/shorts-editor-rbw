@@ -105,11 +105,35 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
      **Kèm theo — Whisper nghe lát NGẮN kém hơn hẳn lát RỘNG** (cùng một đoạn tiếng): cắt 33.8→45.3 ra *"Về giá thì em nghĩ nó phải tương đương với lại trước xe ô tô đấy"*, nhưng nới thành 30.2→45.3 thì ra đúng *"Bên Roboworld mà em từng cung cấp, và giá thành của một chú robot này thì em nghĩ là nó phải tương đương với lại một chiếc xe ô tô đấy"*. **Whisper cần ngữ cảnh hai bên mới nghe đúng.**
      → Khi kiểm 1 lát nghi vấn, **nghe thử ở cửa sổ RỘNG hơn dự định trước** để biết lời thật là gì, rồi mới thu về biên cần dùng. Đừng vội kết luận "take này hỏng" chỉ vì lát hẹp nghe ra chữ vô nghĩa — rất dễ loại oan một take tốt.
-3d. **TỐC ĐỘ NÓI — có file mẫu chuẩn (Sếp Huy đưa 21/07/2026)**
+3d. **TỐC ĐỘ NÓI — TUA NHANH tiếng đã thu cho đỡ nhàm (Sếp Huy 21/07/2026)**
 
-**File mẫu**: `~/.claude/roboworld-assets/mau/toc-do-chuan.mp3` (MC dẫn hiện trường tại Bà Nà Hills, năng lượng cao). Đo được **338 âm tiết/phút**.
+> **Mục đích chính**: MC nói chậm làm video nhàm. Luật này để **tua nhanh tiếng MC/người thu ĐÃ QUAY**, không phải để chỉnh giọng máy. *(Bản đầu của mục này hiểu nhầm thành chỉnh TTS — Sếp đã đính chính.)*
 
-**Luật**: video dẫn nào đo ra **chậm hơn đáng kể** thì phải đẩy tốc độ lên **bằng hoặc gần bằng mẫu**.
+**Mốc chuẩn: 291 âm tiết/phút.** File mẫu `~/.claude/roboworld-assets/mau/toc-do-chuan.mp3` đo được 342, nhưng **Sếp chỉnh xuống còn 85%** vì mẫu gốc hơi nhanh.
+
+```powershell
+python "<skill-dir>\scripts\tua_nhanh_thoai.py" <clip> --am-tiet <đếm tay> 
+```
+
+Script tự đo tốc độ hiện tại, tự tính hệ số cần tua, rồi tua **cả hình lẫn tiếng cùng lúc**. Biết hệ số rồi thì `--he-so 1.4`.
+
+**Kỹ thuật — 2 điều bắt buộc:**
+- Tiếng dùng **`atempo`** (giữ nguyên cao độ). **Đừng dùng `asetrate`** — nó kéo cao độ lên, giọng thành the thé như vịt.
+- Hình phải `setpts=PTS/<hệ số>` **cùng lúc**, không thì lệch tiếng.
+- `atempo` chỉ nhận 0.5-2.0 mỗi lần → hệ số > 2 phải nối chuỗi `atempo=2.0,atempo=x`.
+
+**Đo thật trên video-2 (MC nhà sách Tràng An, 133 âm tiết):**
+
+| Hệ số | Dài | Tốc độ | |
+|---|---|---|---|
+| 1.00× (gốc) | 45.0s | 178 âm tiết/phút | chậm |
+| 1.25× | 36.1s | 221 | |
+| 1.40× | 32.2s | 248 | |
+| **1.64×** | **27.5s** | **290** | khớp mốc 291 |
+
+⚠️ **Ngưỡng an toàn đang đặt 1.6× — con số này do tôi phán đoán, CHƯA qua tai Sếp chấm.** Trên mức đó script vẫn chạy nhưng in cảnh báo. Mẫu để nghe chọn: Desktop, thư mục `NGHE-CHON-TOC-DO`, các file `MC-tua-*.mp4`. Sếp chốt mức nào thì sửa `TOI_DA` trong script.
+
+🔴 **TUA TRƯỚC KHI CẮT CẢNH VÀ ĐẶT CHỮ.** Tua xong thì mọi mốc thoại đều đổi — sub, thẻ chữ, SFX phải làm lại theo mốc mới. Tua sau là hỏng hết timing.
 
 ```powershell
 python "<skill-dir>\scripts\do_toc_do_noi.py" <file voice hoac video>
