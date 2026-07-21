@@ -228,7 +228,19 @@ python "<skill-dir>\scripts\loc_thoai_that.py" --index "<workspace>\analysis\ind
   - **BẢN TỐT NHẤT** khi MC nói lại cùng một câu nhiều lần (chọn bản to nhất = gần mic nhất)
   - **XA MIC** khi cách sàn nhiễu < 15 dB
   - **NGHI Ê-KÍP** khi là lời chỉ đạo/quên thoại chứ không phải nội dung
-- **Mốc cắt lấy từ đây, KHÔNG lấy của Whisper và KHÔNG lấy của Gemini.** Whisper nối đuôi các đoạn nên mốc bắt đầu là số nối chứ không phải số đo; Gemini chấm mốc sai 2/4 ca đã kiểm. Chi tiết + bằng chứng: `references/style-voice-karaoke.md` mục 3.
+- **PHÂN CÔNG 3 CÔNG CỤ — đừng dùng nhầm việc** (chốt 21/07 sau khi Sếp chấm tai 4 ca):
+
+  | Công cụ | Trả lời câu hỏi | Đừng dùng nó để |
+  |---|---|---|
+  | `loc_thoai_that` | **Cắt Ở ĐÂU** + đoạn có dùng được không | — |
+  | **Gemini** | **Đoạn nào ĐÁNG LÊN HÌNH** (điểm nội dung, hook) | ~~lấy mốc cắt~~ (sai 2/4 ca) |
+  | Whisper | **Nói GÌ** (nội dung chữ) | ~~lấy mốc cắt~~ (số nối đuôi, không phải số đo) |
+
+  Script **tự ghép sẵn** điểm Gemini vào từng đoạn: cột `G9/10` là điểm khoảnh khắc, cờ `HOOK (Gemini)` là ứng viên mở đầu. Dòng `DUNG DUOC` đã xếp sẵn theo ưu tiên hook → điểm cao → thứ tự thời gian. **Cứ lấy theo thứ tự đó mà dựng.**
+
+  Script cũng **đối chiếu chéo** và cảnh báo 2 tình huống: (a) Gemini thấy có người đang nói mà không đoạn nào đủ gần mic → người nói ở xa/ngoài khung, dùng làm thoại chính sẽ tệ; (b) script tìm ra thoại mà Gemini bảo không có ai đang nói trên hình → nhiều khả năng là lời dẫn ngoài hình, **cấm đặt làm B-roll đè voice khác** (luật cấm MC-cutaway).
+
+  Bằng chứng đầy đủ: `references/style-voice-karaoke.md` mục 3.
 - ⛔ **Chạy TRƯỚC mọi bộ lọc âm thanh.** Lọc ồn/`speechnorm` chạy trước sẽ phá hệ đo mà không báo lỗi — xem `references/ffmpeg-recipes.md` mục 5c.
 - Script in `San nhieu` ngay đầu: **cao hơn -25 dB thì đừng phí công thử `silencedetect`**, nó sẽ chết.
 

@@ -146,7 +146,42 @@ def nghi_e_kip(chu):
     return False, ""
 
 
-def phan_tich(path, transcript=None):
+def diem_gemini(gem, t0, t1):
+    """Diem noi dung cua Gemini cho doan [t0,t1].
+
+    PHAN CONG RO RANG (chot 21/07/2026):
+      - script nay  -> MOC CAT (o dau) + co dung duoc khong (gan mic, khong phai e-kip)
+      - Gemini      -> DOAN NAO DANG LEN HINH (diem noi dung, hook)
+      - Whisper     -> NOI GI (noi dung chu)
+    Gemini cham MOC sai 2/4 ca da kiem nen KHONG lay moc cua no; nhung no la thu
+    duy nhat VUA XEM VUA NGHE ca clip nen diem noi dung cua no dang tin.
+    """
+    if not isinstance(gem, dict):
+        return None, False
+    diem = None
+    for m in (gem.get("khoanh_khac") or []):
+        if not isinstance(m, dict):
+            continue
+        try:
+            a, b = float(m.get("t0", 0)), float(m.get("t1", 0))
+        except (TypeError, ValueError):
+            continue
+        if b > t0 and a < t1:                      # co giao nhau
+            d = m.get("diem_10")
+            if isinstance(d, (int, float)):
+                diem = max(diem, float(d)) if diem is not None else float(d)
+    hook = False
+    ht = gem.get("hook_tiem_nang")
+    if isinstance(ht, str) and ht.strip():
+        import re
+        for g in re.finditer(r"(\d+):(\d+)|giây\s*(\d+(?:\.\d+)?)", ht.lower()):
+            s = (int(g.group(1)) * 60 + int(g.group(2))) if g.group(1) else float(g.group(3))
+            if t0 - 1.0 <= s <= t1 + 1.0:
+                hook = True
+    return diem, hook
+
+
+def phan_tich(path, transcript=None, gem=None):
     x = doc_am(path)
     if x is None:
         return {"loi": "khong doc duoc am thanh"}
@@ -199,10 +234,24 @@ def phan_tich(path, transcript=None):
         ng, ly_do = nghi_e_kip(d["loi"])
         d["nghi_e_kip"] = ng
         d["ly_do_nghi"] = ly_do
+        d["diem_gemini"], d["la_hook"] = diem_gemini(gem, d["t0"], d["t1"])
         d.pop("_wid", None)
+
+    # Doi chieu cheo voi Gemini — bat 2 tinh huong dang ngo
+    canh_bao = []
+    if isinstance(gem, dict):
+        co_dung = [d for d in ds if d["gan_mic"] and not d["nghi_e_kip"]]
+        if gem.get("co_nguoi_dang_noi") and not co_dung:
+            canh_bao.append("Gemini thay CO nguoi dang noi nhung khong doan nao du gan mic"
+                            " -> nguoi noi o xa/ngoai khung, dung lam thoai chinh se te.")
+        if co_dung and gem.get("co_nguoi_dang_noi") is False:
+            canh_bao.append("Script tim ra thoai nhung Gemini bao KHONG co ai dang noi tren hinh"
+                            " -> co the la loi dan ngoai hinh; cam dat lam B-roll de voice khac"
+                            " (luat cam MC-cutaway).")
 
     return {"san_nhieu_db": round(san, 1),
             "silencedetect_dung_duoc": san <= SAN_ON_QUA,
+            "canh_bao": canh_bao,
             "doan": ds}
 
 
@@ -220,6 +269,8 @@ def in_ket_qua(ten, kq):
         return
     for i, d in enumerate(kq["doan"], 1):
         co = []
+        if d.get("la_hook"):
+            co.append("HOOK (Gemini)")
         if d.get("so_lan_noi", 1) > 1:
             co.append("BAN TOT NHAT trong %d lan noi lai" % d["so_lan_noi"]
                       if d["ban_tot_nhat"] else
@@ -228,15 +279,23 @@ def in_ket_qua(ten, kq):
             co.append("XA MIC (cach san %.1f dB)" % d["cach_san"])
         if d["nghi_e_kip"]:
             co.append("NGHI E-KIP: %s" % d["ly_do_nghi"])
-        print("   %2d) %6.2f -> %6.2f  (%.2fs)  %6.1f dB  cach san %5.1f  am %.2f%s"
-              % (i, d["t0"], d["t1"], d["dai"], d["db"], d["cach_san"], d["do_am"],
+        dg = "" if d.get("diem_gemini") is None else " G%.0f/10" % d["diem_gemini"]
+        print("   %2d) %6.2f -> %6.2f  (%.2fs)  %6.1f dB  cach san %5.1f  am %.2f%-6s%s"
+              % (i, d["t0"], d["t1"], d["dai"], d["db"], d["cach_san"], d["do_am"], dg,
                  ("   << " + " | ".join(co)) if co else ""))
         if d["loi"]:
             print("        noi: %s" % d["loi"][:110])
+    for c in kq.get("canh_bao", []):
+        print("   ⚠ %s" % c)
     dung = [d for d in kq["doan"] if d["gan_mic"] and not d["nghi_e_kip"]
             and d.get("ban_tot_nhat") is not False]
+    # xep uu tien theo diem noi dung cua Gemini (hook len dau), chua co diem thi giu thu tu thoi gian
+    dung_xep = sorted(dung, key=lambda d: (not d.get("la_hook"),
+                                           -(d.get("diem_gemini") or 0), d["t0"]))
     print("   => DUNG DUOC: %d/%d doan%s" % (len(dung), len(kq["doan"]),
-          ("  " + ", ".join("%.2f-%.2f" % (d["t0"], d["t1"]) for d in dung)) if dung else ""))
+          ("  " + ", ".join("%.2f-%.2f%s" % (d["t0"], d["t1"],
+           "" if d.get("diem_gemini") is None else "(G%.0f)" % d["diem_gemini"])
+           for d in dung_xep)) if dung else ""))
 
 
 def nap_index(p):
@@ -256,13 +315,14 @@ def main():
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()
 
-    tr_map = {}
+    tr_map, gem_map = {}, {}
     goc = None
     if a.index and os.path.exists(a.index):
         goc, clips = nap_index(a.index)
         for c in clips:
             if c.get("file"):
                 tr_map[c["file"]] = c.get("transcript") or []
+                gem_map[c["file"]] = c.get("gemini")
 
     # ---- che do CA FOLDER ----
     if a.folder:
@@ -282,7 +342,7 @@ def main():
             if not src:
                 print("CLIP: %s  -> KHONG TIM THAY FILE, bo qua" % c["file"])
                 continue
-            kq = phan_tich(src, c.get("transcript"))
+            kq = phan_tich(src, c.get("transcript"), c.get("gemini"))
             in_ket_qua(c["file"], kq)
             print()
             c["loc_thoai"] = kq
@@ -294,7 +354,8 @@ def main():
     # ---- che do 1 CLIP ----
     if not a.clip:
         sys.exit(__doc__)
-    kq = phan_tich(a.clip, tr_map.get(os.path.basename(a.clip)))
+    kq = phan_tich(a.clip, tr_map.get(os.path.basename(a.clip)),
+                   gem_map.get(os.path.basename(a.clip)))
     in_ket_qua(os.path.basename(a.clip), kq)
     if a.json:
         json.dump(kq, open(a.json, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
