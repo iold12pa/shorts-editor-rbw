@@ -38,7 +38,7 @@ Từ bản 17/07, mọi thứ dưới đây được cài NGAY lúc chạy câu 
 
 ## Giọng đọc AI (không bắt buộc — chỉ cần cho video có thuyết minh)
 
-- Key ElevenLabs **dùng chung của công ty, Sếp gửi riêng cho từng người qua Zalo** (không nằm trong gói cài này vì repo public). Nhận được key thì nhờ Claude: "lưu key ElevenLabs này vào file abs6-secrets.env cho tôi" — Claude tự tạo file `~/.claude/abs6-secrets.env` đúng định dạng.
+- **API key**: quản trị gửi riêng qua Zalo (không nằm trong gói cài vì repo public). Nhận được key thì nhắn Claude **"nhập key"** — một cửa sổ nhỏ hiện lên để bạn dán vào, key đi thẳng vào máy bạn. **Đừng dán key vào khung chat** (mọi thứ vào chat đều đi qua máy chủ và nằm lại trong lịch sử). Nhập xong nhắn *"kiểm tra máy đủ đồ chưa"* — hiện "đúng key chuẩn công ty" là ổn, hiện "SAI KEY" là dán nhầm.
 - Chưa có key vẫn dựng video bình thường — giọng AI tự chuyển sang giọng miễn phí (edge-tts), chất lượng thấp hơn chút nhưng không lỗi.
 - Vì key dùng chung cả team: đừng sinh giọng thử nghiệm tràn lan — mỗi video chỉ sinh giọng khi kịch bản đã được duyệt.
 
