@@ -81,6 +81,48 @@ XUNG_HO_SUONG = ["tao", "mày", "bọn mày", "chúng mày"]
 LENH_QUAY_LAI = ["lại câu", "lại lúc nãy", "lúc nãy đi", "làm lại", "nói lại",
                  "diễn lại", "một lần nữa", "cho thoại"]
 
+# ---- LOP SOI CHEO: Silero VAD (tuy chon, bo qua im lang neu thieu) ----
+# Silero rat gioi cau hoi "co phai GIONG NGUOI khong", nhung KHONG phan biet duoc
+# dau la lan noi that (do that 21/07: no gop ca 3 lan MC noi lai thanh 1 doan
+# 21.31->29.98, trong khi ban that o 24.4). Nen KHONG dung no thay he do chinh —
+# chi dung soi cheo: cho nao he do bao "co nguoi noi" ma Silero bao "khong phai
+# giong nguoi" -> nhieu kha nang la TIENG DONG TO, khong phai nguoi.
+SILERO_PATHS = [
+    os.path.expanduser("~/.claude/roboworld-assets/models/silero_vad.onnx"),
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                 "assets", "models", "silero_vad.onnx"),
+]
+SILERO_CHUNK, SILERO_CTX = 512, 64      # v5 doi dung 512 mau + 64 mau ngu canh chunk truoc
+SILERO_NGUONG = 0.5
+
+
+def silero_xac_suat(x):
+    """Tra ve (xac_suat, moc_giay) hoac None neu khong chay duoc (thieu model/onnxruntime)."""
+    mp = next((p for p in SILERO_PATHS if os.path.exists(p)), None)
+    if not mp:
+        return None
+    try:
+        import onnxruntime as ort
+    except ImportError:
+        return None
+    try:
+        s = ort.InferenceSession(mp, providers=["CPUExecutionProvider"])
+        st = np.zeros((2, 1, 128), dtype=np.float32)
+        ctx = np.zeros(SILERO_CTX, dtype=np.float32)
+        sr = np.array(SR, dtype=np.int64)
+        ps = []
+        for i in range(0, len(x) - SILERO_CHUNK, SILERO_CHUNK):
+            ch = x[i:i + SILERO_CHUNK]
+            out, st = s.run(None, {"input": np.concatenate([ctx, ch]).reshape(1, -1),
+                                   "state": st, "sr": sr})
+            ctx = ch[-SILERO_CTX:]
+            ps.append(float(out[0][0]))
+        # BAY: thieu 64 mau ngu canh thi prob ra gan 0 het ma KHONG bao loi —
+        # da dinh that 21/07, tuong Silero hong trong khi loi o cach goi.
+        return np.array(ps), np.arange(len(ps)) * SILERO_CHUNK / SR
+    except Exception:
+        return None
+
 
 def doc_am(path):
     p = subprocess.run(["ffmpeg", "-v", "quiet", "-i", path, "-ac", "1",
@@ -213,6 +255,8 @@ def phan_tich(path, transcript=None, gem=None):
     mask = (db > san + MARGIN_DB) & (warm > WARM_MIN)
     segs = gom_doan(t, mask)
 
+    sil = silero_xac_suat(x)          # None neu khong co model / onnxruntime
+
     tr = transcript or []
     ds = []
     for s0, s1 in segs:
@@ -256,6 +300,16 @@ def phan_tich(path, transcript=None, gem=None):
         d["ly_do_nghi"] = ly_do
         d["diem_gemini"], d["la_hook"] = diem_gemini(gem, d["t0"], d["t1"])
         d.pop("_wid", None)
+        # soi cheo Silero: doan nay co that su la GIONG NGUOI khong
+        if sil is not None:
+            sp, stt = sil
+            sel2 = (stt >= d["t0"]) & (stt <= d["t1"])
+            if sel2.any():
+                d["silero"] = round(float(sp[sel2].mean()), 2)
+                if d["silero"] < SILERO_NGUONG and not d["nghi_e_kip"]:
+                    d["nghi_e_kip"] = True
+                    d["ly_do_nghi"] = ("Silero cham %.2f — nghi la TIENG DONG TO, khong phai giong nguoi"
+                                       % d["silero"])
 
     # E-KIP RA LENH QUAY LAI -> doan NGAY TRUOC do la take vua bi bo.
     # Cach lam phim: MC dien hong -> e-kip noi "lai cau luc nay di" -> MC dien lai.
@@ -310,6 +364,8 @@ def in_ket_qua(ten, kq):
         if d["nghi_e_kip"]:
             co.append("NGHI E-KIP: %s" % d["ly_do_nghi"])
         dg = "" if d.get("diem_gemini") is None else " G%.0f/10" % d["diem_gemini"]
+        if d.get("silero") is not None:
+            dg += " S%.2f" % d["silero"]
         print("   %2d) %6.2f -> %6.2f  (%.2fs)  %6.1f dB  cach san %5.1f  am %.2f%-6s%s"
               % (i, d["t0"], d["t1"], d["dai"], d["db"], d["cach_san"], d["do_am"], dg,
                  ("   << " + " | ".join(co)) if co else ""))

@@ -241,6 +241,13 @@ python "<skill-dir>\scripts\loc_thoai_that.py" --index "<workspace>\analysis\ind
   Script cũng **đối chiếu chéo** và cảnh báo 2 tình huống: (a) Gemini thấy có người đang nói mà không đoạn nào đủ gần mic → người nói ở xa/ngoài khung, dùng làm thoại chính sẽ tệ; (b) script tìm ra thoại mà Gemini bảo không có ai đang nói trên hình → nhiều khả năng là lời dẫn ngoài hình, **cấm đặt làm B-roll đè voice khác** (luật cấm MC-cutaway).
 
   Bằng chứng đầy đủ: `references/style-voice-karaoke.md` mục 3.
+- **Lớp soi chéo Silero VAD** (tuỳ chọn, tự bỏ qua nếu thiếu): model `silero_vad.onnx` (2.3MB) đặt ở chỗ bền `~/.claude/roboworld-assets/models/`. Máy chưa có thì tải:
+  ```powershell
+  Invoke-WebRequest "https://github.com/snakers4/silero-vad/raw/master/src/silero_vad/data/silero_vad.onnx" -OutFile "$HOME\.claude\roboworld-assets\models\silero_vad.onnx"
+  ```
+  Cần thư viện `onnxruntime` (**không cần `torch`**). Cột `S0.99` trong kết quả là điểm Silero — dưới 0.5 nghĩa là **nghi tiếng động to chứ không phải giọng người**, script tự gắn cờ.
+
+  ⚠️ **Silero KHÔNG thay được hệ đo chính** — đã so thật 21/07 trên 3 ca tai Sếp chấm: **hệ đo hiện tại thắng 2, hoà 1**. Lý do: Silero trả lời *"có phải giọng người không"* nên nó **gộp cả 3 lần MC nói lại thành 1 đoạn** (21.31→29.98) trong khi bản thật ở 24.4. Nó không phân biệt được lần nói thật với lần tập — mà đó chính là bài toán. Chỉ dùng làm lớp soi chéo. *(Lưu ý khi đọc kết quả so sánh đó: ngưỡng 15 dB của hệ đo chính được hiệu chỉnh trên chính mấy clip đem ra thi, còn Silero thi trần trụi — nên phần thắng chưa hoàn toàn công bằng.)*
 - ⛔ **Chạy TRƯỚC mọi bộ lọc âm thanh.** Lọc ồn/`speechnorm` chạy trước sẽ phá hệ đo mà không báo lỗi — xem `references/ffmpeg-recipes.md` mục 5c.
 - Script in `San nhieu` ngay đầu: **cao hơn -25 dB thì đừng phí công thử `silencedetect`**, nó sẽ chết.
 
