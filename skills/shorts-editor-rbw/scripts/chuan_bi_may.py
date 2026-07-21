@@ -58,6 +58,23 @@ KEYS = [
     ("GROQ_API_KEY",       "du phong, it dung",                   False),
 ]
 
+# DAU VAN TAY KEY CHUAN (Sep Huy chot 21/07/2026 — key TAI KHOAN CONG TY).
+# Luu HASH chu khong luu key: hash KHONG suy nguoc ra key duoc nen de trong repo
+# public van an toan, ma van du de biet may nao dang cam NHAM key.
+# Vi sao can: key SAI van chay duoc binh thuong (vd key Gemini tai khoan CA NHAN
+# dung tot suot nhieu ngay) — chi den luc nhan hoa don moi biet tien vao dau.
+# Doi key chuan: chay script nay voi --hash roi thay so duoi day + tang version plugin.
+KEY_CHUAN = {
+    "ELEVENLABS_API_KEY": "9fefcd959a2165fa",
+    "GEMINI_API_KEY":     "a1b1a06da28cc9a3",
+    "GROQ_API_KEY":       "58967101c99d645a",
+}
+
+
+def hash_key(v):
+    import hashlib
+    return hashlib.sha256(v.encode()).hexdigest()[:16]
+
 
 def co(mod):
     try:
@@ -107,14 +124,18 @@ def ghi_config_ffmpeg(path):
 
 
 def doc_keys():
-    co_key = {}
+    """Tra ve {TEN_KEY: 'dung' | 'sai' | None}. KHONG bao gio tra ve gia tri key."""
+    kq = {}
     if os.path.exists(ENV_KEY):
         for line in open(ENV_KEY, encoding="utf-8"):
             if "=" in line and not line.strip().startswith("#"):
                 k, v = line.split("=", 1)
-                if v.strip().strip('"').strip("'"):
-                    co_key[k.strip()] = True
-    return co_key
+                k, v = k.strip(), v.strip().strip('"').strip("'")
+                if not v:
+                    continue
+                chuan = KEY_CHUAN.get(k)
+                kq[k] = "dung" if (chuan and hash_key(v) == chuan) else ("sai" if chuan else "dung")
+    return kq
 
 
 def luu_key(ten):
@@ -224,10 +245,22 @@ def main():
     ap.add_argument("--kiem", action="store_true", help="chi kiem, khong cai gi")
     ap.add_argument("--nhanh", action="store_true", help="bo qua 2 khoan tai nang")
     ap.add_argument("--luu-key", metavar="TEN")
+    ap.add_argument("--hash", action="store_true",
+                    help="in hash cua key hien tai (de cap nhat KEY_CHUAN khi doi key)")
     ap.add_argument("--nhap-key", action="store_true",
                     help="mo hop thoai de nguoi dung tu dan key (khong qua chat)")
     a = ap.parse_args()
 
+    if a.hash:
+        if not os.path.exists(ENV_KEY):
+            return print("Chua co file key.")
+        for line in open(ENV_KEY, encoding="utf-8"):
+            if "=" in line and not line.strip().startswith("#"):
+                k, v = line.split("=", 1)
+                v = v.strip().strip('"').strip("'")
+                if v:
+                    print('    "%s": "%s",' % (k.strip(), hash_key(v)))
+        return print("\n(dan vao KEY_CHUAN trong chinh file nay + tang version plugin)")
     if a.nhap_key:
         return nhap_key_bang_hop_thoai()
     if a.luu_key:
@@ -332,8 +365,11 @@ def main():
     # --- 7. Key ---
     ck = doc_keys()
     for ten, dung_de, _ in KEYS:
+        tt = ck.get(ten)
         bang.append(("Key %s" % ten.replace("_API_KEY", ""),
-                     "OK" if ck.get(ten) else "CHUA CO — %s" % dung_de))
+                     {"dung": "OK — dung key chuan cong ty",
+                      "sai": "SAI KEY — dang cam key khac key chuan, phai thay",
+                      None: "CHUA CO — %s" % dung_de}[tt]))
 
     # --- in bang ---
     print("\n" + "=" * 70)
@@ -349,7 +385,13 @@ def main():
         print("=> MAY DA SAN SANG DUNG VIDEO.")
     else:
         print("=> CON THIEU: %s" % ", ".join(thieu_bat_buoc))
-    thieu_key = [t for t, _, _ in KEYS if not ck.get(t)]
+    thieu_key = [t for t, _, _ in KEYS if ck.get(t) is None]
+    sai_key = [t for t, _, _ in KEYS if ck.get(t) == "sai"]
+    if sai_key:
+        print()
+        print("!! KEY SAI CHUAN: %s" % ", ".join(sai_key))
+        print("   Key nay VAN CHAY duoc nhung khong phai key cong ty — xin quan tri")
+        print("   gui lai key chuan roi chay: chuan_bi_may.py --nhap-key")
     if thieu_key:
         print()
         print("KEY con thieu: %s" % ", ".join(thieu_key))
