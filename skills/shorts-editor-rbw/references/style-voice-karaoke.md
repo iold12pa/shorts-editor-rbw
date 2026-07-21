@@ -105,6 +105,32 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
      **Kèm theo — Whisper nghe lát NGẮN kém hơn hẳn lát RỘNG** (cùng một đoạn tiếng): cắt 33.8→45.3 ra *"Về giá thì em nghĩ nó phải tương đương với lại trước xe ô tô đấy"*, nhưng nới thành 30.2→45.3 thì ra đúng *"Bên Roboworld mà em từng cung cấp, và giá thành của một chú robot này thì em nghĩ là nó phải tương đương với lại một chiếc xe ô tô đấy"*. **Whisper cần ngữ cảnh hai bên mới nghe đúng.**
      → Khi kiểm 1 lát nghi vấn, **nghe thử ở cửa sổ RỘNG hơn dự định trước** để biết lời thật là gì, rồi mới thu về biên cần dùng. Đừng vội kết luận "take này hỏng" chỉ vì lát hẹp nghe ra chữ vô nghĩa — rất dễ loại oan một take tốt.
+3d. **TỐC ĐỘ NÓI — có file mẫu chuẩn (Sếp Huy đưa 21/07/2026)**
+
+**File mẫu**: `~/.claude/roboworld-assets/mau/toc-do-chuan.mp3` (MC dẫn hiện trường tại Bà Nà Hills, năng lượng cao). Đo được **338 âm tiết/phút**.
+
+**Luật**: video dẫn nào đo ra **chậm hơn đáng kể** thì phải đẩy tốc độ lên **bằng hoặc gần bằng mẫu**.
+
+```powershell
+python "<skill-dir>\scripts\do_toc_do_noi.py" <file voice hoac video>
+```
+
+Script tự nghe bằng Whisper, đếm âm tiết, chia cho khoảng từ chữ đầu tới chữ cuối, rồi so với mốc 338 và **gợi ý luôn cần tăng `--rate` bao nhiêu** nếu là giọng máy.
+
+**Cách đo (chốt 1 cách duy nhất)**: `âm tiết ÷ (mốc chữ cuối − mốc chữ đầu) × 60`. Mẫu số **tính cả nhịp ngắt tự nhiên** — vì tai người cảm nhận nhịp nghỉ là một phần của tốc độ. *(Trừ hết khoảng lặng thì con số bị thổi phồng: cùng 1 file ra 338 hay 452 tuỳ cách tính.)*
+
+⚠️ **Phép đo KHÔNG ổn định trên file dưới ~10 giây** — cùng một file TTS 6.6s, Whisper lúc nhận 14 âm tiết lúc 23. Với giọng máy thì **đếm tay số âm tiết trong kịch bản rồi chia cho độ dài file** chắc hơn (mình biết chính xác lời).
+
+**Chỉnh giọng máy**: `--rate` của edge-tts chạy tuyến tính, đo thật trên cùng một lời 22 âm tiết —
+
+| `--rate` | Độ dài | Tốc độ |
+|---|---|---|
+| `+6%` | 6.60s | ~200 âm tiết/phút |
+| `+28%` | 5.47s | ~241 |
+| `+45%` | 4.85s | ~272 |
+
+⚠️ **Giọng máy đẩy quá nhanh sẽ nghe máy móc.** Mốc 338 là người thật đang hào hứng — TTS ép tới đó có thể mất tự nhiên. **Chưa có kết luận Sếp chấm bằng tai** về mức nào là đẹp nhất; mẫu để nghe chọn đang ở Desktop, thư mục `NGHE-CHON-TOC-DO`. Chốt xong thì sửa mức mặc định vào đây.
+
 4. **Sau khi ghép voice track, chạy Whisper lại trên chính track thành phẩm** để lấy mốc sub thật — không đặt sub theo tỉ lệ ước lượng.
 5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take: (a) câu có NHIỀU take → lấy take CUỐI (thường là bản đạt); (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.
 
