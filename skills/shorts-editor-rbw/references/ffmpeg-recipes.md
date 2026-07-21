@@ -78,7 +78,7 @@ Nếu dùng, làm TRƯỚC khi cắt hình để lấy timing.
 **BẮT BUỘC truyền lời đọc qua file UTF-8 (không BOM), KHÔNG dùng `--text`** — PowerShell làm hỏng encoding tiếng Việt trên tham số dòng lệnh, edge-tts sẽ báo `NoAudioReceived`. Ghi file bằng tool Write (mặc định UTF-8) rồi:
 
 ```powershell
-edge-tts --voice vi-VN-NamMinhNeural --rate=+8% `
+edge-tts --voice vi-VN-NamMinhNeural --rate=+60% `
   --file voice\video-1-script.txt `
   --write-media voice\video-1.mp3 --write-subtitles voice\video-1.srt
 ```

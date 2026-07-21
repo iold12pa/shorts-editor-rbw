@@ -121,15 +121,26 @@ Script tự nghe bằng Whisper, đếm âm tiết, chia cho khoảng từ chữ
 
 ⚠️ **Phép đo KHÔNG ổn định trên file dưới ~10 giây** — cùng một file TTS 6.6s, Whisper lúc nhận 14 âm tiết lúc 23. Với giọng máy thì **đếm tay số âm tiết trong kịch bản rồi chia cho độ dài file** chắc hơn (mình biết chính xác lời).
 
-**Chỉnh giọng máy**: `--rate` của edge-tts chạy tuyến tính, đo thật trên cùng một lời 22 âm tiết —
+### Mức mặc định cho giọng máy — ĐÃ CHỐT (Sếp chọn mức mẫu, 21/07/2026)
 
-| `--rate` | Độ dài | Tốc độ |
-|---|---|---|
-| `+6%` | 6.60s | ~200 âm tiết/phút |
-| `+28%` | 5.47s | ~241 |
-| `+45%` | 4.85s | ~272 |
+Sếp chốt: **lấy đúng tốc độ file mẫu làm chuẩn**, không hạ xuống cho dễ.
 
-⚠️ **Giọng máy đẩy quá nhanh sẽ nghe máy móc.** Mốc 338 là người thật đang hào hứng — TTS ép tới đó có thể mất tự nhiên. **Chưa có kết luận Sếp chấm bằng tai** về mức nào là đẹp nhất; mẫu để nghe chọn đang ở Desktop, thư mục `NGHE-CHON-TOC-DO`. Chốt xong thì sửa mức mặc định vào đây.
+```powershell
+edge-tts --voice vi-VN-NamMinhNeural --rate=+60% --file <loi.txt> --write-media <out.mp3>
+```
+
+Đo thật trên cùng một lời 22 âm tiết, giọng `vi-VN-NamMinhNeural`:
+
+| `--rate` | Khoảng nói | Tốc độ | |
+|---|---|---|---|
+| `+6%` | 5.79s | 228 âm tiết/phút | quá chậm — mức cũ dùng hôm 21/07, Sếp nhận xét chậm |
+| `+45%` | 4.25s | 311 | vẫn thiếu |
+| **`+60%`** | **3.85s** | **343** | ✅ **khớp mẫu (342)** |
+| `+70%` | 3.63s | 364 | vượt mẫu |
+
+⚠️ **Con số `+60%` chỉ đúng cho giọng `vi-VN-NamMinhNeural`.** Mỗi giọng có tốc độ gốc khác nhau — đổi giọng (HoaiMy, hoặc giọng ElevenLabs) thì **phải đo lại**, đừng chép nguyên con số. Chạy `do_toc_do_noi.py` trên bản vừa sinh rồi chỉnh cho tới khi khớp ~342.
+
+**Bẫy khi so tốc độ — dễ ra kết luận sai**: phải đo hai bên **cùng một thước**. Ban đầu đã so nhầm — mẫu đo theo *khoảng từ chữ đầu đến chữ cuối*, còn giọng máy lại tính theo *cả độ dài file* (gồm khoảng lặng đầu/cuối). Cùng một file `+45%` ra **272** hay **311** tuỳ cách tính — lệch đủ để chỉnh sai hẳn một mức.
 
 4. **Sau khi ghép voice track, chạy Whisper lại trên chính track thành phẩm** để lấy mốc sub thật — không đặt sub theo tỉ lệ ước lượng.
 5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take: (a) câu có NHIỀU take → lấy take CUỐI (thường là bản đạt); (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.

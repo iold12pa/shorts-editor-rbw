@@ -28,10 +28,12 @@ if hasattr(sys.stdout, "reconfigure"):
 BIA = ["subscribe", "ghiền mì gõ", "hẹn gặp lại", "cảm ơn các bạn đã theo dõi",
        "video tiếp theo", "đừng quên", "chúc các bạn"]
 
-# MOC CHUAN — DO THAT tu file mau Sep dua 21/07/2026
+# MOC CHUAN — DO THAT tu file mau Sep dua 21/07/2026, Sep CHOT lay dung muc nay.
 # (MC dan hien truong tai Ba Na Hills, nang luong cao, nhip nhanh)
 # File mau luu o cho ben: ~/.claude/roboworld-assets/mau/toc-do-chuan.mp3
-CHUAN = 338
+# Giong may edge-tts vi-VN-NamMinhNeural dat moc nay o --rate=+60% (do that).
+# Doi giong khac thi PHAI DO LAI, moi giong co toc do goc khac nhau.
+CHUAN = 342
 
 
 def whisper_srt(path):
