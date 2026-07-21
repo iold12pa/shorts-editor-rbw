@@ -22,6 +22,21 @@ CAM TUYET DOI: khong loc on / speechnorm / highpass TRUOC khi chay script nay.
   speechnorm lam cach san tut 17.2 -> 10.3 dB (mat kha nang chon ban take tot).
   Bo loc chi duoc chay o buoc MIX CUOI — xem ffmpeg-recipes.md muc 5c.
 
+KHONG DUNG DUOC CHO FILE TTS (giong may doc) — gioi han that, do chieu 21/07:
+  Script tinh san nhieu tu CHINH clip (phan vi 20). File TTS thi khoang lang la
+  IM TUYET DOI nen phep tinh san vo nghia -> no cham CA 3 doan giong la "XA MIC",
+  co doan ra cach san = -21.8 dB (am, tuc thap hon ca san).
+  => File TTS thi dung `silencedetect` (nen im tuyet doi nen no chay hoan hao).
+     File tieng THU THAT (co on nen) moi dung script nay.
+
+LUU Y KHI DOC KET QUA — truong "loi" BAO DU CHU:
+  "loi" ghep tu cac doan Whisper GIAO NHAU voi lat cat, nen no thuong hien
+  NHIEU CHU HON thuc te lat cat chua. Ca that 21/07: doan 11.90-17.20 hien loi
+  "nhung nha sach rong the nay biet quay nao ma tim..." nhung cat ra nghe lai
+  chi con tu "sach rong the nay" — mat "Nhung nha". Bien dung la 11.50.
+  => LUON cho Whisper nghe lai chinh lat cat truoc khi chot (phep ra bat buoc
+     trong SKILL.md buoc 4 muc 7).
+
 Usage:
     # 1 clip
     python loc_thoai_that.py <clip.mp4> [--index <index.json>] [--json <out.json>]

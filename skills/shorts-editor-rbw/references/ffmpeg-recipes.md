@@ -341,7 +341,16 @@ python "<skill-dir>\scripts\loc_thoai_that.py" voice\video-N.mp3
 >
 > Nguyên nhân: `silencedetect` chỉ nhìn TO/NHỎ, không nhìn CHẤT giọng. Trong môi trường ồn nền liên tục (nhà sách, siêu thị, nhà máy) nó bắt nhầm tiếng ồn nhấp nhô thành "hết câu". Phải nới ngưỡng từ -32 lên -25dB mới ra kết quả — **chính việc phải nới ngưỡng đã là dấu hiệu công cụ không dùng được ở đó**.
 >
-> Với file voice-over do máy đọc (TTS) thì nền im tuyệt đối nên `silencedetect` vẫn đúng — nhưng dùng script trên cho mọi trường hợp thì khỏi phải phân biệt.
+> 🔴 **SỬA TIẾP CÙNG NGÀY (chiều 21/07) — câu cuối của khối này TỪNG SAI.** Nó viết *"dùng script trên cho mọi trường hợp thì khỏi phải phân biệt"*. **Không đúng: với file TTS thì phải làm NGƯỢC LẠI.**
+>
+> | Loại file | Dùng gì để đo mốc giọng dứt |
+> |---|---|
+> | Tiếng **thu thật** (có ồn nền) | `loc_thoai_that.py` |
+> | File **TTS máy đọc** | **`silencedetect`** — script kia KHÔNG dùng được |
+>
+> **Vì sao script không dùng được cho TTS**: nó tính sàn nhiễu từ chính clip (phân vị 20). File TTS thì khoảng lặng là **im tuyệt đối**, nên phép tính sàn vô nghĩa — nó chấm cả 3 đoạn giọng là "XA MIC", thậm chí ra `cách sàn = -21.8 dB` (âm, tức thấp hơn cả sàn). Đo thật trên `voice/v3.mp3` chiều 21/07.
+>
+> Ngược lại `silencedetect` chạy hoàn hảo trên TTS vì nền im tuyệt đối — trả đúng mốc giọng dứt 5.79s.
 
 Bước 2 — nhạc nhỏ trong lúc nói, dâng dần lên trong 1.5s, rồi giữ to đến hết:
 

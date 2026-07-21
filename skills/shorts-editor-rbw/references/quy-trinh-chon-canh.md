@@ -26,6 +26,21 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 
 **Đọc bảng này cho đúng**: "DẪN" nghĩa là *lấy con số/lựa chọn từ đó*. "ĐỐI CHIẾU" nghĩa là *nếu nó mâu thuẫn thì phải dừng lại xem xét, không được lờ đi*.
 
+### 2b. Hai cái bẫy khi đọc kết quả `loc_thoai_that` (đo thật 21/07)
+
+**Bẫy 1 — trường `loi` báo DƯ CHỮ.** Nó ghép từ các đoạn Whisper *giao nhau* với lát cắt, nên hiện nhiều chữ hơn thực tế lát cắt chứa.
+
+> Ca thật: đoạn `11.90-17.20` hiện lời *"nhưng nhà sách rộng thế này biết quầy nào mà tìm…"*, nhưng cắt ra nghe lại chỉ còn từ *"sách rộng thế này"* — **mất "Nhưng nhà"**. Biên đúng là **11.50**.
+>
+> → **Luôn cho Whisper nghe lại chính lát cắt trước khi chốt.** Đây chính là phép rà bắt buộc ở `SKILL.md` bước 4 mục 7 — bỏ nó là giao hàng với câu cụt đầu.
+
+**Bẫy 2 — script KHÔNG dùng được cho file TTS (giọng máy đọc).** Nó tính sàn nhiễu từ chính clip; file TTS thì khoảng lặng là **im tuyệt đối** nên phép tính vô nghĩa — chấm cả 3 đoạn giọng là "XA MIC", có đoạn ra `cách sàn = -21.8 dB`.
+
+| Loại file | Đo mốc bằng |
+|---|---|
+| Tiếng **thu thật** (có ồn nền) | `loc_thoai_that.py` |
+| File **TTS máy đọc** | **`silencedetect`** |
+
 ---
 
 ## 3. Bốn cổng mọi cảnh phải qua
