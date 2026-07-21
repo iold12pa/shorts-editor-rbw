@@ -40,6 +40,34 @@ Nguyên tắc: khi rà source, GẠCH BỎ SỚM 2 loại này khỏi danh sách
 
 **Bước rà soát BẮT BUỘC trước khi chốt mọi video (cả 3 kiểu)**: duyệt lại từng cảnh cutaway, tự hỏi *"trong khung này có ai đang nói/nhìn thẳng máy quay không, và tiếng đang phát có đúng là của chính họ tại chính lúc đó không?"* — sai một trong hai thì thay cảnh. Cảnh thay thế an toàn nhất đã dùng thực tế: người tương tác với robot (trẻ em chạm robot, khách nhảy nhót cạnh quầy).
 
+### 3b-1. LỌC BẰNG CỜ NÀO — chỗ sai đi sai lại (Sếp bắt lỗi lần 3, 21/07/2026)
+
+🔴 **`has_speech` KHÔNG dùng để lọc cảnh này được.** Đó là cờ **ÂM THANH** (Whisper có nghe ra tiếng không). Người trong hình mấp máy môi mà mic không bắt được — vì đứng xa, vì quay ngoài đường ồn — thì `has_speech` vẫn `false`. Lọt lưới hoàn toàn.
+
+✅ **Phải lọc bằng `gemini.co_nguoi_dang_noi`** — đó là cờ **HÌNH**, Gemini nhìn thấy miệng người ta đang nói.
+
+**Đo thật trên folder 30 (21 clip đã quét Gemini):**
+
+| | Số clip |
+|---|---|
+| Lọc bằng `has_speech=false` | tưởng là 6 clip sạch |
+| **Lọt lưới** — `has_speech=false` NHƯNG `co_nguoi_dang_noi=true` | **4 clip** (`0994`, `0007`, `0009`, `0016`) |
+| Thật sự sạch (`co_robot=true` + `co_nguoi_dang_noi=false`) | **chỉ 2 clip** |
+
+Ngày 21/07 đã dựng 2 video (Kiểu 1 + Kiểu 3) dùng nhầm **3 trong 4 clip lọt lưới** đó. Sếp xem ra ngay: *"trong hình người nói nhưng không có tiếng, nó kỳ lắm"*.
+
+**Hệ quả dây chuyền phải biết**: lọc đúng thì số clip dùng được **tụt rất mạnh** (6 → 2). Không đủ clip mà vẫn cố dựng cho đủ thời lượng thì sẽ đẻ ra lỗi lặp cảnh ở mục 3d. **Thiếu clip sạch thì phải quét Gemini thêm clip mới, không được quay vòng lấy lại clip cũ.**
+
+## 3d. CẤM LẶP CẢNH — tối kỵ ở CẢ 3 KIỂU (Sếp Huy chốt 21/07/2026)
+
+**Luật**: không lấy lại cùng một cảnh, và cũng không lấy 2 đoạn khác nhau của **cùng một cú máy** nếu người xem nhìn ra là "vẫn cảnh đó". Kể cả 2 clip **khác file** nhưng là 2 lần quay lại cùng một bối cảnh/động tác — nhìn vào vẫn thấy trùng — cũng tính là lặp.
+
+**Vì sao Sếp gọi là tối kỵ**: người xem nhận ra ngay video bị "kéo dài cho đủ giây", cảm giác nghèo tư liệu. Nó phá hỏng cảm giác chuyên nghiệp nhanh hơn mọi lỗi kỹ thuật khác.
+
+**Cách tự bắt trước khi dựng**: lập bảng cảnh rồi đếm — **mỗi file nguồn chỉ nên xuất hiện 1 lần**, tối đa 2 lần nếu 2 đoạn khác hẳn nhau về góc máy/hành động. Thấy 1 file xuất hiện 3 lần trở lên là đang thiếu tư liệu, phải đi tìm clip khác chứ không chia nhỏ clip cũ ra dùng tiếp.
+
+**Ca thật 21/07**: video Kiểu 1 và Kiểu 3 đều dùng `0009` 3 lần, `0021` 3 lần, `0007` 2 lần, `0016` 2 lần. Sếp xem ra ngay từ 5-6 giây đầu.
+
 ## 3c. SOI ĐÚNG ĐOẠN SẼ CẮT, không tin khung đại diện của clip (bài học 20/07/2026)
 
 Khi rà nhiều clip cùng lúc, cách nhanh là ghép mỗi clip 1 khung đại diện thành ảnh lưới. **Nhưng khung đó thường lấy ở giữa clip (~45%), còn đoạn định cắt lại nằm ở chỗ khác** — nội dung có thể khác hoàn toàn.

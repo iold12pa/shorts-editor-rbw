@@ -19,6 +19,25 @@ Video mẫu KHÔNG có voiceover — câu chuyện kể bằng **text đè Anton
 - **Hiệu ứng ra/vào cho text**: mặc định luôn dùng fade nhẹ (`\fad(200~300,250~300)` trong ASS) thay vì text bật/tắt cứng — cảm giác chuyên nghiệp hơn mà không phô. Đây là hiệu ứng tối thiểu bắt buộc; hiệu ứng mạnh hơn (bounce, scale-in) chỉ thêm khi kịch bản thật sự cần nhấn, tránh dùng tràn lan.
 - **Dấu câu gọn gàng**: không để thừa dấu (vd hook không viết "ROBOT?!" — chỉ 1 dấu, chọn "?" hoặc "!" theo đúng tông câu, không cả hai). Đọc lại toàn bộ text trong kịch bản trước khi burn để bắt lỗi này.
 
+## KIỂU 1 PHẢI TẬP TRUNG VÀO ROBOT (Sếp Huy chốt 21/07/2026)
+
+**Luật**: Kiểu 1 là video khoe robot — nên cảnh chọn phải là **robot ở GIỮA KHUNG HÌNH, ĐANG HOẠT ĐỘNG, quay CHÍNH DIỆN, hình đẹp**. Đó là mặc định cho gần như mọi cảnh.
+
+**Cảnh bối cảnh (nhà sách, nhà máy, gian hàng...) chỉ được lấy khi chính kịch bản đang nói về bối cảnh đó** — ví dụ thẻ chữ đang là "NHÀ SÁCH TRÀNG AN" thì mới cắt cảnh toàn nhà sách. Không có lý do nội dung thì đừng chèn cảnh không có robot cho đủ giây.
+
+**Xếp ưu tiên khi chọn cảnh cho Kiểu 1:**
+
+| Ưu tiên | Loại cảnh |
+|---|---|
+| 1 | Robot chính diện, giữa khung, **đang di chuyển hoặc đang làm việc** |
+| 2 | Cận cảnh bộ phận robot đang hoạt động (khay hàng, màn hình, bánh xe) |
+| 3 | Người **tương tác** với robot (chạm, bấm màn hình, xếp đồ lên khay) |
+| 4 | Toàn cảnh có robot trong khung, dù nhỏ |
+| ❌ | Cảnh không có robot — **chỉ dùng khi kịch bản đang nói về đúng bối cảnh đó** |
+| ❌ | Cảnh có người đang nói (xem `chon-canh-highlight.md` mục 3b-1) |
+
+**Ca thật 21/07**: video Kiểu 1 đầu tiên bị Sếp bắt 2 lỗi cùng lúc — chèn cảnh kệ sách trống không có robot, và lấy cảnh người đang nói làm B-roll.
+
 ## Chọn cảnh mở đầu (hook) — nguyên tắc quan trọng
 
 > Xem thêm `references/chon-canh-highlight.md` — quy tắc chọn cảnh đầy đủ (không chỉ hook) đúc kết từ đối chiếu TRỰC TIẾP 1 buổi quay thô với 2 video final thật đã dựng ra từ đó, áp dụng chung cho cả 3 kiểu dựng.

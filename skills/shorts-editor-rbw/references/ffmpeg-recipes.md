@@ -312,6 +312,15 @@ Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào là
 
 **Chuỗi `loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000` ở cuối filter audio là BẮT BUỘC trong lệnh xuất final** (chuẩn giao hàng -14 LUFS của Sếp — áp cho MỌI kiểu dựng, không riêng video có voice). `aresample=48000` đi kèm vì loudnorm tự đổi sample rate lên 192kHz. Video có voiceover: vẫn loudnorm cả mix như trên, RIÊNG track giọng MC thu nhiều khoảng cách mic khác nhau thì loudnorm I=-16 trên track voice ghép TRƯỚC khi mix (luật trong style-voice-karaoke.md).
 - **Có voiceover** (khi kịch bản được duyệt có lời dẫn): thêm input `voice\video-N.mp3`, voiceover volume 1.0, nhạc nền hạ còn 0.15-0.2, `amix=inputs=3`.
+
+  **MỨC NHẠC ĐÃ CHỈNH THEO TAI SẾP (21/07/2026)** — con số 0.15-0.2 ở trên là khoảng chung, nhưng **giọng thu thật và giọng máy cần mức khác nhau**:
+
+  | Loại giọng | Nhạc lúc đang nói | Vì sao |
+  |---|---|---|
+  | **Tiếng MC thu thật** (Kiểu 2) | **0.20-0.22** | Giọng thu thật to và dày, nhạc 0.15 nghe **hơi bé** — Sếp nhận xét đúng ca video-2 ngày 21/07 |
+  | **Giọng máy TTS** (Kiểu 3) | **0.12-0.14** | Giọng TTS mỏng hơn giọng người, nhạc 0.18 là **lấn át lời dẫn** — Sếp bắt lỗi ca video-3 cùng ngày |
+
+  Đây là chênh lệch dễ bỏ sót vì `loudnorm` cuối lệnh chuẩn hoá tổng thể, nên đo LUFS vẫn đạt mà **tương quan giọng/nhạc thì sai**. Máy không tự bắt được — chỉ tai người nghe ra.
 - Nhạc ngắn hơn video: `-stream_loop -1` đã lo; nhạc dài hơn: `-shortest` đã lo.
 
 ## 5b. Nhạc DÂNG LÊN sau khi giọng dẫn kết thúc (Nhóm B — luật 21/07/2026)
