@@ -297,6 +297,36 @@ Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào là
 - **Có voiceover** (khi kịch bản được duyệt có lời dẫn): thêm input `voice\video-N.mp3`, voiceover volume 1.0, nhạc nền hạ còn 0.15-0.2, `amix=inputs=3`.
 - Nhạc ngắn hơn video: `-stream_loop -1` đã lo; nhạc dài hơn: `-shortest` đã lo.
 
+## 5b. Nhạc DÂNG LÊN sau khi giọng dẫn kết thúc (Nhóm B — luật 21/07/2026)
+
+Dùng khi giọng nói **chỉ mở màn 1-2 câu** rồi im hẳn, phần sau để cảnh robot + nhạc tự kể (xem `references/chon-kieu-dung.md`, khối "Luật nhạc theo mức phủ giọng"). Nhóm này **được dùng nhạc có lời/nhạc hot**, vì sau đoạn mở đầu không còn giọng nào chồng lên nữa.
+
+**Nguyên tắc: MỘT bài nhạc duy nhất chạy suốt, chỉ thay đổi âm lượng — tuyệt đối không đổi bài giữa chừng.**
+
+Bước 1 — **đo mốc giọng kết thúc bằng `silencedetect`, không lấy mốc Whisper** (luật cũ: Whisper chỉ để tìm, cắt phải đo lại):
+
+```powershell
+ffmpeg -hide_banner -i voice\video-N.mp3 -af "silencedetect=noise=-35dB:d=0.4" -f null - 2>&1 | Select-String "silence_start"
+```
+
+Mốc `silence_start` cuối cùng chính là `T_END` (giây) — thời điểm câu dẫn cuối vừa dứt.
+
+Bước 2 — nhạc nhỏ trong lúc nói, dâng dần lên trong 1.5s, rồi giữ to đến hết:
+
+```powershell
+# T_END = 6.2  (giọng dứt ở giây 6.2) ; 0.18 = mức nhỏ khi đang nói ; 0.55 = mức to sau đó
+[2:a]volume='if(lt(t,6.2),0.18,if(lt(t,7.7),0.18+(t-6.2)/1.5*0.37,0.55))':eval=frame[bgm]
+```
+
+- `eval=frame` **bắt buộc** — thiếu nó ffmpeg tính volume đúng 1 lần ở frame đầu rồi giữ nguyên cả bài, nhạc sẽ nhỏ suốt và Sếp sẽ tưởng công thức hỏng.
+- `0.37` trong công thức = `0.55 - 0.18` (biên độ dâng). Đổi 2 mức thì phải đổi cả số này.
+- Dâng trong **1.5s** là vừa tai. Dưới 0.5s nghe như bị giật volume; trên 3s nghe ì ạch, mất cú hích.
+- Mức nhỏ `0.15-0.2` giống luật voiceover ở mục 5; mức to `0.5-0.6` giống nhạc nền Kiểu 1.
+
+Phần còn lại của lệnh xuất giữ nguyên như mục 5 — vẫn `amix` cùng track giọng + SFX + outro, vẫn `loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000` ở cuối.
+
+**Nghiệm thu riêng cho mục này**: nghe lại quanh mốc `T_END` xem nhạc có dâng mượt không, và kiểm chữ cuối của câu dẫn có bị nhạc trùm lên không — dâng sớm quá là nuốt mất chữ cuối.
+
 ## 6. Tự nghiệm thu (bắt buộc trước khi bàn giao)
 
 ```powershell

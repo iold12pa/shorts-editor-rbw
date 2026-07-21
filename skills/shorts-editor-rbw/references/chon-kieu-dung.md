@@ -38,7 +38,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Source video có thoại | **Bắt buộc** | "Cho tôi xin video/folder nguồn — trong đó đã có người nói sẵn đúng không?" |
 | Xác nhận THẬT SỰ có thoại (không đoán) | **Bắt buộc trước khi viết kịch bản** | Sau khi chạy `analyze_footage.py`, nếu phần lớn clip `has_speech=false` → báo lại: "Tôi nghe thử thì video này không có lời rõ, bạn xác nhận lại giúp, hay muốn chuyển sang Kiểu 1?" — KHÔNG tự chuyển kiểu, phải hỏi. |
 | Bối cảnh (để hiểu đúng ý câu nói, tránh cắt sai/lệch khẩu hình) | Nên có | "Buổi quay này về chuyện gì, để tôi hiểu đúng ngữ cảnh lời thoại?" |
-| **LOẠI NHẠC** | **KHÔNG hỏi — luật cứng** | Nhạc nền bắt buộc KHÔNG LỜI. Xem khối "Luật nhạc không lời" ngay dưới bảng Kiểu 3 |
+| **MỨC PHỦ GIỌNG → quyết định loại nhạc** | **Bắt buộc hỏi** | "Giọng nói phủ cả bài, hay chỉ 1-2 câu mở đầu?" — xem khối "Luật nhạc theo mức phủ giọng" dưới bảng Kiểu 3 |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức con 2A/2B/2C theo dạng source) + mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md` |
 
 ### Kiểu 3 — Ghép cảnh + thêm voice-over mới (không đồng bộ lúc quay)
@@ -49,19 +49,33 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Nếu ĐÃ có voice-over: khớp với video nào | **Bắt buộc** | "File giọng đọc này đi cùng (những) video nào? Có sẵn lời thoại/kịch bản để tôi khớp cảnh theo không?" |
 | Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ?" — mặc định giờ là **giọng VIỆT** (MC Xuân Tú nam / Thanh Ngọc nữ). Gói ElevenLabs còn Free thì 2 giọng này bị chặn 402 → tự lui về edge-tts giọng Việt. **Tuyệt đối không lui về George** — đó là giọng Anh, đọc tiếng Việt méo cả câu thường |
 | Bối cảnh | Nên có | như Kiểu 1/2 |
-| **LOẠI NHẠC** | **KHÔNG hỏi — luật cứng** | Nhạc nền bắt buộc KHÔNG LỜI. Xem khối ngay dưới bảng này |
+| **MỨC PHỦ GIỌNG → quyết định loại nhạc** | **Bắt buộc hỏi** | "Giọng đọc phủ cả bài, hay chỉ 1-2 câu mở đầu?" — xem khối ngay dưới bảng này |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức 3A showcase / 3B case study 9 nhịp) + `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu dạng quảng cáo bán hàng) |
 
-### Luật nhạc KHÔNG LỜI — áp cho Kiểu 2 và Kiểu 3 (Sếp Huy chốt 21/07/2026)
+### Luật nhạc theo mức phủ giọng — áp cho Kiểu 2 và Kiểu 3 (Sếp Huy chốt 21/07/2026)
 
-> Mọi video có tiếng người nói — **MC dẫn đồng bộ lúc quay, voice-over giọng AI, voice-over giọng người thu riêng** — nhạc nền **tuyệt đối phải là nhạc không có giọng hát**.
+**Câu hỏi BẮT BUỘC, hỏi ngay sau khi người dùng chọn Kiểu 2 hoặc Kiểu 3:**
 
-- **Lý do**: hai giọng chồng lên nhau bắt tai người nghe chia sự chú ý, lời dẫn bị nuốt. Hạ volume nhạc **không cứu được** — vấn đề là có 2 giọng, không phải nhạc to.
-- **Áp cho CẢ video**, kể cả đoạn không ai nói. Ví dụ công thức 2A dạng hành trình thoại chỉ phủ ~45%, nửa sau chỉ còn hình + nhạc — nửa sau đó **vẫn phải không lời**, vì đổi nhạc giữa chừng nghe gãy (Sếp chốt phương án A ngày 21/07).
-- **KHÔNG hỏi câu "trend hay không bản quyền"** ở Kiểu 2/3 — câu đó chỉ dành cho Kiểu 1. Kiểu 2/3 **cấm dùng folder `Nhạc hot`** (nhạc trend gần như luôn có lời).
-- **Không chắc bài có giọng hát hay không → NGHE KIỂM trước khi dùng.** Kể cả trong nhóm "nhạc không bản quyền" vẫn lẫn bài có lời (folder `POP tươi sáng`).
-- Nhạc sinh bằng ElevenLabs Music đã khoá sẵn `force_instrumental=True` nên luôn hợp luật này.
-- **Kiểu 1 không áp luật này** — vẫn được dùng nhạc có lời bình thường.
+> "Video này giọng nói phủ tới đâu — **dẫn xuyên suốt cả bài**, hay **chỉ 1-2 câu mở đầu** rồi phần sau để cảnh robot chạy với nhạc?"
+
+Trả lời xong mới chọn nhạc. Hai nhóm, luật khác hẳn nhau:
+
+**NHÓM A — giọng dẫn xuyên suốt** (MC nói cả bài, hoặc voice-over phủ phần lớn thời lượng)
+- Nhạc nền **TUYỆT ĐỐI KHÔNG LỜI**.
+- Áp cho **CẢ video**, kể cả đoạn cuối không còn ai nói. Ví dụ công thức 2A dạng hành trình thoại chỉ phủ ~45%, nửa sau chỉ còn hình + nhạc — nửa sau đó **vẫn phải không lời**, vì đổi nhạc giữa chừng nghe gãy (Sếp chốt phương án A ngày 21/07).
+- **KHÔNG hỏi câu "trend hay không bản quyền"**, và **cấm dùng folder `Nhạc hot`** (nhạc trend gần như luôn có lời).
+
+**NHÓM B — giọng chỉ mở màn 1-2 câu rồi im hẳn**, phần sau để cảnh robot + nhạc tự kể
+- **ĐƯỢC dùng nhạc có lời, kể cả nhạc hot.**
+- **PHẢI hỏi "trend hay không bản quyền"** giống hệt Kiểu 1 (dùng đúng câu hỏi ở mục Kiểu 1 bên trên) — vì nhạc hot chỉ đăng được Facebook page.
+- Nhạc **nhỏ trong lúc đang nói (0.15-0.2)**, nói xong **dâng dần lên to đến hết bài (~0.55)**. Đây là một bài duy nhất chạy suốt, chỉ đổi âm lượng — **không phải đổi bài**. Công thức ffmpeg: `references/ffmpeg-recipes.md` mục 5b.
+
+**Lý do luật gốc**: hai giọng chồng lên nhau bắt tai người nghe chia sự chú ý, lời dẫn bị nuốt — hạ volume nhạc **không cứu được**, vì vấn đề là có 2 giọng chứ không phải nhạc to. Nhóm B thoát luật vì sau 1-2 câu đầu không còn giọng nào để chồng lên nữa.
+
+**Chung cho cả 2 nhóm:**
+- Không chắc bài có giọng hát hay không → **NGHE KIỂM trước khi dùng**. Kể cả nhóm "nhạc không bản quyền" vẫn lẫn bài có lời (folder `POP tươi sáng`).
+- Nhạc sinh bằng ElevenLabs Music đang khoá `force_instrumental=True` → luôn hợp Nhóm A; muốn nhạc có lời cho Nhóm B thì phải lấy từ kho.
+- **Kiểu 1 không áp luật này** — vẫn dùng nhạc có lời bình thường.
 
 ## Bước C — Câu hỏi chung, mọi kiểu đều cần
 - Robot xuất hiện là model nào → tra `references/robot-products.md` trước, chỉ hỏi lại nếu không chắc hoặc model chưa có trong danh mục
