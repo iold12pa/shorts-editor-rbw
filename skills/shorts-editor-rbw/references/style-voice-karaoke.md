@@ -121,24 +121,34 @@ Script tự nghe bằng Whisper, đếm âm tiết, chia cho khoảng từ chữ
 
 ⚠️ **Phép đo KHÔNG ổn định trên file dưới ~10 giây** — cùng một file TTS 6.6s, Whisper lúc nhận 14 âm tiết lúc 23. Với giọng máy thì **đếm tay số âm tiết trong kịch bản rồi chia cho độ dài file** chắc hơn (mình biết chính xác lời).
 
-### Mức mặc định cho giọng máy — ĐÃ CHỐT (Sếp chọn mức mẫu, 21/07/2026)
+### Cách đạt tốc độ chuẩn cho giọng máy — ĐO RỒI CHỈNH, không dùng số cố định
 
-Sếp chốt: **lấy đúng tốc độ file mẫu làm chuẩn**, không hạ xuống cho dễ.
+Sếp chốt: **lấy đúng tốc độ file mẫu (342) làm chuẩn**, không hạ xuống cho dễ.
 
-```powershell
-edge-tts --voice vi-VN-NamMinhNeural --rate=+60% --file <loi.txt> --write-media <out.mp3>
-```
+🔴 **KHÔNG có một con số `--rate` đúng cho mọi kịch bản.** Đo thật cùng giọng `vi-VN-NamMinhNeural`:
 
-Đo thật trên cùng một lời 22 âm tiết, giọng `vi-VN-NamMinhNeural`:
+| Kịch bản | `--rate` | Kết quả |
+|---|---|---|
+| Lời ngắn 22 âm tiết, 1-2 câu | `+60%` | **343** ✅ |
+| Lời dài 107 âm tiết, nhiều câu | `+60%` | **311** ❌ thiếu 31 |
+| Lời dài 107 âm tiết | **`+76%`** | **342** ✅ |
 
-| `--rate` | Khoảng nói | Tốc độ | |
-|---|---|---|---|
-| `+6%` | 5.79s | 228 âm tiết/phút | quá chậm — mức cũ dùng hôm 21/07, Sếp nhận xét chậm |
-| `+45%` | 4.25s | 311 | vẫn thiếu |
-| **`+60%`** | **3.85s** | **343** | ✅ **khớp mẫu (342)** |
-| `+70%` | 3.63s | 364 | vượt mẫu |
+**Lý do**: lời càng nhiều câu thì càng nhiều nhịp ngắt giữa câu, kéo tốc độ trung bình xuống. Cùng một `--rate` nhưng kịch bản khác nhau ra kết quả khác nhau.
 
-⚠️ **Con số `+60%` chỉ đúng cho giọng `vi-VN-NamMinhNeural`.** Mỗi giọng có tốc độ gốc khác nhau — đổi giọng (HoaiMy, hoặc giọng ElevenLabs) thì **phải đo lại**, đừng chép nguyên con số. Chạy `do_toc_do_noi.py` trên bản vừa sinh rồi chỉnh cho tới khi khớp ~342.
+**Quy trình bắt buộc — 3 bước, đừng đoán:**
+
+1. Sinh thử với `--rate=+60%` (điểm xuất phát hợp lý).
+2. Đo: `python "<skill-dir>\scripts\do_toc_do_noi.py" <file vừa sinh>`
+3. Chưa tới 342 thì tăng `--rate` theo tỉ lệ `342 ÷ (số vừa đo)` rồi sinh lại. Thường 1 vòng là khớp.
+
+**Mốc tham chiếu đã đo** (lời ~100 âm tiết nhiều câu, cả 2 giọng đều `+76%`):
+
+| Giọng | `--rate` | Tốc độ |
+|---|---|---|
+| `vi-VN-NamMinhNeural` (nam) | `+76%` | 342 |
+| `vi-VN-HoaiMyNeural` (nữ) | `+76%` | 339 |
+
+⚠️ Đổi sang giọng khác (nhất là giọng ElevenLabs khi tài khoản lên gói trả phí) thì **phải đo lại từ đầu** — mỗi giọng có tốc độ gốc riêng.
 
 **Bẫy khi so tốc độ — dễ ra kết luận sai**: phải đo hai bên **cùng một thước**. Ban đầu đã so nhầm — mẫu đo theo *khoảng từ chữ đầu đến chữ cuối*, còn giọng máy lại tính theo *cả độ dài file* (gồm khoảng lặng đầu/cuối). Cùng một file `+45%` ra **272** hay **311** tuỳ cách tính — lệch đủ để chỉnh sai hẳn một mức.
 
