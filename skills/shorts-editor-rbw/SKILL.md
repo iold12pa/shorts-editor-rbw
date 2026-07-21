@@ -217,7 +217,22 @@ Gemini **xem** clip (không chỉ nghe) rồi trả về: có robot không, robo
 - Trường **`co_nguoi_dang_noi` chính là thứ hỗ trợ luật cấm cảnh MC-cutaway** — dùng để lọc ứng viên B-roll trước khi soi khung bằng mắt.
 - Quét 1 clip lẻ: `python "<skill-dir>\scripts\gemini_vision.py" --video CLIP.mp4`
 
-**Thứ tự đúng của cả 3 bước**: `analyze_footage` (nghe + đổi cảnh) → `do_ky_thuat` (đo, miễn phí, 100% clip) → `quet_mat_ai` (hiểu, tốn tiền, chỉ clip đã lọc). Làm ngược là vừa chậm vừa tốn.
+### Bước 4 — LỌC THOẠI THẬT + lấy mốc cắt (BẮT BUỘC với Kiểu 2 và Kiểu 3, miễn phí, offline)
+
+```powershell
+python "<skill-dir>\scripts\loc_thoai_that.py" --index "<workspace>\analysis\index.json" --folder "<folder buổi quay>"
+```
+
+- **BẮT BUỘC chạy trước khi viết kịch bản** với mọi video có tiếng người nói. Bỏ qua bước này là quay lại đúng cái sai ngày 21/07 (cắt lệch 4 giây, mất đầu câu MC).
+- Trả về từng đoạn **có giọng người thật nói vào máy**, kèm mốc vào/ra chính xác, và tự đánh dấu:
+  - **BẢN TỐT NHẤT** khi MC nói lại cùng một câu nhiều lần (chọn bản to nhất = gần mic nhất)
+  - **XA MIC** khi cách sàn nhiễu < 15 dB
+  - **NGHI Ê-KÍP** khi là lời chỉ đạo/quên thoại chứ không phải nội dung
+- **Mốc cắt lấy từ đây, KHÔNG lấy của Whisper và KHÔNG lấy của Gemini.** Whisper nối đuôi các đoạn nên mốc bắt đầu là số nối chứ không phải số đo; Gemini chấm mốc sai 2/4 ca đã kiểm. Chi tiết + bằng chứng: `references/style-voice-karaoke.md` mục 3.
+- ⛔ **Chạy TRƯỚC mọi bộ lọc âm thanh.** Lọc ồn/`speechnorm` chạy trước sẽ phá hệ đo mà không báo lỗi — xem `references/ffmpeg-recipes.md` mục 5c.
+- Script in `San nhieu` ngay đầu: **cao hơn -25 dB thì đừng phí công thử `silencedetect`**, nó sẽ chết.
+
+**Thứ tự đúng của cả 4 bước**: `analyze_footage` (nghe + đổi cảnh) → `do_ky_thuat` (đo, miễn phí, 100% clip) → `quet_mat_ai` (hiểu, tốn tiền, chỉ clip đã lọc) → `loc_thoai_that` (mốc cắt, miễn phí, chỉ clip có thoại). Làm ngược là vừa chậm vừa tốn.
 
 Rồi xem footage theo nguyên tắc **SÀNG LỌC TRƯỚC — đọc sheet là phần tốn nhất, đừng đọc cả kho khi chỉ cần 1 video**:
 1. **Lập shortlist 0 token trước**: đọc `index.json` (transcript, độ dài, tên file, số điểm đổi cảnh, `content`/`tags` đã điền từ lần trước) để khoanh ~10-20 clip liên quan nhất tới video đang định dựng. Kiểu 2/3 lọc theo transcript; Kiểu 1 lọc theo độ dài/điểm đổi cảnh/`content` cũ.

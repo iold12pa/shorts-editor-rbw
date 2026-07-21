@@ -67,13 +67,32 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
 1. **Cấm ghép tiếng take A vào hình take B nếu trong hình có người đang nói** — dù là cùng câu kịch bản, nhịp 2 take khác nhau → lệch khẩu hình lộ liễu. Trước khi dùng 1 clip làm B-roll đè voice, PHẢI xem sheet xác nhận không ai trong hình đang nói (index tag `on-camera`/`noi-mic` = cảnh báo đỏ).
 2. **Pattern chuẩn cho mỗi đoạn thoại**: mở bằng chính người nói trên hình 2-3s đầu (tiếng + hình CÙNG take → khớp môi tuyệt đối), sau đó mới cắt sang B-roll trong khi voice chạy tiếp. Voice-off 100% chỉ khi clip nguồn vốn là narration sau camera (0031/0039 kiểu lia kệ sách).
-3. **Mốc transcript Whisper trong index chỉ để TÌM câu thoại, không phải để cắt** — trước khi cắt phải đo lại biên bằng `silencedetect=noise=-27dB:d=0.3` trên đúng vùng đó (Whisper hay tính cả khoảng lặng/hơi thở, có khi lệch nguyên một take).
+3. **Mốc transcript Whisper trong index chỉ để TÌM câu thoại, KHÔNG BAO GIỜ để cắt.**
+
+   **CÔNG CỤ CHÍNH LẤY MỐC CẮT (chốt 21/07/2026, thay silencedetect):**
+
+   ```powershell
+   python "<skill-dir>\scripts\loc_thoai_that.py" <clip.mp4> --index <index.json>
+   ```
+
+   Nó đo trực tiếp trên âm thanh gốc 2 chỉ số: **mức so với sàn nhiễu của chính clip đó** (không dùng ngưỡng tuyệt đối — sàn nhiễu cả kho trải từ -20 đến -49 dB, mọi ngưỡng cố định đều sai) và **độ ấm** = 100-400Hz / 2-6kHz (giọng người gần mic thì ấm; loa robot, tiếng vọng từ xa thì mỏng và chói). Trả về từng đoạn kèm mốc vào/ra, cờ **XA MIC**, cờ **NGHI Ê-KÍP**, và tự chọn **bản take to nhất** khi MC nói lại nhiều lần.
+
+   - **Cách sàn ≥ 15 dB** = nói vào máy, dùng được · **8-15 dB** = xa, cân nhắc · **< 8 dB** = không tính là thoại.
+   - Nghiệm thu 21/07 trên 3 ca tai Sếp đã chấm: **đúng cả 3**.
+
+   **Vì sao bỏ silencedetect làm công cụ chính** — ca thật cùng ngày: nhà sách Tràng An, `silencedetect` trả mốc **20.2s** trong khi câu MC thật sự bắt đầu **24.0s**. Nó chỉ nhìn TO/NHỎ, không nhìn CHẤT giọng, nên trong quán ồn nó bắt nhầm tiếng ồn nhấp nhô. Còn Whisper trả 19.99s — cũng sai, vì **Whisper nối đuôi các đoạn**: đoạn sau bắt đầu đúng chỗ đoạn trước kết thúc, nên mốc bắt đầu là số nối chứ không phải số đo. Dấu hiệu nhận ra: đoạn dài bất thường so với số chữ (10 giây cho câu 5 giây).
+
+   ⛔ **Chạy script này TRƯỚC mọi bộ lọc.** Lọc ồn / `speechnorm` / `highpass` chạy trước sẽ phá hệ đo mà không báo lỗi — xem `ffmpeg-recipes.md` mục 5c.
+
+   `silencedetect` giờ chỉ còn là **công cụ đối chiếu**, và chỉ tin khi nó thật sự tìm ra khoảng im:
    - **NHƯNG: khoảng im ≥0.3s KHÔNG chắc là hết câu** (bài học 19/07/2026, ca thật clip 0049): `silencedetect` báo im tại 21.38s nên biên cắt chốt ở đó — thực tế MC chỉ **ngắt hơi giữa câu**, cụm **"BellaBot Pro"** nằm ngay SAU đó và bị cắt mất, video thi giao đi thiếu nguyên tên sản phẩm. Biên đúng của 0049 là **19.10 → 23.06**.
    - **Luật bắt buộc**: với khối thoại định dùng làm "câu đứng riêng", sau khi chốt biên bằng silencedetect phải **cho Whisper nghe LẠI CHÍNH LÁT CẮT đó** xác nhận đủ chữ, đủ nghĩa rồi mới dùng. Cấm tin mỗi silencedetect. (Và cấm đi tắt bỏ qua silencedetect — 2 việc này bổ sung cho nhau, không thay thế nhau.)
 
    - **NGOẠI LỆ ĐÃ ĐO THẬT 21/07/2026 — môi trường ồn liên tục thì `silencedetect` VÔ DỤNG, không phải mình làm sai.**
      Ca thật: buổi quay trong nhà máy dập (folder 33, BG1 King Duan). Tiếng máy dập + gió vào mic làm **nền tiếng không bao giờ tụt xuống dưới ngưỡng**. Đo thật trên clip 0148: `mean_volume -16.6 dB`, và `silencedetect` trả **0 sự kiện ở MỌI ngưỡng đã thử: -27dB, -18dB, -15dB, -12dB** (d=0.25).
-     **Dấu hiệu nhận biết sớm**: chạy silencedetect trên 5-6 vùng khác nhau mà vùng nào cũng ra "không có khoảng im" → dừng ngay, đừng nới ngưỡng thêm, chuyển sang quy trình dưới.
+     **Dấu hiệu nhận biết sớm** — có 2 cách, dùng cách 1 trước vì nhanh hơn hẳn:
+     1. **Đo sàn nhiễu (2 giây, biết trước khi thử lần nào)**: `loc_thoai_that.py` in ra `San nhieu`. **Sàn cao hơn -25 dB → silencedetect chắc chắn chết, bỏ qua luôn.** Đo thật: folder 33 sàn **-22.6 dB** (cao nhất cả kho) — đúng folder gây ra ca này. Nhà sách Tràng An sàn -38.6 dB, silencedetect vẫn chạy nhưng cho số SAI vì lý do khác (bắt nhầm tiếng ồn nhấp nhô).
+     2. Cách cũ: chạy silencedetect trên 5-6 vùng khác nhau mà vùng nào cũng ra "không có khoảng im" → dừng ngay, đừng nới ngưỡng thêm.
 
      **Quy trình thay thế (đã dùng thật, chốt được đủ 6 lát trong 2 vòng):**
      1. Lấy mốc thô từ `transcript` trong `index.json`, cộng/trừ đệm ~0.3s.

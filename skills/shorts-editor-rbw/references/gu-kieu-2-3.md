@@ -23,7 +23,7 @@
 - Nhịp ~3.0s/cảnh; thoại phủ ~80%; câu ngắn 1-2s chính là "phát súng" tạo nhịp.
 
 ### BÀI HỌC XƯƠNG MÁU video thi 17/07 (Sếp chấm trượt bản đầu — 4 lỗi, khắc thành luật)
-1. **Silencedetect KHÔNG ĐƯỢC đi tắt**: mọi biên cắt thoại phải đo silencedetect thật, cấm tin mốc Whisper + đệm cố định — đệm cố định = cắt vấp.
+1. **Biên cắt thoại KHÔNG ĐƯỢC đi tắt** (sửa 21/07/2026 — luật cũ ghi "phải đo silencedetect thật", nay thay bằng công cụ đúng): mọi biên cắt phải đo bằng `scripts/loc_thoai_that.py`, **cấm tin mốc Whisper + đệm cố định** — đệm cố định = cắt vấp, mốc Whisper = số nối đuôi chứ không phải số đo. `silencedetect` chết trong môi trường ồn nền (nhà sách, nhà máy) nên không còn là công cụ chính.
 2. **Mối nối 2 take khác clip PHẢI được che**: bằng B-roll đè hoặc chuyển cảnh — cấm để 2 cảnh MC đứng nhảy cắt cạnh nhau (lộ vấp cả hình lẫn nhịp giọng).
 3. **Track thoại ghép đa take**: thêm `dynaudnorm` nhẹ san mức mic giữa các take + `acrossfade` ~50ms tại mối nối tiếng.
 4. **Phải DÙNG kho chuyển cảnh + SFX đã học** (sổ hiệu ứng + sổ SFX + giáo lý riser/im lặng/hit): video "sạch nhưng nhạt" cũng là trượt — đúng liều nhưng phải CÓ.

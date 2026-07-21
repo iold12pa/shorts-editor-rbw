@@ -49,7 +49,7 @@ hoặc transcript sạch nhưng chưa chắc take sạch — kèm clip + mốc t
 KHÔNG có đoạn nghi vấn nào thì ghi rõ "không có". Đây là 1 phần của điểm dừng duyệt kịch bản.>
 ```
 
-- Luật cắt: mốc Whisper chỉ để tìm câu — trước khi cắt PHẢI đo lại bằng `silencedetect=noise=-27dB:d=0.3` trên đúng vùng đó (chi tiết: style-voice-karaoke.md, mục Quy tắc VOICE GỐC MC).
+- Luật cắt (**sửa 21/07/2026**): mốc Whisper chỉ để TÌM câu, **không bao giờ dùng để cắt** — Whisper nối đuôi các đoạn nên mốc bắt đầu là số bịa, không phải số đo (ca thật: báo 19.99s, thực tế 24.0s). Mốc cắt lấy từ `scripts/loc_thoai_that.py`. `silencedetect` chỉ còn là công cụ đối chiếu và **chỉ tin khi nó thật sự tìm ra khoảng im** — chi tiết: style-voice-karaoke.md, mục Quy tắc VOICE GỐC MC.
 
 ### Kiểu 3 — Ghép cảnh + voice-over mới
 Thêm mục:
