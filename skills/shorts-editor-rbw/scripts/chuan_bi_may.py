@@ -138,13 +138,98 @@ def luu_key(ten):
     print("Da luu %s vao %s (%d ky tu). KHONG in gia tri ra man hinh." % (ten, ENV_KEY, len(val)))
 
 
+def nhap_key_bang_hop_thoai():
+    """Mo hop thoai nho de nguoi dung DAN key vao — gia tri di thang tu clipboard
+    vao file tren o cung, KHONG di qua chat, KHONG len may chu nao.
+
+    Day la cach DUY NHAT vua tu dong vua thuc su local:
+      - dan vao chat  -> key di qua may chu Anthropic + nam lai trong lich su hoi thoai
+      - de file .docx -> Claude van phai DOC file do moi lay duoc key => y het tren,
+                         lai them viec key phoi tren Desktop (thuong dong bo OneDrive)
+      - hop thoai nay -> Claude chi CHAY lenh, khong bao gio thay gia tri
+    """
+    try:
+        import tkinter as tk
+        from tkinter import messagebox
+    except ImportError:
+        print("May khong co tkinter — dung cach stdin: "
+              '"<gia-tri>" | python chuan_bi_may.py --luu-key TEN_KEY')
+        return
+
+    da_co = doc_keys()
+    root = tk.Tk()
+    root.title("Nhap API key — Roboworld")
+    root.attributes("-topmost", True)
+    root.resizable(False, False)
+
+    tk.Label(root, text="Dan key vao o tuong ung roi bam LUU.",
+             font=("Segoe UI", 10, "bold")).grid(row=0, column=0, columnspan=2,
+                                                 padx=14, pady=(14, 2), sticky="w")
+    tk.Label(root, text="Key di thang vao file tren may ban — khong qua chat, khong len mang.",
+             fg="#555", font=("Segoe UI", 8)).grid(row=1, column=0, columnspan=2,
+                                                   padx=14, pady=(0, 10), sticky="w")
+    o = {}
+    for i, (ten, dung_de, _) in enumerate(KEYS):
+        nhan = "%s\n(%s)%s" % (ten, dung_de, "  — DA CO, de trong neu khong doi" if da_co.get(ten) else "")
+        tk.Label(root, text=nhan, justify="left", font=("Segoe UI", 9)).grid(
+            row=2 + i, column=0, padx=(14, 8), pady=6, sticky="w")
+        e = tk.Entry(root, width=42, show="*")
+        e.grid(row=2 + i, column=1, padx=(0, 14), pady=6)
+        o[ten] = e
+
+    ket_qua = {"da_luu": []}
+
+    def luu():
+        for ten, e in o.items():
+            v = e.get().strip()
+            if v:
+                dong, thay = [], False
+                if os.path.exists(ENV_KEY):
+                    for line in open(ENV_KEY, encoding="utf-8"):
+                        if line.strip().startswith(ten + "="):
+                            dong.append("%s=%s\n" % (ten, v))
+                            thay = True
+                        else:
+                            dong.append(line if line.endswith("\n") else line + "\n")
+                if not thay:
+                    dong.append("%s=%s\n" % (ten, v))
+                os.makedirs(os.path.dirname(ENV_KEY), exist_ok=True)
+                open(ENV_KEY, "w", encoding="utf-8").writelines(dong)
+                ket_qua["da_luu"].append(ten)
+        if ket_qua["da_luu"]:
+            messagebox.showinfo("Xong", "Da luu: %s" % ", ".join(ket_qua["da_luu"]))
+        else:
+            messagebox.showwarning("Chua co gi", "Ban chua dan key nao.")
+        root.destroy()
+
+    tk.Button(root, text="LUU", width=14, command=luu).grid(
+        row=2 + len(KEYS), column=1, pady=(6, 14), sticky="e", padx=(0, 14))
+    tk.Button(root, text="Bo qua", width=10, command=root.destroy).grid(
+        row=2 + len(KEYS), column=0, pady=(6, 14), sticky="w", padx=(14, 0))
+
+    root.update_idletasks()
+    x = (root.winfo_screenwidth() - root.winfo_width()) // 2
+    y = (root.winfo_screenheight() - root.winfo_height()) // 3
+    root.geometry("+%d+%d" % (x, y))
+    root.mainloop()
+
+    if ket_qua["da_luu"]:
+        print("Da luu key: %s  (KHONG in gia tri)" % ", ".join(ket_qua["da_luu"]))
+    else:
+        print("Nguoi dung khong nhap key nao.")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kiem", action="store_true", help="chi kiem, khong cai gi")
     ap.add_argument("--nhanh", action="store_true", help="bo qua 2 khoan tai nang")
     ap.add_argument("--luu-key", metavar="TEN")
+    ap.add_argument("--nhap-key", action="store_true",
+                    help="mo hop thoai de nguoi dung tu dan key (khong qua chat)")
     a = ap.parse_args()
 
+    if a.nhap_key:
+        return nhap_key_bang_hop_thoai()
     if a.luu_key:
         return luu_key(a.luu_key)
 

@@ -51,27 +51,47 @@ Sửa `~/.claude/settings.json`: đặt `extraKnownMarketplaces."roboworld-tools
 
 **Vì sao phải làm ngay lúc cài**: đây là công cụ nội bộ cập nhật liên tục; máy không bật cờ này sẽ đứng yên ở bản cài ban đầu, dựng theo luật cũ mà không ai biết. **Đã có tiền lệ 2 máy kẹt bản cũ nhiều ngày.**
 
-## Bước 3 — API key (phần DUY NHẤT không tự động được)
+## Bước 3 — API key
 
-Script sẽ liệt kê key nào còn thiếu. Cách đưa key cho người dùng:
+### Cách ĐÚNG: mở hộp thoại cho người dùng tự dán (key KHÔNG đi qua chat)
 
-> **Người dùng chỉ cần DÁN KEY VÀO CHAT và nói "lưu key này". Không phải mở file, không phải biết đường dẫn.**
+```powershell
+python "<PKG>\scripts\chuan_bi_may.py" --nhap-key
+```
 
-Claude nhận key rồi ghi bằng:
+Một cửa sổ nhỏ hiện lên với 3 ô (ký tự che dấu sao). Người dùng dán key vào, bấm LƯU, xong. **Claude chỉ chạy lệnh — không bao giờ thấy giá trị key.**
+
+Chạy bằng `run_in_background` vì cửa sổ chờ người dùng thao tác. Xong nó in ra tên key đã lưu (không in giá trị).
+
+### ⛔ Vì sao KHÔNG bảo người dùng dán key vào chat
+
+Mọi thứ dán vào chat đều **đi qua máy chủ Anthropic** và nằm lại trong lịch sử hội thoại — đó là cách model hoạt động, không tránh được. Key là bí mật tính tiền theo lượng dùng, không nên đi đường đó.
+
+**Để key trong file .docx trên Desktop còn tệ hơn**: Claude vẫn phải ĐỌC file đó mới lấy được key → vẫn lên máy chủ y hệt; cộng thêm key phơi trong file Word ai dùng máy cũng thấy, mà Desktop thường đồng bộ OneDrive.
+
+Hộp thoại là cách duy nhất vừa tự động vừa thật sự local: key đi thẳng từ clipboard vào file trên ổ cứng.
+
+### ⛔ Và vì sao KHÔNG tự tải key về được — giới hạn thật, không phải chưa làm
+
+Muốn script tự lấy key mà không cần đăng nhập thì key phải nằm ở chỗ ai cũng vào được — tức là **key thành công khai**. Mà kho tài nguyên trên Drive **đang share công khai và link nằm trong repo GitHub public**, nên để key vào đó là phát tán key. ElevenLabs/Gemini tính tiền theo lượng dùng, ai cầm được key là tiêu tiền của công ty.
+
+→ Key vẫn phải đi đường riêng (Zalo), nhưng thao tác của người dùng chỉ còn **dán vào hộp thoại**.
+
+### Đường lui khi máy không mở được hộp thoại
+
+Máy thiếu `tkinter` (hiếm) thì dùng stdin — Claude sẽ thấy key, chấp nhận đánh đổi:
 
 ```powershell
 "<gia-tri-key>" | python "<PKG>\scripts\chuan_bi_may.py" --luu-key ELEVENLABS_API_KEY
 ```
 
-Truyền qua **stdin** chứ không qua tham số dòng lệnh — để key không lọt vào lịch sử lệnh. Script không in giá trị key ra màn hình. Ghi đè key cũ thì không nhân đôi dòng.
+Truyền qua stdin chứ không qua tham số dòng lệnh, để key không lọt vào lịch sử lệnh.
 
-Ba key: `ELEVENLABS_API_KEY` (giọng đọc + sinh nhạc) · `GEMINI_API_KEY` (mắt AI xem clip) · `GROQ_API_KEY` (dự phòng).
+### Ba key
 
-### ⛔ Vì sao KHÔNG tự tải key về được — giới hạn thật, không phải chưa làm
+`ELEVENLABS_API_KEY` (giọng đọc + sinh nhạc) · `GEMINI_API_KEY` (mắt AI xem clip) · `GROQ_API_KEY` (dự phòng).
 
-Muốn script tự lấy key mà không cần đăng nhập thì key phải nằm ở chỗ ai cũng vào được — tức là **key thành công khai**. Mà kho tài nguyên trên Drive **đang share công khai và link nằm trong repo GitHub public**, nên để key vào đó là phát tán key. ElevenLabs/Gemini tính tiền theo lượng dùng, ai cầm được key là tiêu tiền của công ty.
-
-→ Key phải đi đường riêng (Zalo), nhưng **thao tác của người dùng chỉ còn 1 bước dán vào chat**.
+⚠️ **Khuyến nghị của chủ repo: KHÔNG phát key Gemini cho mọi máy.** ElevenLabs cố định $6/tháng, lỡ tay chỉ hết credit. Gemini **trả theo lượng dùng, không có trần** — một người lỡ quét cả kho là vài trăm nghìn. Chỉ để trên máy quản trị; kết quả quét ghi vào `index.json` nằm cùng folder footage nên máy nào cũng đọc được.
 
 **Chưa có key vẫn dựng video bình thường**: giọng đọc tự lui về edge-tts tiếng Việt (miễn phí, sạch); mắt AI Gemini bỏ qua, dùng tầng đo kỹ thuật miễn phí thay thế.
 

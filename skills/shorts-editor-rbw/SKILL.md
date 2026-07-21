@@ -60,11 +60,17 @@ python "<skill-dir>\scripts\chuan_bi_may.py" --kiem   # chỉ kiểm, không cà
 
 Script tự cài 10 thư viện Python, FFmpeg (tự ghi `config.json` nếu PATH chưa nhận — không bắt khởi động lại), tải Whisper 1.6GB + Silero VAD 2.3MB + kho tài nguyên 180MB, dò card đồ hoạ, rồi in **bảng trạng thái máy**. Chi tiết + cách xử lý từng trạng thái: `references/cai-dat-lan-dau.md`.
 
-**API key** là phần duy nhất không tự động được (lý do đầy đủ trong file trên: để key ở chỗ script tự tải được = key thành công khai). Người dùng **dán key vào chat rồi nói "lưu key này"** — Claude ghi bằng lệnh dưới, truyền qua **stdin** để key không lọt vào lịch sử lệnh, script không in giá trị ra màn hình:
+**API key** — mở hộp thoại cho người dùng tự dán, **đừng bảo họ dán key vào chat**:
 
 ```powershell
-"<gia-tri-key>" | python "<skill-dir>\scripts\chuan_bi_may.py" --luu-key ELEVENLABS_API_KEY
+python "<skill-dir>\scripts\chuan_bi_may.py" --nhap-key
 ```
+
+Cửa sổ nhỏ hiện lên, 3 ô che dấu sao, người dùng dán rồi bấm LƯU. Chạy bằng `run_in_background` vì phải chờ họ thao tác. **Claude chỉ chạy lệnh, không bao giờ thấy giá trị key.**
+
+*Vì sao không cho dán vào chat*: mọi thứ vào chat đều đi qua máy chủ Anthropic và nằm lại trong lịch sử hội thoại. Để key trong file .docx trên Desktop còn tệ hơn — Claude vẫn phải đọc file đó nên vẫn lên máy chủ y hệt, lại thêm việc key phơi trên Desktop (thường đồng bộ OneDrive). Chi tiết + đường lui khi máy thiếu `tkinter`: `references/cai-dat-lan-dau.md` bước 3.
+
+⚠️ **Không phát key Gemini cho mọi máy** — nó trả theo lượng dùng, không có trần; một người lỡ quét cả kho là vài trăm nghìn. ElevenLabs thì cố định $6/tháng nên phát thoải mái.
 
 <details><summary>Trình tự cũ làm tay (giữ để tham chiếu, không cần làm nếu đã chạy script trên)</summary>
 1. **BÁO TRƯỚC danh sách sắp làm + dung lượng** (đừng âm thầm): cài FFmpeg nếu thiếu; tải bộ nghe giọng nói ~1.6GB (nền); tải kho logo/nhạc/SFX/ảnh của công ty ~180MB từ Google Drive (nền); dò card đồ họa NVIDIA (nếu cần nâng driver thì hỏi — xem mục Môi trường); kiểm key giọng đọc AI.
