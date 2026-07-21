@@ -4,12 +4,12 @@
 Sep Huy 21/07/2026: dua file mau "Toc do chuan.MP3" lam moc. Video dan nao do ra
 CHAM hon dang ke thi phai day toc do len bang hoac gan bang mau.
 
-CACH DO (chot 1 cach duy nhat de ai chay cung ra cung so):
-    toc do = so AM TIET / (moc chu CUOI - moc chu DAU) x 60
-  - Tieng Viet moi CHU la mot AM TIET -> dem tu cach nhau bang dau cach.
-  - Mau so tinh CA nhip ngat tu nhien giua cau, vi tai nguoi cam nhan nhip nghi
-    la mot phan cua toc do. (Neu tru het khoang lang thi con so bi thoi phong —
-    do that: cung 1 file ra 357 hay 452 tuy cach tinh.)
+CACH DO (Sep chi 21/07 — chot 1 cach duy nhat, dung chung voi tua_nhanh_thoai.py):
+    toc do = so CHU / (TONG THOI GIAN DANG NOI) x 60
+  - Tieng Viet moi CHU la mot AM TIET -> dem tu cach nhau bang dau cach (tu dong
+    bang Whisper).
+  - Mau so CAT HET KHOANG TRONG cho khach quan: nhip ngat giua cau khac nhau tuy
+    nguoi tuy kich ban, bo het thi con lai TOC DO NHA CHU thuan -> so sanh cong bang.
 
 Usage:
     python do_toc_do_noi.py <file-am-thanh-hoac-video> [file2 ...]
@@ -28,14 +28,16 @@ if hasattr(sys.stdout, "reconfigure"):
 BIA = ["subscribe", "ghiền mì gõ", "hẹn gặp lại", "cảm ơn các bạn đã theo dõi",
        "video tiếp theo", "đừng quên", "chúc các bạn"]
 
-# MOC CHUAN = 291 am tiet/phut.
-# File mau Sep dua do duoc 342, nhung Sep CHINH XUONG con 85% vi mau goc hoi nhanh.
+# MOC CHUAN = 363 chu/phut, do bang cach CAT HET KHOANG TRONG (Sep chi 21/07).
+# File mau do duoc 427 theo cach nay -> Sep lay 85% = 363.
 # File mau: ~/.claude/roboworld-assets/mau/toc-do-chuan.mp3
 #
-# MUC DICH CHINH cua moc nay (Sep noi ro 21/07): de TUA NHANH video MC thu /
-# voice-over nguoi thu cho do nham chan — xem scripts/tua_nhanh_thoai.py.
-# Dung cho giong may chi la muc dung phu.
-CHUAN = 291
+# DUNG CUNG MOT CACH DO voi tua_nhanh_thoai.py — truoc day 2 script dung 2 cach
+# khac nhau (291 vs 363), chac chan gay nham. Nay thong nhat.
+#
+# MUC DICH CHINH: TUA NHANH video MC thu / voice-over nguoi thu cho do nham chan
+# — xem scripts/tua_nhanh_thoai.py. Script nay chi lo phan DEM AM TIET tu dong.
+CHUAN = 363
 
 
 def whisper_srt(path):
@@ -61,6 +63,23 @@ def whisper_srt(path):
     if p.returncode or not os.path.exists(out):
         return None
     return out
+
+
+def thoi_gian_noi(path):
+    """Tong thoi gian DANG NHA CHU — cat het khoang trong (cach Sep chi 21/07).
+    Do bang MUC so voi SAN NHIEU, KHONG dung silencedetect (no chet trong moi
+    truong on: bao 0 giay trong trong khi thuc te co 17.8 giay khong ai noi)."""
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-v", "quiet", "-i", path, "-ac", "1",
+                          "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
+    if not raw:
+        return None
+    x = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+    win = 1600
+    db = np.array([20 * np.log10(max(float(np.sqrt((x[i:i + win] ** 2).mean())), 1e-9))
+                   for i in range(0, len(x) - win, win)])
+    san = float(np.percentile(db, 20))
+    return float((db > san + 8).sum()) * 0.1
 
 
 def giay(t):
@@ -91,10 +110,14 @@ def do(path):
         os.remove(srt)
     except OSError:
         pass
-    if not am or cuoi is None or cuoi <= dau:
+    if not am:
         print("%-38s khong du du lieu" % os.path.basename(path)[:36])
         return None
-    td = am / (cuoi - dau) * 60
+    noi = thoi_gian_noi(path)
+    if not noi:
+        print("%-38s khong do duoc thoi gian noi" % os.path.basename(path)[:36])
+        return None
+    td = am / noi * 60
     lech = (td - CHUAN) / CHUAN * 100
     if td >= CHUAN * 0.9:
         nx = "DAT (bang/nhanh hon mau)"
@@ -102,12 +125,11 @@ def do(path):
         nx = "hoi cham — nen day len ~%.0f%%" % ((CHUAN / td - 1) * 100)
     else:
         nx = "CHAM RO — phai day len ~%.0f%%" % ((CHUAN / td - 1) * 100)
-    print("%-38s %3d am tiet / %5.1fs  ->  %3.0f am tiet/phut  (%+.0f%% so mau)  %s"
-          % (os.path.basename(path)[:36], am, cuoi - dau, td, lech, nx))
-    # Goi y chinh cho edge-tts: no nhan --rate=+N%% so voi toc do goc cua giong.
-    if td < CHUAN * 0.9:
-        can = (CHUAN / td - 1) * 100
-        print("        -> neu la giong may: tang them ~%+.0f%% vao --rate hien tai" % can)
+    print("%-38s %3d chu / %5.1fs noi  ->  %3.0f chu/phut  (%+.0f%% so moc)  %s"
+          % (os.path.basename(path)[:36], am, noi, td, lech, nx))
+    if td < CHUAN * 0.98:
+        print("        -> tua nhanh: python tua_nhanh_thoai.py <file> --he-so %.2f"
+              % (CHUAN / td))
     return td
 
 
