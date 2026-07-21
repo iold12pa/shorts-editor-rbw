@@ -68,7 +68,18 @@ FILLER = {"ừ", "à", "ờ", "ok", "oke", "okay", "dạ", "vâng", "rồi", "đ
 # don le (do that: "quen mat cai chan sac tren xe" la noi dung that).
 NG_CUM = ["lại câu", "cho thoại", "à quên", "ok chưa", "được chưa",
           "làm lại", "nói lại", "quay lại từ", "diễn lại", "một lần nữa",
-          "quên rồi", "quen rồi", "quên mất rồi"]
+          "quên rồi", "quen rồi", "quên mất rồi", "lại lúc nãy", "lúc nãy đi"]
+
+# Xung ho suong sa — kich ban marketing KHONG BAO GIO dung. Do that tren 1.383 doan:
+# "may" 5/5 lan deu la e-kip ("chac may dang zoom a?", "may cho no quay sang"),
+# "tao" 5/6 lan la e-kip (1 ca sai la ten nha hang bi phien nham). Ty le du cao
+# de dung lam co NGHI (khong phai loai thang) — nguoi dung nghe lai la biet.
+XUNG_HO_SUONG = ["tao", "mày", "bọn mày", "chúng mày"]
+
+# Cum RA LENH QUAY LAI — khi thay cum nay, doan NGAY TRUOC no la take vua bi bo.
+# Cach lam phim: MC dien hong -> e-kip noi "lai cau luc nay di" -> MC dien lai.
+LENH_QUAY_LAI = ["lại câu", "lại lúc nãy", "lúc nãy đi", "làm lại", "nói lại",
+                 "diễn lại", "một lần nữa", "cho thoại"]
 
 
 def doc_am(path):
@@ -138,12 +149,21 @@ def nghi_e_kip(chu):
     for c in NG_CUM:
         if re.search(r"(?<!\w)%s(?!\w)" % re.escape(c), low):
             return True, 'co cum chi dao: "%s"' % c
+    for x in XUNG_HO_SUONG:
+        if re.search(r"(?<!\w)%s(?!\w)" % re.escape(x), low):
+            return True, 'xung ho suong sa "%s" — kich ban khong dung' % x
     w = tu(chu)
     if len(w) <= 3 and all(x in FILLER for x in w):
         return True, "cau %d tu toan tu dem" % len(w)
     if re.search(r"(?:,|\bvà|\bthì|\blà|\bmà|\bnhưng)\s*$", low):
         return True, "cau cut giua chung"
     return False, ""
+
+
+def co_lenh_quay_lai(chu):
+    import re
+    low = (chu or "").lower()
+    return any(re.search(r"(?<!\w)%s(?!\w)" % re.escape(c), low) for c in LENH_QUAY_LAI)
 
 
 def diem_gemini(gem, t0, t1):
@@ -236,6 +256,16 @@ def phan_tich(path, transcript=None, gem=None):
         d["ly_do_nghi"] = ly_do
         d["diem_gemini"], d["la_hook"] = diem_gemini(gem, d["t0"], d["t1"])
         d.pop("_wid", None)
+
+    # E-KIP RA LENH QUAY LAI -> doan NGAY TRUOC do la take vua bi bo.
+    # Cach lam phim: MC dien hong -> e-kip noi "lai cau luc nay di" -> MC dien lai.
+    # Khong co luat nay thi take hong van lot qua neu chinh no khong chua tu tu-sua.
+    for i, d in enumerate(ds):
+        if co_lenh_quay_lai(d["loi"]) and i > 0:
+            truoc = ds[i - 1]
+            if not truoc["nghi_e_kip"]:
+                truoc["nghi_e_kip"] = True
+                truoc["ly_do_nghi"] = "ngay sau doan nay e-kip ra lenh quay lai"
 
     # Doi chieu cheo voi Gemini — bat 2 tinh huong dang ngo
     canh_bao = []
