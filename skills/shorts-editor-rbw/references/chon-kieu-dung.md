@@ -39,6 +39,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Xác nhận THẬT SỰ có thoại (không đoán) | **Bắt buộc trước khi viết kịch bản** | Sau khi chạy `analyze_footage.py`, nếu phần lớn clip `has_speech=false` → báo lại: "Tôi nghe thử thì video này không có lời rõ, bạn xác nhận lại giúp, hay muốn chuyển sang Kiểu 1?" — KHÔNG tự chuyển kiểu, phải hỏi. |
 | Bối cảnh (để hiểu đúng ý câu nói, tránh cắt sai/lệch khẩu hình) | Nên có | "Buổi quay này về chuyện gì, để tôi hiểu đúng ngữ cảnh lời thoại?" |
 | **MỨC PHỦ GIỌNG → quyết định loại nhạc** | **Bắt buộc hỏi** | "Giọng nói phủ cả bài, hay chỉ 1-2 câu mở đầu?" — xem khối "Luật nhạc theo mức phủ giọng" dưới bảng Kiểu 3 |
+| **XỬ LÝ TIẾNG NÓI (4 lựa chọn)** | **Bắt buộc hỏi** — MC dẫn trực tiếp luôn áp | Xem khối "Xử lý tiếng nói" dưới bảng Kiểu 3 |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức con 2A/2B/2C theo dạng source) + mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md` |
 
 ### Kiểu 3 — Ghép cảnh + thêm voice-over mới (không đồng bộ lúc quay)
@@ -50,6 +51,7 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ?" — mặc định giờ là **giọng VIỆT** (MC Xuân Tú nam / Thanh Ngọc nữ). Gói ElevenLabs còn Free thì 2 giọng này bị chặn 402 → tự lui về edge-tts giọng Việt. **Tuyệt đối không lui về George** — đó là giọng Anh, đọc tiếng Việt méo cả câu thường |
 | Bối cảnh | Nên có | như Kiểu 1/2 |
 | **MỨC PHỦ GIỌNG → quyết định loại nhạc** | **Bắt buộc hỏi** | "Giọng đọc phủ cả bài, hay chỉ 1-2 câu mở đầu?" — xem khối ngay dưới bảng này |
+| **XỬ LÝ TIẾNG NÓI (4 lựa chọn)** | Hỏi **CHỈ KHI** giọng đọc do **người thu**. Giọng AI thì **BỎ QUA, không hỏi** | Xem khối "Xử lý tiếng nói" dưới khối luật nhạc |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức 3A showcase / 3B case study 9 nhịp) + `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu dạng quảng cáo bán hàng) |
 
 ### Luật nhạc theo mức phủ giọng — áp cho Kiểu 2 và Kiểu 3 (Sếp Huy chốt 21/07/2026)
@@ -76,6 +78,27 @@ Trả lời xong mới chọn nhạc. Hai nhóm, luật khác hẳn nhau:
 - Không chắc bài có giọng hát hay không → **NGHE KIỂM trước khi dùng**. Kể cả nhóm "nhạc không bản quyền" vẫn lẫn bài có lời (folder `POP tươi sáng`).
 - Nhạc sinh bằng ElevenLabs Music đang khoá `force_instrumental=True` → luôn hợp Nhóm A; muốn nhạc có lời cho Nhóm B thì phải lấy từ kho.
 - **Kiểu 1 không áp luật này** — vẫn dùng nhạc có lời bình thường.
+
+### Xử lý tiếng nói — 4 lựa chọn (Sếp Huy chốt 21/07/2026)
+
+**Áp cho**: MC dẫn trực tiếp (Kiểu 2) và voice-over do **người thu** (Kiểu 3).
+**BỎ QUA hoàn toàn với voice-over giọng AI** — file TTS vốn đã sạch, xử lý thêm chỉ làm méo. Đừng hỏi câu này khi giọng do máy đọc.
+
+**Câu hỏi, hỏi bằng lời đời thường:**
+
+> "Tiếng người nói trong video, bạn muốn tôi xử lý thế nào?
+> **1) Giữ nguyên** — an toàn nhất, tiếng thật như lúc quay
+> **2) Lọc ồn** — bóc bớt tiếng nền (máy móc, xe cộ, người xung quanh)
+> **3) Làm rõ giọng** — không đụng tiếng nền, chỉ làm giọng nghe rõ và đều hơn
+> **4) Cả hai** — vừa lọc ồn vừa làm rõ giọng"
+
+- **Không trả lời / nói "tùy" → chọn 1 (giữ nguyên).** Không xử lý thì không hỏng; xử lý sai thì hỏng.
+- **Phân vân → cắt 4 bản thử 10 giây cho nghe chọn.** Bắt buộc cân bằng cả 4 về cùng độ to (`loudnorm=I=-16`) trước khi đưa nghe, không thì tai luôn chọn bản to nhất chứ không phải bản hay nhất.
+- Công thức từng lựa chọn: `references/ffmpeg-recipes.md` **mục 5c**.
+
+⛔ **Bộ lọc CHỈ chạy ở bước mix cuối, sau khi đã cắt xong.** Chạy trước bước đo mốc thoại sẽ phá hệ đo mà không báo lỗi (đo thật 21/07: độ ấm sai gấp 4-27 lần, bắt nhầm gấp 5 lần) — lý do chi tiết ở mục 5c.
+
+⚠️ **Tiếng quá xa thì không cứu được**: đo thấy cách sàn nhiễu < 8 dB thì mọi bộ lọc đều vô ích (ca thật: nhà máy dập folder 33 chỉ **2.2 dB**). Lúc đó báo người dùng đổi cảnh khác, đừng hứa xử lý được.
 
 ## Bước C — Câu hỏi chung, mọi kiểu đều cần
 - Robot xuất hiện là model nào → tra `references/robot-products.md` trước, chỉ hỏi lại nếu không chắc hoặc model chưa có trong danh mục

@@ -344,6 +344,54 @@ Phần còn lại của lệnh xuất giữ nguyên như mục 5 — vẫn `amix
 
 **Nghiệm thu riêng cho mục này**: nghe lại quanh mốc `T_END` xem nhạc có dâng mượt không, và kiểm chữ cuối của câu dẫn có bị nhạc trùm lên không — dâng sớm quá là nuốt mất chữ cuối.
 
+## 5c. Xử lý tiếng nói — 4 lựa chọn cho người dùng chọn (luật Sếp Huy 21/07/2026)
+
+**Áp cho**: voice-over do **người thu** + **MC dẫn trực tiếp** (Kiểu 2).
+**KHÔNG áp cho voice-over giọng AI** — file TTS vốn đã sạch hoàn toàn, lọc thêm chỉ làm méo.
+
+⛔ **LUẬT CỨNG VỀ THỨ TỰ — đọc trước khi dùng bất kỳ bộ lọc nào bên dưới:**
+
+> Mọi bộ lọc ở mục này **CHỈ được chạy ở bước MIX CUỐI, sau khi đã cắt xong**.
+> **TUYỆT ĐỐI KHÔNG chạy trước bước ĐO mốc thoại.**
+>
+> Đã đo thật 21/07/2026, lọc ồn phá hệ đo theo 3 cách, đều **âm thầm không báo lỗi**:
+> | | Gốc | afftdn mạnh |
+> |---|---|---|
+> | Cách sàn (dùng để chọn bản take tốt) | 17.2 dB | 18.5 dB — *không cải thiện* |
+> | Độ ấm (dùng để phân biệt giọng người / loa robot) | 0.85 | **3.81** (nhà máy: **23.27**) — *hỏng hẳn* |
+> | Số cửa sổ bắt được | 28 | **151** — *bắt nhầm gấp 5* |
+>
+> Riêng `speechnorm` nén dải động làm **cách sàn tụt 17.2 → 10.3** — xoá đúng thứ dùng để phân biệt bản take tốt với bản tập. Và `highpass=120` trong môi trường ồn to làm **mất hẳn khả năng phát hiện thoại**.
+>
+> Thứ tự bắt buộc: **đo → cắt → (lọc/cải thiện nếu người dùng chọn) → loudnorm → xuất.**
+
+### Bốn lựa chọn
+
+```powershell
+# 1) GOC — khong xu ly gi (MAC DINH khi nguoi dung khong chon / noi "tuy")
+$AF = ""
+
+# 2) CHI LOC ON — boc tieng nen
+$AF = "afftdn=nr=12:nf=-25"
+
+# 3) CHI CAI THIEN — khong loc on, chi lam giong ro va deu hon
+$AF = "highpass=f=80,equalizer=f=250:t=q:w=1.2:g=-2.5,equalizer=f=3200:t=q:w=1.5:g=3.5,deesser=i=0.4,compand=attacks=0.02:decays=0.30:points=-60/-48|-30/-22|-15/-12|0/-9"
+
+# 4) CA HAI
+$AF = "afftdn=nr=12:nf=-25,highpass=f=80,equalizer=f=250:t=q:w=1.2:g=-2.5,equalizer=f=3200:t=q:w=1.5:g=3.5,deesser=i=0.4,compand=attacks=0.02:decays=0.30:points=-60/-48|-30/-22|-15/-12|0/-9"
+```
+
+Chuỗi này chèn vào **track giọng** trước khi `amix`, không áp lên nhạc nền. `loudnorm` cuối lệnh xuất vẫn giữ nguyên như mục 5.
+
+**Mặc định = lựa chọn 1 (gốc)** khi người dùng không trả lời — không xử lý thì không hỏng, xử lý sai thì hỏng.
+
+### Lưu ý khi dùng
+
+- **Chuỗi `compand` có dấu `|`** — luôn bọc trong nháy kép khi viết vào PowerShell, để trần là vỡ lệnh.
+- **Tiếng Việt có thanh điệu**: `afftdn` mức mạnh (`nr` > 15) làm méo dấu nặng/dấu ngã, nghe như dưới nước. Đừng tự nâng `nr` để "sạch hơn".
+- **Tiếng quá xa thì không cứu được**: đo thấy cách sàn < 8 dB (vd nhà máy dập folder 33, đo thật chỉ **2.2 dB**) thì mọi bộ lọc đều vô ích — báo người dùng dùng cảnh khác, đừng cố xử lý.
+- Người dùng phân vân → cắt thử 4 bản 10 giây cho họ nghe chọn, **nhớ cân bằng cả 4 về cùng độ to** (`loudnorm=I=-16`) rồi mới đưa nghe; không cân bằng thì tai luôn chọn bản to nhất chứ không phải bản hay nhất.
+
 ## 6. Tự nghiệm thu (bắt buộc trước khi bàn giao)
 
 ```powershell
