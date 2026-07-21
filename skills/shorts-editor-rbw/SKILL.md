@@ -51,7 +51,22 @@ Nếu không đọc/sửa được file (hiếm, quyền file bị chặn) thì 
 
 **Chỉ xóa trong `plugins/cache/...` — KHÔNG BAO GIỜ đụng tới `~/.claude/roboworld-assets/` dưới bất kỳ hình thức nào** (chỗ đó chứa model Whisper 1.55GB, kho tài nguyên 188MB, và file `tuy-chinh-rieng.md` — xóa nhầm là mất tùy chỉnh + phải tải lại 1.6GB). Đây chính là lý do kiến trúc từ 17/07 tách model/kho ra khỏi repo: để auto-update không nhân bản chúng.
 
-**Lệnh "CHUẨN BỊ MÁY" (khi người dùng nói bất kỳ dạng nào: "chuẩn bị máy", "chuẩn bị công cụ dựng video", "setup công cụ", "cài đặt ban đầu", "kiểm tra máy đủ đồ chưa"...)**: chạy TOÀN BỘ phần chuẩn bị của mục "Môi trường" ngay lập tức, không đợi tới lúc dựng video đầu tiên. Trình tự bắt buộc:
+**Lệnh "CHUẨN BỊ MÁY" (khi người dùng nói bất kỳ dạng nào: "chuẩn bị máy", "chuẩn bị công cụ dựng video", "setup công cụ", "cài đặt ban đầu", "kiểm tra máy đủ đồ chưa"...)** — chạy **đúng 1 lệnh**, nó tự lo hết:
+
+```powershell
+python "<skill-dir>\scripts\chuan_bi_may.py"          # kiểm + TỰ CÀI (chạy NỀN, 10-20 phút)
+python "<skill-dir>\scripts\chuan_bi_may.py" --kiem   # chỉ kiểm, không cài
+```
+
+Script tự cài 10 thư viện Python, FFmpeg (tự ghi `config.json` nếu PATH chưa nhận — không bắt khởi động lại), tải Whisper 1.6GB + Silero VAD 2.3MB + kho tài nguyên 180MB, dò card đồ hoạ, rồi in **bảng trạng thái máy**. Chi tiết + cách xử lý từng trạng thái: `references/cai-dat-lan-dau.md`.
+
+**API key** là phần duy nhất không tự động được (lý do đầy đủ trong file trên: để key ở chỗ script tự tải được = key thành công khai). Người dùng **dán key vào chat rồi nói "lưu key này"** — Claude ghi bằng lệnh dưới, truyền qua **stdin** để key không lọt vào lịch sử lệnh, script không in giá trị ra màn hình:
+
+```powershell
+"<gia-tri-key>" | python "<skill-dir>\scripts\chuan_bi_may.py" --luu-key ELEVENLABS_API_KEY
+```
+
+<details><summary>Trình tự cũ làm tay (giữ để tham chiếu, không cần làm nếu đã chạy script trên)</summary>
 1. **BÁO TRƯỚC danh sách sắp làm + dung lượng** (đừng âm thầm): cài FFmpeg nếu thiếu; tải bộ nghe giọng nói ~1.6GB (nền); tải kho logo/nhạc/SFX/ảnh của công ty ~180MB từ Google Drive (nền); dò card đồ họa NVIDIA (nếu cần nâng driver thì hỏi — xem mục Môi trường); kiểm key giọng đọc AI.
 2. Việc nặng chạy NỀN, xong mục nào báo mục đó.
 3. Chốt bằng **bảng trạng thái máy** để người dùng nhìn 1 phát biết đủ/thiếu:
@@ -71,6 +86,8 @@ Nếu không đọc/sửa được file (hiếm, quyền file bị chặn) thì 
    ```
    Thiếu món nào → cài bù bằng lệnh ở `references/cai-dat-lan-dau.md` bước 1. **Thiếu `librosa` là mất cắt-bám-phách; thiếu `moderngl`/`pillow` là mất chuyển cảnh GL + thẻ chữ động** — không phải lỗi nhỏ.
 4. Kết bằng 1 câu rõ ràng: "Máy đã sẵn sàng dựng video" hoặc "Còn đang tải X (nền) — dựng Kiểu 1 được ngay, Kiểu 2/3 chờ tải xong".
+
+</details>
 
 Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ dựng video, mọi bước trên vẫn tự chạy như cũ; lệnh này chỉ để chuẩn bị chủ động ngay sau khi cài + biết trạng thái máy bất cứ lúc nào.
 

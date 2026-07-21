@@ -1,85 +1,87 @@
-# Cài đặt lần đầu — kịch bản TỰ ĐỘNG TRỌN BỘ (dành cho phiên Claude đang cài máy mới)
+# Cài đặt lần đầu — MỘT LỆNH TỰ CÀI TRỌN BỘ
 
-> File này được câu lệnh cài dán-1-lần trỏ tới. Đọc xong làm theo NGAY, đừng hỏi lại người dùng
-> trừ chỗ ghi rõ phải hỏi. Mục tiêu: người dùng (không rành kỹ thuật) dán 1 câu là máy được cài
-> TRỌN BỘ, biết trước mất bao lâu, biết từng mục xong lúc nào — không phải làm gì thêm.
+> File này được câu lệnh cài dán-1-lần trỏ tới. Đọc xong làm theo NGAY.
+> Mục tiêu (chỉ đạo Sếp Huy 21/07/2026): **máy người dùng có đúng mọi thứ máy quản trị có,
+> mà họ KHÔNG phải cài thủ công gì cả.**
+>
+> **Sửa 21/07/2026**: trước đây mục này là quy trình 5 bước mà Claude bên máy người dùng phải
+> làm đúng thứ tự — dễ sót, và đã sót thật (thiếu `onnxruntime`, thiếu model Silero, chỉ dặn
+> key ElevenLabs mà quên Gemini). Nay gom hết vào **1 script duy nhất**.
 
-## Bước 0 — BÁO TRƯỚC cho người dùng (nói ngay, trước khi làm bất cứ gì)
+## Bước 0 — Báo trước cho người dùng (nói ngay, trước khi chạy)
 
-Nói tự nhiên theo ý này (đừng chép máy móc):
+Nói tự nhiên theo ý này:
 
 > "Plugin đã vào máy. Giờ tôi cài nốt toàn bộ đồ nghề — tự động hết, bạn không phải bấm gì:
-> (1) bộ xử lý video FFmpeg (nếu máy chưa có, ~3-5 phút),
-> (2) bộ nghe giọng nói tiếng Việt ~1.6GB (~5-15 phút tùy mạng — tải ngầm),
-> (3) kho logo/nhạc/hiệu ứng của công ty ~180MB (~2-5 phút — tải ngầm),
-> (4) dò card đồ họa xem có tăng tốc render được không (vài giây).
-> **Tổng khoảng 10-20 phút với mạng bình thường** — phần nặng chạy ngầm, xong mục nào tôi báo mục đó.
-> Bạn cứ để máy đấy, làm việc khác thoải mái."
+> bộ xử lý video, bộ nghe giọng nói tiếng Việt ~1.6GB, kho logo/nhạc/hiệu ứng của công ty ~180MB,
+> các thư viện cần thiết, và dò card đồ hoạ xem có tăng tốc render được không.
+> **Tổng khoảng 10-20 phút** với mạng bình thường — chạy ngầm, bạn cứ làm việc khác."
 
-Rồi làm tuần tự bên dưới. Đường dẫn gốc của gói (dùng cho mọi script bên dưới, gọi tắt `<PKG>`):
-`~/.claude/plugins/marketplaces/roboworld-tools/skills/shorts-editor-rbw`
+## Bước 1 — Chạy đúng MỘT lệnh (chạy NỀN)
 
-## Bước 1 — Nền tảng: Python + FFmpeg (làm trước, nhanh)
+```powershell
+python "<PKG>\scripts\chuan_bi_may.py"
+```
 
-1. Kiểm `python --version` — chưa có thì `winget install Python.Python.3.12 -e --source winget` (báo 1 câu).
-2. **Cài BỘ THƯ VIỆN PYTHON (bắt buộc — thiếu là mất nửa số tính năng)**, im lặng, ~1-3 phút:
-   ```powershell
-   python -m pip install -U gdown edge-tts pillow moderngl librosa opencv-python google-genai "numpy<2"
-   ```
-   | Thư viện | Thiếu thì mất gì |
-   |---|---|
-   | `gdown` | không tải được kho tài nguyên từ Drive |
-   | `edge-tts` | không có giọng đọc dự phòng (Kiểu 3 chết khi chưa có key ElevenLabs) |
-   | `librosa` | **không dò được phách/BPM** → mất cắt-bám-phách và mất tính năng tách nhạc từ mix dài |
-   | `moderngl` | không chạy được chuyển cảnh GL (~80 kiểu) |
-   | `pillow` | không làm được luma wipe, thẻ chữ động, mask logo |
-   | `opencv-python` | không chấm được điểm kỹ thuật clip (độ nét / chuyển động) → mất bước lọc clip hỏng |
-   | `google-genai` | không chạy được **mắt AI Gemini** (`quet_mat_ai.py`, `gemini_vision.py`) |
-   | `numpy<2` | **phải ghim <2** — numpy 2.x làm hỏng rembg/cv2 (đã dính thật) |
+`<PKG>` = `~/.claude/plugins/marketplaces/roboworld-tools/skills/shorts-editor-rbw`
 
-   Không cài trong lệnh trên: **`rembg`** (tách nền AI) — nó kéo theo `onnxruntime` + model u2net ~170MB, chỉ cần khi dựng cảnh cutout. Để dành, khi nào thật sự cần thì `python -m pip install rembg` rồi báo người dùng mất thêm ~2 phút.
-3. Kiểm `ffmpeg -version` — chưa có thì báo 1 câu rồi `winget install ffmpeg -e --source winget`.
-   Cài xong nếu lệnh `ffmpeg` chưa nhận trong phiên này: tự tìm `ffmpeg.exe`/`ffprobe.exe` trong
-   `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg*\` (đệ quy, lấy trong thư mục `bin`) và dùng
-   đường dẫn đầy đủ cho các bước sau — KHÔNG bắt người dùng khởi động lại giữa chừng.
+Chạy bằng `run_in_background` vì mất 10-20 phút. Script tự làm hết, in tiến độ từng mục:
 
-## Bước 2 — Bộ nghe giọng nói (1.6GB, chạy NỀN ngay)
+| Script tự lo | Ghi chú |
+|---|---|
+| 10 thư viện Python | tự `pip install` món nào thiếu. `numpy` **ghim <2** — bản 2.x làm hỏng cv2 |
+| FFmpeg | tự `winget install`; nếu PATH chưa nhận thì **tự ghi đường dẫn vào `config.json`** — không bắt khởi động lại |
+| Whisper 1.6GB | tải vào `.part` rồi mới đổi tên → không có chuyện script khác vớ nhầm file tải dở |
+| Silero VAD 2.3MB | model soi chéo giọng người khi đo mốc thoại |
+| Kho tài nguyên ~180MB | gọi `tai_kho_tai_nguyen.py`, tự đếm file |
+| Card đồ hoạ | dò `nvidia`, báo 1 trong 3 trạng thái |
 
-Chạy nền (run_in_background) lệnh trong `<PKG>/assets/models/README.md`: tải `.part` rồi rename,
-đích `~/.claude/roboworld-assets/models/ggml-large-v3-turbo.bin`. Đã có sẵn file này (máy cài lại) → báo "có sẵn, bỏ qua".
+Kết thúc script in **bảng trạng thái máy** + câu chốt `MAY DA SAN SANG DUNG VIDEO` hoặc liệt kê thứ còn thiếu.
 
-## Bước 3 — Kho tài nguyên công ty (~180MB, chạy NỀN ngay, song song bước 2)
+**Cờ phụ**: `--kiem` chỉ kiểm không cài (dùng cho lệnh "kiểm tra máy đủ đồ chưa"); `--nhanh` bỏ qua 2 khoản tải nặng.
 
-Chạy nền: `python "<PKG>/scripts/tai_kho_tai_nguyen.py"` — script tự tải từ Google Drive về
-`~/.claude/roboworld-assets/tai-nguyen-chung/`, TỰ KIỂM ĐẾM từng file, thiếu file nào báo đích danh.
-Nếu nó báo thiếu + "Google chặn tạm": báo người dùng "kho về thiếu N file do Google giới hạn tải,
-15-30 phút nữa nhắn 'cập nhật kho tài nguyên' là đủ" — KHÔNG coi là lỗi cài đặt.
+**Script báo `CAN_NANG_DRIVER`** → hỏi người dùng đúng 1 câu:
+> *"Máy bạn có card đồ hoạ NVIDIA nhưng bộ điều khiển cũ nên render chậm. Cho tôi tải bản mới từ NVIDIA (~1GB, miễn phí) cài giúp nhé? Nếu Windows hiện hộp thoại xanh thì bấm YES — nhiều máy tự chạy không hỏi. Xong render nhanh 2-5 lần."*
 
-## Bước 4 — Dò card đồ họa (vài giây, trong lúc chờ bước 2-3)
+OK thì chạy nền `python "<PKG>\scripts\cai_driver_nvidia.py"` (không có `--check`). Không OK thì thôi, không hỏi lại trong phiên.
 
-`python "<PKG>/scripts/cai_driver_nvidia.py" --check`:
-- `GPU_SAN_SANG` / `KHONG_CO_CARD` → không nói gì nhiều, ghi vào bảng trạng thái.
-- `CAN_NANG_DRIVER` → HỎI người dùng đúng 1 câu: *"Máy bạn có card đồ họa NVIDIA nhưng bộ điều khiển
-  cũ nên render chậm. Cho tôi tải bản mới từ NVIDIA (~1GB, miễn phí) cài giúp nhé? Nếu Windows hiện
-  hộp thoại xanh thì bấm YES — nhiều máy tự chạy không hỏi. Xong render nhanh 2-5 lần."* — OK thì chạy
-  nền script đó KHÔNG có `--check` (nó tự lo hết, kể cả ca máy cần khởi động lại — sẽ tự báo).
+## Bước 2 — Bật auto-update (vài giây, đừng bỏ qua)
 
-## Bước 4b — BẬT AUTO-UPDATE (bắt buộc, vài giây — đừng bỏ qua)
+Sửa `~/.claude/settings.json`: đặt `extraKnownMarketplaces."roboworld-tools".autoUpdate = true` (giữ nguyên mọi trường khác, nhất là `source`). Không tạo file backup (chính sách chủ repo).
 
-Sửa `~/.claude/settings.json`: đặt `extraKnownMarketplaces."roboworld-tools".autoUpdate = true` (giữ nguyên mọi trường khác, nhất là `source`). Không tạo file backup (chính sách chủ repo — xem SKILL.md).
+**Vì sao phải làm ngay lúc cài**: đây là công cụ nội bộ cập nhật liên tục; máy không bật cờ này sẽ đứng yên ở bản cài ban đầu, dựng theo luật cũ mà không ai biết. **Đã có tiền lệ 2 máy kẹt bản cũ nhiều ngày.**
 
-**Vì sao phải làm ngay ở bước cài, không đợi lần dựng video đầu tiên**: đây là công cụ nội bộ được cập nhật liên tục; máy nào không bật cờ này sẽ đứng yên ở bản cài ban đầu, dựng theo luật cũ mà không ai biết. Đã có tiền lệ 2 máy kẹt bản cũ nhiều ngày.
+## Bước 3 — API key (phần DUY NHẤT không tự động được)
 
-## Bước 5 — Chốt: bảng trạng thái + dặn dò (khi bước 2-3 xong hết)
+Script sẽ liệt kê key nào còn thiếu. Cách đưa key cho người dùng:
 
-In bảng trạng thái đúng mẫu trong SKILL.md mục "Lệnh CHUẨN BỊ MÁY" (FFmpeg / Bộ nghe / Kho x-trên-x
-file theo manifest / GPU / Key giọng đọc AI), kèm **tổng thời gian thật đã mất**, rồi dặn 2 câu:
-1. "Đóng app Claude mở lại 1 lần cho plugin nhận đủ — xong là dựng video được ngay: kéo-thả folder
-   buổi quay vào chat và nói 'dựng video từ folder này'."
-2. "Giọng đọc AI xịn (không bắt buộc): khi nào nhận được key từ quản trị qua Zalo, dán vào đây và nói
-   'lưu key ElevenLabs này' là xong — chưa có key vẫn dựng bình thường bằng giọng dự phòng."
+> **Người dùng chỉ cần DÁN KEY VÀO CHAT và nói "lưu key này". Không phải mở file, không phải biết đường dẫn.**
+
+Claude nhận key rồi ghi bằng:
+
+```powershell
+"<gia-tri-key>" | python "<PKG>\scripts\chuan_bi_may.py" --luu-key ELEVENLABS_API_KEY
+```
+
+Truyền qua **stdin** chứ không qua tham số dòng lệnh — để key không lọt vào lịch sử lệnh. Script không in giá trị key ra màn hình. Ghi đè key cũ thì không nhân đôi dòng.
+
+Ba key: `ELEVENLABS_API_KEY` (giọng đọc + sinh nhạc) · `GEMINI_API_KEY` (mắt AI xem clip) · `GROQ_API_KEY` (dự phòng).
+
+### ⛔ Vì sao KHÔNG tự tải key về được — giới hạn thật, không phải chưa làm
+
+Muốn script tự lấy key mà không cần đăng nhập thì key phải nằm ở chỗ ai cũng vào được — tức là **key thành công khai**. Mà kho tài nguyên trên Drive **đang share công khai và link nằm trong repo GitHub public**, nên để key vào đó là phát tán key. ElevenLabs/Gemini tính tiền theo lượng dùng, ai cầm được key là tiêu tiền của công ty.
+
+→ Key phải đi đường riêng (Zalo), nhưng **thao tác của người dùng chỉ còn 1 bước dán vào chat**.
+
+**Chưa có key vẫn dựng video bình thường**: giọng đọc tự lui về edge-tts tiếng Việt (miễn phí, sạch); mắt AI Gemini bỏ qua, dùng tầng đo kỹ thuật miễn phí thay thế.
+
+## Bước 4 — Chốt
+
+In lại bảng trạng thái từ script, kèm tổng thời gian thật đã mất, rồi dặn:
+
+1. *"Đóng app Claude mở lại 1 lần cho plugin nhận đủ — xong là dựng video được ngay: kéo-thả folder buổi quay vào chat và nói 'dựng video từ folder này'."*
+2. *"Khi nào nhận được key từ quản trị qua Zalo, dán vào đây nói 'lưu key này' là xong."*
 
 ## Nếu có bước lỗi
 
-Báo rõ bước nào lỗi + nguyên văn dòng lỗi + các bước còn lại vẫn hoàn tất bình thường. Đừng dừng cả
-quy trình vì 1 mục phụ (thiếu kho/model vẫn dựng được Kiểu 1 sau khi tải bù; chỉ FFmpeg là bắt buộc).
+Báo rõ mục nào lỗi + nguyên văn dòng lỗi, và nói rõ **các mục còn lại vẫn hoàn tất bình thường**. Đừng dừng cả quy trình vì 1 mục phụ — thiếu kho/model vẫn dựng được Kiểu 1 sau khi tải bù; **chỉ FFmpeg là bắt buộc tuyệt đối**.
