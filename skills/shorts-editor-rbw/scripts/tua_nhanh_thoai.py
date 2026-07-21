@@ -4,8 +4,11 @@
 Sep Huy 21/07/2026: "muc dich ban dau la de tua cac video MC thu, hoac voice over
 nguoi thu len toc do do cho do nham chan".
 
-MOC CHUAN: 291 am tiet/phut (= 85%% cua file mau Sep dua — Sep chinh xuong vi
-mau goc 342 hoi nhanh). File mau: ~/.claude/roboworld-assets/mau/toc-do-chuan.mp3
+CACH DO (Sep chi 21/07): "lay doan nao noi lien tuc, tinh trung binh bao nhieu chu
+tren 1 phut, CAT HET NHUNG DOAN TRONG DI CHO KHACH QUAN" — roi lay 2 con so chia
+ti le, tua theo ti le do.
+  file mau do duoc 427 chu/phut (cat khoang trong) -> Sep lay 85%% = MOC 363.
+  File mau: ~/.claude/roboworld-assets/mau/toc-do-chuan.mp3
 
 CACH LAM — phai lam DONG THOI ca hinh lan tieng, neu khong se lech tieng:
   hinh:  setpts=PTS/<he so>
@@ -15,7 +18,7 @@ CACH LAM — phai lam DONG THOI ca hinh lan tieng, neu khong se lech tieng:
 
 Usage:
     python tua_nhanh_thoai.py <video-hoac-audio> [--ra <file ra>] [--he-so 1.25]
-                              [--muc-tieu 291]   # tu do roi tu tinh he so
+                              [--muc-tieu 363]   # tu do roi tu tinh he so
 """
 import argparse
 import os
@@ -26,23 +29,36 @@ import sys
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-CHUAN = 291          # am tiet/phut — 85% cua file mau (Sep chinh 21/07/2026)
+# MOC CHUAN = 363 chu/phut khi CAT HET KHOANG TRONG (toc do nha chu thuan).
+# File mau Sep dua do duoc 427 theo cach nay; Sep chinh xuong 85% vi mau hoi nhanh.
+# (Con so 291 truoc do la do theo cach khac — khoang tu chu dau den chu cuoi,
+#  co tinh ca nhip ngat. Hai cach ra hai con so, DUNG TRON.)
+CHUAN = 363
 TOI_DA = 1.6         # tren muc nay giong bat dau nghe gap gap, khong tu nhien
 
 
 def khoang_noi(path):
-    """Khoang tu chu dau den chu cuoi (giay) — cung thuoc do voi file mau."""
-    p = subprocess.run(["ffmpeg", "-hide_banner", "-i", path,
-                        "-af", "silencedetect=noise=-40dB:d=0.15", "-f", "null", "-"],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace").stderr
-    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                                "-of", "csv=p=0", path],
-                               capture_output=True, text=True).stdout.strip())
-    st = [float(x) for x in re.findall(r"silence_start: ([0-9.]+)", p)]
-    en = [float(x) for x in re.findall(r"silence_end: ([0-9.]+)", p)]
-    dau = en[0] if en and (not st or en[0] < st[0]) else 0.0
-    cuoi = st[-1] if st and st[-1] > dau else dur
-    return dau, cuoi, cuoi - dau, dur
+    """Tong thoi gian DANG NHA CHU — CAT HET khoang trong (cach Sep chi 21/07).
+
+    Vi sao cat khoang trong: nhip ngat giua cau khac nhau tuy nguoi tuy kich ban.
+    Bo het thi con lai TOC DO NHA CHU thuan -> so sanh 2 file moi cong bang.
+
+    Do bang MUC so voi SAN NHIEU cua chinh clip, KHONG dung silencedetect —
+    silencedetect chet trong moi truong on: do that tren video MC nha sach no bao
+    "0 giay trong" trong khi thuc te co 17.8 giay khong ai noi.
+    """
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-v", "quiet", "-i", path, "-ac", "1",
+                          "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
+    if not raw:
+        sys.exit("Khong doc duoc am thanh: " + path)
+    x = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+    win = 1600                      # cua so 0.1s
+    db = np.array([20 * np.log10(max(float(np.sqrt((x[i:i + win] ** 2).mean())), 1e-9))
+                   for i in range(0, len(x) - win, win)])
+    san = float(np.percentile(db, 20))
+    noi = float((db > san + 8).sum()) * 0.1
+    return noi, len(x) / 16000.0, san
 
 
 def chuoi_atempo(he_so):
@@ -72,9 +88,10 @@ def main():
                     help="so am tiet cua loi (dem tay) — de tu tinh he so")
     a = ap.parse_args()
 
-    dau, cuoi, sp, dur = khoang_noi(a.nguon)
+    sp, dur, san = khoang_noi(a.nguon)
     print("Nguon : %s" % os.path.basename(a.nguon))
-    print("        dai %.2fs | khoang noi %.2fs (%.2f -> %.2f)" % (dur, sp, dau, cuoi))
+    print("        dai %.2fs | dang noi %.2fs | trong %.2fs | san nhieu %.0f dB"
+          % (dur, sp, dur - sp, san))
 
     he_so = a.he_so
     if he_so is None:

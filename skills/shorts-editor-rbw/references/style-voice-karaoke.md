@@ -109,29 +109,39 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 
 > **Mục đích chính**: MC nói chậm làm video nhàm. Luật này để **tua nhanh tiếng MC/người thu ĐÃ QUAY**, không phải để chỉnh giọng máy. *(Bản đầu của mục này hiểu nhầm thành chỉnh TTS — Sếp đã đính chính.)*
 
-**Mốc chuẩn: 291 âm tiết/phút.** File mẫu `~/.claude/roboworld-assets/mau/toc-do-chuan.mp3` đo được 342, nhưng **Sếp chỉnh xuống còn 85%** vì mẫu gốc hơi nhanh.
+### Cách đo — CẮT HẾT KHOẢNG TRỐNG cho khách quan (Sếp chỉ 21/07)
+
+> *"Lấy đoạn nào nói liên tục, tính ra trung bình bao nhiêu chữ trên 1 phút, cắt hết những đoạn trống đi cho khách quan. Video sau này cũng đo tương tự, xong lấy 2 cái chia tỉ lệ rồi tua theo."*
+
+**Vì sao phải cắt khoảng trống**: nhịp ngắt giữa câu khác nhau tuỳ người tuỳ kịch bản. Bỏ hết thì còn lại **tốc độ nhả chữ thuần** — so sánh hai file mới công bằng. Và chỉ cần **tỉ lệ**, không phụ thuộc con số tuyệt đối.
+
+⚠️ **Đo khoảng trống bằng MỨC SO VỚI SÀN NHIỄU, không dùng `silencedetect`.** Đo thật: trên video MC nhà sách, `silencedetect` báo **0 giây trống** trong khi thực tế có **17.8 giây** không ai nói — vì ồn nền không bao giờ tụt đủ thấp.
+
+**Mốc chuẩn: 363 chữ/phút.** File mẫu đo được **427** theo cách này; Sếp lấy **85%** vì mẫu gốc hơi nhanh.
 
 ```powershell
-python "<skill-dir>\scripts\tua_nhanh_thoai.py" <clip> --am-tiet <đếm tay> 
+python "<skill-dir>\scripts\tua_nhanh_thoai.py" <clip> --am-tiet <đếm tay số chữ>
 ```
 
-Script tự đo tốc độ hiện tại, tự tính hệ số cần tua, rồi tua **cả hình lẫn tiếng cùng lúc**. Biết hệ số rồi thì `--he-so 1.4`.
+Script tự đo tốc độ hiện tại, tự chia tỉ lệ với mốc, rồi tua **cả hình lẫn tiếng cùng lúc**. Biết hệ số rồi thì `--he-so 1.24`.
 
 **Kỹ thuật — 2 điều bắt buộc:**
 - Tiếng dùng **`atempo`** (giữ nguyên cao độ). **Đừng dùng `asetrate`** — nó kéo cao độ lên, giọng thành the thé như vịt.
 - Hình phải `setpts=PTS/<hệ số>` **cùng lúc**, không thì lệch tiếng.
 - `atempo` chỉ nhận 0.5-2.0 mỗi lần → hệ số > 2 phải nối chuỗi `atempo=2.0,atempo=x`.
 
-**Đo thật trên video-2 (MC nhà sách Tràng An, 133 âm tiết):**
+**Đo thật trên video-2 (MC nhà sách Tràng An, 133 chữ):**
 
-| Hệ số | Dài | Tốc độ | |
-|---|---|---|---|
-| 1.00× (gốc) | 45.0s | 178 âm tiết/phút | chậm |
-| 1.25× | 36.1s | 221 | |
-| 1.40× | 32.2s | 248 | |
-| **1.64×** | **27.5s** | **290** | khớp mốc 291 |
+| | Tổng | Đang nói | Trống | Chữ/phút |
+|---|---|---|---|---|
+| File mẫu | 15.70s | 11.80s | 3.90s | **427** |
+| MC video-2 | 45.12s | 27.30s | **17.82s** | **292** |
 
-⚠️ **Ngưỡng an toàn đang đặt 1.6× — con số này do tôi phán đoán, CHƯA qua tai Sếp chấm.** Trên mức đó script vẫn chạy nhưng in cảnh báo. Mẫu để nghe chọn: Desktop, thư mục `NGHE-CHON-TOC-DO`, các file `MC-tua-*.mp4`. Sếp chốt mức nào thì sửa `TOI_DA` trong script.
+→ Mục tiêu 363 ÷ 292 = **hệ số 1.24×** → video 45.1s rút còn **36.4s** (ngắn hơn 19%).
+
+⚠️ **Ngưỡng an toàn đang đặt 1.6× — con số này do tôi phán đoán, CHƯA qua tai Sếp chấm.** Trên mức đó script vẫn chạy nhưng in cảnh báo. Mẫu để nghe: Desktop, thư mục `NGHE-CHON-TOC-DO`. Sếp chốt mức nào thì sửa `TOI_DA` trong script.
+
+> **Đừng trộn 2 cách đo.** Cách cũ (khoảng từ chữ đầu đến chữ cuối, có tính nhịp ngắt) cho mẫu **342** và MC **178**; cách mới (cắt hết khoảng trống) cho **427** và **292**. Hai cách ra hai bộ số khác hẳn — hệ số tính ra chênh nhau 1.24× vs 1.64×. **Luôn đo cả hai bên bằng cùng một cách.**
 
 🔴 **TUA TRƯỚC KHI CẮT CẢNH VÀ ĐẶT CHỮ.** Tua xong thì mọi mốc thoại đều đổi — sub, thẻ chữ, SFX phải làm lại theo mốc mới. Tua sau là hỏng hết timing.
 
