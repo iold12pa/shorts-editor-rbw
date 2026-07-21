@@ -103,6 +103,26 @@ Trả lời xong mới chọn nhạc. Hai nhóm, luật khác hẳn nhau:
 ## Bước C — Câu hỏi chung, mọi kiểu đều cần
 - Robot xuất hiện là model nào → tra `references/robot-products.md` trước, chỉ hỏi lại nếu không chắc hoặc model chưa có trong danh mục
 - Đã có ý tưởng nội dung cụ thể chưa, hay muốn Claude tự đề xuất từ footage
+- **ĐĂNG Ở ĐÂU → quyết định có logo + outro hay không** (bắt buộc hỏi, xem khối ngay dưới)
+
+### Video này đăng ở đâu — hỏi CUỐI CÙNG, trước khi dựng (Sếp Huy chốt 21/07/2026)
+
+**Câu hỏi:**
+
+> "Video này đăng ở **page chính của công ty**, hay ở **kênh cá nhân**?"
+
+| | **Page công ty** | **Kênh cá nhân** |
+|---|---|---|
+| Logo trắng giữa-trên | ✅ có | ❌ **không** |
+| Outro dọc cuối video | ✅ có | ❌ **không** |
+| Phần hình còn lại | giống nhau | giống nhau |
+
+**Kênh cá nhân thì để mộc — chỉ có video thôi, trông cho tự nhiên.** Gắn logo với outro vào là thành quảng cáo ngay, mất cái tự nhiên vốn là điểm mạnh của kênh cá nhân.
+
+- Áp cho **cả 3 kiểu dựng**.
+- Người dùng không trả lời → **mặc định page công ty** (có logo + outro), vì đó là phần lớn video.
+- Hỏi rồi thì không hỏi lại trong cùng buổi dựng — trừ khi họ đổi ý.
+- Chi tiết kỹ thuật khi bỏ 2 thứ này: `references/ffmpeg-recipes.md` mục 4d và 5.
 
 ## Nguyên tắc validate
 - Thiếu mục **Bắt buộc** → hỏi ngay, KHÔNG viết kịch bản hay tự đoán/tự bịa để lấp chỗ trống

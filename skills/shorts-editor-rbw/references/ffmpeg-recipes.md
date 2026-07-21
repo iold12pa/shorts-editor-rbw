@@ -398,6 +398,27 @@ Chuỗi này chèn vào **track giọng** trước khi `amix`, không áp lên n
 - **Tiếng quá xa thì không cứu được**: đo thấy cách sàn < 8 dB (vd nhà máy dập folder 33, đo thật chỉ **2.2 dB**) thì mọi bộ lọc đều vô ích — báo người dùng dùng cảnh khác, đừng cố xử lý.
 - Người dùng phân vân → cắt thử 4 bản 10 giây cho họ nghe chọn, **nhớ cân bằng cả 4 về cùng độ to** (`loudnorm=I=-16`) rồi mới đưa nghe; không cân bằng thì tai luôn chọn bản to nhất chứ không phải bản hay nhất.
 
+## 5d. Video cho KÊNH CÁ NHÂN — bỏ logo + outro (luật Sếp Huy 21/07/2026)
+
+Hỏi ở bước C (`references/chon-kieu-dung.md`): *"Video này đăng ở page chính của công ty, hay ở kênh cá nhân?"*
+
+**Kênh cá nhân → để mộc, chỉ có video thôi, trông cho tự nhiên.** Gắn logo với outro vào là thành quảng cáo ngay, mất đúng cái tự nhiên vốn là điểm mạnh của kênh cá nhân.
+
+| | Page công ty | Kênh cá nhân |
+|---|---|---|
+| Logo trắng giữa-trên | ✅ | ❌ bỏ |
+| Outro dọc | ✅ | ❌ bỏ |
+| Chữ, nhạc, SFX, chuyển cảnh, loudnorm | giống nhau | giống nhau |
+
+**Cách bỏ — sửa đúng 2 chỗ, đừng đụng gì khác:**
+
+1. **Bỏ bước nối outro (mục 4d)**: không chạy `xfade` nối outro. Video kết thúc ngay ở cảnh cuối cùng của thân bài. Nhớ bỏ luôn input file outro và nhánh `[N:a]` của nó trong `amix` ở lệnh mix cuối — **để sót nhánh audio là ffmpeg báo lỗi khó hiểu về số input**.
+2. **Bỏ overlay logo (mục 5)**: bỏ input `logo.png` và cả cụm `[1:v]scale=480:-1[lg];[0:v][lg]overlay=...` trong `filter_complex`, map thẳng `[0:v]`.
+
+Mọi thứ còn lại **giữ nguyên**: vẫn 1080x1920, vẫn burn chữ, vẫn nhạc + SFX, và **vẫn phải `loudnorm` về -14 LUFS** — chuẩn âm lượng không liên quan tới chuyện đăng ở đâu.
+
+**Nghiệm thu**: trích frame kiểm **không còn logo ở giữa-trên**, và frame cuối là cảnh thật chứ không phải outro.
+
 ## 6. Tự nghiệm thu (bắt buộc trước khi bàn giao)
 
 ```powershell
