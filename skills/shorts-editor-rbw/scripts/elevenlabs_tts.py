@@ -41,21 +41,29 @@ ENV_FILE = os.path.expanduser("~/.claude/abs6-secrets.env")
 MODEL = "eleven_turbo_v2_5"   # KHONG lui ve multilingual_v2 — da do that, no lam meo tieng Viet
 
 # --- Bang giong (do that 22/07/2026: CA 4 giong deu tao duoc, khong con bi chan) ---
-GIONG_VIET_NAM = "7XOKiK112QRZRSLbCfMc"   # MC Xuan Tu - VIP (nam, giong Bac)
-GIONG_VIET_NU = "Na15FlRRkMEDtEW4nVVP"    # Thanh Ngoc - Warm & Trusted (nu, giong Nam)
-GIONG_PHUONG_UYEN = "Y9oZ1fkOxoaT3zFqTPzg"  # Phuong Uyen RBW (nu, VIET, giong NHAN BAN cua RBW)
-GIONG_ADAM = "pNInz6obpgDQGcFmaJgB"       # Adam - Dominant, Firm (nam, goc Anh, chac & manh)
-GIONG_ANH = "JBFqnCBsd6RMkjVDRZzb"        # George (nam, Anh)
-DEFAULT_VOICE = GIONG_VIET_NAM
+#
+# VAI TRO — Sep Huy chot 22/07/2026: "giong Phuong Uyen chi la giong phu thoi,
+# con lai 2 giong kia la giong chinh, cu hien ca 4 len cho ho chon".
+#
+# GIONG CHINH (mac dinh lay trong 2 giong nay):
+GIONG_VIET_NAM = "7XOKiK112QRZRSLbCfMc"   # MC Xuan Tu - VIP (nam, giong Bac)   [CHINH]
+GIONG_VIET_NU = "Na15FlRRkMEDtEW4nVVP"    # Thanh Ngoc (nu, giong Nam)          [CHINH]
+# GIONG PHU (van hien du trong the chon, nhung KHONG tu lay lam mac dinh —
+# chi dung khi nguoi dung chi dinh dich danh, hoac noi dung hop ro ret + noi ro ly do):
+GIONG_PHUONG_UYEN = "Y9oZ1fkOxoaT3zFqTPzg"  # Phuong Uyen RBW (nu, VIET, nhan ban RBW) [PHU]
+GIONG_ADAM = "pNInz6obpgDQGcFmaJgB"       # Adam - Dominant, Firm (nam, goc Anh)  [PHU]
+GIONG_ANH = "JBFqnCBsd6RMkjVDRZzb"        # George (nam, Anh) - khong nam trong bang chon
+DEFAULT_VOICE = GIONG_VIET_NAM            # mac dinh = giong CHINH
 
 # HET BI CHAN (do lai 22/07/2026): truoc day goi Free chan giong library bang loi 402
 # "Free users cannot use library voices via the API" — nay ca 4 giong deu tao duoc
 # binh thuong. Ghi chu cu "cho nang goi Starter $6" khong con dung nua.
 #
-# 2 GIONG SEP HUY CHI DINH THEM 22/07/2026 (dung khi nguoi dung chon voice-over EL):
-#   1) Phuong Uyen RBW - nu, tieng Viet, giong nhan ban cua chinh Roboworld
-#   2) Adam            - nam, chac & manh
-#   3) "Tuy noi dung"  - tu chon giong hop voi van ban (xem references/chon-kieu-dung.md)
+# BANG CHON GIONG hien du 4 lua chon + o "tuy noi dung", thu tu giong CHINH truoc:
+#   1) MC Xuan Tu   [CHINH]   2) Thanh Ngoc [CHINH]
+#   3) Phuong Uyen  [phu]     4) Adam       [phu]
+#   -) "Tuy noi dung" - doc kich ban roi tu chon, UU TIEN 2 giong CHINH.
+# Chi tiet cach chon + ly do: references/chon-kieu-dung.md, khoi "Chon giong doc".
 
 
 def get_api_key():

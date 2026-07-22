@@ -59,7 +59,7 @@ Thêm mục:
 <toàn bộ lời đọc, viết như nói chuyện, câu ngắn — đưa vào ElevenLabs>
 
 ## Giọng đọc
-- ElevenLabs — **4 giọng** (đo 22/07/2026: đều dùng được, hết bị chặn): **Phương Uyên** (`Y9oZ1fkOxoaT3zFqTPzg` — nữ, giọng nhân bản RBW) · **Adam** (`pNInz6obpgDQGcFmaJgB` — nam, chắc mạnh) · **MC Xuân Tú** (`7XOKiK112QRZRSLbCfMc` — nam, giọng Bắc) · **Thanh Ngọc** (`Na15FlRRkMEDtEW4nVVP` — nữ, giọng Nam). Cách chọn: `references/chon-kieu-dung.md` khối "Chọn giọng đọc";
+- ElevenLabs — **4 giọng, hiện đủ cả 4 cho người dùng chọn** (đo 22/07/2026: đều dùng được, hết bị chặn). **Giọng CHÍNH**: **MC Xuân Tú** (`7XOKiK112QRZRSLbCfMc` — nam, giọng Bắc) · **Thanh Ngọc** (`Na15FlRRkMEDtEW4nVVP` — nữ, giọng Nam). **Giọng phụ** (không tự lấy làm mặc định): **Phương Uyên** (`Y9oZ1fkOxoaT3zFqTPzg` — nữ, giọng nhân bản RBW) · **Adam** (`pNInz6obpgDQGcFmaJgB` — nam, gốc tiếng Anh). Cách chọn: `references/chon-kieu-dung.md` khối "Chọn giọng đọc";
   người dùng muốn giọng khác → ghi voice ID được chọn ở đây
 - ⛔ **Không có fallback** — edge-tts đã bỏ 22/07/2026 (Sếp nghe thấy đọc méo). ElevenLabs lỗi → DỪNG, báo người dùng, chờ quyết
 ```

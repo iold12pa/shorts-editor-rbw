@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 8** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 9** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 8 (22/07/2026)`
+>    `📦 Đang ở Ver 9 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **9** | 22/07/2026 | `2026.07.22.11` | Phân vai giọng đọc: **MC Xuân Tú + Thanh Ngọc = CHÍNH** (mặc định lấy trong 2 giọng này) · **Phương Uyên + Adam = phụ** (vẫn hiện đủ trong thẻ chọn, nhưng không tự lấy làm mặc định). Luôn hiện cả 4 cho người dùng chọn |
 | **8** | 22/07/2026 | `2026.07.22.10` | 🔴 **BỎ HẲN 2 giọng miễn phí edge-tts** — Sếp nghe mẫu, kết luận đọc méo. Gỡ khỏi bảng chọn + 6 file luật + thông báo lỗi. **Không còn phương án thay thế**: ElevenLabs lỗi thì DỪNG BÁO, chờ Sếp quyết. Còn 4 giọng, vừa khít 1 thẻ hỏi |
 | **7** | 22/07/2026 | `2026.07.22.9` | Bảng chọn giọng lên **6 lựa chọn** theo chỉ định Sếp: 4 giọng ElevenLabs (Phương Uyên · Adam · MC Xuân Tú · Thanh Ngọc) + **2 giọng miễn phí** (Nam Minh · Hoài My) — đo thật **cả 6 đọc chuẩn 100% từng chữ**, khác biệt chỉ còn ở chất giọng |
 | **6** | 22/07/2026 | `2026.07.22.8` | 🔴 **Sửa gốc giọng đọc méo tiếng Việt**: thủ phạm là model `eleven_multilingual_v2`, đổi sang `eleven_turbo_v2_5` (đo thật) · thêm giọng **Phương Uyên RBW** + **Adam** theo chỉ định Sếp, kèm bước hỏi chọn giọng 3 lựa chọn · **4/4 giọng hết bị chặn**, bỏ ghi chú "chờ mua Starter" · đính chính luật cũ quy sai cho "giọng Anh" |

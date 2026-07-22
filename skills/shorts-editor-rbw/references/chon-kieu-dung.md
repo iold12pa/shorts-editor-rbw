@@ -77,19 +77,26 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 
 **Tầng 2 — chọn giọng cụ thể (CHỈ hiện khi tầng 1 chọn giọng AI). SÁU lựa chọn, Sếp Huy chốt 22/07/2026:**
 
-| # | Lựa chọn | Mã giọng | Tốn tiền? | Hợp với nội dung nào |
+**Luôn hiện đủ cả 4 cho người dùng chọn** (Sếp Huy 22/07/2026: *"cứ hiện cả 4 lên cho họ chọn"*). Thứ tự dưới đây là thứ tự hiện — **giọng chính lên trước**.
+
+| # | Lựa chọn | Vai trò | Mã giọng | Hợp với nội dung nào |
 |---|---|---|---|---|
-| 1 | **Phương Uyên** — nữ, giọng **nhân bản của chính Roboworld** | `Y9oZ1fkOxoaT3zFqTPzg` | ElevenLabs | Giới thiệu sản phẩm, kể chuyện khách hàng, nội dung mềm mại thân thiện |
-| 2 | **Adam** — nam, chắc và mạnh | `pNInz6obpgDQGcFmaJgB` | ElevenLabs | Dứt khoát: hiệu quả, tiết kiệm nhân sự, số liệu, kêu gọi hành động |
-| 3 | **MC Xuân Tú** — nam, giọng Bắc, chất MC | `7XOKiK112QRZRSLbCfMc` | ElevenLabs | Dẫn chuyên nghiệp, phóng sự, sự kiện, video cho page công ty |
-| 4 | **Thanh Ngọc** — nữ, giọng Nam, ấm & đáng tin | `Na15FlRRkMEDtEW4nVVP` | ElevenLabs | Tư vấn, chăm sóc khách hàng, nội dung gần gũi miền Nam |
-| — | **Tuỳ theo nội dung** | tự chọn | — | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
+| 1 | **MC Xuân Tú** — nam, giọng Bắc, chất MC | **CHÍNH** | `7XOKiK112QRZRSLbCfMc` | Dẫn chuyên nghiệp, phóng sự, sự kiện, video cho page công ty |
+| 2 | **Thanh Ngọc** — nữ, giọng Nam, ấm & đáng tin | **CHÍNH** | `Na15FlRRkMEDtEW4nVVP` | Tư vấn, chăm sóc khách hàng, nội dung gần gũi miền Nam |
+| 3 | **Phương Uyên** — nữ, giọng **nhân bản của chính Roboworld** | phụ | `Y9oZ1fkOxoaT3zFqTPzg` | Giới thiệu sản phẩm, kể chuyện khách hàng, nội dung mềm mại thân thiện |
+| 4 | **Adam** — nam, chắc và mạnh | phụ | `pNInz6obpgDQGcFmaJgB` | Dứt khoát: hiệu quả, số liệu, kêu gọi hành động. **Gốc là giọng tiếng Anh** |
+| — | **Tuỳ theo nội dung** | — | tự chọn | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
+
+**CHÍNH / phụ nghĩa là gì** (Sếp Huy chốt 22/07/2026):
+- **Giọng chính = MC Xuân Tú và Thanh Ngọc.** Đây là 2 giọng mặc định của Roboworld. Chọn "tuỳ theo nội dung" thì **ưu tiên 2 giọng này**; giọng mặc định khi người dùng không nói gì cũng lấy trong 2 giọng này.
+- **Giọng phụ = Phương Uyên và Adam.** Vẫn hiện đủ trong thẻ chọn để người dùng tự chọn, nhưng **không tự lấy làm mặc định** — chỉ dùng khi người dùng chỉ định đích danh, hoặc khi nội dung hợp rõ rệt (và khi đó phải nói rõ lý do chọn).
+- ⚠️ **Adam** xếp nhóm phụ vì Sếp mới nói rõ vai trò cho Phương Uyên; Adam là **giọng gốc tiếng Anh** nên tôi để cùng nhóm phụ cho an toàn. Sếp muốn nâng Adam lên giọng chính thì báo một câu là đổi.
 
 > 🔴 **ĐÃ BỎ 22/07/2026 — hai giọng miễn phí edge-tts** (`vi-VN-NamMinhNeural` nam, `vi-VN-HoaiMyNeural` nữ). **Sếp Huy nghe mẫu và kết luận: đọc méo, không dùng được.** Đừng đưa lại vào bảng chọn, đừng dùng làm phương án thay thế khi ElevenLabs lỗi.
 >
 > **Đây là ca đáng nhớ nhất về giới hạn của phép đo bằng máy**: cho Whisper nghe lại, 2 giọng này trả về **đúng nguyên câu, chuẩn 100% từng chữ** — ngang điểm với 4 giọng ElevenLabs. Máy chấm "đạt". Tai Sếp nghe ra méo ngay. **Whisper đo được RÕ CHỮ, không đo được NGHE CÓ THẬT KHÔNG.** Lần sau đừng lấy "Whisper nghe ra đúng" làm bằng chứng một giọng dùng được.
 
-> **Lựa chọn "tuỳ nội dung" làm thế nào**: đọc kịch bản đã duyệt, xét giọng văn — mềm mại/kể chuyện/hướng cảm xúc → **Phương Uyên**; dứt khoát/số liệu/thúc đẩy hành động → **Adam**; dẫn chuyên nghiệp kiểu phóng sự → **MC Xuân Tú**; tư vấn gần gũi, khách miền Nam → **Thanh Ngọc**. Nội dung dài có nhiều chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu**, đừng chọn thầm.
+> **Lựa chọn "tuỳ nội dung" làm thế nào** — **ưu tiên 2 giọng CHÍNH trước**: dẫn chuyên nghiệp, phóng sự, sự kiện, video page công ty → **MC Xuân Tú**; tư vấn, chăm sóc khách, nội dung gần gũi (nhất là khách miền Nam) → **Thanh Ngọc**. Chỉ chọn giọng **phụ** khi nội dung hợp rõ rệt: kể chuyện khách hàng mềm mại, muốn chất giọng riêng của Roboworld → **Phương Uyên**; lời tiếng Anh, hoặc cần chất nam dứt khoát mạnh → **Adam**. Nội dung dài có nhiều chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu kèm lý do**, đừng chọn thầm.
 
 **Bốn giọng vừa khít một thẻ hỏi** (công cụ hỏi cho tối đa 4 lựa chọn) — hiện thẳng cả 4, không cần chia bước. Người dùng muốn "tuỳ nội dung" thì gõ vào ô tự nhập.
 
