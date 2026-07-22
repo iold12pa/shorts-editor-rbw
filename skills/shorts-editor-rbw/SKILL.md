@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 6** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 7** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 6 (22/07/2026)`
+>    `📦 Đang ở Ver 7 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **7** | 22/07/2026 | `2026.07.22.9` | Bảng chọn giọng lên **6 lựa chọn** theo chỉ định Sếp: 4 giọng ElevenLabs (Phương Uyên · Adam · MC Xuân Tú · Thanh Ngọc) + **2 giọng miễn phí** (Nam Minh · Hoài My) — đo thật **cả 6 đọc chuẩn 100% từng chữ**, khác biệt chỉ còn ở chất giọng |
 | **6** | 22/07/2026 | `2026.07.22.8` | 🔴 **Sửa gốc giọng đọc méo tiếng Việt**: thủ phạm là model `eleven_multilingual_v2`, đổi sang `eleven_turbo_v2_5` (đo thật) · thêm giọng **Phương Uyên RBW** + **Adam** theo chỉ định Sếp, kèm bước hỏi chọn giọng 3 lựa chọn · **4/4 giọng hết bị chặn**, bỏ ghi chú "chờ mua Starter" · đính chính luật cũ quy sai cho "giọng Anh" |
 | **5** | 22/07/2026 | `2026.07.22.7` | 🔴 **Luật CÁCH HỎI**: hỏi bằng thẻ chọn bấm được, cấm dồn thành khối chữ bắt gõ số · gộp 1 lượt tối đa 4 câu · **suy được từ footage thì tự suy, đừng hỏi** (phân tích trước rồi mới hỏi) |
 | **4** | 22/07/2026 | `2026.07.22.6` | Vá 2 chú thích khiến **máy khác đọc ngược ý** (một máy báo nhầm với Sếp rằng code vẫn giục dán key vào chat) · đếm lại đúng số script gọi FFmpeg (11/15, đã chốt 9) · `KEY_CHUAN` nhận **nhiều key** để mỗi máy có thể dùng key riêng mà không bị báo "SAI KEY" |

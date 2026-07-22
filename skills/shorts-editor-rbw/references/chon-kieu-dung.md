@@ -75,23 +75,42 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | **Giọng AI (ElevenLabs)** | Tôi tạo giọng đọc — hiện tiếp tầng 2 |
 | **Tôi tự thu** | Người dùng gửi file giọng, bỏ qua tầng 2 (nhớ hỏi tiếp khối "Xử lý tiếng nói") |
 
-**Tầng 2 — chọn giọng cụ thể (CHỈ hiện khi tầng 1 chọn giọng AI):**
+**Tầng 2 — chọn giọng cụ thể (CHỈ hiện khi tầng 1 chọn giọng AI). SÁU lựa chọn, Sếp Huy chốt 22/07/2026:**
 
-| Lựa chọn | Giọng | Hợp với nội dung nào |
-|---|---|---|
-| **Phương Uyên** | `Y9oZ1fkOxoaT3zFqTPzg` — nữ, tiếng Việt, **giọng nhân bản của chính Roboworld** | Giới thiệu sản phẩm, kể chuyện khách hàng, nội dung mềm mại thân thiện |
-| **Adam** | `pNInz6obpgDQGcFmaJgB` — nam, chắc và mạnh | Nội dung dứt khoát: hiệu quả, tiết kiệm nhân sự, số liệu, kêu gọi hành động |
-| **Tuỳ theo nội dung** | Tự chọn | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
+| # | Lựa chọn | Mã giọng | Tốn tiền? | Hợp với nội dung nào |
+|---|---|---|---|---|
+| 1 | **Phương Uyên** — nữ, giọng **nhân bản của chính Roboworld** | `Y9oZ1fkOxoaT3zFqTPzg` | ElevenLabs | Giới thiệu sản phẩm, kể chuyện khách hàng, nội dung mềm mại thân thiện |
+| 2 | **Adam** — nam, chắc và mạnh | `pNInz6obpgDQGcFmaJgB` | ElevenLabs | Dứt khoát: hiệu quả, tiết kiệm nhân sự, số liệu, kêu gọi hành động |
+| 3 | **MC Xuân Tú** — nam, giọng Bắc, chất MC | `7XOKiK112QRZRSLbCfMc` | ElevenLabs | Dẫn chuyên nghiệp, phóng sự, sự kiện, video cho page công ty |
+| 4 | **Thanh Ngọc** — nữ, giọng Nam, ấm & đáng tin | `Na15FlRRkMEDtEW4nVVP` | ElevenLabs | Tư vấn, chăm sóc khách hàng, nội dung gần gũi miền Nam |
+| 5 | **Giọng nam miễn phí** (bản dùng trước khi có ElevenLabs) | `vi-VN-NamMinhNeural` | **0đ** | Video nội bộ, bản nháp cho Sếp duyệt, hoặc khi muốn tiết kiệm |
+| 6 | **Giọng nữ miễn phí** (bản dùng trước khi có ElevenLabs) | `vi-VN-HoaiMyNeural` | **0đ** | Như trên |
+| — | **Tuỳ theo nội dung** | tự chọn | — | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
 
-> **Lựa chọn 3 làm thế nào**: đọc kịch bản đã duyệt, xét giọng văn — mềm mại/kể chuyện/hướng tới cảm xúc thì **Phương Uyên**; dứt khoát/số liệu/thúc đẩy hành động thì **Adam**. Nội dung dài có cả hai chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu** cho người dùng biết, đừng chọn thầm.
+> **Lựa chọn "tuỳ nội dung" làm thế nào**: đọc kịch bản đã duyệt, xét giọng văn — mềm mại/kể chuyện/hướng cảm xúc → **Phương Uyên**; dứt khoát/số liệu/thúc đẩy hành động → **Adam**; dẫn chuyên nghiệp kiểu phóng sự → **MC Xuân Tú**; tư vấn gần gũi, khách miền Nam → **Thanh Ngọc**. Nội dung dài có nhiều chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu**, đừng chọn thầm.
+
+**Cách hiện 6 lựa chọn khi công cụ hỏi chỉ cho tối đa 4:**
+Hỏi 2 bước ngắn thay vì nhồi vào một thẻ —
+**bước 1**: *"Giọng nam hay nữ?"* (2 lựa chọn, thêm ô "để tôi chọn theo nội dung");
+**bước 2**: 3 giọng đúng giới tính đó — nữ: Phương Uyên · Thanh Ngọc · giọng nữ miễn phí; nam: Adam · MC Xuân Tú · giọng nam miễn phí.
+Công cụ nào hiện được cả 6 thì cứ hiện thẳng 6, không cần chia bước.
+
+**Giọng miễn phí gọi thế nào** (edge-tts, không cần key, không tốn tiền):
+```
+edge-tts --voice vi-VN-NamMinhNeural --rate=+41% --file <loi.txt> --write-media <out.mp3>
+```
+`--rate=+41%` là tốc độ Sếp đã chốt cho giọng máy (xem `style-voice-karaoke.md`). Giọng nữ đổi thành `vi-VN-HoaiMyNeural`.
+⚠️ edge-tts **không trả timestamp từng từ** như ElevenLabs → cần sub karaoke thì phải cho Whisper nghe lại file mp3 vừa tạo để lấy mốc.
 
 **Ba điều đã đo thật 22/07/2026, đừng làm sai:**
 
 1. **Model đọc bắt buộc là `eleven_turbo_v2_5`** (đã đặt sẵn trong `elevenlabs_tts.py`). **Tuyệt đối không lui về `eleven_multilingual_v2`** — đo thật: cùng một giọng, model cũ đọc *"phục vụ tới nhà hàng của bạn"* thành *"phúc vật hoàn hà hàn kòa bàn"*, model mới đọc chuẩn từng chữ.
 2. **Luật cũ "George méo vì là giọng Anh" đã được đính chính** — thủ phạm là model chứ không phải giọng. Với `turbo_v2_5`, Adam (giọng gốc Anh) đọc tiếng Việt **chuẩn 100%** qua phép nghe lại bằng Whisper.
-3. **Cả 4 giọng đều HẾT bị chặn** — ghi chú cũ "gói Free chặn 402, chờ nâng Starter $6" không còn đúng, đã đo lại. Không cần lui về edge-tts nữa; nếu vẫn gặp lỗi 402 thì **DỪNG BÁO người dùng**, không tự đổi giọng khác.
+3. **Cả 4 giọng ElevenLabs đều HẾT bị chặn** — ghi chú cũ "gói Free chặn 402, chờ nâng Starter $6" không còn đúng, đã đo lại. Giờ 2 giọng miễn phí là **lựa chọn có chủ đích** (tiết kiệm / bản nháp), không còn là phương án chữa cháy. Nếu vẫn gặp lỗi 402 thì **DỪNG BÁO người dùng**, không tự đổi giọng khác.
 
-⚠️ **Whisper chỉ đo RÕ CHỮ, không đo giọng nghe có tự nhiên không.** Giọng gốc Anh đọc tiếng Việt vẫn có thể nghe ra chất Tây dù từng chữ đều rõ. Chọn giọng cho video thật vẫn phải qua **tai người**.
+**Đo thật 22/07/2026 — cả 6 giọng đọc CHUẨN 100% từng chữ** (cho Whisper nghe lại câu *"Một robot BellaBot phục vụ bằng ba nhân viên chạy bàn, làm việc mười hai tiếng không nghỉ. Nhà hàng của bạn đã sẵn sàng chưa?"*, cả 6 đều trả về đúng nguyên câu). Nghĩa là **không giọng nào bị loại vì đọc sai** — khác biệt còn lại hoàn toàn nằm ở **chất giọng**.
+
+⚠️ **Whisper chỉ đo RÕ CHỮ, không đo giọng nghe có tự nhiên không.** Giọng gốc Anh đọc tiếng Việt vẫn có thể nghe ra chất Tây dù từng chữ đều rõ; giọng miễn phí có thể nghe "máy" hơn dù đọc đúng. Chọn giọng cho video thật vẫn phải qua **tai người** — mẫu 6 giọng đã xuất sẵn tại `Desktop\NGHE-CHON-GIONG`.
 
 ### Luật nhạc theo mức phủ giọng — áp cho Kiểu 2 và Kiểu 3 (Sếp Huy chốt 21/07/2026)
 
