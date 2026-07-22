@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 0** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 1** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 0 (22/07/2026)`
+>    `📦 Đang ở Ver 1 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **1** | 22/07/2026 | `2026.07.22.3` | Luật: cài thêm thư viện/model mới thì **phải khai báo vào `chuan_bi_may.py`** cùng commit, không có gì tự lan sang máy khác |
 | **0** | 22/07/2026 | `2026.07.22.2` | Mốc khởi đầu cách đánh số mới. Gồm toàn bộ luật tích lũy tới 21/07 (quy trình chọn cảnh 4 cổng lọc, cắt thoại bằng độ ấm, nhạc theo mức phủ giọng, tránh trùng cảnh 2 tầng) + dấu vân tay key Gemini mới |
 
 Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x1920, 30-60s) theo đúng style video mẫu của Roboworld. Mỗi lần chạy: phân tích source → **đề xuất kịch bản → Sếp duyệt** → dựng N video thành phẩm + caption.
@@ -143,7 +144,19 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    *Đã dính thật 21/07/2026*: 2 commit luật mới (nhạc Kiểu 2/3) push lên GitHub lúc 10:09 và 10:17 nhưng quên tăng version → nằm kẹt trên GitHub, không máy nào nhận. Phát hiện ra khi Sếp hỏi "tool cập nhật tới đâu rồi".
 
    *Chốt chặn đã cài*: hook `.git/hooks/pre-push` trên máy legion **chặn push** nếu có sửa trong `skills/` mà không đổi version (đã test đúng ca này). ⚠️ Hook **không tự lan sang máy khác** — máy quản trị nào clone mới phải copy hook theo, hoặc tự nhớ luật này.
-6. **Không đưa vào repo**: bí mật (API key), đường dẫn riêng của 1 máy, sở thích cá nhân 1 người — những thứ đó chỉ ghi máy cục bộ.
+6. 🔴 **CÀI THÊM THƯ VIỆN / MODEL MỚI → PHẢI KHAI BÁO VÀO `chuan_bi_may.py`, cùng commit** (luật Sếp Huy hỏi ra 22/07/2026: *"tôi quyết định cài thì bản đẩy lên cho máy khác có mặc định kèm theo không"* — câu trả lời là **KHÔNG, không có gì tự động cả**).
+
+   Cài bằng `pip install` chỉ có tác dụng **trên đúng máy đang ngồi**. Muốn cả team có thì thêm dòng vào:
+   - **`THU_VIEN`** — thư viện Python. Mỗi dòng 3 phần: tên module để `import` thử · tên gói pip · **"thiếu cái này thì MẤT GÌ"** (viết bằng lời đời thường, vd *"mất mắt AI Gemini"*).
+   - **`MODEL_FILES`** — file model tải về. Gồm: tên file · dung lượng tối thiểu để biết tải đủ chưa · **link tải trực tiếp** · mô tả · cờ bắt buộc.
+
+   *Vì sao nghiêm trọng*: quên khai báo thì trên máy quản trị mọi thứ chạy ngon lành, **push trót lọt, không có gì báo lỗi** — nhưng máy đồng nghiệp chạy đúng lệnh đó sẽ vỡ với thông báo kiểu `No module named ...`, mà họ không biết vì sao vì bản trên GitHub trông đã đầy đủ. Cùng họ với ca "luật nằm chết trên GitHub vì quên tăng version" (21/07).
+
+   *Kiểm nhanh trước khi push*: chạy `python chuan_bi_may.py --kiem` — bảng phải báo **OK đủ N/N**, và N phải bằng đúng số dòng trong `THU_VIEN`.
+
+   *Kèm điều kiện bắt buộc (bài học MediaPipe 21/07)*: thư viện mới **không được phá dependency của con đang chạy**. Cài xong phải kiểm lại `cv2` và `google.genai` còn import được không — MediaPipe đòi `numpy 2.x` + protobuf cũ trong khi máy ghim `numpy<2`, cài vào là hỏng cả 2 con đang chạy tốt. Hỏng thì **gỡ ra**, đừng cố ép.
+
+7. **Không đưa vào repo**: bí mật (API key), đường dẫn riêng của 1 máy, sở thích cá nhân 1 người — những thứ đó chỉ ghi máy cục bộ.
 
 0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
