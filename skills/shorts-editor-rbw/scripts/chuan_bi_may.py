@@ -64,6 +64,14 @@ KEYS = [
 # Vi sao can: key SAI van chay duoc binh thuong (vd key Gemini tai khoan CA NHAN
 # dung tot suot nhieu ngay) — chi den luc nhan hoa don moi biet tien vao dau.
 # Doi key chuan: chay script nay voi --hash roi thay so duoi day + tang version plugin.
+#
+# MOI MAY MOT KEY RIENG THI GHI THANH DANH SACH (them 22/07/2026):
+#   "GEMINI_API_KEY": ["hash_may_1", "hash_may_2", "hash_may_3"],
+# Vi sao co the can: goi Gemini FREE cho ~20 luot MOI NGAY TREN MOI KEY. Ba may
+# dung CHUNG mot key thi chia nhau 20 luot (moi may ~6 clip/ngay); moi may mot key
+# rieng thi moi may du 20 luot. Nhung khi do bang trang thai se bao "SAI KEY" tren
+# moi may — tru khi liet ke du hash o day. Mot chuoi = ca team dung chung 1 key
+# (mac dinh hien tai); danh sach = moi may mot key da duoc quan tri duyet.
 KEY_CHUAN = {
     "ELEVENLABS_API_KEY": "9fefcd959a2165fa",
     "GEMINI_API_KEY":     "b73017d9c09f7eff",
@@ -134,7 +142,13 @@ def doc_keys():
                 if not v:
                     continue
                 chuan = KEY_CHUAN.get(k)
-                kq[k] = "dung" if (chuan and hash_key(v) == chuan) else ("sai" if chuan else "dung")
+                if not chuan:
+                    kq[k] = "dung"
+                    continue
+                # chuan co the la 1 hash (chuoi) HOAC nhieu hash (danh sach) —
+                # xem ghi chu "MOI MAY MOT KEY RIENG" o khoi KEY_CHUAN ben tren
+                hop_le = [chuan] if isinstance(chuan, str) else list(chuan)
+                kq[k] = "dung" if hash_key(v) in hop_le else "sai"
     return kq
 
 
@@ -163,11 +177,20 @@ def nhap_key_bang_hop_thoai():
     """Mo hop thoai nho de nguoi dung DAN key vao — gia tri di thang tu clipboard
     vao file tren o cung, KHONG di qua chat, KHONG len may chu nao.
 
-    Day la cach DUY NHAT vua tu dong vua thuc su local:
-      - dan vao chat  -> key di qua may chu Anthropic + nam lai trong lich su hoi thoai
-      - de file .docx -> Claude van phai DOC file do moi lay duoc key => y het tren,
-                         lai them viec key phoi tren Desktop (thuong dong bo OneDrive)
-      - hop thoai nay -> Claude chi CHAY lenh, khong bao gio thay gia tri
+    !! DOC KY KEO HIEU NGUOC (da co may doc nham that 22/07/2026, roi bao voi Sep
+       rang "trong code van con dong giuc dan key vao chat"): ba gach dau dong
+       duoi day la BA CACH DA CAN NHAC, trong do HAI CACH DAU BI LOAI BO.
+       KHONG cach nao trong so do la huong dan cho nguoi dung.
+
+      [LOAI BO] dan key vao khung chat
+                -> key di qua may chu Anthropic + nam lai vinh vien trong lich su
+                   hoi thoai. TUYET DOI KHONG BAO GIO lam cach nay.
+      [LOAI BO] de key trong file .docx roi nho Claude doc
+                -> Claude van phai DOC file do moi lay duoc key => y het cach tren,
+                   lai them viec key phoi tren Desktop (thuong dong bo OneDrive).
+      [DANG DUNG] hop thoai nay
+                -> nguoi dung tu dan vao o nhap, gia tri di thang xuong file tren o
+                   cung. Claude chi CHAY lenh mo hop thoai, KHONG BAO GIO thay key.
     """
     try:
         import tkinter as tk

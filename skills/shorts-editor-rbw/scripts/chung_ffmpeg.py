@@ -1,7 +1,9 @@
 """Nap duong dan FFmpeg cho moi script trong skill — goi 1 dong la xong.
 
 VI SAO CAN (do ra 22/07/2026 trong dot ra soat cua Sep Huy):
-    10/14 script goi thang "ffmpeg"/"ffprobe" ma khong kiem tra co hay khong.
+    Dem that: 11/15 script co goi "ffmpeg"/"ffprobe". Trong do 9 script goi thang
+    ma KHONG kiem tra co hay khong (2 script con lai — chuan_bi_may.py va
+    cai_driver_nvidia.py — da co cach tim ffmpeg rieng nen khong can chot nay).
     May da chay "chuan bi may" thi khong sao. Nhung may MOI, hoac may co ffmpeg
     nam ngoai PATH (winget cai vao thu muc rieng), se vo voi:
         FileNotFoundError: [WinError 2] The system cannot find the file specified
