@@ -19,6 +19,18 @@
 
 **Đừng rút gọn thành "tin công cụ X".** Sức mạnh nằm ở chỗ đối chiếu + mở ra kiểm khi mâu thuẫn.
 
+### 0b. VAI TRÒ THẬT của mắt AI (Gemini) — Sếp làm rõ 21/07
+
+> Nguyên văn: *"vai trò thực sự của mắt AI đang là chọn ra được các khoảnh khắc đẹp chứ không phải xác định người có đang nói không. Tôi thấy cái đấy đang làm khá ổn rồi. Dù vậy càng nhiều con để đối chiếu thì càng tốt."*
+
+**Giá trị chính của Gemini = chấm KHOẢNH KHẮC ĐẸP** (`khoanh_khac` + điểm 1-10). Đây là thứ nó giỏi và đang làm tốt — **giữ nguyên, đừng đụng**.
+
+**`co_nguoi_dang_noi` KHÔNG phải vai trò chính của Gemini** — nó chỉ là **một trong nhiều tín hiệu đối chiếu** cho câu "có người đang nói không". Cờ này sai cả 2 chiều (0043, 0045), nên **không được coi nó là câu trả lời**; nó chỉ là một phiếu, và **ảnh lưới (mắt người) mới là trọng tài**.
+
+**Nguyên tắc bao trùm — MỌI con chỉ là công cụ ĐỐI CHIẾU, không con nào là trọng tài.** Càng nhiều con đối chiếu càng chắc, nhưng quyết định cuối luôn là **mắt/tai người** khi các con mâu thuẫn.
+
+**Thêm con mới thì được, NHƯNG không được phá con đang chạy** (đo thật 21/07): thử cài **MediaPipe** (đo môi động để biết ai đang nói) — đúng việc về lý thuyết, nhưng nó đòi `numpy 2.x` + protobuf cũ, xung đột với `numpy<2` (cv2 cần) và protobuf mới (google-genai cần). Cài vào là phá cả cv2 lẫn Gemini. **Đã gỡ.** Bài học: con đối chiếu mới phải **không đụng dependency** của con đang chạy — ưu tiên thứ dùng lib đã có (vd `cv2` có sẵn face detection, không cần cài gì) hơn là kéo cả bộ mới về.
+
 ## 1. Nguyên tắc gốc
 
 Mỗi đoạn video có **đúng một câu hỏi chính**. Công cụ nào trả lời được câu đó thì công cụ đó **DẪN**. Các công cụ còn lại **không biến mất** — chúng chuyển sang vai **ĐỐI CHIẾU**, và vẫn có quyền phủ quyết ở những chỗ chúng giỏi hơn.
@@ -33,9 +45,9 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 
 | Loại đoạn | Câu hỏi chính | Công cụ **DẪN** | Công cụ **ĐỐI CHIẾU** |
 |---|---|---|---|
-| **Giữ nguyên lời người nói** (Kiểu 2, và Kiểu 3 khi dùng voice gốc) | Cắt ở đâu để không mất chữ? | `loc_thoai_that` — đo mức + độ ấm trên âm thanh gốc | Whisper nghe lại lát cắt (bắt buộc) · Gemini chấm đoạn nào đáng lên hình |
-| **Không thoại** (Kiểu 1, B-roll) | Khung nào đẹp nhất, robot đang làm gì? | **Ảnh lưới** (`analysis/sheets/`) + `gemini.khoanh_khac` | `do_ky_thuat` (độ nét/chuyển động) · `co_nguoi_dang_noi` (phủ quyết) |
-| **B-roll đè lên voice khác** (Kiểu 3 có voice-over mới) | Cảnh nào minh hoạ đúng lời đang đọc? | Ảnh lưới + mô tả Gemini | `co_nguoi_dang_noi` = **quyền phủ quyết tuyệt đối** |
+| **Giữ nguyên lời người nói** (Kiểu 2, và Kiểu 3 khi dùng voice gốc) | Cắt ở đâu để không mất chữ? | `loc_thoai_that` — đo mức + độ ấm trên âm thanh gốc | Whisper nghe lại lát cắt (bắt buộc) · **Gemini chấm đoạn nào ĐẸP** (vai trò chính của Gemini) |
+| **Không thoại** (Kiểu 1, B-roll) | Khung nào đẹp nhất, robot đang làm gì? | **Gemini `khoanh_khac` (chấm khoảnh khắc đẹp — vai trò chính)** + ảnh lưới | `do_ky_thuat` (nét/rung) · `co_nguoi_dang_noi` (chỉ 1 phiếu, ảnh lưới kiểm cuối) |
+| **B-roll đè lên voice khác** (Kiểu 3 có voice-over mới) | Cảnh nào minh hoạ đúng lời đang đọc? | Gemini `khoanh_khac` + ảnh lưới | `co_nguoi_dang_noi` (1 phiếu) → **ảnh lưới quyết** loại cảnh có người nói |
 
 **Đọc bảng này cho đúng**: "DẪN" nghĩa là *lấy con số/lựa chọn từ đó*. "ĐỐI CHIẾU" nghĩa là *nếu nó mâu thuẫn thì phải dừng lại xem xét, không được lờ đi*.
 
