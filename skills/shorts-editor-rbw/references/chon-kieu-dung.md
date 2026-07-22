@@ -54,9 +54,28 @@ Hỏi **theo nhánh**, không dồn hết mọi câu cho mọi người. Chọn 
 2. **Số lượng video**
 3. **Câu mở** — nhánh này nhấn mạnh hỏi **buổi quay diễn ra ở đâu, có gì**, vì lời MC đã có sẵn trong clip nên thứ cần nhất là bối cảnh để chọn đúng đoạn.
 
+### 🔴 CÂU MỞ PHẢI LÀ MỘT LƯỢT RIÊNG — DỪNG LẠI CHỜ HỌ GÕ
+
+**Sếp Huy bắt lỗi 22/07/2026**: *"sao mô tả không có thời gian để họ nhập vậy"* — vì skill hiện câu mở xong là **gọi thẻ bấm tiếp theo ngay trong cùng một lượt**, người dùng chưa kịp gõ chữ nào đã sang câu khác. Câu mở thành ra chỉ để trang trí.
+
+**Nguyên nhân kỹ thuật**: thẻ bấm và ô gõ tự do **không hiện cùng lúc được**. Đang hiện thẻ thì người dùng chỉ bấm được, không gõ được.
+
+**Luật cứng:**
+1. Hiện câu mở xong → **KẾT THÚC LƯỢT NGAY**. Không gọi thêm thẻ nào nữa.
+2. **Chờ người dùng gõ xong** rồi mới hỏi thẻ cuối.
+3. Họ trả lời trống / bảo "bỏ qua" → vẫn đi tiếp, nhưng nói rõ: *"không có mô tả thêm nên tôi bám theo những gì đọc được trong clip"*.
+
+**Thứ tự đúng của cả luồng:**
+```
+[lượt 1]  thẻ chọn hướng dựng
+[lượt 2]  các thẻ của nhánh (số lượng · nhạc · giọng...)
+[lượt 3]  CÂU MỞ  →  DỪNG, chờ gõ          ← chỗ hay làm sai
+[lượt 4]  thẻ cuối: làm luôn hay trao đổi tiếp
+```
+
 ### BƯỚC CUỐI — áp cho CẢ BA nhánh
 
-Sau khi trả lời hết các câu của nhánh, **luôn hỏi thêm 1 thẻ**:
+Sau khi người dùng **đã gõ xong câu mở**, hỏi thêm 1 thẻ:
 
 > **"Bạn muốn tôi làm luôn, hay sau khi tôi đọc xong source thì hai bên tiếp tục trao đổi?"**
 
