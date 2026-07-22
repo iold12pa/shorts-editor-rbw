@@ -8,7 +8,7 @@ Bo sung dung phan Whisper con thieu (Whisper chi NGHE, Gemini NHIN).
 Chi phi: ~150-200d/phut video (Gemini 2.5 Flash). Key doc tu ~/.claude/abs6-secrets.env.
 
 Usage:
-    python gemini_vision.py --video CLIP.mp4 [--model gemini-2.5-flash] [--json OUT.json]
+    python gemini_vision.py --video CLIP.mp4 [--model gemini-3.6-flash] [--json OUT.json]
                             [--update-index INDEX.json --key "relpath|size"]
 """
 import argparse
@@ -58,7 +58,7 @@ def load_key(name):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video", required=True)
-    ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--model", default="gemini-3.6-flash")
     ap.add_argument("--json")
     ap.add_argument("--update-index")
     ap.add_argument("--key")

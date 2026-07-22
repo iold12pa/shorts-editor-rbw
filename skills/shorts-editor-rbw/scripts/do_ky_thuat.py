@@ -42,6 +42,16 @@ import subprocess
 import sys
 import tempfile
 
+# Bao dam goi ffmpeg/ffprobe chay duoc tren MOI may (them 22/07/2026).
+# Thieu ffmpeg thi bao bang tieng nguoi, khong de vo voi 'WinError 2'.
+try:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from chung_ffmpeg import nap_ffmpeg
+    nap_ffmpeg()
+except ImportError:
+    pass
+
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 

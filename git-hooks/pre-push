@@ -76,6 +76,10 @@ do
           concurrent|threading|queue|contextlib|dataclasses|enum|logging|string|\
           statistics|zipfile|tkinter|ctypes|platform|signal|__future__|fx) continue ;;
         esac
+        # bo qua module NOI BO cua chinh skill (file .py nam cung thu muc scripts/,
+        # hoac thu muc con nhu fx/) — chung di theo repo nen may nao cung co san
+        [ -f "$(dirname "$f")/$m.py" ] && continue
+        [ -d "$(dirname "$f")/$m" ] && continue
         # khop ca dang khai bao co cham: m="google" phai khop "google.genai"
         grep -qE "\"$m(\"|\.)" "$cbm" 2>/dev/null || thieu="$thieu $f:$m"
       done

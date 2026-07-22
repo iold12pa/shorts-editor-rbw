@@ -8,7 +8,7 @@
 
 Usage:
     python quet_mat_ai_folder.py --src "D:/.../30.Nha sach Trang An" \
-        --index "D:/.../Workspace/analysis/index.json" [--model gemini-2.5-flash] [--limit N]
+        --index "D:/.../Workspace/analysis/index.json" [--model gemini-3.6-flash] [--limit N]
 """
 import argparse
 import json
@@ -19,56 +19,86 @@ import sys
 import tempfile
 import time
 
+# Bao dam goi ffmpeg/ffprobe chay duoc tren MOI may (them 22/07/2026).
+# Thieu ffmpeg thi bao bang tieng nguoi, khong de vo voi 'WinError 2'.
+try:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from chung_ffmpeg import nap_ffmpeg
+    nap_ffmpeg()
+except ImportError:
+    pass
+
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ENV = os.path.expanduser("~/.claude/abs6-secrets.env")
 RATE = 26000
-PRICE = {"gemini-2.5-flash": (0.30, 2.50)}
+# MODEL MAT AI — doi 22/07/2026 sau khi DO THAT bang chinh key cua Sep.
+#
+# BAI HOC DAT: tai lieu noi 'gemini-2.5-flash bi khai tu 16/10/2026' nen ai cung
+# tuong con 3 thang. Goi thu thi no da TAT SAN ROI: 404 'no longer available'.
+# Tuc la mat AI dang HONG ma khong ai biet, cho den luc quet clip moi vo.
+# => Tu nay khong tin lich khai tu trong tai lieu; DO THAT bang mot lenh goi nhe.
+#
+# Do that 22/07/2026 (key Sep, cung mot luc):
+#   gemini-2.5-flash    -> 404 DA TAT
+#   gemini-2.0-flash    -> 429 (con song, chi het luot free)  <- KHONG phai da tat
+#   gemini-3.6-flash    -> OK
+#   gemini-flash-latest -> OK  (bi danh, luon tro ban flash moi nhat)
+MODEL_MAC_DINH = "gemini-3.6-flash"
+MODEL_DU_PHONG = "gemini-flash-latest"  # bi danh — khong bao gio bi 404 vi khai tu
 
-# HAN SU DUNG MODEL — Google tat model theo lich, tat roi thi moi lenh quet deu
-# vo giua chung voi loi API kho hieu (404 NOT_FOUND), khong ai doan ra vi sao.
-# Kiem tra o day de bao truoc bang tieng nguoi. Cap nhat lich tai:
-#   https://ai.google.dev/gemini-api/docs/changelog
-HAN_MODEL = {
-    "gemini-2.5-flash": "2026-10-16",
+# Gia (USD/1 trieu token vao, ra). Bac 'flash' xap xi nhau; con so duoi la muc do
+# duoc cua bac flash, dung de UOC chi phi chu khong phai hoa don chinh xac.
+PRICE = {
+    "gemini-3.6-flash": (0.30, 2.50),
+    "gemini-flash-latest": (0.30, 2.50),
+    "gemini-2.0-flash": (0.10, 0.40),
 }
-# Da bi Google TAT (dung dua lai vao PRICE): gemini-2.0-flash (tat 01/06/2026),
-# gemini-1.5-* (tat 2025). Ai truyen --model tro vao day se nhan canh bao ro rang.
-MODEL_DA_TAT = {
-    "gemini-2.0-flash": "01/06/2026",
-    "gemini-2.0-flash-001": "01/06/2026",
-    "gemini-1.5-flash": "2025",
-    "gemini-1.5-pro": "2025",
-}
 
 
-def kiem_han_model(ten_model):
-    """Bao truoc khi model sap/da bi Google tat — goi ngay dau moi lan chay."""
-    import datetime
-    if ten_model in MODEL_DA_TAT:
-        sys.exit(
-            "\n!!! MODEL '%s' DA BI GOOGLE TAT tu %s — khong goi duoc nua.\n"
-            "    Doi sang model con song, vd: --model gemini-2.5-flash\n"
-            % (ten_model, MODEL_DA_TAT[ten_model]))
-    han = HAN_MODEL.get(ten_model)
-    if not han:
-        return
+def doi_model_khi_404(client, ten_model, loi):
+    """Model bi tat giua chung -> tu chuyen sang bi danh 'latest' thay vi dung han.
+
+    Vi sao tu chuyen: Google tat model theo lich rieng cua ho, khong bao truoc cho
+    tung nguoi dung. Neu cu dung han thi Sep dang dung video giua chung bi ket,
+    khong lam gi duoc cho toi khi co nguoi sua code. Bi danh '-latest' luon tro
+    ban con song nen chay tiep duoc ngay."""
+    t = str(loi)
+    if "404" not in t and "NOT_FOUND" not in t and "no longer available" not in t:
+        return None
+    if ten_model == MODEL_DU_PHONG:
+        return None
+    print("\n[TU CHUYEN MODEL] '%s' da bi Google tat (404).\n"
+          "                  Chuyen sang '%s' de chay tiep.\n"
+          "                  Nen cap nhat MODEL_MAC_DINH trong quet_mat_ai.py.\n"
+          % (ten_model, MODEL_DU_PHONG), flush=True)
+    return MODEL_DU_PHONG
+
+
+def kiem_model_song(client, ten_model):
+    """Goi 1 lenh sieu ngan de biet model con song KHONG — truoc khi nen clip nao.
+
+    Ton vai chuc token, gan nhu 0 dong, doi lai viec khong nen/upload ca folder
+    roi moi phat hien model da chet."""
     try:
-        ngay_het = datetime.date(*[int(x) for x in han.split("-")])
-    except Exception:
-        return
-    con = (ngay_het - datetime.date.today()).days
-    if con < 0:
-        sys.exit(
-            "\n!!! MODEL '%s' DA QUA HAN NGAY %s — Google co the da tat.\n"
-            "    Neu lenh quet bao loi 404/NOT_FOUND thi dung la vi ly do nay.\n"
-            "    Xem model con song: https://ai.google.dev/gemini-api/docs/models\n"
-            % (ten_model, han))
-    if con <= 90:
-        print("\n[CANH BAO] Model '%s' se bi Google TAT ngay %s — con %d ngay.\n"
-              "           Den ngay do moi lenh quet deu vo. Can doi model truoc do.\n"
-              % (ten_model, han, con), flush=True)
+        client.models.generate_content(model=ten_model, contents="1")
+        return ten_model
+    except Exception as e:
+        moi = doi_model_khi_404(client, ten_model, e)
+        if moi:
+            try:
+                client.models.generate_content(model=moi, contents="1")
+                return moi
+            except Exception as e2:
+                sys.exit("\n!!! CA HAI MODEL DEU KHONG GOI DUOC.\n    %s\n" % str(e2)[:200])
+        t = str(e)
+        if "RESOURCE_EXHAUSTED" in t or "429" in t:
+            print("\n[CANH BAO] Dang cham tran luot mien phi (429). Van chay tiep,\n"
+                  "           script tu nghi lui dan khi gap 429.\n", flush=True)
+            return ten_model
+        sys.exit("\n!!! MODEL '%s' KHONG GOI DUOC: %s\n" % (ten_model, t[:250]))
 
 PROMPT = """Bạn là biên tập viên video marketing cho công ty robot Roboworld (robot PUDU:
 BellaBot phục vụ, robot giao hàng, lễ tân, vệ sinh, T300...). Xem kỹ clip (cả hình lẫn tiếng)
@@ -171,7 +201,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", required=True)
     ap.add_argument("--index", required=True)
-    ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--model", default=MODEL_MAC_DINH)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--quet-ca-clip-mo", action="store_true",
                     help="quet ca clip da bi do_ky_thuat cham 'mo' (mac dinh: bo qua cho do ton tien)")
@@ -184,13 +214,13 @@ def main():
                     help="MEDIA_RESOLUTION_LOW (~100 token/khung) | _MEDIUM (~300)")
     a = ap.parse_args()
 
-    kiem_han_model(a.model)
-
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=load_key())
     kiem_key_song(client)
-    pin, pout = PRICE.get(a.model, PRICE["gemini-2.5-flash"])
+    # model co the da bi Google tat -> tu doi sang bi danh '-latest' de chay tiep
+    a.model = kiem_model_song(client, a.model)
+    pin, pout = PRICE.get(a.model, PRICE[MODEL_MAC_DINH])
 
     idx = json.load(open(a.index, encoding="utf-8"))
     clips = idx.get("clips", {})
