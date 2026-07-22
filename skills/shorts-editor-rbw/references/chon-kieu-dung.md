@@ -64,6 +64,9 @@ Hỏi **theo nhánh**, không dồn hết mọi câu cho mọi người. Chọn 
 1. Hiện câu mở xong → **KẾT THÚC LƯỢT NGAY**. Không gọi thêm thẻ nào nữa.
 2. **Chờ người dùng gõ xong** rồi mới hỏi thẻ cuối.
 3. Họ trả lời trống / bảo "bỏ qua" → vẫn đi tiếp, nhưng nói rõ: *"không có mô tả thêm nên tôi bám theo những gì đọc được trong clip"*.
+4. 🔴 **Mô tả gõ ra KHÔNG ĐỌC ĐƯỢC NGHĨA** (chuỗi ký tự bừa như `fefwefkw`, dán nhầm, trượt phím) → **HỎI LẠI, TUYỆT ĐỐI KHÔNG TỰ DIỄN GIẢI.** Đưa 2 lựa chọn: *bỏ qua, bám theo clip* / *để tôi gõ lại*.
+
+   *Vì sao nghiêm trọng*: câu mở là thứ định hướng cả video. Bịa ra thông điệp từ một chuỗi vô nghĩa thì **sai từ gốc** — mọi cảnh, mọi chữ, mọi lời đọc đều đi lệch, và người duyệt phải xem xong mới phát hiện. Thà hỏi lại 5 giây. *(Ca thật 22/07/2026: Sếp gõ `fefwefkw` khi chạy thử luồng.)*
 
 **Thứ tự đúng của cả luồng:**
 ```

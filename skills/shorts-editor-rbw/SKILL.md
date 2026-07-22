@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 15** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 16** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 15 (22/07/2026)`
+>    `📦 Đang ở Ver 16 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **16** | 22/07/2026 | `2026.07.22.18` | Mô tả gõ ra **không đọc được nghĩa** (gõ bừa, dán nhầm, trượt phím) → **hỏi lại, cấm tự diễn giải**. Bịa thông điệp từ chuỗi vô nghĩa là sai từ gốc, cả video đi lệch |
 | **15** | 22/07/2026 | `2026.07.22.17` | 🔴 **Câu mở phải là một lượt riêng** — hiện xong là DỪNG chờ người dùng gõ. Trước đây gọi thẻ bấm ngay sau câu mở nên họ không kịp nhập chữ nào, câu mở thành trang trí |
 | **14** | 22/07/2026 | `2026.07.22.16` | 🔀 **LUỒNG HỎI PHÂN NHÁNH** (Sếp thiết kế lại): hỏi kiểu dựng trước → mỗi kiểu đi một nhánh câu hỏi riêng (Text+nhạc · Voice-over có thêm bước chọn nguồn giọng + mức phủ · MC dẫn) → câu mở → thẻ cuối *làm luôn hay trao đổi tiếp*. Không dồn hết câu cho mọi người |
 | **13** | 22/07/2026 | `2026.07.22.15` | **Chia câu hỏi làm 2 nhóm theo thời điểm**: nhóm hỏi NGAY khi tiếp nhận (mức tự chủ · kênh đăng · mô tả buổi quay — không cần hiểu nội dung) và nhóm chỉ hỏi SAU khi phân tích xong (kiểu dựng · số video · nhạc · giọng — phải kèm số liệu thật vào từng lựa chọn). Sửa câu chữ hứa hão "sau khi tôi đọc hiểu video" |
