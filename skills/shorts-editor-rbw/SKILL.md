@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 1** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 2** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 1 (22/07/2026)`
+>    `📦 Đang ở Ver 2 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **2** | 22/07/2026 | `2026.07.22.4` | Đợt dò lỗi theo yêu cầu Sếp. **Chốt chặn số 4** (hook tự bắt thư viện chưa khai báo) · **hook đưa vào repo** `git-hooks/` để máy quản trị mới còn có · **cảnh báo hạn model AI** (2.5-flash tắt 16/10/2026, còn 86 ngày) · **chặn model đã tắt** (2.0-flash) · **kiểm key trước khi nén clip** thay vì vỡ giữa chừng |
 | **1** | 22/07/2026 | `2026.07.22.3` | Luật: cài thêm thư viện/model mới thì **phải khai báo vào `chuan_bi_may.py`** cùng commit, không có gì tự lan sang máy khác |
 | **0** | 22/07/2026 | `2026.07.22.2` | Mốc khởi đầu cách đánh số mới. Gồm toàn bộ luật tích lũy tới 21/07 (quy trình chọn cảnh 4 cổng lọc, cắt thoại bằng độ ấm, nhạc theo mức phủ giọng, tránh trùng cảnh 2 tầng) + dấu vân tay key Gemini mới |
 

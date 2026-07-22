@@ -1,0 +1,101 @@
+#!/bin/sh
+# GAC CONG truoc moi lan push (cai 2026-07-17, Sep duyet):
+# chan 2 tai nan tung/se lam MOI MAY dong nghiep phai go-cai-lai plugin.
+# 1) commit file >=5MB -> repo beo phi -> co ngay lai phai viet lai lich su (vu 170MB)
+# 2) force push / viet lai lich su -> auto-update cac may gay im lang
+
+zero=0000000000000000000000000000000000000000
+limit=5242880  # 5MB
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  [ "$local_sha" = "$zero" ] && continue
+
+  if [ "$remote_sha" != "$zero" ]; then
+    if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+      echo "!!! BI CHAN: lan day nay VIET LAI LICH SU (force push)."
+      echo "    Luat 2026-07-17: khong force push nua — se lam moi may phai cai lai plugin."
+      echo "    Neu THAT SU bat buoc (cuc hiem): hen truoc moi may qua Zalo,"
+      echo "    tam xoa .git/hooks/pre-push, day xong cai lai hook."
+      exit 1
+    fi
+    range="$remote_sha..$local_sha"
+  else
+    range="$local_sha"
+  fi
+
+  big=$(git rev-list --objects "$range" 2>/dev/null | \
+        git cat-file --batch-check='%(objecttype) %(objectsize) %(rest)' 2>/dev/null | \
+        awk -v lim=$limit '$1=="blob" && $2>=lim {print $2" bytes  "$3}')
+  # 3) SUA SKILL MA QUEN TANG SO BAN -> auto-update KHONG day luat toi may nao
+  #    (cai 2026-07-21 sau khi dinh that: 2 commit luat moi ngay 21/07 bi ket vi
+  #     plugin.json van ghi 2026.07.20, moi may deu bao "da la ban moi nhat")
+  skill_thay_doi=$(git diff --name-only "$range" -- skills/ 2>/dev/null)
+  ver_thay_doi=$(git diff "$range" -- .claude-plugin/plugin.json 2>/dev/null | grep -c '^[+-].*"version"')
+  if [ -n "$skill_thay_doi" ] && [ "$ver_thay_doi" -eq 0 ]; then
+    echo "!!! BI CHAN: co sua trong skills/ nhung KHONG tang \"version\" trong .claude-plugin/plugin.json"
+    echo ""
+    echo "    Vi sao chan: lenh 'claude plugin update' so sanh dung truong version nay."
+    echo "    Version khong doi = moi may deu bao 'da la ban moi nhat' va KHONG keo luat moi ve."
+    echo "    Luat moi nam tren GitHub nhung khong toi duoc ai ca (da dinh that ngay 21/07/2026)."
+    echo ""
+    echo "    Cach sua: doi version trong .claude-plugin/plugin.json thanh ngay hom nay"
+    echo "    (dinh dang YYYY.MM.DD, vd 2026.07.21), commit them roi push lai."
+    echo ""
+    echo "    File vua sua trong skills/:"
+    echo "$skill_thay_doi" | sed 's/^/      /'
+    exit 1
+  fi
+
+  if [ -n "$big" ]; then
+    echo "!!! BI CHAN: commit sap day chua file >=5MB — file nang phai di duong"
+    echo "    Google Drive (kho tai nguyen), KHONG vao git:"
+    echo "$big"
+    exit 1
+  fi
+
+  # 4) SCRIPT DUNG THU VIEN MOI MA QUEN KHAI BAO -> may dong nghiep vo voi
+  #    "No module named ..." trong khi may quan tri chay ngon lanh, push trot lot.
+  #    (cai 2026-07-22 sau khi Sep Huy hoi "cai them 1 con thi may khac co tu co khong")
+  py_thay_doi=$(git diff --name-only "$range" -- 'skills/*/scripts/*.py' 2>/dev/null)
+  if [ -n "$py_thay_doi" ]; then
+    cbm="skills/shorts-editor-rbw/scripts/chuan_bi_may.py"
+    # gom moi module duoc import trong CAC FILE VUA SUA (bo qua chinh chuan_bi_may)
+    thieu=""
+    for f in $py_thay_doi; do
+      [ "$f" = "$cbm" ] && continue
+      [ -f "$f" ] || continue
+      mods=$(grep -ohE '^[[:space:]]*(import|from)[[:space:]]+[a-zA-Z_][a-zA-Z0-9_.]*' "$f" 2>/dev/null \
+             | awk '{print $2}' | cut -d. -f1 | sort -u)
+      for m in $mods; do
+        # bo qua thu vien chuan Python + module noi bo cua chinh skill
+        case "$m" in
+          os|sys|re|json|math|time|glob|shutil|subprocess|argparse|tempfile|hashlib|\
+          pathlib|collections|itertools|functools|datetime|random|struct|wave|typing|\
+          urllib|base64|textwrap|traceback|warnings|csv|io|copy|unicodedata|difflib|\
+          concurrent|threading|queue|contextlib|dataclasses|enum|logging|string|\
+          statistics|zipfile|tkinter|ctypes|platform|signal|__future__|fx) continue ;;
+        esac
+        # khop ca dang khai bao co cham: m="google" phai khop "google.genai"
+        grep -qE "\"$m(\"|\.)" "$cbm" 2>/dev/null || thieu="$thieu $f:$m"
+      done
+    done
+    if [ -n "$thieu" ]; then
+      echo "!!! BI CHAN: script vua sua dung thu vien CHUA KHAI BAO trong chuan_bi_may.py"
+      echo ""
+      echo "    Vi sao chan: 'pip install' chi co tac dung tren may dang ngoi."
+      echo "    Khong khai bao = may dong nghiep chay lenh 'chuan bi may' van thieu goi do,"
+      echo "    roi vo voi 'No module named ...' ma khong biet vi sao — vi ban tren GitHub"
+      echo "    trong nhu da day du. May quan tri thi chay ngon lanh, khong co gi bao."
+      echo ""
+      echo "    Cach sua: them dong vao THU_VIEN trong $cbm"
+      echo "      (\"ten_module\", \"ten-goi-pip\", \"thieu cai nay thi MAT GI\")"
+      echo "    Neu la thu vien chuan Python, them ten no vao danh sach bo qua trong hook nay."
+      echo ""
+      echo "    Chua khai bao:"
+      for x in $thieu; do echo "      $x" | sed 's/:/  ->  dung: /'; done
+      exit 1
+    fi
+  fi
+done
+exit 0

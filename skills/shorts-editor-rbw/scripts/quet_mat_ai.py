@@ -24,7 +24,51 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ENV = os.path.expanduser("~/.claude/abs6-secrets.env")
 RATE = 26000
-PRICE = {"gemini-2.5-flash": (0.30, 2.50), "gemini-2.0-flash": (0.10, 0.40)}
+PRICE = {"gemini-2.5-flash": (0.30, 2.50)}
+
+# HAN SU DUNG MODEL — Google tat model theo lich, tat roi thi moi lenh quet deu
+# vo giua chung voi loi API kho hieu (404 NOT_FOUND), khong ai doan ra vi sao.
+# Kiem tra o day de bao truoc bang tieng nguoi. Cap nhat lich tai:
+#   https://ai.google.dev/gemini-api/docs/changelog
+HAN_MODEL = {
+    "gemini-2.5-flash": "2026-10-16",
+}
+# Da bi Google TAT (dung dua lai vao PRICE): gemini-2.0-flash (tat 01/06/2026),
+# gemini-1.5-* (tat 2025). Ai truyen --model tro vao day se nhan canh bao ro rang.
+MODEL_DA_TAT = {
+    "gemini-2.0-flash": "01/06/2026",
+    "gemini-2.0-flash-001": "01/06/2026",
+    "gemini-1.5-flash": "2025",
+    "gemini-1.5-pro": "2025",
+}
+
+
+def kiem_han_model(ten_model):
+    """Bao truoc khi model sap/da bi Google tat — goi ngay dau moi lan chay."""
+    import datetime
+    if ten_model in MODEL_DA_TAT:
+        sys.exit(
+            "\n!!! MODEL '%s' DA BI GOOGLE TAT tu %s — khong goi duoc nua.\n"
+            "    Doi sang model con song, vd: --model gemini-2.5-flash\n"
+            % (ten_model, MODEL_DA_TAT[ten_model]))
+    han = HAN_MODEL.get(ten_model)
+    if not han:
+        return
+    try:
+        ngay_het = datetime.date(*[int(x) for x in han.split("-")])
+    except Exception:
+        return
+    con = (ngay_het - datetime.date.today()).days
+    if con < 0:
+        sys.exit(
+            "\n!!! MODEL '%s' DA QUA HAN NGAY %s — Google co the da tat.\n"
+            "    Neu lenh quet bao loi 404/NOT_FOUND thi dung la vi ly do nay.\n"
+            "    Xem model con song: https://ai.google.dev/gemini-api/docs/models\n"
+            % (ten_model, han))
+    if con <= 90:
+        print("\n[CANH BAO] Model '%s' se bi Google TAT ngay %s — con %d ngay.\n"
+              "           Den ngay do moi lenh quet deu vo. Can doi model truoc do.\n"
+              % (ten_model, han, con), flush=True)
 
 PROMPT = """Bạn là biên tập viên video marketing cho công ty robot Roboworld (robot PUDU:
 BellaBot phục vụ, robot giao hàng, lễ tân, vệ sinh, T300...). Xem kỹ clip (cả hình lẫn tiếng)
@@ -54,10 +98,44 @@ diem_10 la muc dang dung 1-10). Chi tra JSON."""
 
 
 def load_key():
+    if not os.path.exists(ENV):
+        sys.exit("\n!!! CHUA CO FILE KEY: %s\n"
+                 "    Nhap key bang hop thoai: python chuan_bi_may.py --nhap-key\n" % ENV)
     for ln in open(ENV, encoding="utf-8", errors="replace"):
         if ln.strip().startswith("GEMINI_API_KEY="):
-            return ln.strip().split("=", 1)[1].strip().strip('"').strip("'")
-    sys.exit("Khong thay GEMINI_API_KEY trong " + ENV)
+            v = ln.strip().split("=", 1)[1].strip().strip('"').strip("'")
+            if not v:
+                sys.exit("\n!!! DONG GEMINI_API_KEY DANG TRONG trong %s\n"
+                         "    Nhap lai: python chuan_bi_may.py --nhap-key\n" % ENV)
+            return v
+    sys.exit("\n!!! KHONG THAY GEMINI_API_KEY trong %s\n"
+             "    Nhap key bang hop thoai: python chuan_bi_may.py --nhap-key\n" % ENV)
+
+
+def kiem_key_song(client):
+    """Goi 1 lenh nhe truoc khi nen/upload clip nao.
+
+    Vi sao can (bai hoc 21-22/07/2026): key BI XOA ben Google van nam nguyen trong
+    file, nen script cu chay binh thuong — nen clip, upload — roi moi vo o giua
+    voi loi API tho kho hieu, mat cong va mat tien nen clip. Kiem truoc thi hong
+    la biet ngay, bang tieng nguoi."""
+    try:
+        next(iter(client.models.list()), None)
+    except Exception as e:
+        t = str(e)
+        if "API_KEY_INVALID" in t or "API key not valid" in t or "400" in t:
+            sys.exit("\n!!! KEY GEMINI KHONG DUNG (co the da bi xoa ben Google).\n"
+                     "    Tao key moi tai https://aistudio.google.com/apikey\n"
+                     "    roi nhap bang: python chuan_bi_may.py --nhap-key\n")
+        if "PERMISSION_DENIED" in t or "403" in t:
+            sys.exit("\n!!! KEY GEMINI BI TU CHOI QUYEN (403).\n"
+                     "    Thuong do key thuoc project chua bat Generative Language API,\n"
+                     "    hoac project da bi go billing. Kiem tai https://aistudio.google.com/apikey\n")
+        if "RESOURCE_EXHAUSTED" in t or "429" in t:
+            sys.exit("\n!!! HET LUOT MIEN PHI HOM NAY (429) — goi Free tier ~20 luot/ngay.\n"
+                     "    Doi sang mai chay tiep (script tu nho clip nao da quet roi),\n"
+                     "    hoac gan the vao project de bo tran.\n")
+        sys.exit("\n!!! KHONG GOI DUOC GEMINI: %s\n" % t[:300])
 
 
 def run(cmd, timeout=900):
@@ -106,9 +184,12 @@ def main():
                     help="MEDIA_RESOLUTION_LOW (~100 token/khung) | _MEDIUM (~300)")
     a = ap.parse_args()
 
+    kiem_han_model(a.model)
+
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=load_key())
+    kiem_key_song(client)
     pin, pout = PRICE.get(a.model, PRICE["gemini-2.5-flash"])
 
     idx = json.load(open(a.index, encoding="utf-8"))
