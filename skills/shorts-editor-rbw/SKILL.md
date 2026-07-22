@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 18** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 19** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 18 (22/07/2026)`
+>    `📦 Đang ở Ver 19 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **19** | 22/07/2026 | `2026.07.22.21` | 🔴 **Công cụ MỚI `kiem_cai_dat.py`** — chắc chắn lựa chọn của người dùng được thực hiện thật: ghi ra file ngay sau khi hỏi, đối chiếu lại trước khi giao. Tự đo **có/không logo + outro**, số lượng, LUFS, khung hình; liệt kê phần phải kiểm bằng tai/mắt |
 | **18** | 22/07/2026 | `2026.07.22.20` | **Phản biện chỉ áp cho nhánh "trao đổi tiếp"**. Chọn *làm luôn* → mong muốn người dùng chỉ là **tham khảo**, xung đột thì im lặng theo luật dựng, không hỏi không báo. Vẫn dừng-báo ở 4 tình huống không làm được |
 | **17** | 22/07/2026 | `2026.07.22.19` | 🔴 **File luật MỚI `tu-lua-chon-den-san-pham.md`**: lựa chọn của người dùng phải BIẾN thành sản phẩm, không chỉ ghi nhận. Bảng ánh xạ từng lựa chọn → đổi gì trong video · 3 tầng quyền (luật dựng TUYỆT ĐỐI > lựa chọn DẪN DẮT > tư liệu CHẶN) · **phản biện 3 tầng BẮT BUỘC** trước khi dựng |
 | **16** | 22/07/2026 | `2026.07.22.18` | Mô tả gõ ra **không đọc được nghĩa** (gõ bừa, dán nhầm, trượt phím) → **hỏi lại, cấm tự diễn giải**. Bịa thông điệp từ chuỗi vô nghĩa là sai từ gốc, cả video đi lệch |
@@ -223,6 +224,27 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    - **"Làm luôn"** → mong muốn của họ chỉ là **THAM KHẢO**. Ý họ đá với luật dựng thì **im lặng theo luật dựng** — không hỏi, không báo, không đề xuất. Họ đã giao việc cho máy thì đừng bắt quay lại quyết từng chi tiết.
 
    ⚠️ **Vẫn DỪNG-BÁO ở 4 tình huống, đây KHÔNG phải phản biện mà là không làm được**: thiếu tư liệu · yêu cầu đích danh bị chặn · nguyên liệu mâu thuẫn lựa chọn · tốn tiền ngoài mức đã biết. Giao hàng xong thì **tóm tắt đã quyết gì** (không phải xin phép, chỉ báo cáo).
+
+0c. 🔴 **GHI LỰA CHỌN RA FILE NGAY SAU KHI HỎI XONG — rồi KIỂM LẠI trước khi giao** (Sếp Huy 22/07/2026: *"đặc biệt là phần chắc chắn các cài đặt nền của người dùng sau được thực hiện"*).
+
+   Luồng hỏi dài (hướng dựng → số lượng → nhạc → giọng → mức phủ → kênh đăng), đến lúc dựng **rất dễ quên một lựa chọn** — và trước đây không có gì bắt được. Ca điển hình: người dùng chọn *kênh cá nhân* (bỏ logo + outro) nhưng lúc dựng vẫn chèn logo, tận khi họ xem video mới phát hiện.
+
+   ```powershell
+   # 1. NGAY sau khi hỏi xong:
+   python "<skill-dir>\scripts\kiem_cai_dat.py" --ghi "<workspace>\cai-dat-nguoi-dung.json" `
+       --huong voice-over --so-video 2 --kenh ca-nhan --nhac trend `
+       --giong "Thanh Ngoc" --muc-phu "dan dau" --cach-lam lam-luon --mo-ta "<nguyên văn câu mở>"
+
+   # 2. TRƯỚC KHI GIAO HÀNG:
+   python "<skill-dir>\scripts\kiem_cai_dat.py" --kiem "<workspace>\cai-dat-nguoi-dung.json" `
+       --final "<folder buổi quay>\Final" --file-outro "<đường dẫn outro dọc.mp4>"
+   ```
+
+   **Máy tự đo được**: số lượng video · khung hình 1080x1920 · fps · thời lượng · LUFS · **có/không logo overlay** (so vùng giữa-trên qua 5 khung — logo là ảnh tĩnh nên vùng đó gần như không đổi, cảnh quay thì đổi liên tục) · **có/không outro** (so histogram khung cuối với file outro gốc).
+
+   **Máy KHÔNG đo được, script tự liệt kê để người kiểm bằng tai/mắt**: giọng đọc đúng người chưa · nhạc đúng loại chưa · mức phủ giọng · nội dung có bám mô tả người dùng không · có lặp cảnh không.
+
+   Script **thoát mã lỗi khi có mục sai** — sai thì sửa rồi dựng lại, đừng giao. *(Đã test 2 chiều 22/07: bắt đúng "chọn page công ty nhưng thiếu logo" và "chọn 3 video nhưng xuất 1"; không báo nhầm trên video đúng chuẩn.)*
 
 0b. **Chi tiết checklist thiếu-đủ vẫn theo `references/chon-kieu-dung.md`** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
