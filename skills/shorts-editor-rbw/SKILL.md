@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 13** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 14** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 13 (22/07/2026)`
+>    `📦 Đang ở Ver 14 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **14** | 22/07/2026 | `2026.07.22.16` | 🔀 **LUỒNG HỎI PHÂN NHÁNH** (Sếp thiết kế lại): hỏi kiểu dựng trước → mỗi kiểu đi một nhánh câu hỏi riêng (Text+nhạc · Voice-over có thêm bước chọn nguồn giọng + mức phủ · MC dẫn) → câu mở → thẻ cuối *làm luôn hay trao đổi tiếp*. Không dồn hết câu cho mọi người |
 | **13** | 22/07/2026 | `2026.07.22.15` | **Chia câu hỏi làm 2 nhóm theo thời điểm**: nhóm hỏi NGAY khi tiếp nhận (mức tự chủ · kênh đăng · mô tả buổi quay — không cần hiểu nội dung) và nhóm chỉ hỏi SAU khi phân tích xong (kiểu dựng · số video · nhạc · giọng — phải kèm số liệu thật vào từng lựa chọn). Sửa câu chữ hứa hão "sau khi tôi đọc hiểu video" |
 | **12** | 22/07/2026 | `2026.07.22.14` | Thêm thẻ **MỨC TỰ CHỦ** cuối bước hỏi: *tự sản xuất luôn* (bỏ điểm dừng duyệt kịch bản, chạy thẳng tới thành phẩm) hay *xác nhận nội dung cùng tôi* (giữ điểm dừng, tương tác tới khi ưng). Kèm 4 tình huống **vẫn phải dừng-báo dù đã cho tự chủ** |
 | **11** | 22/07/2026 | `2026.07.22.13` | **Kịch bản trình duyệt phải là BẢNG BIỂU khoa học**: tóm tắt nhanh · bảng phân cảnh có **mốc trong video + độ dài từng cảnh + dòng TỔNG** · dải âm thanh theo mốc · điểm cần duyệt. Cấm 3 lỗi trình bày cũ |
@@ -192,7 +193,20 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
 9. **Không đưa vào repo**: bí mật (API key), đường dẫn riêng của 1 máy, sở thích cá nhân 1 người — những thứ đó chỉ ghi máy cục bộ.
 
-0. **LUÔN làm theo đúng `references/chon-kieu-dung.md` NGAY khi skill được gọi** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
+0. 🔀 **LUỒNG HỎI PHÂN NHÁNH — Sếp Huy thiết kế 22/07/2026, đây là luồng chính thức.** Hỏi theo nhánh, không dồn hết mọi câu cho mọi người:
+
+   **Bước 1** (ngay khi nhận source, 1 thẻ duy nhất): *"Bạn muốn dựng theo hướng nào?"* → **Text + nhạc** (Kiểu 1) · **Voice-over** (Kiểu 3) · **Edit theo MC dẫn** (Kiểu 2).
+
+   **Bước 2 — theo nhánh vừa chọn:**
+   - **Text + nhạc** → số lượng video → chọn nhạc → câu mở
+   - **Voice-over** → giọng ở đâu ra (*có file sẵn* / *giọng AI* → hiện tiếp thẻ chọn 4 giọng) → số lượng → chọn nhạc → **mức phủ giọng so với nhạc** (*giọng dẫn ở đầu rồi để nhạc* / *nhạc cả bài, giọng phủ lên* / *voice-over full, nhạc nền nhỏ*) → câu mở
+   - **MC dẫn** → nhạc bản quyền hay không bản quyền → số lượng → câu mở (nhấn hỏi **bối cảnh buổi quay**, vì lời đã có sẵn trong clip)
+
+   **Bước cuối — cả 3 nhánh đều hỏi**: *"Bạn muốn tôi làm luôn, hay sau khi tôi đọc xong source thì hai bên tiếp tục trao đổi?"* Chọn "trao đổi tiếp" → đọc hiểu source rồi **hỏi tiếp CÓ CĂN CỨ** (nêu số liệu thật đọc được, hỏi đúng chỗ còn mơ hồ), không hỏi chung chung.
+
+   Chi tiết từng nhánh + câu chữ: `references/chon-kieu-dung.md`, khối "LUỒNG HỎI PHÂN NHÁNH".
+
+0b. **Chi tiết checklist thiếu-đủ vẫn theo `references/chon-kieu-dung.md`** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
    - **Kiểu 3 — Ghép cảnh + thêm voice-over mới** (giọng AI hoặc thu riêng, không đồng bộ lúc quay; spec: `references/style-voice-karaoke.md` phần karaoke sub, hoặc `references/style-ads-huy.md` nếu kịch bản dạng quảng cáo bán hàng)

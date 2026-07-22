@@ -14,6 +14,61 @@ File này tách riêng để **dễ cập nhật realtime**: thêm/sửa 1 câu 
 
 ---
 
+## 🔀 LUỒNG HỎI PHÂN NHÁNH — Sếp Huy thiết kế lại 22/07/2026 (ĐÂY LÀ LUỒNG CHÍNH THỨC)
+
+Hỏi **theo nhánh**, không dồn hết mọi câu cho mọi người. Chọn kiểu dựng xong mới biết cần hỏi tiếp gì.
+
+### BƯỚC 1 — ngay khi nhận source, hỏi 1 thẻ duy nhất
+
+> **"Bạn muốn dựng theo hướng nào?"**
+
+| Lựa chọn | Là kiểu | Đi tiếp nhánh |
+|---|---|---|
+| **Text + nhạc** | Kiểu 1 | Nhánh A |
+| **Voice-over (giọng đọc)** | Kiểu 3 | Nhánh B |
+| **Edit theo MC dẫn** | Kiểu 2 | Nhánh C |
+
+### NHÁNH A — Text + nhạc
+
+1. **Số lượng video**
+2. **Chọn nhạc** (trend / không bản quyền / ElevenLabs đo ni / giữ tiếng gốc)
+3. **Câu mở** (xem khối "Câu mở" bên dưới)
+
+### NHÁNH B — Voice-over
+
+1. **Giọng ở đâu ra** — 2 lựa chọn:
+   - *Tôi đã có file giọng đọc sẵn* → người dùng gửi file, skill tự tìm file voice trong folder họ đưa
+   - *Dùng giọng AI* → **hiện tiếp thẻ chọn giọng** (4 giọng, chính trước phụ sau — xem khối "Chọn giọng đọc")
+2. **Số lượng video**
+3. **Chọn nhạc**
+4. **Mức phủ của giọng so với nhạc** — 3 lựa chọn:
+   - *Giọng dẫn ở đầu, phần còn lại để nhạc chạy*
+   - *Nhạc chạy cả bài, giọng phủ lên trên*
+   - *Voice-over phủ full, nhạc chỉ làm nền nhỏ*
+   ⚠️ Chọn "nhạc cả bài" hoặc "voice full" mà nhạc lại là **nhạc trend có giọng hát** → **báo ngay**: hai giọng sẽ chồng nhau. 14/16 bài trong `Nhạc hot` có giọng hát.
+5. **Câu mở**
+
+### NHÁNH C — Edit theo MC dẫn
+
+1. **Chọn nhạc — bản quyền hay không bản quyền**
+2. **Số lượng video**
+3. **Câu mở** — nhánh này nhấn mạnh hỏi **buổi quay diễn ra ở đâu, có gì**, vì lời MC đã có sẵn trong clip nên thứ cần nhất là bối cảnh để chọn đúng đoạn.
+
+### BƯỚC CUỐI — áp cho CẢ BA nhánh
+
+Sau khi trả lời hết các câu của nhánh, **luôn hỏi thêm 1 thẻ**:
+
+> **"Bạn muốn tôi làm luôn, hay sau khi tôi đọc xong source thì hai bên tiếp tục trao đổi?"**
+
+| Lựa chọn | Luồng chạy |
+|---|---|
+| **Làm luôn** | Chạy thẳng tới thành phẩm. Vẫn dừng-báo ở 4 tình huống bắt buộc (xem khối "Mức tự chủ") |
+| **Đọc source xong rồi trao đổi tiếp** | Đọc hiểu source → **dựa vào chính source + những gì họ vừa trả lời** để hỏi tiếp cho rõ → rồi mới dựng |
+
+**Nhánh "trao đổi tiếp" phải hỏi có căn cứ**, không hỏi chung chung: nêu số liệu thật đọc được rồi hỏi đúng chỗ còn mơ hồ. Vd: *"Có 14 clip nghe thấy tiếng, nhưng chỉ 5 câu đủ sạch — Sếp muốn tôi dùng cả 5 hay bỏ 2 câu bị lẫn tiếng ồn?"*
+
+---
+
 ## ⏰ HỎI CÁI GÌ LÚC NÀO — chia 2 nhóm (Sếp Huy chốt 22/07/2026)
 
 Sếp bắt lỗi thật: thẻ mức tự chủ từng ghi *"sau khi tôi đọc và hiểu rõ video..."* trong khi lúc hỏi **mới nhận folder, chưa đọc gì cả** — hứa hão. Truy ra nguyên nhân gốc: **chưa phân loại câu hỏi theo việc nó CÓ CẦN HIỂU NỘI DUNG hay không.**
@@ -109,7 +164,13 @@ Giao hàng xong vẫn **tóm tắt lại đã quyết những gì thay họ** (h
 
 Sau khi hỏi xong các thẻ chọn, **luôn hỏi thêm một câu mở** (câu này không bấm được, phải để người dùng tự gõ):
 
-> **"Sếp mô tả giúp tôi buổi quay này, và đầu ra Sếp mong muốn ra sao — càng cụ thể tôi càng làm đúng ý."**
+> **"Bạn muốn triển khai video này theo hướng nào? Mô tả giúp tôi càng cụ thể càng tốt."**
+>
+> Gợi ý cho người dùng biết nên đưa gì vào (in kèm câu hỏi):
+> - **Buổi quay hôm đó diễn ra thế nào** — ở đâu, khách nào, robot nào, có gì đáng chú ý
+> - **Thứ tự xuất hiện của các cảnh** — muốn mở đầu bằng cảnh gì, kết bằng cảnh gì
+> - **Thông điệp muốn truyền** — bán hàng · khoe năng lực triển khai · kể chuyện khách hàng · thông báo sự kiện
+> - **Ràng buộc** — cảnh bắt buộc phải có, cảnh phải tránh, tên riêng đọc đúng, độ dài mong muốn
 
 **Đây là thông tin quan trọng nhất trong cả bước hỏi.** Mọi thẻ chọn phía trên chỉ quyết định khung kỹ thuật; câu này mới cho biết **video phải nói lên điều gì**. Nguyên văn Sếp: *"cái này là thông tin mà bạn phải xử lý để đầu ra giống họ mong muốn nhất"*.
 
