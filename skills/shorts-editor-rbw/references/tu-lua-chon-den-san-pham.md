@@ -132,4 +132,30 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 
 > *Ví dụ*: "Sếp muốn mở đầu bằng cảnh toàn khu du lịch cho thấy quy mô. Nhưng theo quy tắc chọn cảnh đúc kết từ video Sếp đã duyệt, hook 3 giây đầu cần cảnh bắt mắt ngay — toàn cảnh rộng người xem chưa kịp thấy gì đã lướt. Tôi đề xuất mở bằng cảnh robot tiến thẳng tới ống kính (clip 0043), rồi cắt sang toàn cảnh ở giây thứ 4 để giữ ý quy mô của Sếp. Sếp vẫn muốn giữ nguyên thì tôi làm theo."
 
-**Người dùng chọn "làm luôn" vẫn phải phản biện** — chỉ khác là báo trong lúc giao hàng thay vì dừng chờ, trừ 4 tình huống bắt buộc dừng *(thiếu tư liệu · yêu cầu bị chặn · nguyên liệu mâu thuẫn · tốn tiền ngoài dự kiến)*.
+---
+
+## 4. 🔴 PHẢN BIỆN CHỈ ÁP CHO NHÁNH "TRAO ĐỔI TIẾP" (Sếp Huy chốt 22/07/2026)
+
+> Nguyên văn: *"nếu họ chọn làm luôn thì cứ làm, không cần phản biện, coi những gì họ nói là tham khảo thôi."*
+
+| Người dùng chọn | Mong muốn của họ được coi là | Phản biện |
+|---|---|---|
+| **Trao đổi tiếp** | **Yêu cầu** — bám sát, va luật thì báo và bàn | ✅ Chạy đủ 3 tầng A/B/C ở mục 3 |
+| **Làm luôn** | **THAM KHẢO** — dùng để định hướng, không phải mệnh lệnh | ❌ **KHÔNG phản biện. Cứ làm.** |
+
+**Nhánh "làm luôn" xử lý xung đột thế nào:** ý họ đá với luật dựng → **im lặng theo LUẬT DỰNG**, không hỏi, không báo, không đề xuất thay thế. Họ đã chọn giao việc cho máy thì đừng bắt họ quay lại quyết từng chi tiết.
+
+*Ví dụ*: họ viết "mở đầu bằng toàn cảnh khu du lịch". Luật hook nói toàn cảnh rộng yếu ở 3 giây đầu. → Nhánh **trao đổi tiếp**: phản biện, đề xuất cảnh khác. Nhánh **làm luôn**: mở bằng cảnh mạnh theo luật, đưa toàn cảnh vào giây thứ 4 — làm luôn, không hỏi.
+
+### Nhưng vẫn DỪNG-BÁO ở 4 tình huống — đây KHÔNG phải phản biện
+
+Phân biệt rõ: **phản biện** = góp ý về hướng làm *(đã bỏ ở nhánh này)*. **Dừng-báo** = không làm được, buộc phải hỏi:
+
+1. **Thiếu tư liệu** — không đủ cảnh sạch cho số video yêu cầu. Hỏi có được xào lại cảnh không. **Cấm tự xoay.**
+2. **Yêu cầu đích danh bị chặn** — giọng/nhạc/clip họ chỉ tên mà lỗi. Luật gốc của Sếp từ đầu.
+3. **Nguyên liệu mâu thuẫn lựa chọn** — chọn MC dẫn nhưng không clip nào có người nói mạch lạc.
+4. **Tốn tiền ngoài mức đã biết.**
+
+### Giao hàng thì tóm tắt đã quyết gì
+
+Không phải xin phép, chỉ là báo cáo: hook chọn góc nào, cảnh nào bị loại và vì sao, chỗ nào làm khác mô tả của họ. Để họ soi nhanh chứ không phải xem lại từ đầu.

@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 17** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 18** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 17 (22/07/2026)`
+>    `📦 Đang ở Ver 18 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **18** | 22/07/2026 | `2026.07.22.20` | **Phản biện chỉ áp cho nhánh "trao đổi tiếp"**. Chọn *làm luôn* → mong muốn người dùng chỉ là **tham khảo**, xung đột thì im lặng theo luật dựng, không hỏi không báo. Vẫn dừng-báo ở 4 tình huống không làm được |
 | **17** | 22/07/2026 | `2026.07.22.19` | 🔴 **File luật MỚI `tu-lua-chon-den-san-pham.md`**: lựa chọn của người dùng phải BIẾN thành sản phẩm, không chỉ ghi nhận. Bảng ánh xạ từng lựa chọn → đổi gì trong video · 3 tầng quyền (luật dựng TUYỆT ĐỐI > lựa chọn DẪN DẮT > tư liệu CHẶN) · **phản biện 3 tầng BẮT BUỘC** trước khi dựng |
 | **16** | 22/07/2026 | `2026.07.22.18` | Mô tả gõ ra **không đọc được nghĩa** (gõ bừa, dán nhầm, trượt phím) → **hỏi lại, cấm tự diễn giải**. Bịa thông điệp từ chuỗi vô nghĩa là sai từ gốc, cả video đi lệch |
 | **15** | 22/07/2026 | `2026.07.22.17` | 🔴 **Câu mở phải là một lượt riêng** — hiện xong là DỪNG chờ người dùng gõ. Trước đây gọi thẻ bấm ngay sau câu mở nên họ không kịp nhập chữ nào, câu mở thành trang trí |
@@ -217,7 +218,11 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
    **PHẢN BIỆN LÀ BẮT BUỘC, không phải tuỳ tâm.** Nhận đủ đầu vào rồi KHÔNG lao vào dựng ngay — chạy 3 phép đối chiếu: **(A) mong muốn ↔ tư liệu thật** (cảnh họ muốn có thật không) · **(B) mong muốn ↔ luật dựng** (có phạm luật đã đúc kết không) · **(C) mong muốn ↔ hiệu quả thật** (gu từ video final Sếp đã duyệt). Mỗi phản biện đủ 3 phần: *ý họ là gì → va vào cái gì, kèm số đo thật → đề xuất thay thế*. Luật thắng, nhưng người dùng **có quyền biết vì sao** và có quyền yêu cầu làm theo ý mình — họ khăng khăng thì làm theo và ghi rõ là theo yêu cầu của họ.
 
-   Người dùng chọn **"làm luôn"** vẫn phải phản biện — chỉ khác là báo lúc giao hàng thay vì dừng chờ.
+   🔴 **PHẢN BIỆN CHỈ ÁP CHO NHÁNH "TRAO ĐỔI TIẾP"** (Sếp Huy chốt 22/07/2026: *"nếu họ chọn làm luôn thì cứ làm, không cần phản biện, coi những gì họ nói là tham khảo thôi"*).
+   - **"Trao đổi tiếp"** → mong muốn của họ là **yêu cầu**, chạy đủ 3 tầng phản biện.
+   - **"Làm luôn"** → mong muốn của họ chỉ là **THAM KHẢO**. Ý họ đá với luật dựng thì **im lặng theo luật dựng** — không hỏi, không báo, không đề xuất. Họ đã giao việc cho máy thì đừng bắt quay lại quyết từng chi tiết.
+
+   ⚠️ **Vẫn DỪNG-BÁO ở 4 tình huống, đây KHÔNG phải phản biện mà là không làm được**: thiếu tư liệu · yêu cầu đích danh bị chặn · nguyên liệu mâu thuẫn lựa chọn · tốn tiền ngoài mức đã biết. Giao hàng xong thì **tóm tắt đã quyết gì** (không phải xin phép, chỉ báo cáo).
 
 0b. **Chi tiết checklist thiếu-đủ vẫn theo `references/chon-kieu-dung.md`** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
