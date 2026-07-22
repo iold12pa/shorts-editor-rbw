@@ -5,6 +5,21 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
+> # 📦 BẢN HIỆN TẠI: **Ver 0** — phát hành 22/07/2026
+>
+> **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
+>
+> 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
+> 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
+>    `📦 Đang ở Ver 0 (22/07/2026)`
+>    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
+>
+> **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
+
+| Ver | Ngày | Số máy đọc | Có gì mới |
+|---|---|---|---|
+| **0** | 22/07/2026 | `2026.07.22.2` | Mốc khởi đầu cách đánh số mới. Gồm toàn bộ luật tích lũy tới 21/07 (quy trình chọn cảnh 4 cổng lọc, cắt thoại bằng độ ấm, nhạc theo mức phủ giọng, tránh trùng cảnh 2 tầng) + dấu vân tay key Gemini mới |
+
 Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x1920, 30-60s) theo đúng style video mẫu của Roboworld. Mỗi lần chạy: phân tích source → **đề xuất kịch bản → Sếp duyệt** → dựng N video thành phẩm + caption.
 
 **Phạm vi làm việc:** KHÔNG có thư mục gốc cố định nào được cấu hình sẵn — mỗi lần người dùng nhờ dựng video, họ tự đưa **đường dẫn đầy đủ** tới folder buổi quay (gõ tay hoặc kéo-thả folder vào khung chat để Windows tự dán đường dẫn). Nếu người dùng chỉ nói 1 cái tên ngắn (vd "buổi GGG Hà Nội") mà không kèm đường dẫn, HỎI LẠI xin đường dẫn đầy đủ hoặc nhờ họ kéo-thả folder vào — đừng tự đoán đường dẫn. Mọi thứ của video đó (workspace, video final) tạo NGAY BÊN TRONG folder buổi quay được đưa — KHÔNG tạo file ở nơi khác (trừ file tạm trong scratchpad nếu cần). Tài nguyên dùng chung (logo, nhạc, outro, SFX) lưu ở **chỗ bền trên máy** `~/.claude/roboworld-assets/tai-nguyen-chung/`, tải 1 lần từ Google Drive của Sếp — xem mục "Tài nguyên dùng chung" bên dưới.
@@ -43,7 +58,7 @@ Nếu máy chưa có lệnh `claude` trong PATH: gọi bằng đường dẫn đ
 
 Nếu không đọc/sửa được file (hiếm, quyền file bị chặn) thì bỏ qua, không chặn luồng chính, chỉ báo 1 dòng ngắn cho người dùng biết.
 
-**Khi người dùng hỏi về phiên bản** (bất kỳ dạng nào: "đang bản nào", "phiên bản hiện tại", "có bản mới không", "check update", "đã cập nhật chưa"...) — KHÔNG chỉ đọc bản đang cài trên máy rồi trả lời suông, mà phải **kiểm tra thật với GitHub rồi cập nhật luôn nếu có bản mới**, theo đúng trình tự: (1) chạy `claude plugin marketplace update roboworld-tools` để kéo thông tin mới nhất về, (2) chạy `claude plugin update shorts-editor-rbw@roboworld-tools` — lệnh này tự so sánh và tự cập nhật nếu có bản mới, (3) chạy `claude plugin list` lấy số bản cuối cùng, (4) báo người dùng rõ ràng: bản trước đó là gì, bản mới nhất là gì, có vừa được cập nhật không, và nếu vừa cập nhật thì nhắc họ đóng/mở lại Claude Code để bản mới có hiệu lực đầy đủ. Nếu shell báo không tìm thấy lệnh `claude` (máy chưa thêm PATH): gọi bằng đường dẫn đầy đủ — tìm file `claude.exe` trong `%APPDATA%\Claude\claude-code\<thư mục phiên bản>\` (lấy thư mục phiên bản mới nhất) rồi chạy y hệt các lệnh trên bằng đường dẫn đó.
+**Khi người dùng hỏi về phiên bản** (bất kỳ dạng nào: "đang bản nào", "phiên bản hiện tại", "có bản mới không", "check update", "đã cập nhật chưa"...) — KHÔNG chỉ đọc bản đang cài trên máy rồi trả lời suông, mà phải **kiểm tra thật với GitHub rồi cập nhật luôn nếu có bản mới**, theo đúng trình tự: (1) chạy `claude plugin marketplace update roboworld-tools` để kéo thông tin mới nhất về, (2) chạy `claude plugin update shorts-editor-rbw@roboworld-tools` — lệnh này tự so sánh và tự cập nhật nếu có bản mới, (3) chạy `claude plugin list` lấy số bản cuối cùng, (4) **tra số máy đọc đó ra số Ver trong bảng đầu file này**, rồi báo người dùng **bằng số Ver** — vd *"Vừa cập nhật từ Ver 0 lên Ver 1 (23/07/2026)"* — nói rõ bản trước là Ver mấy, bản mới nhất là Ver mấy, có vừa được cập nhật không, và nếu vừa cập nhật thì nhắc họ đóng/mở lại Claude Code để bản mới có hiệu lực đầy đủ. Chỉ nêu dãy số ngày tháng khi người dùng hỏi đích danh hoặc khi cần đối chiếu kỹ thuật. Nếu shell báo không tìm thấy lệnh `claude` (máy chưa thêm PATH): gọi bằng đường dẫn đầy đủ — tìm file `claude.exe` trong `%APPDATA%\Claude\claude-code\<thư mục phiên bản>\` (lấy thư mục phiên bản mới nhất) rồi chạy y hệt các lệnh trên bằng đường dẫn đó.
 
 **DỌN CACHE BẢN CŨ — làm NGAY khi skill được gọi lần đầu trong phiên, KHÔNG đợi ai hỏi phiên bản** (luật siết lại 20/07/2026, xem bằng chứng bên dưới). Thư mục `~/.claude/plugins/cache/roboworld-tools/shorts-editor-rbw/` chứa mỗi bản đã cài 1 folder con (tên = mã bản). **Auto-update KHÔNG bao giờ tự xóa bản cũ** — cứ mỗi lần cập nhật lại đẻ thêm 1 folder, tích vô hạn. Xóa hết folder bản cũ (khác mã bản đang dùng theo `claude plugin list`), GIỮ đúng folder bản đang dùng. Im lặng làm; chỉ báo 1 câu nếu giải phóng được **trên 50MB**, dưới mức đó thì không cần nói.
 
@@ -120,6 +135,8 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
    🔴 **BẮT BUỘC KÈM THEO — TĂNG SỐ BẢN, nếu không thì luật vừa khắc KHÔNG tới được máy nào cả.**
    Sửa bất cứ file nào trong `skills/` thì **phải sửa luôn `version` trong `.claude-plugin/plugin.json`** thành ngày hôm nay, định dạng `YYYY.MM.DD` (vd `2026.07.21`). Commit chung một lần với file luật.
+
+   🔴 **VÀ TĂNG SỐ Ver** (luật Sếp Huy chốt 22/07/2026) — sửa **2 chỗ trong SKILL.md đầu file**: dòng `📦 BẢN HIỆN TẠI: Ver N` và **thêm 1 hàng vào bảng lịch sử Ver** (Ver mới / ngày / số máy đọc / có gì mới). Ver tăng **+1 mỗi lần phát hành**, không theo ngày. Cùng một ngày phát hành 2 lần thì là 2 Ver khác nhau. Bỏ bước này thì người dùng vẫn nhận được luật mới nhưng **mọi máy báo sai số bản cho nhau**, không ai biết ai đang chạy gì.
 
    *Vì sao*: lệnh `claude plugin update` **so sánh đúng trường `version` đó**, không nhìn mã commit. Version không đổi → mọi máy chạy update đều nhận câu *"already at the latest version"* và **không kéo gì về**, dù GitHub đã có luật mới.
 
