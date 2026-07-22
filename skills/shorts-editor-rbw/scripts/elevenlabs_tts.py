@@ -22,24 +22,39 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ENV_FILE = os.path.expanduser("~/.claude/abs6-secrets.env")
 
-# ===== GIONG DOC — CAP NHAT 20/07/2026, DOC KY TRUOC KHI DOI =====
+# ===== GIONG DOC — CAP NHAT 22/07/2026, DOC KY TRUOC KHI DOI =====
 #
-# BAI HOC DA DO THAT: "George" tung la giong mac dinh, NHUNG do la giong ANH.
-# Cho Whisper nghe lai ban George doc tieng Viet: "Thu cach nay" -> "Thu kac nai",
-# "Khai truong thi bung no doanh so" -> "Cai truong thi bung no doan so". Khong dung duoc.
-# => KHONG dung George cho loi tieng Viet nua. George chi dung khi loi doc la tieng Anh.
+# 🔴 DINH CHINH LON 22/07/2026 — LUAT CU QUY SAI THU PHAM.
+# Luat 20/07 ghi: "George doc tieng Viet meo VI DO LA GIONG ANH". Do thang lai bang
+# cach doi TUNG MODEL doc tren CUNG mot giong, cho Whisper nghe lai:
+#     cau goc: "Roboworld mang robot phục vụ tới nhà hàng của bạn."
+#     eleven_multilingual_v2 -> "robot phúc vật hoàn hà hàn kòa bàn"   (MEO NANG)
+#     eleven_turbo_v2_5      -> "robot phục vụ tới nhà hàng của bạn"   (CHUAN TUNG CHU)
+#     eleven_flash_v2_5      -> chuan tung chu
+# Cung giong do, chi doi model. => THU PHAM LA MODEL, khong phai giong.
+# Voi turbo_v2_5 thi CA GIONG ANH cung doc ro tieng Viet (Adam: chuan 100%).
 #
-# Tai khoan cong ty DA CO san 2 giong Viet chuyen nghiep (kiem 20/07 qua API):
+# ⚠️ GIOI HAN CUA PHEP DO NAY: Whisper chi do RO CHU, KHONG do CHAT GIONG TU NHIEN.
+# Giong Anh doc tieng Viet van co the nghe ra chat Tay du tung chu deu ro. Chon giong
+# cho video that van phai qua TAI SEP. Xem mau da xuat trong Desktop\NGHE-CHON-GIONG.
+MODEL = "eleven_turbo_v2_5"   # KHONG lui ve multilingual_v2 — da do that, no lam meo tieng Viet
+
+# --- Bang giong (do that 22/07/2026: CA 4 giong deu tao duoc, khong con bi chan) ---
 GIONG_VIET_NAM = "7XOKiK112QRZRSLbCfMc"   # MC Xuan Tu - VIP (nam, giong Bac)
 GIONG_VIET_NU = "Na15FlRRkMEDtEW4nVVP"    # Thanh Ngoc - Warm & Trusted (nu, giong Nam)
-#
-# NHUNG: goi Free bi chan 2 giong nay (402 paid_plan_required - "Free users cannot use
-# library voices via the API"). Nang goi la dung duoc ngay, khong phai doi giong khac.
-# Trong luc con goi Free -> script bao ro rang roi thoat, de skill lui ve edge-tts
-# giong vi-VN (doc cau tieng Viet thuan rat sach, xem style-voice-karaoke.md).
-GIONG_ANH = "JBFqnCBsd6RMkjVDRZzb"        # George (nam, Anh) - CHI cho loi tieng Anh
+GIONG_PHUONG_UYEN = "Y9oZ1fkOxoaT3zFqTPzg"  # Phuong Uyen RBW (nu, VIET, giong NHAN BAN cua RBW)
+GIONG_ADAM = "pNInz6obpgDQGcFmaJgB"       # Adam - Dominant, Firm (nam, goc Anh, chac & manh)
+GIONG_ANH = "JBFqnCBsd6RMkjVDRZzb"        # George (nam, Anh)
 DEFAULT_VOICE = GIONG_VIET_NAM
-MODEL = "eleven_multilingual_v2"
+
+# HET BI CHAN (do lai 22/07/2026): truoc day goi Free chan giong library bang loi 402
+# "Free users cannot use library voices via the API" — nay ca 4 giong deu tao duoc
+# binh thuong. Ghi chu cu "cho nang goi Starter $6" khong con dung nua.
+#
+# 2 GIONG SEP HUY CHI DINH THEM 22/07/2026 (dung khi nguoi dung chon voice-over EL):
+#   1) Phuong Uyen RBW - nu, tieng Viet, giong nhan ban cua chinh Roboworld
+#   2) Adam            - nam, chac & manh
+#   3) "Tuy noi dung"  - tu chon giong hop voi van ban (xem references/chon-kieu-dung.md)
 
 
 def get_api_key():

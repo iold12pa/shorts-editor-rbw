@@ -58,11 +58,40 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | Source video/clip để ghép | **Bắt buộc** | "Cho tôi xin các video/clip muốn ghép lại" |
 | Voice-over: đã có file sẵn hay chưa | **Bắt buộc phải hỏi rõ, đây là lỗi hay gặp nhất** | "Bạn đã có sẵn file giọng đọc chưa? Nếu chưa, tôi viết kịch bản cho bạn duyệt trước, rồi tạo giọng đọc (AI hoặc bạn tự thu đều được)" |
 | Nếu ĐÃ có voice-over: khớp với video nào | **Bắt buộc** | "File giọng đọc này đi cùng (những) video nào? Có sẵn lời thoại/kịch bản để tôi khớp cảnh theo không?" |
-| Nếu CHƯA có voice-over: giọng nam hay nữ | Cần biết | "Bạn muốn giọng đọc nam hay nữ?" — mặc định giờ là **giọng VIỆT** (MC Xuân Tú nam / Thanh Ngọc nữ). Gói ElevenLabs còn Free thì 2 giọng này bị chặn 402 → tự lui về edge-tts giọng Việt. **Tuyệt đối không lui về George** — đó là giọng Anh, đọc tiếng Việt méo cả câu thường |
+| Nếu CHƯA có voice-over: **CHỌN GIỌNG** | **Bắt buộc hỏi** — xem khối "Chọn giọng đọc" ngay dưới bảng này | Người dùng chọn giọng AI thì hiện tiếp thẻ chọn giọng cụ thể |
 | Bối cảnh | Nên có | như Kiểu 1/2 |
 | **MỨC PHỦ GIỌNG → quyết định loại nhạc** | **Bắt buộc hỏi** | "Giọng đọc phủ cả bài, hay chỉ 1-2 câu mở đầu?" — xem khối ngay dưới bảng này |
 | **XỬ LÝ TIẾNG NÓI (4 lựa chọn)** | Hỏi **CHỈ KHI** giọng đọc do **người thu**. Giọng AI thì **BỎ QUA, không hỏi** | Xem khối "Xử lý tiếng nói" dưới khối luật nhạc |
 | Style cụ thể | Xem `references/gu-kieu-2-3.md` (chọn công thức 3A showcase / 3B case study 9 nhịp) + `references/style-voice-karaoke.md` (karaoke sub) hoặc `references/style-ads-huy.md` (nếu dạng quảng cáo bán hàng) |
+
+### Chọn giọng đọc — hỏi khi Kiểu 3 chưa có sẵn file voice-over (Sếp Huy chốt 22/07/2026)
+
+**Hỏi 2 tầng, tầng sau chỉ hiện khi tầng trước chọn giọng AI.**
+
+**Tầng 1 — giọng ở đâu ra:**
+
+| Lựa chọn | Nghĩa |
+|---|---|
+| **Giọng AI (ElevenLabs)** | Tôi tạo giọng đọc — hiện tiếp tầng 2 |
+| **Tôi tự thu** | Người dùng gửi file giọng, bỏ qua tầng 2 (nhớ hỏi tiếp khối "Xử lý tiếng nói") |
+
+**Tầng 2 — chọn giọng cụ thể (CHỈ hiện khi tầng 1 chọn giọng AI):**
+
+| Lựa chọn | Giọng | Hợp với nội dung nào |
+|---|---|---|
+| **Phương Uyên** | `Y9oZ1fkOxoaT3zFqTPzg` — nữ, tiếng Việt, **giọng nhân bản của chính Roboworld** | Giới thiệu sản phẩm, kể chuyện khách hàng, nội dung mềm mại thân thiện |
+| **Adam** | `pNInz6obpgDQGcFmaJgB` — nam, chắc và mạnh | Nội dung dứt khoát: hiệu quả, tiết kiệm nhân sự, số liệu, kêu gọi hành động |
+| **Tuỳ theo nội dung** | Tự chọn | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
+
+> **Lựa chọn 3 làm thế nào**: đọc kịch bản đã duyệt, xét giọng văn — mềm mại/kể chuyện/hướng tới cảm xúc thì **Phương Uyên**; dứt khoát/số liệu/thúc đẩy hành động thì **Adam**. Nội dung dài có cả hai chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu** cho người dùng biết, đừng chọn thầm.
+
+**Ba điều đã đo thật 22/07/2026, đừng làm sai:**
+
+1. **Model đọc bắt buộc là `eleven_turbo_v2_5`** (đã đặt sẵn trong `elevenlabs_tts.py`). **Tuyệt đối không lui về `eleven_multilingual_v2`** — đo thật: cùng một giọng, model cũ đọc *"phục vụ tới nhà hàng của bạn"* thành *"phúc vật hoàn hà hàn kòa bàn"*, model mới đọc chuẩn từng chữ.
+2. **Luật cũ "George méo vì là giọng Anh" đã được đính chính** — thủ phạm là model chứ không phải giọng. Với `turbo_v2_5`, Adam (giọng gốc Anh) đọc tiếng Việt **chuẩn 100%** qua phép nghe lại bằng Whisper.
+3. **Cả 4 giọng đều HẾT bị chặn** — ghi chú cũ "gói Free chặn 402, chờ nâng Starter $6" không còn đúng, đã đo lại. Không cần lui về edge-tts nữa; nếu vẫn gặp lỗi 402 thì **DỪNG BÁO người dùng**, không tự đổi giọng khác.
+
+⚠️ **Whisper chỉ đo RÕ CHỮ, không đo giọng nghe có tự nhiên không.** Giọng gốc Anh đọc tiếng Việt vẫn có thể nghe ra chất Tây dù từng chữ đều rõ. Chọn giọng cho video thật vẫn phải qua **tai người**.
 
 ### Luật nhạc theo mức phủ giọng — áp cho Kiểu 2 và Kiểu 3 (Sếp Huy chốt 21/07/2026)
 
