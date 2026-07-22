@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 4** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 5** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 4 (22/07/2026)`
+>    `📦 Đang ở Ver 5 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **5** | 22/07/2026 | `2026.07.22.7` | 🔴 **Luật CÁCH HỎI**: hỏi bằng thẻ chọn bấm được, cấm dồn thành khối chữ bắt gõ số · gộp 1 lượt tối đa 4 câu · **suy được từ footage thì tự suy, đừng hỏi** (phân tích trước rồi mới hỏi) |
 | **4** | 22/07/2026 | `2026.07.22.6` | Vá 2 chú thích khiến **máy khác đọc ngược ý** (một máy báo nhầm với Sếp rằng code vẫn giục dán key vào chat) · đếm lại đúng số script gọi FFmpeg (11/15, đã chốt 9) · `KEY_CHUAN` nhận **nhiều key** để mỗi máy có thể dùng key riêng mà không bị báo "SAI KEY" |
 | **3** | 22/07/2026 | `2026.07.22.5` | 🔴 **Vá mắt AI đang hỏng**: `gemini-2.5-flash` Google đã tắt (404) chứ không phải còn 3 tháng — đổi sang `gemini-3.6-flash` + tự chuyển sang bí danh `-latest` khi model chết · **8 công cụ tự tìm FFmpeg**, thiếu thì báo tiếng người · luật **mặc định sửa + đẩy không hỏi** · luật **đo model thật, đừng tin lịch trong tài liệu** |
 | **2** | 22/07/2026 | `2026.07.22.4` | Đợt dò lỗi theo yêu cầu Sếp. **Chốt chặn số 4** (hook tự bắt thư viện chưa khai báo) · **hook đưa vào repo** `git-hooks/` để máy quản trị mới còn có · **cảnh báo hạn model AI** (2.5-flash tắt 16/10/2026, còn 86 ngày) · **chặn model đã tắt** (2.0-flash) · **kiểm key trước khi nén clip** thay vì vỡ giữa chừng |
@@ -182,6 +183,18 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
    - **Kiểu 3 — Ghép cảnh + thêm voice-over mới** (giọng AI hoặc thu riêng, không đồng bộ lúc quay; spec: `references/style-voice-karaoke.md` phần karaoke sub, hoặc `references/style-ads-huy.md` nếu kịch bản dạng quảng cáo bán hàng)
    Người dùng nói rõ kiểu + đủ nguyên liệu ngay trong tin đầu thì không hỏi lại — chỉ hỏi đúng phần còn thiếu.
+
+   🔴 **CÁCH HỎI — LUẬT SẾP HUY CHỐT 22/07/2026, ÁP DỤNG CHO MỌI CÂU HỎI TRONG SKILL NÀY.**
+
+   > Nguyên văn Sếp: *"các dạng câu hỏi không được lần lượt hiện lên trực quan sinh động để chọn mà gộp lại như thế này"* — nói khi một máy dồn 4 câu hỏi thành một khối chữ dài, bắt Sếp đọc hết rồi tự đánh số trả lời.
+
+   **(1) Hỏi bằng THẺ CHỌN BẤM ĐƯỢC, không bằng khối chữ.** Mọi lúc cần người dùng chọn (kiểu dựng · loại nhạc · số lượng video · duyệt ý tưởng · kênh đăng...) đều phải dùng **công cụ hỏi có lựa chọn bấm được** (`AskUserQuestion` hoặc tương đương của môi trường đang chạy) — mỗi câu một thẻ riêng, mỗi lựa chọn có nhãn ngắn + một dòng giải thích hệ quả. **CẤM** dán một đoạn văn liệt kê "1... 2... 3... 4..." rồi ngồi chờ người dùng gõ số. Người dùng không phải dev, đang cầm điện thoại hoặc đang bận — bấm được thì trả lời trong 3 giây, đọc khối chữ thì bỏ dở.
+
+   **(2) Gộp vào MỘT lượt hỏi, đừng hỏi nhỏ giọt.** Cần biết nhiều thứ thì đưa hết vào cùng một lượt (tối đa 4 câu, mỗi câu tối đa 4 lựa chọn), đừng hỏi 1 câu → chờ trả lời → lại hỏi câu tiếp. Hỏi nhỏ giọt làm người dùng phải quay lại nhiều lần cho một việc.
+
+   **(3) Suy được từ footage thì TỰ SUY, đừng hỏi** (Sếp 22/07: *"dựa vào thông tin trong clip"*, *"tự làm đi"*). Bối cảnh buổi quay, robot dòng nào, địa điểm, có ai đang nói — những thứ này **đã nằm trong footage**: Whisper nghe được lời, mắt AI nhận ra robot và bối cảnh, ảnh lưới cho thấy khung hình. **Chạy phân tích trước rồi mới hỏi** — hỏi xong mới phân tích là hỏi thừa những thứ máy tự biết. Chỉ hỏi thứ **không thể suy ra từ file**: kênh đăng (page công ty hay cá nhân), nhạc trend hay nhạc sạch bản quyền, số lượng video muốn ra.
+
+   **(4) Môi trường không có công cụ hỏi trực quan** thì mới dùng chữ — và khi đó viết **thật ngắn, mỗi câu một dòng, đánh số rõ**, không kèm bảng biểu dài dòng.
 
    **Hỏi gọn trong 1 lượt, chạy máy song song**: mọi câu hỏi còn thiếu (kiểu dựng, mô tả buổi quay, chữ đè, nhạc, giọng đọc...) GỘP vào đúng 1 tin nhắn — đừng bắt người dùng trả lời 2-3 lượt mới khởi động được. Và ngay khi đã có đường dẫn folder source hợp lệ (kể cả khi còn đang chờ trả lời các câu hỏi khác), **khởi chạy `analyze_footage.py` chạy NỀN luôn** (0 token, thuần máy) — với điều kiện ffmpeg + model Whisper đã sẵn sàng (chưa sẵn thì chờ phần cài/tải nền xong mới chạy, đừng chạy phân tích khi thiếu model kẻo index ghi nhầm "không có thoại"). Lúc người dùng trả lời xong thì phân tích thường cũng vừa xong — tiết kiệm nhiều phút chờ.
 1. Sau khi đủ nguyên liệu: xác nhận đã có đường dẫn đầy đủ tới folder source (nếu chưa, hỏi xin ngay — xem mục "Phạm vi làm việc" ở trên). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.

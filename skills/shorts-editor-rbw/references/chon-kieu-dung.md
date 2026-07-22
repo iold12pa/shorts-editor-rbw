@@ -1,6 +1,16 @@
 # Chọn kiểu dựng + kiểm tra đủ nguyên liệu — hỏi ngay khi skill được gọi
 
-File này tách riêng để **dễ cập nhật realtime**: thêm/sửa 1 câu hỏi hay 1 điều kiện thì sửa đúng dòng trong bảng bên dưới, không cần đụng SKILL.md hay file style. Đây là bước ĐẦU TIÊN của mọi lần chạy skill, trước cả khi phân tích footage.
+File này tách riêng để **dễ cập nhật realtime**: thêm/sửa 1 câu hỏi hay 1 điều kiện thì sửa đúng dòng trong bảng bên dưới, không cần đụng SKILL.md hay file style.
+
+> 🔴 **ĐỌC TRƯỚC KHI HỎI BẤT CỨ CÂU NÀO — luật Sếp Huy chốt 22/07/2026.**
+>
+> Mọi câu hỏi trong file này là **NỘI DUNG** cần hỏi, không phải **cách trình bày**. Cách trình bày bắt buộc:
+>
+> 1. **Dùng thẻ chọn bấm được** (`AskUserQuestion` hoặc tương đương) — mỗi câu một thẻ, mỗi lựa chọn có nhãn ngắn + một dòng nói rõ chọn nó thì được gì. **CẤM dán khối chữ "1... 2... 3..." rồi chờ người dùng gõ số.** Nguyên văn Sếp: *"các dạng câu hỏi không được lần lượt hiện lên trực quan sinh động để chọn mà gộp lại như thế này"*.
+> 2. **Gộp vào một lượt** — tối đa 4 câu, mỗi câu tối đa 4 lựa chọn. Đừng hỏi nhỏ giọt từng câu.
+> 3. **PHÂN TÍCH FOOTAGE TRƯỚC RỒI MỚI HỎI.** Thứ gì máy tự biết được thì **tuyệt đối không hỏi**: bối cảnh buổi quay, robot dòng nào, địa điểm, trong clip có ai đang nói — Whisper nghe được lời, mắt AI nhận ra robot và nơi chốn, ảnh lưới cho thấy khung hình. Chạy phân tích (miễn phí, chạy nền) rồi hãy hỏi. Chỉ hỏi thứ **không nằm trong file**: kênh đăng · loại nhạc · số lượng video · ý tưởng riêng nếu có.
+>
+> Vì vậy thứ tự đúng là: **nhận folder → chạy phân tích nền → hỏi 1 lượt bằng thẻ chọn (những gì còn thiếu) → dựng.** KHÔNG phải hỏi hết rồi mới phân tích.
 
 ## Bước A — Hỏi kiểu dựng (bỏ qua nếu người dùng đã nói rõ ngay từ tin đầu)
 
