@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 16** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 17** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 16 (22/07/2026)`
+>    `📦 Đang ở Ver 17 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **17** | 22/07/2026 | `2026.07.22.19` | 🔴 **File luật MỚI `tu-lua-chon-den-san-pham.md`**: lựa chọn của người dùng phải BIẾN thành sản phẩm, không chỉ ghi nhận. Bảng ánh xạ từng lựa chọn → đổi gì trong video · 3 tầng quyền (luật dựng TUYỆT ĐỐI > lựa chọn DẪN DẮT > tư liệu CHẶN) · **phản biện 3 tầng BẮT BUỘC** trước khi dựng |
 | **16** | 22/07/2026 | `2026.07.22.18` | Mô tả gõ ra **không đọc được nghĩa** (gõ bừa, dán nhầm, trượt phím) → **hỏi lại, cấm tự diễn giải**. Bịa thông điệp từ chuỗi vô nghĩa là sai từ gốc, cả video đi lệch |
 | **15** | 22/07/2026 | `2026.07.22.17` | 🔴 **Câu mở phải là một lượt riêng** — hiện xong là DỪNG chờ người dùng gõ. Trước đây gọi thẻ bấm ngay sau câu mở nên họ không kịp nhập chữ nào, câu mở thành trang trí |
 | **14** | 22/07/2026 | `2026.07.22.16` | 🔀 **LUỒNG HỎI PHÂN NHÁNH** (Sếp thiết kế lại): hỏi kiểu dựng trước → mỗi kiểu đi một nhánh câu hỏi riêng (Text+nhạc · Voice-over có thêm bước chọn nguồn giọng + mức phủ · MC dẫn) → câu mở → thẻ cuối *làm luôn hay trao đổi tiếp*. Không dồn hết câu cho mọi người |
@@ -209,6 +210,14 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    **Bước cuối — cả 3 nhánh, hỏi SAU khi họ đã gõ xong câu mở**: *"Bạn muốn tôi làm luôn, hay sau khi tôi đọc xong source thì hai bên tiếp tục trao đổi?"* Chọn "trao đổi tiếp" → đọc hiểu source rồi **hỏi tiếp CÓ CĂN CỨ** (nêu số liệu thật đọc được, hỏi đúng chỗ còn mơ hồ), không hỏi chung chung.
 
    Chi tiết từng nhánh + câu chữ: `references/chon-kieu-dung.md`, khối "LUỒNG HỎI PHÂN NHÁNH".
+
+0a. 🔴 **LỰA CHỌN CỦA NGƯỜI DÙNG PHẢI BIẾN THÀNH SẢN PHẨM — đọc `references/tu-lua-chon-den-san-pham.md` NGAY SAU khi hỏi xong** (luật Sếp Huy 22/07/2026: *"nó không phải chỉ để chọn và để đấy... hãy làm bộ quy tắc để biến đầu vào của người dùng gần nhất với sản phẩm ra"*).
+
+   **Ba tầng quyền, nhớ thứ tự**: ① **LUẬT DỰNG** (`chon-canh-highlight.md`, `quy-trinh-chon-canh.md`, `style-*.md`, `gu-kieu-2-3.md`) — **TUYỆT ĐỐI**, lựa chọn người dùng không ghi đè được · ② **LỰA CHỌN người dùng** — chỉ **DẪN DẮT**, quyết hướng đi chứ không quyết cách làm · ③ **TƯ LIỆU THẬT** — **CHẶN**, không có cảnh thì mọi mong muốn đều vô nghĩa.
+
+   **PHẢN BIỆN LÀ BẮT BUỘC, không phải tuỳ tâm.** Nhận đủ đầu vào rồi KHÔNG lao vào dựng ngay — chạy 3 phép đối chiếu: **(A) mong muốn ↔ tư liệu thật** (cảnh họ muốn có thật không) · **(B) mong muốn ↔ luật dựng** (có phạm luật đã đúc kết không) · **(C) mong muốn ↔ hiệu quả thật** (gu từ video final Sếp đã duyệt). Mỗi phản biện đủ 3 phần: *ý họ là gì → va vào cái gì, kèm số đo thật → đề xuất thay thế*. Luật thắng, nhưng người dùng **có quyền biết vì sao** và có quyền yêu cầu làm theo ý mình — họ khăng khăng thì làm theo và ghi rõ là theo yêu cầu của họ.
+
+   Người dùng chọn **"làm luôn"** vẫn phải phản biện — chỉ khác là báo lúc giao hàng thay vì dừng chờ.
 
 0b. **Chi tiết checklist thiếu-đủ vẫn theo `references/chon-kieu-dung.md`** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
