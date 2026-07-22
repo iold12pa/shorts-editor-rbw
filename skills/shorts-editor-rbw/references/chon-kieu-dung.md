@@ -57,6 +57,24 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 - Người dùng chỉ định đích danh 1 bài → dùng đúng bài đó, không hỏi lại loại nhạc.
 - Đã hỏi rồi thì **không nhắc lại rủi ro bản quyền lần 2** trong cùng video (luật cũ: nhắc đúng 1 câu tại điểm duyệt kịch bản).
 
+### Thẻ BẮT BUỘC cuối cùng — người dùng chọn MỨC TỰ CHỦ (Sếp Huy chốt 22/07/2026)
+
+Hỏi sau khi đã hỏi xong các thẻ kỹ thuật. **Thẻ này quyết định có điểm dừng duyệt kịch bản hay không** — nên hỏi rõ, đừng tự quyết thay.
+
+| Lựa chọn | Nghĩa | Luồng chạy |
+|---|---|---|
+| **Tôi tự sản xuất luôn** | Tự viết kịch bản dựa trên nội dung clip + kiến thức về Roboworld, dựng ra video hoàn chỉnh, giao thành phẩm | **BỎ điểm dừng duyệt kịch bản.** Chạy thẳng: phân tích → viết kịch bản → dựng → giao video + caption |
+| **Xác nhận nội dung cùng tôi** | Sau khi đọc hiểu video, trình kịch bản để người dùng duyệt/sửa rồi mới dựng | **GIỮ điểm dừng duyệt kịch bản** theo mẫu bảng biểu trong `kichban-template.md`. Tiếp tục tương tác cho tới khi họ ưng |
+
+**Chọn "tự sản xuất luôn" KHÔNG có nghĩa im lặng làm bằng mọi giá.** Bốn tình huống vẫn PHẢI dừng và báo, kể cả khi họ đã cho tự chạy:
+
+1. **Thiếu tư liệu** — không đủ cảnh sạch cho số video yêu cầu (luật đếm tư liệu, `quy-trinh-chon-canh.md`). Báo rõ thiếu gì, hỏi có được xào lại cảnh không. **Cấm tự xoay.**
+2. **Yêu cầu đích danh bị chặn** — giọng/nhạc/clip họ chỉ tên mà lỗi. Dừng báo, không tự thay.
+3. **Nguyên liệu mâu thuẫn lựa chọn** — vd chọn Kiểu 2 nhưng không clip nào có người nói; chọn nhạc trend nhưng giọng dẫn xuyên suốt (nhạc có lời sẽ đè lên).
+4. **Tốn tiền ngoài mức đã biết** — vd phải sinh nhạc ElevenLabs, quét thêm nhiều clip.
+
+Giao hàng xong vẫn **tóm tắt lại đã quyết những gì thay họ** (hook chọn góc nào, cảnh nào bị loại và vì sao) — để họ soi nhanh chứ không phải xem lại từ đầu.
+
 ### Câu BẮT BUỘC cuối cùng — mô tả buổi quay + đầu ra mong muốn (Sếp Huy chốt 22/07/2026)
 
 Sau khi hỏi xong các thẻ chọn, **luôn hỏi thêm một câu mở** (câu này không bấm được, phải để người dùng tự gõ):

@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 11** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 12** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 11 (22/07/2026)`
+>    `📦 Đang ở Ver 12 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **12** | 22/07/2026 | `2026.07.22.14` | Thêm thẻ **MỨC TỰ CHỦ** cuối bước hỏi: *tự sản xuất luôn* (bỏ điểm dừng duyệt kịch bản, chạy thẳng tới thành phẩm) hay *xác nhận nội dung cùng tôi* (giữ điểm dừng, tương tác tới khi ưng). Kèm 4 tình huống **vẫn phải dừng-báo dù đã cho tự chủ** |
 | **11** | 22/07/2026 | `2026.07.22.13` | **Kịch bản trình duyệt phải là BẢNG BIỂU khoa học**: tóm tắt nhanh · bảng phân cảnh có **mốc trong video + độ dài từng cảnh + dòng TỔNG** · dải âm thanh theo mốc · điểm cần duyệt. Cấm 3 lỗi trình bày cũ |
 | **10** | 22/07/2026 | `2026.07.22.12` | Thêm lựa chọn **nhạc ElevenLabs đo ni theo video** (đo thật: key đang **thiếu quyền Music**, không phải thiếu gói — sửa thông báo cho đúng để khỏi đi mua gói oan) · thêm **câu mở bắt buộc**: mô tả buổi quay + đầu ra mong muốn, kèm 4 bước xử lý thông tin đó |
 | **9** | 22/07/2026 | `2026.07.22.11` | Phân vai giọng đọc: **MC Xuân Tú + Thanh Ngọc = CHÍNH** (mặc định lấy trong 2 giọng này) · **Phương Uyên + Adam = phụ** (vẫn hiện đủ trong thẻ chọn, nhưng không tự lấy làm mặc định). Luôn hiện cả 4 cho người dùng chọn |
@@ -37,7 +38,13 @@ Biến footage thô của buổi quay thành shorts hoàn chỉnh (9:16, 1080x19
 
 **Tùy chỉnh riêng theo máy (không bị auto-update ghi đè):** trước khi áp dụng bất kỳ quy chuẩn nào ở các mục bên dưới (kịch bản, style, ffmpeg...), kiểm tra file **`~/.claude/roboworld-assets/tuy-chinh-rieng.md`** (CHỖ BỀN — cùng nhà với model Whisper và kho tài nguyên, sống sót qua mọi lần update/gỡ-cài-lại plugin). Nếu tồn tại, đọc và **ưu tiên áp dụng nội dung trong đó**, ghi đè lên phần quy chuẩn chung tương ứng bên dưới cho video đang làm. LƯU Ý DI CƯ (cơ chế đời đầu 19/07/2026 từng để file này tại `references/tuy-chinh-rieng.md` trong thư mục skill): nếu chỗ bền CHƯA có file mà lại thấy `references/tuy-chinh-rieng.md` → chuyển (move) ngay file đó về chỗ bền rồi dùng, báo người dùng 1 câu — vì bản nằm trong thư mục skill sẽ MẤT khi plugin lên bản mới (cache đổi folder + bước dọn bản cũ xóa mất). Nếu người dùng (ở BẤT KỲ máy nào, kể cả máy không có quyền push GitHub) yêu cầu đổi 1 quy tắc dựng nào đó ("từ giờ chữ hook màu khác", "đổi outro", "không dùng nhạc nền này nữa"...), LUÔN ghi thay đổi đó vào `~/.claude/roboworld-assets/tuy-chinh-rieng.md` (tạo file nếu chưa có, theo mẫu `references/tuy-chinh-rieng.md.example`) — TUYỆT ĐỐI không sửa trực tiếp vào `SKILL.md` hay các file `references/*.md` khác, vì các file đó do bản git dùng chung quản lý, sửa vào đó sẽ bị bản auto-update từ GitHub ghi đè mất ở lần cập nhật tiếp theo. Máy có quyền push GitHub (ADMIN/legion) muốn đổi quy chuẩn CHUNG cho cả team thì sửa thẳng file gốc + push như bình thường, không cần qua file tùy chỉnh riêng này.
 
-## Workflow tổng quát (đúng 2 điểm dừng chờ người dùng: ① chọn KIỂU DỰNG + đủ nguyên liệu ngay đầu, ② duyệt kịch bản trước khi dựng — giao hàng KHÔNG phải điểm dừng, dựng xong là bàn giao luôn)
+## Workflow tổng quát — điểm dừng ① luôn có, điểm dừng ② do NGƯỜI DÙNG chọn (sửa 22/07/2026)
+
+**① Chọn kiểu dựng + đủ nguyên liệu** — luôn có, ngay đầu.
+**② Duyệt kịch bản trước khi dựng** — **chỉ có khi người dùng chọn "xác nhận nội dung cùng tôi"** ở thẻ mức tự chủ (luật Sếp Huy 22/07/2026). Họ chọn **"tôi tự sản xuất luôn"** → bỏ điểm dừng này, chạy thẳng tới thành phẩm.
+**Giao hàng KHÔNG phải điểm dừng** — dựng xong là bàn giao luôn.
+
+⚠️ **Cho tự chạy KHÔNG có nghĩa im lặng làm bằng mọi giá.** Bốn tình huống vẫn phải dừng-báo dù đã được cho tự chủ: thiếu tư liệu · yêu cầu đích danh bị chặn · nguyên liệu mâu thuẫn lựa chọn · tốn tiền ngoài mức đã biết. Chi tiết: `references/chon-kieu-dung.md`, khối "Mức tự chủ".
 
 **Ngay khi skill được gọi lần đầu trong phiên** (trước hoặc song song với bước 0 dưới đây): kiểm tra và tự cài/tải sẵn FFmpeg + model Whisper + kho tài nguyên dùng chung theo đúng hướng dẫn ở mục "Môi trường" bên dưới — không đợi tới lúc thật sự cần mới làm, để người dùng không phải chờ giữa chừng lúc đang dựng video. Việc tải nặng (model, kho tài nguyên) chạy NỀN (`run_in_background`) song song với việc hỏi đáp — người dùng không phải ngồi chờ.
 
