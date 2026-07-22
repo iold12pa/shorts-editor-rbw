@@ -12,6 +12,36 @@ File này tách riêng để **dễ cập nhật realtime**: thêm/sửa 1 câu 
 >
 > Vì vậy thứ tự đúng là: **nhận folder → chạy phân tích nền → hỏi 1 lượt bằng thẻ chọn (những gì còn thiếu) → dựng.** KHÔNG phải hỏi hết rồi mới phân tích.
 
+---
+
+## ⏰ HỎI CÁI GÌ LÚC NÀO — chia 2 nhóm (Sếp Huy chốt 22/07/2026)
+
+Sếp bắt lỗi thật: thẻ mức tự chủ từng ghi *"sau khi tôi đọc và hiểu rõ video..."* trong khi lúc hỏi **mới nhận folder, chưa đọc gì cả** — hứa hão. Truy ra nguyên nhân gốc: **chưa phân loại câu hỏi theo việc nó CÓ CẦN HIỂU NỘI DUNG hay không.**
+
+### NHÓM 1 — hỏi NGAY khi tiếp nhận folder (không cần hiểu nội dung)
+
+Hỏi ngay trong lúc phân tích chạy nền, để người dùng vừa trả lời vừa chờ, không phí thời gian.
+
+| Câu | Vì sao hỏi được ngay |
+|---|---|
+| **Mức tự chủ** — tự sản xuất luôn / xác nhận cùng tôi | Đây là cách họ muốn làm việc, chẳng liên quan clip có gì |
+| **Kênh đăng** — page công ty / cá nhân / cả hai | Quyết định logo + outro, không phụ thuộc nội dung |
+| **Câu mở** — mô tả buổi quay + đầu ra mong muốn | Chính họ là người biết, máy không đọc ra được |
+
+⚠️ Câu chữ phải khớp thời điểm: viết **"sau khi tiếp nhận video"**, KHÔNG viết "sau khi tôi đọc hiểu video" — lúc đó chưa đọc.
+
+### NHÓM 2 — chỉ hỏi SAU khi phân tích xong (cần hiểu nội dung mới khuyên đúng)
+
+| Câu | Cần biết gì từ footage trước khi hỏi |
+|---|---|
+| **Kiểu dựng** | Có bao nhiêu clip thật sự có người nói → mới biết Kiểu 2 khả thi không |
+| **Số video** | Bao nhiêu cảnh sạch, khác nhau → mới biết làm được mấy video mà không lặp cảnh |
+| **Nhạc** | Nhịp cảnh, có tiếng hiện trường đáng giữ không |
+| **Mức phủ giọng** *(Kiểu 2/3)* | Lượng thoại thật có trong clip |
+| **Giọng đọc** *(Kiểu 3)* | Nội dung nghiêng chất nào → mới gợi ý được giọng hợp |
+
+**Kèm số liệu thật vào từng lựa chọn** để người dùng chọn có căn cứ — vd *"Kiểu 2: máy đếm được 14 clip có tiếng nói nên làm được"*, *"3 video: 31 clip sạch, đủ cảnh riêng cho từng video, không phải lặp"*. Đó chính là giá trị của việc phân tích trước khi hỏi.
+
 ## Bước A — Hỏi kiểu dựng (bỏ qua nếu người dùng đã nói rõ ngay từ tin đầu)
 
 Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:

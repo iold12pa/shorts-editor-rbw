@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 12** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 13** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 12 (22/07/2026)`
+>    `📦 Đang ở Ver 13 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **13** | 22/07/2026 | `2026.07.22.15` | **Chia câu hỏi làm 2 nhóm theo thời điểm**: nhóm hỏi NGAY khi tiếp nhận (mức tự chủ · kênh đăng · mô tả buổi quay — không cần hiểu nội dung) và nhóm chỉ hỏi SAU khi phân tích xong (kiểu dựng · số video · nhạc · giọng — phải kèm số liệu thật vào từng lựa chọn). Sửa câu chữ hứa hão "sau khi tôi đọc hiểu video" |
 | **12** | 22/07/2026 | `2026.07.22.14` | Thêm thẻ **MỨC TỰ CHỦ** cuối bước hỏi: *tự sản xuất luôn* (bỏ điểm dừng duyệt kịch bản, chạy thẳng tới thành phẩm) hay *xác nhận nội dung cùng tôi* (giữ điểm dừng, tương tác tới khi ưng). Kèm 4 tình huống **vẫn phải dừng-báo dù đã cho tự chủ** |
 | **11** | 22/07/2026 | `2026.07.22.13` | **Kịch bản trình duyệt phải là BẢNG BIỂU khoa học**: tóm tắt nhanh · bảng phân cảnh có **mốc trong video + độ dài từng cảnh + dòng TỔNG** · dải âm thanh theo mốc · điểm cần duyệt. Cấm 3 lỗi trình bày cũ |
 | **10** | 22/07/2026 | `2026.07.22.12` | Thêm lựa chọn **nhạc ElevenLabs đo ni theo video** (đo thật: key đang **thiếu quyền Music**, không phải thiếu gói — sửa thông báo cho đúng để khỏi đi mua gói oan) · thêm **câu mở bắt buộc**: mô tả buổi quay + đầu ra mong muốn, kèm 4 bước xử lý thông tin đó |
@@ -205,7 +206,13 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
    **(2) Gộp vào MỘT lượt hỏi, đừng hỏi nhỏ giọt.** Cần biết nhiều thứ thì đưa hết vào cùng một lượt (tối đa 4 câu, mỗi câu tối đa 4 lựa chọn), đừng hỏi 1 câu → chờ trả lời → lại hỏi câu tiếp. Hỏi nhỏ giọt làm người dùng phải quay lại nhiều lần cho một việc.
 
-   **(3) Suy được từ footage thì TỰ SUY, đừng hỏi** (Sếp 22/07: *"dựa vào thông tin trong clip"*, *"tự làm đi"*). Bối cảnh buổi quay, robot dòng nào, địa điểm, có ai đang nói — những thứ này **đã nằm trong footage**: Whisper nghe được lời, mắt AI nhận ra robot và bối cảnh, ảnh lưới cho thấy khung hình. **Chạy phân tích trước rồi mới hỏi** — hỏi xong mới phân tích là hỏi thừa những thứ máy tự biết. Chỉ hỏi thứ **không thể suy ra từ file**: kênh đăng (page công ty hay cá nhân), nhạc trend hay nhạc sạch bản quyền, số lượng video muốn ra.
+   **(3) Suy được từ footage thì TỰ SUY, đừng hỏi** (Sếp 22/07: *"dựa vào thông tin trong clip"*, *"tự làm đi"*). Bối cảnh buổi quay, robot dòng nào, địa điểm, có ai đang nói — những thứ này **đã nằm trong footage**: Whisper nghe được lời, mắt AI nhận ra robot và bối cảnh, ảnh lưới cho thấy khung hình.
+
+   **CHIA CÂU HỎI LÀM 2 NHÓM THEO THỜI ĐIỂM** (Sếp bắt lỗi 22/07: thẻ mức tự chủ từng viết *"sau khi tôi đọc và hiểu rõ video"* trong khi lúc hỏi mới nhận folder, chưa đọc gì — hứa hão):
+   - **NHÓM 1 — hỏi NGAY khi tiếp nhận**, không cần hiểu nội dung: **mức tự chủ · kênh đăng · câu mở mô tả buổi quay**. Hỏi trong lúc phân tích chạy nền, người dùng vừa trả lời vừa chờ. Câu chữ phải viết **"sau khi tiếp nhận video"**, không viết "sau khi tôi đọc hiểu video".
+   - **NHÓM 2 — chỉ hỏi SAU khi phân tích xong**: **kiểu dựng · số video · nhạc · mức phủ giọng · giọng đọc**. Những câu này cần số liệu thật mới khuyên đúng — và phải **kèm số liệu vào từng lựa chọn** (vd *"Kiểu 2: đếm được 14 clip có tiếng nói nên làm được"*).
+
+   Bảng phân loại đầy đủ: `references/chon-kieu-dung.md`, khối "HỎI CÁI GÌ LÚC NÀO".
 
    **(4) Môi trường không có công cụ hỏi trực quan** thì mới dùng chữ — và khi đó viết **thật ngắn, mỗi câu một dòng, đánh số rõ**, không kèm bảng biểu dài dòng.
 
