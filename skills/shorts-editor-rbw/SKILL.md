@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 10** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 11** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 10 (22/07/2026)`
+>    `📦 Đang ở Ver 11 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **11** | 22/07/2026 | `2026.07.22.13` | **Kịch bản trình duyệt phải là BẢNG BIỂU khoa học**: tóm tắt nhanh · bảng phân cảnh có **mốc trong video + độ dài từng cảnh + dòng TỔNG** · dải âm thanh theo mốc · điểm cần duyệt. Cấm 3 lỗi trình bày cũ |
 | **10** | 22/07/2026 | `2026.07.22.12` | Thêm lựa chọn **nhạc ElevenLabs đo ni theo video** (đo thật: key đang **thiếu quyền Music**, không phải thiếu gói — sửa thông báo cho đúng để khỏi đi mua gói oan) · thêm **câu mở bắt buộc**: mô tả buổi quay + đầu ra mong muốn, kèm 4 bước xử lý thông tin đó |
 | **9** | 22/07/2026 | `2026.07.22.11` | Phân vai giọng đọc: **MC Xuân Tú + Thanh Ngọc = CHÍNH** (mặc định lấy trong 2 giọng này) · **Phương Uyên + Adam = phụ** (vẫn hiện đủ trong thẻ chọn, nhưng không tự lấy làm mặc định). Luôn hiện cả 4 cho người dùng chọn |
 | **8** | 22/07/2026 | `2026.07.22.10` | 🔴 **BỎ HẲN 2 giọng miễn phí edge-tts** — Sếp nghe mẫu, kết luận đọc méo. Gỡ khỏi bảng chọn + 6 file luật + thông báo lỗi. **Không còn phương án thay thế**: ElevenLabs lỗi thì DỪNG BÁO, chờ Sếp quyết. Còn 4 giọng, vừa khít 1 thẻ hỏi |
@@ -212,7 +213,9 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    **Hỏi gọn trong 1 lượt, chạy máy song song**: mọi câu hỏi còn thiếu (kiểu dựng, mô tả buổi quay, chữ đè, nhạc, giọng đọc...) GỘP vào đúng 1 tin nhắn — đừng bắt người dùng trả lời 2-3 lượt mới khởi động được. Và ngay khi đã có đường dẫn folder source hợp lệ (kể cả khi còn đang chờ trả lời các câu hỏi khác), **khởi chạy `analyze_footage.py` chạy NỀN luôn** (0 token, thuần máy) — với điều kiện ffmpeg + model Whisper đã sẵn sàng (chưa sẵn thì chờ phần cài/tải nền xong mới chạy, đừng chạy phân tích khi thiếu model kẻo index ghi nhầm "không có thoại"). Lúc người dùng trả lời xong thì phân tích thường cũng vừa xong — tiết kiệm nhiều phút chờ.
 1. Sau khi đủ nguyên liệu: xác nhận đã có đường dẫn đầy đủ tới folder source (nếu chưa, hỏi xin ngay — xem mục "Phạm vi làm việc" ở trên). Robot xuất hiện trong footage là model nào → tra `references/robot-products.md` trước; chỉ hỏi lại nếu không chắc chắn model hoặc model chưa có trong danh mục.
 2. Skill phân tích footage → viết kịch bản cho từng ý tưởng (chưa có ý tưởng cụ thể thì tự đề xuất 2-3 ý hay nhất từ footage, xem thêm `references/chon-canh-highlight.md` để chọn đúng cảnh highlight)
-3. **Trình duyệt kịch bản** (tóm tắt ngắn gọn từng video: hook, mạch cảnh, text đè, nhạc, thời lượng; nêu rõ chỗ nào đang tự suy đoán nếu thông tin "nên có" còn thiếu). OK cái nào dựng cái đó; sửa thì cập nhật rồi dựng luôn theo ý sửa
+3. **Trình duyệt kịch bản — BẮT BUỘC theo mẫu bảng biểu trong `references/kichban-template.md`** (luật Sếp Huy 22/07/2026: *"kịch bản hiện ra cho người dùng cũng phải khoa học dễ nhìn, bảng biểu có mốc thời gian ước chừng đàng hoàng"*). Đủ 4 phần: **📋 tóm tắt nhanh** (thông điệp · người xem · thời lượng · kênh · nhạc · giọng · số cảnh) → **🎬 ý tưởng gốc** → **⏱️ bảng phân cảnh có MỐC TRONG VIDEO + độ dài từng cảnh + dòng TỔNG** → **🔊 dải âm thanh theo mốc** → **✅ điểm cần duyệt**.
+
+   **Ba lỗi bị cấm**: chỉ ghi timecode clip nguồn mà không ghi cảnh đó rơi vào giây thứ mấy của video thành phẩm · không ghi độ dài từng cảnh và không có dòng TỔNG · viết thành đoạn văn kể lể thay vì bảng. Mốc là **ước chừng ±0.5s** — ghi rõ vậy, đừng giả vờ chính xác tuyệt đối. Nêu rõ chỗ nào đang tự suy đoán nếu thông tin "nên có" còn thiếu. OK cái nào dựng cái đó; sửa thì cập nhật rồi dựng luôn theo ý sửa
 4. Dựng tự động toàn bộ, tự nghiệm thu, xuất video final + caption, mở folder giao hàng
 
 ## Môi trường (đã cài & kiểm chứng trên máy này)

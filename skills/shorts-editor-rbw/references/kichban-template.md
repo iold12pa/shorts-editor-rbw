@@ -2,31 +2,59 @@
 
 Mỗi ý tưởng video → 1 file `kichban/video-N-<slug>.md`. Kịch bản là hợp đồng giữa phần "viết" và phần "dựng": mỗi dòng bảng phân cảnh phải đủ thông tin để dựng mà không cần mở lại footage. Dùng đúng khối theo KIỂU đã chọn ở bước 0 — đừng bắt Kiểu 1 (không thoại) phải có mục "kịch bản voiceover".
 
+## 🔴 CÁCH TRÌNH BÀY — Sếp Huy chốt 22/07/2026
+
+> Nguyên văn: *"Kịch bản hiện ra cho người dùng cũng phải khoa học dễ nhìn, bảng biểu có mốc thời gian ước chừng đàng hoàng."*
+
+Kịch bản trình cho người duyệt **bắt buộc** có đủ 4 phần dưới, theo đúng thứ tự này. Người duyệt phải **nhìn một cái là hình dung được cả video chạy ra sao**, không phải tự cộng nhẩm.
+
+**Ba lỗi trình bày bị cấm:**
+1. **Chỉ ghi timecode của clip nguồn** mà không ghi cảnh đó rơi vào **giây thứ mấy của video thành phẩm** — người duyệt không hình dung được nhịp.
+2. **Không ghi độ dài từng cảnh** và **không có dòng TỔNG** — không biết video dài bao nhiêu, cảnh nào bị lê thê.
+3. Viết thành đoạn văn dài kể lể thay vì bảng.
+
+Mốc thời gian là **ước chừng** (cảnh cắt theo nhịp lời/nhạc nên xê dịch ±0.5s) — cứ ghi rõ là ước chừng, đừng giả vờ chính xác tuyệt đối.
+
 ## Khung chung (mọi kiểu đều có)
 
 ```markdown
-# Video N — <Tên video>  (Kiểu <1/2/3>)
+# Video N — <Tên video>   ·   Kiểu <1/2/3>   ·   ~<X>s
 
-## Ý tưởng gốc (lời người dùng)
-<chép nguyên văn ý tưởng được đưa, hoặc ghi "skill tự đề xuất" + lý do>
+## 📋 Tóm tắt nhanh
+| Mục | Nội dung |
+|---|---|
+| **Thông điệp chính** | <1 câu — video này nói lên điều gì> |
+| **Người xem mục tiêu** | <chủ chuỗi nhà hàng / chủ nhà máy / khách tham quan...> |
+| **Thời lượng** | ~<X>s (ước chừng, ±2s) |
+| **Kênh đăng** | <page công ty: có logo + outro / cá nhân: bỏ hết> |
+| **Nhạc** | <tên bài + loại: trend hay không bản quyền> |
+| **Giọng đọc** | <tên giọng — chỉ Kiểu 3> |
+| **Số cảnh** | <N> cảnh, nhịp trung bình <Y>s/cảnh |
 
-## Thông số
-- Thời lượng mục tiêu: ~<X>s
-- Nhạc nền: <file trong kho / "giữ âm gốc" / "không">
-- Đối tượng xem: <chủ nhà hàng / chủ nhà máy / ...>
+## 🎬 Ý tưởng gốc
+<chép nguyên văn mô tả của người dùng, hoặc ghi "skill tự đề xuất" + lý do.
+Người dùng có mô tả buổi quay/đầu ra mong muốn → ghi rõ ý nào của họ nằm ở cảnh nào.>
 
-## Hook (0-3s)
-- Chữ trên màn hình: "<HOOK NGẮN, GÂY SỐC HOẶC GÂY TÒ MÒ>"
-- Cảnh nền: <clip + timecode — chọn cảnh MẠNH nhất của cả buổi quay>
+## ⏱️ Bảng phân cảnh
+| # | Mốc trong video | Dài | Nội dung hiện ra | Cảnh dùng | Lấy từ | Xử lý |
+|---|---|---|---|---|---|---|
+| 1 | **0:00 – 0:03** | 3.0s | 🔤 "CHỮ HOOK IN HOA" | robot tiến tới gần ống kính | `0043` @ 12.5–15.5 | zoom nhẹ |
+| 2 | **0:03 – 0:08** | 5.0s | 🎙️ "câu lời đọc..." | khách vỗ tay nhìn robot | `0051` @ 03.0–08.0 | crop giữa |
+| 3 | **0:08 – 0:12** | 4.0s | 🔤 "CHỮ ĐÈ" | robot bê đồ qua bàn | `0045` @ 20.0–24.0 | giữ tiếng gốc 25% |
+|  | **TỔNG** | **12.0s** |  |  |  |  |
 
-## Bảng phân cảnh
-| # | Nội dung (text đè / câu thoại) | Clip nguồn | Timecode in-out | Xử lý |
-|---|---|---|---|---|
-| 1 | <...> | clip03.mp4 | 01:23.5 - 01:27.0 | crop giữa |
-| 2 | <...> | clip07.mp4 | 00:05.0 - 00:09.0 | blur-pad, giữ âm gốc 25% |
+Ký hiệu cột "Nội dung": 🔤 chữ đè màn hình · 🎙️ lời đọc/lời thoại · 🔇 không chữ không lời, để hình chạy
 
-## CTA (câu chốt)
-<câu kết + thông tin Roboworld — website roboworld.com.vn>
+## 🔊 Dải âm thanh theo mốc
+| Mốc | Nhạc | Lời | Ghi chú |
+|---|---|---|---|
+| 0:00 – 0:08 | nhỏ (0.18) | có lời đọc | hạ nhạc để nghe rõ lời |
+| 0:08 – hết | dâng (0.55) | không lời | nhạc lên, để hình kể chuyện |
+
+## ✅ Điểm cần Sếp duyệt trước khi tôi dựng
+1. <điều đáng phân vân nhất — vd: hook đã đủ mạnh chưa>
+2. <cảnh nào còn nghi ngờ, hoặc chỗ thiếu tư liệu phải xoay>
+3. <take thoại cần nghe kiểm — chỉ Kiểu 2>
 ```
 
 ## Khối bổ sung theo kiểu
