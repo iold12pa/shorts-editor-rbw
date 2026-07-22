@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 19** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 20** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 19 (22/07/2026)`
+>    `📦 Đang ở Ver 20 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **20** | 22/07/2026 | `2026.07.22.22` | 🔴 **CẤM CẮT XÉN QUY TRÌNH KHI SẮP HẾT NGỮ CẢNH** — Sếp trả về 3 video: mở 4/58 ảnh lưới, dựng cả 3 video từ đúng 5 clip, Kiểu 2 để nguyên 10 giây một cú máy. Luật: ước lượng trước, không đủ chỗ thì **DỪNG BÁO đề nghị phiên mới**, tuyệt đối không tự hạ chuẩn |
 | **19** | 22/07/2026 | `2026.07.22.21` | 🔴 **Công cụ MỚI `kiem_cai_dat.py`** — chắc chắn lựa chọn của người dùng được thực hiện thật: ghi ra file ngay sau khi hỏi, đối chiếu lại trước khi giao. Tự đo **có/không logo + outro**, số lượng, LUFS, khung hình; liệt kê phần phải kiểm bằng tai/mắt |
 | **18** | 22/07/2026 | `2026.07.22.20` | **Phản biện chỉ áp cho nhánh "trao đổi tiếp"**. Chọn *làm luôn* → mong muốn người dùng chỉ là **tham khảo**, xung đột thì im lặng theo luật dựng, không hỏi không báo. Vẫn dừng-báo ở 4 tình huống không làm được |
 | **17** | 22/07/2026 | `2026.07.22.19` | 🔴 **File luật MỚI `tu-lua-chon-den-san-pham.md`**: lựa chọn của người dùng phải BIẾN thành sản phẩm, không chỉ ghi nhận. Bảng ánh xạ từng lựa chọn → đổi gì trong video · 3 tầng quyền (luật dựng TUYỆT ĐỐI > lựa chọn DẪN DẮT > tư liệu CHẶN) · **phản biện 3 tầng BẮT BUỘC** trước khi dựng |

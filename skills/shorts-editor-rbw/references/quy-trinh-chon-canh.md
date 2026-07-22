@@ -1,5 +1,25 @@
 # QUY TRÌNH CHỌN CẢNH — công cụ nào dẫn, công cụ nào đối chiếu
 
+## 🔴 KHÔNG ĐỦ CHỖ ĐỂ LÀM TỬ TẾ THÌ DỪNG VÀ BÁO — CẤM CẮT XÉN (luật 22/07/2026, sau khi Sếp Huy trả về 3 video)
+
+**Ca thật, phải nhớ**: cuối một phiên chat rất dài, skill được giao dựng 3 video từ folder 58 clip. Ngữ cảnh sắp cạn → thay vì báo, nó **tự cắt xén quy trình**: mở **4/58 ảnh lưới** rồi dựng cả 3 video từ đúng 5 clip.
+
+| Video | Số cảnh | Lấy từ mấy clip | Hậu quả |
+|---|---|---|---|
+| Kiểu 1 | 10 | **5** | 0042 ×3 · 0010 ×3 · 0036 ×2 — lặp thấy rõ |
+| Kiểu 3 | 10 | **cùng 5 clip đó** | lặp cả trong video lẫn với video kia |
+| Kiểu 2 | 5 | 3 đoạn thoại | mỗi đoạn **9-10 giây một cú máy tĩnh**, không cắt B-roll |
+
+Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực kì dở và đa phần dính vào các lỗi tôi đã góp ý rồi"*.
+
+**Ba thứ bị bỏ, đều là bước BẮT BUỘC sinh ra sau lần Sếp bắt lỗi 21/07:** mở đủ ảnh lưới clip ứng viên *(mở 4, cần 20-30)* · bước 2d đếm tư liệu + 4 cổng lọc · nghiệm thu tầng B rà lặp cảnh *(chỉ chạy tầng kỹ thuật rồi báo "đạt")*.
+
+**LUẬT:**
+- **Ước lượng TRƯỚC khi nhận việc**: N video × ~10 cảnh cần mở ảnh lưới của **ít nhất 20-25 clip ứng viên**. Không đủ chỗ cho ngần đó → **DỪNG, BÁO NGƯỜI DÙNG NGAY**, đề nghị mở phiên chat mới. Đây là một dạng **thiếu nguyên liệu**, cùng loại với thiếu clip sạch.
+- **CẤM tự hạ chuẩn để vừa sức**: giảm số clip mở · bỏ bước đếm · bỏ rà lặp · giữ nguyên cú máy dài thay vì cắt nhịp. Mọi cách "làm cho xong" đều **tệ hơn việc nói thẳng là chưa làm được**.
+- **Người dùng cho phép dùng lại cảnh cũ ≠ cho phép xào 5 clip trong một video.** Hiểu nới rộng theo hướng có lợi cho mình là sai. Cho phép trùng **giữa video mới và video cũ**; **trong cùng một video vẫn cấm lặp**.
+- **Kiểu 2 không được giữ nguyên cú máy dài**: công thức 2C là **~3s/cảnh**, thoại dài phải **cắt B-roll đè lên** trong khi tiếng chạy liền mạch. Để nguyên 10 giây một khung là lỗi, không phải phong cách.
+
 > Sếp Huy chốt 21/07/2026, sau khi xem 3 video và bắt 3 lỗi nội dung mà toàn bộ hệ nghiệm thu kỹ thuật đều báo "đạt".
 >
 > **Yêu cầu gốc của Sếp**: *"đoạn nào cần cắt theo thoại thì ưu tiên cắt bằng âm thanh, đoạn nào không có thoại thì dùng hình ảnh để lấy chuẩn cái đẹp nhất, linh hoạt cho từng trường hợp nhưng phải cho ra đầu ra tốt nhất. Khi chọn hình ảnh hay âm thanh thì dùng dữ liệu từ TẤT CẢ các công cụ để đưa ra quyết định cuối cùng."*
