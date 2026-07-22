@@ -64,10 +64,27 @@ def main():
             audio = r.read()
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", "replace")[:300]
+        # PHAN BIET 2 NGUYEN NHAN — do that 22/07/2026, truoc day gop chung thanh
+        # "can nang goi" khien nguoi ta di mua goi oan trong khi chi thieu QUYEN KEY.
+        if "music_generation" in body or "missing_permissions" in body:
+            sys.exit(
+                "\n!!! KEY THIEU QUYEN TAO NHAC (khong phai thieu goi).\n"
+                "    ElevenLabs bao: key dang dung khong co quyen 'music_generation'.\n"
+                "    Key nay duoc tao chi voi quyen doc giong + tao tieng noi.\n"
+                "\n"
+                "    CACH SUA (nguoi co tai khoan ElevenLabs lam, ~1 phut):\n"
+                "      1. Vao elevenlabs.io -> anh dai dien -> API Keys\n"
+                "      2. Sua key dang dung (hoac tao key moi)\n"
+                "      3. Bat quyen 'Music' / 'music_generation'\n"
+                "      4. Key moi thi nhap lai bang: python chuan_bi_may.py --nhap-key\n"
+                "\n"
+                "    -> BAO NGUOI DUNG dung 3 buoc tren. KHONG tu thay bang nguon nhac khac,\n"
+                "       cung DUNG khuyen ho nang goi khi chua ro co phai loi goi khong.\n"
+                "    Chi tiet: %s\n" % body)
         if e.code in (401, 402, 403):
-            sys.exit("ElevenLabs Music loi HTTP %s — tinh nang nay CAN GOI TRA PHI"
-                     " (Starter tro len; goi Free bi chan).\n-> DUNG BAO nguoi dung"
-                     " 'can nang goi ElevenLabs', KHONG tu thay nguon nhac khac.\nChi tiet: %s"
+            sys.exit("ElevenLabs Music loi HTTP %s — co the do GOI chua du hoac KEY thieu quyen.\n"
+                     "-> Doc ky phan 'message' ben duoi de biet dung nguyen nhan, roi BAO nguoi dung.\n"
+                     "   KHONG tu thay nguon nhac khac.\nChi tiet: %s"
                      % (e.code, body))
         sys.exit("ElevenLabs Music loi HTTP %s: %s" % (e.code, body))
     except urllib.error.URLError as e:

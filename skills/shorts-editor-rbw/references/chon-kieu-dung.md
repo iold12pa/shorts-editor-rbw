@@ -37,10 +37,43 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 
 > "Video này bạn muốn dùng **nhạc trend** (nhạc hot TikTok — bắt tai, dễ lên tương tác, **nhưng chỉ nên đăng Facebook page**, đăng YouTube khả năng cao dính bản quyền/bị tắt tiếng), hay **nhạc không bản quyền** (đăng được mọi nền tảng kể cả YouTube, an toàn tuyệt đối)?"
 
-- Chọn **nhạc trend** → lấy từ `Kho nhạc free YT/Nhạc hot/` (xem cách dùng kho này ở `references/style-mau.md`, mục "Kho nhạc trend").
-- Chọn **nhạc không bản quyền** → lấy từ các folder còn lại trong `Kho nhạc free YT/` (`Chill nhẹ + vui vẻ`, `POP tươi sáng`...).
+**Bốn lựa chọn nhạc** (Sếp Huy thêm mục 4 ngày 22/07/2026):
+
+| Lựa chọn | Lấy từ đâu | Lưu ý |
+|---|---|---|
+| **Nhạc không bản quyền** | `Kho nhạc free YT/` các folder ngoài `Nhạc hot` (`Chill nhẹ + vui vẻ`, `POP tươi sáng`...) | Đăng được mọi nền tảng kể cả YouTube |
+| **Nhạc trend** | `Kho nhạc free YT/Nhạc hot/` — cách dùng ở `style-mau.md` mục "Kho nhạc trend" | **Chỉ nên đăng Facebook**; YouTube khả năng cao dính bản quyền |
+| **Giữ tiếng gốc trong clip** | không dùng nhạc | Hợp khi cảnh có tiếng khách nói, tiếng robot chạy |
+| **Nhạc ElevenLabs (đo ni theo video)** | `scripts/elevenlabs_music.py` — sinh bài **không lời**, dài đúng bằng video | Xem khối bên dưới trước khi chọn |
+
+**Nhạc ElevenLabs — đọc trước khi mời người dùng chọn:**
+
+- Sinh nhạc **theo mô tả bằng tiếng Anh, càng cụ thể càng hợp** (vd `upbeat corporate tech, light percussion, optimistic`), **dài đúng bằng video** nên không phải cắt/fade ép.
+- **Tốn tiền**: ~900 credits mỗi phút nhạc. **Sinh 1 lần cho bản duyệt cuối**, đừng sinh thử nhiều bản.
+- 🔴 **Trạng thái 22/07/2026: CHƯA DÙNG ĐƯỢC — key thiếu quyền.** Đo thật, ElevenLabs trả `missing the permission music_generation`. **Đây KHÔNG phải thiếu gói** (ghi chú cũ đoán sai là "cần nâng gói", suýt khiến đi mua oan). Cách mở, ~1 phút: **elevenlabs.io → API Keys → sửa key → bật quyền `Music`** → key mới thì nhập lại bằng `chuan_bi_may.py --nhap-key`.
+- Chừng nào chưa bật quyền: người dùng chọn mục này thì **BÁO đúng 3 bước trên rồi chờ họ quyết** — không tự đổi sang kho nhạc khác.
+- Kho nhạc riêng của Sếp trên Drive **vẫn là mặc định**. Nhạc ElevenLabs dùng khi người dùng chủ động chọn, hoặc kho không có bài hợp và họ đồng ý.
+
 - Người dùng chỉ định đích danh 1 bài → dùng đúng bài đó, không hỏi lại loại nhạc.
 - Đã hỏi rồi thì **không nhắc lại rủi ro bản quyền lần 2** trong cùng video (luật cũ: nhắc đúng 1 câu tại điểm duyệt kịch bản).
+
+### Câu BẮT BUỘC cuối cùng — mô tả buổi quay + đầu ra mong muốn (Sếp Huy chốt 22/07/2026)
+
+Sau khi hỏi xong các thẻ chọn, **luôn hỏi thêm một câu mở** (câu này không bấm được, phải để người dùng tự gõ):
+
+> **"Sếp mô tả giúp tôi buổi quay này, và đầu ra Sếp mong muốn ra sao — càng cụ thể tôi càng làm đúng ý."**
+
+**Đây là thông tin quan trọng nhất trong cả bước hỏi.** Mọi thẻ chọn phía trên chỉ quyết định khung kỹ thuật; câu này mới cho biết **video phải nói lên điều gì**. Nguyên văn Sếp: *"cái này là thông tin mà bạn phải xử lý để đầu ra giống họ mong muốn nhất"*.
+
+**Xử lý câu trả lời thế nào — không đọc lướt rồi bỏ đó:**
+
+1. **Bóc ra 3 nhóm tin** và ghi lại rõ ràng:
+   - **Bối cảnh**: sự kiện gì, khách hàng nào, robot nào, diễn ra ở đâu — dùng để viết hook và chữ đè cho đúng, không bịa.
+   - **Thông điệp muốn truyền**: bán hàng · khoe năng lực triển khai · kể chuyện khách hàng · tuyển dụng · thông báo sự kiện. Cái này quyết định giọng văn kịch bản.
+   - **Ràng buộc cụ thể**: cảnh nào bắt buộc phải có, cảnh nào cấm dùng, tên riêng phải đọc đúng, độ dài mong muốn, hạn nộp.
+2. **Đối chiếu với những gì máy đọc được từ footage.** Người dùng nói có cảnh A mà phân tích không thấy → **hỏi lại ngay**, đừng tự dựng thiếu rồi báo sau.
+3. **Phản chiếu lại trong kịch bản trình duyệt**: ghi rõ câu nào/cảnh nào đáp ứng ý nào họ nêu. Người duyệt thấy ý mình được hiểu đúng thì duyệt nhanh, và sai ở đâu cũng chỉ ra được ngay.
+4. **Người dùng bỏ trống câu này** → vẫn làm được, nhưng phải nói rõ: *"Sếp không mô tả thêm nên tôi bám theo những gì đọc được trong clip"* — để họ biết mà bổ sung nếu lệch.
 
 ### Kiểu 2 — Dựng theo lời thoại có sẵn (voice gốc, đồng bộ lúc quay)
 | Cần | Mức độ | Nếu thiếu → hỏi |
