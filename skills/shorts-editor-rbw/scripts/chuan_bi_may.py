@@ -58,7 +58,7 @@ KEYS = [
     ("GROQ_API_KEY",       "du phong, it dung",                   False),
 ]
 
-# DAU VAN TAY KEY CHUAN (Sep Huy chot 21/07/2026 — key TAI KHOAN CONG TY).
+# DAU VAN TAY KEY CHUAN (key Gemini doi ngay 22/07/2026 — ban cu da ngung dung).
 # Luu HASH chu khong luu key: hash KHONG suy nguoc ra key duoc nen de trong repo
 # public van an toan, ma van du de biet may nao dang cam NHAM key.
 # Vi sao can: key SAI van chay duoc binh thuong (vd key Gemini tai khoan CA NHAN
@@ -66,7 +66,7 @@ KEYS = [
 # Doi key chuan: chay script nay voi --hash roi thay so duoi day + tang version plugin.
 KEY_CHUAN = {
     "ELEVENLABS_API_KEY": "9fefcd959a2165fa",
-    "GEMINI_API_KEY":     "a1b1a06da28cc9a3",
+    "GEMINI_API_KEY":     "b73017d9c09f7eff",
     "GROQ_API_KEY":       "58967101c99d645a",
 }
 
