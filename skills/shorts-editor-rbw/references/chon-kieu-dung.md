@@ -83,24 +83,19 @@ Hỏi bằng lời dễ hiểu, không dùng thuật ngữ kỹ thuật:
 | 2 | **Adam** — nam, chắc và mạnh | `pNInz6obpgDQGcFmaJgB` | ElevenLabs | Dứt khoát: hiệu quả, tiết kiệm nhân sự, số liệu, kêu gọi hành động |
 | 3 | **MC Xuân Tú** — nam, giọng Bắc, chất MC | `7XOKiK112QRZRSLbCfMc` | ElevenLabs | Dẫn chuyên nghiệp, phóng sự, sự kiện, video cho page công ty |
 | 4 | **Thanh Ngọc** — nữ, giọng Nam, ấm & đáng tin | `Na15FlRRkMEDtEW4nVVP` | ElevenLabs | Tư vấn, chăm sóc khách hàng, nội dung gần gũi miền Nam |
-| 5 | **Giọng nam miễn phí** (bản dùng trước khi có ElevenLabs) | `vi-VN-NamMinhNeural` | **0đ** | Video nội bộ, bản nháp cho Sếp duyệt, hoặc khi muốn tiết kiệm |
-| 6 | **Giọng nữ miễn phí** (bản dùng trước khi có ElevenLabs) | `vi-VN-HoaiMyNeural` | **0đ** | Như trên |
 | — | **Tuỳ theo nội dung** | tự chọn | — | **Đọc kịch bản rồi tự chọn giọng hợp nhất**, nói rõ đã chọn giọng nào và vì sao |
+
+> 🔴 **ĐÃ BỎ 22/07/2026 — hai giọng miễn phí edge-tts** (`vi-VN-NamMinhNeural` nam, `vi-VN-HoaiMyNeural` nữ). **Sếp Huy nghe mẫu và kết luận: đọc méo, không dùng được.** Đừng đưa lại vào bảng chọn, đừng dùng làm phương án thay thế khi ElevenLabs lỗi.
+>
+> **Đây là ca đáng nhớ nhất về giới hạn của phép đo bằng máy**: cho Whisper nghe lại, 2 giọng này trả về **đúng nguyên câu, chuẩn 100% từng chữ** — ngang điểm với 4 giọng ElevenLabs. Máy chấm "đạt". Tai Sếp nghe ra méo ngay. **Whisper đo được RÕ CHỮ, không đo được NGHE CÓ THẬT KHÔNG.** Lần sau đừng lấy "Whisper nghe ra đúng" làm bằng chứng một giọng dùng được.
 
 > **Lựa chọn "tuỳ nội dung" làm thế nào**: đọc kịch bản đã duyệt, xét giọng văn — mềm mại/kể chuyện/hướng cảm xúc → **Phương Uyên**; dứt khoát/số liệu/thúc đẩy hành động → **Adam**; dẫn chuyên nghiệp kiểu phóng sự → **MC Xuân Tú**; tư vấn gần gũi, khách miền Nam → **Thanh Ngọc**. Nội dung dài có nhiều chất thì chọn theo **đoạn mở đầu**, vì đó là chỗ giữ người xem. Chọn xong **báo 1 câu**, đừng chọn thầm.
 
-**Cách hiện 6 lựa chọn khi công cụ hỏi chỉ cho tối đa 4:**
-Hỏi 2 bước ngắn thay vì nhồi vào một thẻ —
-**bước 1**: *"Giọng nam hay nữ?"* (2 lựa chọn, thêm ô "để tôi chọn theo nội dung");
-**bước 2**: 3 giọng đúng giới tính đó — nữ: Phương Uyên · Thanh Ngọc · giọng nữ miễn phí; nam: Adam · MC Xuân Tú · giọng nam miễn phí.
-Công cụ nào hiện được cả 6 thì cứ hiện thẳng 6, không cần chia bước.
+**Bốn giọng vừa khít một thẻ hỏi** (công cụ hỏi cho tối đa 4 lựa chọn) — hiện thẳng cả 4, không cần chia bước. Người dùng muốn "tuỳ nội dung" thì gõ vào ô tự nhập.
 
-**Giọng miễn phí gọi thế nào** (edge-tts, không cần key, không tốn tiền):
-```
-edge-tts --voice vi-VN-NamMinhNeural --rate=+41% --file <loi.txt> --write-media <out.mp3>
-```
-`--rate=+41%` là tốc độ Sếp đã chốt cho giọng máy (xem `style-voice-karaoke.md`). Giọng nữ đổi thành `vi-VN-HoaiMyNeural`.
-⚠️ edge-tts **không trả timestamp từng từ** như ElevenLabs → cần sub karaoke thì phải cho Whisper nghe lại file mp3 vừa tạo để lấy mốc.
+⚠️ **Không còn phương án miễn phí thay thế.** Trước đây ElevenLabs lỗi thì tự lui về edge-tts; nay edge-tts đã bị loại vì đọc méo, nên **gặp lỗi ElevenLabs là DỪNG và BÁO người dùng**, chờ quyết — đúng luật gốc của Sếp: *yêu cầu đích danh mà bị chặn thì dừng báo, không tự thay bằng thứ khác*.
+
+⚠️ **Mốc tốc độ `+41%` KHÔNG áp cho 4 giọng này.** Con số đó đo trên edge-tts (đã bỏ). ElevenLabs chỉnh tốc độ bằng đường khác (`voice_settings.speed`), **chưa đo mốc chuẩn** — cần đo lại khi nào cần tăng/giảm tốc độ giọng đọc. Đừng chép `+41%` sang đây.
 
 **Ba điều đã đo thật 22/07/2026, đừng làm sai:**
 

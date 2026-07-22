@@ -36,7 +36,7 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
   [mix]loudnorm=I=-14:TP=-1.5:LRA=11[aout]
   ```
   Nghiệm thu: đo lại bằng `ffmpeg -i final.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -` — Input Integrated phải ra ≈ -14 (±1). Ghi kết quả đo vào báo cáo bàn giao.
-- Giọng: ElevenLabs (scripts/elevenlabs_tts.py, xuất words.json làm karaoke) — giọng do Sếp chỉ định; lỗi/chặn thì DỪNG BÁO, fallback edge-tts chỉ khi Sếp đồng ý (edge-tts không có word-timestamp chuẩn từng từ, sub karaoke sẽ kém chính xác hơn — nói rõ điều này khi xin ý kiến).
+- Giọng: ElevenLabs (scripts/elevenlabs_tts.py, xuất words.json làm karaoke) — giọng do Sếp chỉ định (4 giọng, xem `chon-kieu-dung.md`); lỗi/chặn thì **DỪNG BÁO và chờ quyết**. **KHÔNG có phương án thay thế** — edge-tts đã bị loại 22/07/2026 vì Sếp nghe thấy đọc méo.
 - SFX theo **luật hiện hành 19/07/2026**: mỗi thẻ chữ 1 SFX "pop" hợp nghĩa + các SFX khớp hành động trong hình (mục 4b ffmpeg-recipes). *(Câu cũ ở đây ghi "vẫn theo nguyên tắc cũ, khớp hành động cụ thể" — đó là luật 03/07 đã bị bãi bỏ, sửa 21/07.)*
 
 > ## 🔴 TRƯỚC KHI CHỌN NHẠC CHO KIỂU 2/3 — ĐỌC LUẬT NÀY
@@ -155,7 +155,16 @@ Script tự nghe bằng Whisper, đếm âm tiết, chia cho khoảng từ chữ
 
 ⚠️ **Phép đo KHÔNG ổn định trên file dưới ~10 giây** — cùng một file TTS 6.6s, Whisper lúc nhận 14 âm tiết lúc 23. Với giọng máy thì **đếm tay số âm tiết trong kịch bản rồi chia cho độ dài file** chắc hơn (mình biết chính xác lời).
 
-### Mức giọng máy edge-tts — MẶC ĐỊNH `--rate=+41%` (Sếp chỉnh xuống 21/07)
+### ⛔ Mức giọng máy edge-tts `--rate=+41%` — ĐÃ BỎ 22/07/2026, GIỮ ĐỂ TRA CỨU
+
+> 🔴 **edge-tts ĐÃ BỎ 22/07/2026 — Sếp Huy nghe mẫu và kết luận ĐỌC MÉO, không dùng được.**
+> Mọi hướng dẫn edge-tts bên dưới **chỉ còn giá trị tra cứu lịch sử**, KHÔNG được dùng để tạo giọng đọc video nữa.
+> ElevenLabs lỗi/bị chặn → **DỪNG và BÁO người dùng**, chờ quyết. Không tự lui về giọng miễn phí.
+> Giọng đang dùng: 4 giọng ElevenLabs, xem `references/chon-kieu-dung.md` khối "Chọn giọng đọc".
+> Ca này đáng nhớ: Whisper nghe lại 2 giọng miễn phí ra **đúng nguyên câu, chuẩn 100%** — máy chấm đạt, tai Sếp nghe méo ngay.
+
+> ⚠️ **Mốc `+41%` không chuyển sang giọng ElevenLabs được** — nó đo trên edge-tts. ElevenLabs chỉnh tốc độ bằng `voice_settings.speed`, **chưa đo mốc chuẩn**. Cần thì đo lại bằng `do_toc_do_noi.py`.
+
 
 > **Đây là GIỌNG MÁY TẠO MỚI (edge-tts), khác hẳn việc TUA tiếng đã thu ở mục 3d bên trên.** Đừng lẫn: tua tiếng thu dùng `tua_nhanh_thoai.py`; tạo giọng máy dùng `edge-tts --rate`.
 

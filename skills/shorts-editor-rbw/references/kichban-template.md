@@ -56,12 +56,12 @@ Thêm mục:
 
 ```markdown
 ## Kịch bản voiceover (đọc liền mạch)
-<toàn bộ lời đọc, viết như nói chuyện, câu ngắn — đưa vào ElevenLabs/edge-tts>
+<toàn bộ lời đọc, viết như nói chuyện, câu ngắn — đưa vào ElevenLabs>
 
 ## Giọng đọc
-- ElevenLabs: **MC Xuân Tú** (`7XOKiK112QRZRSLbCfMc` — nam, giọng Bắc) hoặc **Thanh Ngọc** (`Na15FlRRkMEDtEW4nVVP` — nữ, giọng Nam). Cả 2 cần gói trả phí; còn Free thì lui edge-tts giọng Việt. George chỉ dùng khi lời đọc là tiếng Anh;
+- ElevenLabs — **4 giọng** (đo 22/07/2026: đều dùng được, hết bị chặn): **Phương Uyên** (`Y9oZ1fkOxoaT3zFqTPzg` — nữ, giọng nhân bản RBW) · **Adam** (`pNInz6obpgDQGcFmaJgB` — nam, chắc mạnh) · **MC Xuân Tú** (`7XOKiK112QRZRSLbCfMc` — nam, giọng Bắc) · **Thanh Ngọc** (`Na15FlRRkMEDtEW4nVVP` — nữ, giọng Nam). Cách chọn: `references/chon-kieu-dung.md` khối "Chọn giọng đọc";
   người dùng muốn giọng khác → ghi voice ID được chọn ở đây
-- Fallback edge-tts: vi-VN-NamMinhNeural (nam) / vi-VN-HoaiMyNeural (nữ) — chỉ dùng khi ElevenLabs lỗi/hết quota
+- ⛔ **Không có fallback** — edge-tts đã bỏ 22/07/2026 (Sếp nghe thấy đọc méo). ElevenLabs lỗi → DỪNG, báo người dùng, chờ quyết
 ```
 
 - Cột "Nội dung" trong bảng phân cảnh = câu voiceover tương ứng cảnh đó.

@@ -9,7 +9,8 @@ Usage:
   gian ve thu muc nguoi dung tren MAY DANG CHAY, khong co dinh rieng cho 1 may.
 - Goi endpoint /with-timestamps -> tra ve mp3 + timing TUNG KY TU.
 - Xuat kem: .srt (cum 4-7 tu, cho sub thuong) va .json word-level (cho sub karaoke ASS).
-- Het quota / loi mang -> bao ro va exit 1, de skill fallback sang edge-tts.
+- Het quota / loi mang -> bao ro va exit 1. KHONG co giong thay the: edge-tts
+  da bi bo 22/07/2026 (Sep Huy nghe mau, ket luan doc meo) -> DUNG BAO nguoi dung.
 """
 import base64
 import json
@@ -130,24 +131,25 @@ def main():
                 "ElevenLabs 402 — giong nay can GOI TRA PHI (giong Voice Library bi chan o goi Free).\n"
                 "  Chi tiet: %s\n"
                 "\n"
-                "  DAY LA TINH HUONG DA BIET TRUOC, khong phai hong:\n"
-                "  - Tai khoan cong ty DA CO 2 giong Viet: MC Xuan Tu (nam) va Thanh Ngoc (nu),\n"
-                "    nang goi ElevenLabs la dung duoc ngay, khong phai di tim giong khac.\n"
-                "  - Trong luc con goi Free: LUI VE edge-tts giong vi-VN-NamMinhNeural /\n"
-                "    vi-VN-HoaiMyNeural (mien phi, doc cau tieng Viet thuan rat sach).\n"
-                "  - TUYET DOI khong lui ve giong George: do la giong ANH, doc tieng Viet meo\n"
-                "    ca cau thuong (da do that 20/07).\n"
+                "  BAT THUONG — do lai 22/07/2026 thi CA 4 GIONG deu tao duoc, het bi chan:\n"
+                "    Phuong Uyen / Adam / MC Xuan Tu / Thanh Ngoc.\n"
+                "  - Gap 402 bay gio la dau hieu co chuyen khac (key doi, goi bi ha, giong bi go)\n"
+                "    -> DUNG, BAO NGUOI DUNG, CHO QUYET. KHONG tu doi sang giong khac.\n"
+                "  - KHONG CON PHUONG AN THAY THE: edge-tts da bi BO 22/07/2026 vi Sep Huy nghe\n"
+                "    mau va ket luan DOC MEO. Dung lui ve edge-tts, cung dung lui ve George.\n"
                 "  - Nho luat viet loi cho TTS: ten san pham/thuong hieu/thong so KHONG cho may\n"
-                "    doc, day len the chu (xem style-voice-karaoke.md).\n"
-                "  - Nguoi dung chi dinh DICH DANH 1 giong ma gap 402 -> DUNG BAO, cho ho quyet,\n"
-                "    khong tu doi giong (luat SKILL.md)." % body)
-        sys.exit("ElevenLabs loi HTTP %s: %s\n-> Kiem tra key/quota. Skill co the fallback edge-tts." % (e.code, body))
+                "    doc, day len the chu (xem style-voice-karaoke.md)." % body)
+        sys.exit("ElevenLabs loi HTTP %s: %s\n"
+                 "-> Kiem tra key/quota roi BAO NGUOI DUNG, cho quyet.\n"
+                 "   Khong co giong thay the: edge-tts da bo 22/07/2026 vi doc meo." % (e.code, body))
     except urllib.error.URLError as e:
         sys.exit("ElevenLabs KHONG GOI DUOC (loi mang/DNS/proxy): %s\n"
-                 "-> Kiem tra mang roi chay lai; van loi thi fallback edge-tts theo luat SKILL.md." % e.reason)
+                 "-> Kiem tra mang roi chay lai; van loi thi BAO NGUOI DUNG, cho quyet\n"
+                 "   (khong con fallback edge-tts tu 22/07/2026)." % e.reason)
     except (TimeoutError, OSError) as e:
         sys.exit("ElevenLabs QUA GIO/dut ket noi giua chung: %s\n"
-                 "-> Thu chay lai 1 lan; van loi thi fallback edge-tts theo luat SKILL.md." % e)
+                 "-> Thu chay lai 1 lan; van loi thi BAO NGUOI DUNG, cho quyet\n"
+                 "   (khong con fallback edge-tts tu 22/07/2026)." % e)
 
     with open(mp3_path, "wb") as f:
         f.write(base64.b64decode(resp["audio_base64"]))

@@ -66,12 +66,20 @@ python "<skill-dir>\scripts\elevenlabs_tts.py" voice\video-1-script.txt voice\vi
   > ⚠️ **George `JBFqnCBsd6RMkjVDRZzb` KHÔNG phải mặc định** — đó là giọng ANH, đọc tiếng Việt méo cả câu thường ("Thử cách này" → *"Thú káč nai"*). Chỉ dùng George khi lời đọc là tiếng Anh. *(Sửa 21/07: dòng này từng ghi "mặc định George nam trầm" — tàn dư trước luật 20/07.)*
 - **Cảnh báo lỗi 402**: 2 giọng Việt trên nằm ở Voice Library, bị chặn khi tài khoản còn gói Free. Gặp 402:
   - giọng do Sếp **chỉ định đích danh** → DỪNG BÁO, chờ Sếp quyết, không tự thay giọng;
-  - giọng mặc định → lui về **edge-tts `vi-VN-NamMinhNeural` / `vi-VN-HoaiMyNeural`** (miễn phí, đọc tiếng Việt thuần rất sạch), báo 1 câu. **TUYỆT ĐỐI không lui về George.**
+  - giọng mặc định → **DỪNG, BÁO người dùng, chờ quyết** (luật 22/07/2026). KHÔNG tự lui về edge-tts — Sếp đã nghe và kết luận giọng đó đọc méo. Cũng không lui về George.
 - Output: mp3 + `.srt` (cụm 6 từ, sub thường) + `-words.json` (timing từng từ → làm sub karaoke ASS: mỗi từ 1 Dialogue event, hoặc dùng `\k` tags).
-- Script lỗi (chưa có key/hết quota/mất mạng) → nó exit 1 kèm lý do → chuyển sang edge-tts mục 1 bên dưới, KHÔNG dừng cả quy trình.
+- Script lỗi (chưa có key/hết quota/mất mạng) → nó exit 1 kèm lý do → **DỪNG, báo người dùng lý do đó, chờ quyết** (sửa 22/07/2026: trước đây bảo chuyển sang edge-tts, nay edge-tts đã bị loại vì đọc méo).
 - Free tier ~10k credits/tháng (~10 phút audio) — voiceover shorts ~35s tốn ít, nhưng đừng gọi thử nhiều lần vô ích; test bằng câu ngắn.
 
-## 1. Voiceover edge-tts (fallback miễn phí — CHỈ khi kịch bản được duyệt có lời dẫn — mặc định video là text + nhạc)
+## 1. Voiceover edge-tts — ⛔ ĐÃ BỎ, GIỮ ĐỂ TRA CỨU
+
+> 🔴 **edge-tts ĐÃ BỎ 22/07/2026 — Sếp Huy nghe mẫu và kết luận ĐỌC MÉO, không dùng được.**
+> Mọi hướng dẫn edge-tts bên dưới **chỉ còn giá trị tra cứu lịch sử**, KHÔNG được dùng để tạo giọng đọc video nữa.
+> ElevenLabs lỗi/bị chặn → **DỪNG và BÁO người dùng**, chờ quyết. Không tự lui về giọng miễn phí.
+> Giọng đang dùng: 4 giọng ElevenLabs, xem `references/chon-kieu-dung.md` khối "Chọn giọng đọc".
+> Ca này đáng nhớ: Whisper nghe lại 2 giọng miễn phí ra **đúng nguyên câu, chuẩn 100%** — máy chấm đạt, tai Sếp nghe méo ngay.
+
+
 
 Nếu dùng, làm TRƯỚC khi cắt hình để lấy timing.
 

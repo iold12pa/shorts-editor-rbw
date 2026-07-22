@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 7** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 8** — phát hành 22/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 7 (22/07/2026)`
+>    `📦 Đang ở Ver 8 (22/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **8** | 22/07/2026 | `2026.07.22.10` | 🔴 **BỎ HẲN 2 giọng miễn phí edge-tts** — Sếp nghe mẫu, kết luận đọc méo. Gỡ khỏi bảng chọn + 6 file luật + thông báo lỗi. **Không còn phương án thay thế**: ElevenLabs lỗi thì DỪNG BÁO, chờ Sếp quyết. Còn 4 giọng, vừa khít 1 thẻ hỏi |
 | **7** | 22/07/2026 | `2026.07.22.9` | Bảng chọn giọng lên **6 lựa chọn** theo chỉ định Sếp: 4 giọng ElevenLabs (Phương Uyên · Adam · MC Xuân Tú · Thanh Ngọc) + **2 giọng miễn phí** (Nam Minh · Hoài My) — đo thật **cả 6 đọc chuẩn 100% từng chữ**, khác biệt chỉ còn ở chất giọng |
 | **6** | 22/07/2026 | `2026.07.22.8` | 🔴 **Sửa gốc giọng đọc méo tiếng Việt**: thủ phạm là model `eleven_multilingual_v2`, đổi sang `eleven_turbo_v2_5` (đo thật) · thêm giọng **Phương Uyên RBW** + **Adam** theo chỉ định Sếp, kèm bước hỏi chọn giọng 3 lựa chọn · **4/4 giọng hết bị chặn**, bỏ ghi chú "chờ mua Starter" · đính chính luật cũ quy sai cho "giọng Anh" |
 | **5** | 22/07/2026 | `2026.07.22.7` | 🔴 **Luật CÁCH HỎI**: hỏi bằng thẻ chọn bấm được, cấm dồn thành khối chữ bắt gõ số · gộp 1 lượt tối đa 4 câu · **suy được từ footage thì tự suy, đừng hỏi** (phân tích trước rồi mới hỏi) |
@@ -217,12 +218,12 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
   | Ưu tiên | Giọng | Khi nào |
   |---|---|---|
   | 1 | **MC Xuân Tú** `7XOKiK112QRZRSLbCfMc` (nam, Bắc) · **Thanh Ngọc** `Na15FlRRkMEDtEW4nVVP` (nữ, Nam) | Mặc định cho **mọi lời tiếng Việt**. Đã có sẵn trong tài khoản công ty. Cần gói trả phí |
-  | 2 | **edge-tts** `vi-VN-NamMinhNeural` / `vi-VN-HoaiMyNeural` | Khi gói còn Free (2 giọng trên trả 402). Miễn phí, đọc câu tiếng Việt thuần rất sạch |
+  | — | ⛔ ~~edge-tts `vi-VN-NamMinhNeural` / `vi-VN-HoaiMyNeural`~~ | **ĐÃ BỎ 22/07/2026 — Sếp nghe mẫu, kết luận ĐỌC MÉO.** Không dùng làm giọng đọc video, không dùng làm phương án thay thế |
   | 3 | **George** `JBFqnCBsd6RMkjVDRZzb` | **CHỈ khi lời đọc là tiếng Anh** |
 
   **George KHÔNG còn là mặc định** — đó là giọng Anh. Cho Whisper nghe lại bản George đọc tiếng Việt: *"Thử cách này"* → *"Thú káč nai"*, *"Khai trương thì bùng nổ doanh số"* → *"Cái truong thị bùng no đoàn so"*. Gặp 402 mà lui về George là làm hỏng video.
 
-  **Gặp 402**: script tự in hướng dẫn đầy đủ. Nếu giọng do người dùng **chỉ định đích danh** → DỪNG BÁO, chờ họ quyết, không tự đổi giọng. Nếu là giọng mặc định → lui edge-tts giọng Việt, báo 1 câu.
+  **Gặp lỗi/402**: script tự in hướng dẫn đầy đủ → **DỪNG, BÁO người dùng, chờ quyết — kể cả với giọng mặc định** (siết 22/07/2026: trước đây cho phép lui về edge-tts, nay edge-tts đã bị loại vì đọc méo nên KHÔNG còn phương án thay thế nào). Lưu ý: đo lại 22/07 cho thấy **cả 4 giọng ElevenLabs đều hết bị chặn**, gặp 402 giờ là bất thường, đáng báo ngay.
 
   **Luôn nhớ luật viết lời cho TTS**: tên sản phẩm/thương hiệu/thông số **không cho máy đọc**, đẩy lên thẻ chữ — mọi giọng máy đều đọc sai mấy từ đó (xem `style-voice-karaoke.md`).
 - **Font Anton** (style CapCut, Sếp chỉ định): `assets/fonts/Anton-Regular.ttf` trong thư mục skill — copy vào workspace mỗi lần dựng (xem recipes)
@@ -372,7 +373,7 @@ Tóm tắt 4 điều không được bỏ:
 2. Ghép cảnh (concat)
 3. Burn text ASS font Anton (hook vàng + text trắng, vị trí dưới logo — spec trong style-mau.md); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
 4. Nối **outro dọc** vào cuối bằng crossfade (xem mục 4d trong recipes) — **CHỈ khi video đăng page công ty**. Kênh cá nhân thì BỎ HẲN bước này (luật 21/07, xem recipes mục 5d).
-5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — edge-tts, nhớ dùng `--file` UTF-8) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
+5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — ElevenLabs qua `scripts/elevenlabs_tts.py`) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
 6. Xuất thẳng ra **`<folder buổi quay>\Final\video-N-<slug>.mp4`** (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
 7. **Tự nghiệm thu bắt buộc**: trích 4-5 frame (rải cả trong thân video lẫn đoạn outro) + Read kiểm tra (chữ đủ to, không tràn viền, không thừa dấu câu, logo không đè text và tự ẩn đúng lúc trước outro, hình không méo, không frame đen); ffprobe xác nhận thời lượng; **đo âm lượng bằng loudnorm** (lệnh đo trong ffmpeg-recipes mục 6) — chuẩn giao hàng là **-14 LUFS (±1)**, lệch thì mix lại. Sai thì sửa và dựng lại trước khi bàn giao.
 
@@ -410,7 +411,7 @@ Tóm tắt 4 điều không được bỏ:
 - **NGUYÊN TẮC ĐẦU TIÊN — Sếp chỉ định đích danh (voice ID, bài nhạc, clip cụ thể...) mà thao tác lỗi/bị chặn**: DỪNG, báo lỗi rõ ràng + nêu phương án, CHỜ Sếp quyết. Không tự chạy phương án thay thế khi chưa có lệnh (bài học 2026-07-13: tự thay giọng ElevenLabs bị Sếp nhắc).
 
 - **ffmpeg lỗi filter trên Windows**: `Set-Location` vào workspace, dùng đường dẫn tương đối trong `ass=`/`fontsdir` — chi tiết trong recipes.
-- **edge-tts (nếu dùng voiceover)**: tiếng Việt PHẢI truyền qua `--file` UTF-8, không dùng `--text`.
+- **Lời đọc cho TTS**: tiếng Việt PHẢI truyền qua **file .txt UTF-8**, không truyền thẳng trên dòng lệnh (PowerShell làm hỏng dấu tiếng Việt).
 - **Tên file/folder tiếng Việt có dấu**: input đọc được bình thường, nhưng file TRUNG GIAN và workspace luôn đặt tên không dấu.
 - **Nguồn HEVC/10-bit**: re-encode chuẩn hóa ngay ở bước cắt (recipes có lệnh).
 - **Không chắc cỡ chữ có tràn viền không**: đừng đoán — render thử 1 frame với style dự kiến, Read xem, rồi mới dựng cả video (xem cách làm trong style-mau.md).
