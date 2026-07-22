@@ -58,9 +58,21 @@ Ngày 21/07 đã dựng 2 video (Kiểu 1 + Kiểu 3) dùng nhầm **3 trong 4 c
 
 **Hệ quả dây chuyền phải biết**: lọc đúng thì số clip dùng được **tụt rất mạnh** (6 → 2). Không đủ clip mà vẫn cố dựng cho đủ thời lượng thì sẽ đẻ ra lỗi lặp cảnh ở mục 3d. **Thiếu clip sạch thì phải quét Gemini thêm clip mới, không được quay vòng lấy lại clip cũ.**
 
-## 3d. CẤM LẶP CẢNH — tối kỵ ở CẢ 3 KIỂU (Sếp Huy chốt 21/07/2026)
+## 3d. CẤM LẶP CẢNH — tối kỵ ở CẢ 3 KIỂU (Sếp Huy chốt 21/07/2026, làm rõ thêm)
 
 **Luật**: không lấy lại cùng một cảnh, và cũng không lấy 2 đoạn khác nhau của **cùng một cú máy** nếu người xem nhìn ra là "vẫn cảnh đó". Kể cả 2 clip **khác file** nhưng là 2 lần quay lại cùng một bối cảnh/động tác — nhìn vào vẫn thấy trùng — cũng tính là lặp.
+
+### 3d-1. HAI TẦNG chống trùng — trong-video và giữa-các-video (Sếp làm rõ 21/07)
+
+**Tầng 1 — TRONG một video**: không được lặp cảnh trong chính video đó. Đây là luật cứng, tuyệt đối.
+
+**Tầng 2 — GIỮA các video của CÙNG một lệnh tạo** (vd người dùng bảo "dựng 3 video Kiểu 1"):
+- **Đủ source đẹp khác nhau** → mỗi video dùng bộ cảnh **khác nhau**, để 3 video không giống nhau khi đăng cùng đợt.
+- **Thiếu source** (không đủ cảnh đẹp cho cả N video mà không trùng) → **KHÔNG tự xào lại cảnh cũ. BÁO NGƯỜI DÙNG**: nói rõ "folder chỉ đủ cảnh sạch cho X video không trùng, N-X video còn lại sẽ phải dùng lại cảnh — có muốn tôi xào lại không, hay quét thêm/bổ sung footage?". Để người dùng quyết, đừng tự ý.
+
+> Nguyên văn Sếp: *"tránh trùng trong 1 clip với nhau. Còn cùng 1 lệnh tạo ví dụ họ bảo tạo 3 clip loại 1 thì nếu đủ source đẹp khác nhau cho 3 clip thì nên cho các cảnh khác nhau, còn nếu thiếu thì nói cho họ biết và báo, tôi sẽ xào lại được không."*
+
+**Ca thật 21/07**: dựng Video 1 + Video 3 từ folder 30. Folder chỉ có ~14 cảnh robot sạch. Video 1 (Kiểu 1) dùng 8 cảnh, Video 3 (Kiểu 3) dùng 5 cảnh **khác hẳn** → không trùng nhau. Nếu cần video thứ 3 cùng kiểu nữa thì đã phải báo Sếp vì hết cảnh sạch mới.
 
 **Vì sao Sếp gọi là tối kỵ**: người xem nhận ra ngay video bị "kéo dài cho đủ giây", cảm giác nghèo tư liệu. Nó phá hỏng cảm giác chuyên nghiệp nhanh hơn mọi lỗi kỹ thuật khác.
 

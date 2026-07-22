@@ -78,7 +78,7 @@ Nếu dùng, làm TRƯỚC khi cắt hình để lấy timing.
 **BẮT BUỘC truyền lời đọc qua file UTF-8 (không BOM), KHÔNG dùng `--text`** — PowerShell làm hỏng encoding tiếng Việt trên tham số dòng lệnh, edge-tts sẽ báo `NoAudioReceived`. Ghi file bằng tool Write (mặc định UTF-8) rồi:
 
 ```powershell
-edge-tts --voice vi-VN-NamMinhNeural --rate=+76% `
+edge-tts --voice vi-VN-NamMinhNeural --rate=+41% `
   --file voice\video-1-script.txt `
   --write-media voice\video-1.mp3 --write-subtitles voice\video-1.srt
 ```
@@ -319,6 +319,12 @@ Input cuối (`outro dọc.mp4`) đưa thẳng file GỐC (chưa scale) vào là
   |---|---|---|
   | **Tiếng MC thu thật** (Kiểu 2) | **0.20-0.22** | Giọng thu thật to và dày, nhạc 0.15 nghe **hơi bé** — Sếp nhận xét đúng ca video-2 ngày 21/07 |
   | **Giọng máy TTS** (Kiểu 3) | **0.12-0.14** | Giọng TTS mỏng hơn giọng người, nhạc 0.18 là **lấn át lời dẫn** — Sếp bắt lỗi ca video-3 cùng ngày |
+
+  **CHỖ CÓ CHỮ QUAN TRỌNG (địa chỉ, tên, số điện thoại) — hạ nhạc sâu hơn tại đúng đoạn đó** (luật 21/07): dùng volume envelope hạ nhạc xuống **0.09** riêng khoảng chứa câu đó, `eval=frame`. Ca thật video-2: câu CTA "Hãy ghé **nhà sách Tràng An** 304 Văn Trương" — MC ngắt hơi 0.3s giữa "ghé ngay" và "nhà sách" rồi nói lướt; nhạc nền 0.21 lấp vào khoảng ngắt + che chữ lướt → tai nghe thành một cục, không tách được "nhà sách". Hạ nhạc đoạn đó xuống 0.09 thì chữ địa chỉ nổi hẳn.
+  ```
+  [1:a]volume='if(between(t,41.3,44.9),0.09,0.21)':eval=frame[bgm]
+  ```
+  ⚠️ **Cách truy lỗi loại này** (Sếp hỏi "cho tôi nguyên nhân"): đừng đoán. Đo **voice gốc vs mix cuối, từng 0.1s, tại đúng chỗ nghe không rõ**. Nếu voice gốc chỗ đó cũng nhỏ → MC nói lướt/ngắt hơi. Nếu voice gốc to mà mix nhỏ → có gì đè (SFX, nhạc, loudnorm nén). Ca video-2: thử giảm POP trước — không đổi → loại trừ SFX; đối chiếu 0.1s → thấy MC ngắt hơi thật + nhạc lấp. Chốt nguyên nhân bằng SỐ, không bằng phán đoán.
 
   Đây là chênh lệch dễ bỏ sót vì `loudnorm` cuối lệnh chuẩn hoá tổng thể, nên đo LUFS vẫn đạt mà **tương quan giọng/nhạc thì sai**. Máy không tự bắt được — chỉ tai người nghe ra.
 - Nhạc ngắn hơn video: `-stream_loop -1` đã lo; nhạc dài hơn: `-shortest` đã lo.

@@ -6,6 +6,19 @@
 
 ---
 
+## 0. ĐÃ NGHIỆM THU BẰNG TAI SẾP — giữ nguyên cách này (Sếp chốt 21/07/2026)
+
+> Nguyên văn Sếp sau khi xem 3 video dựng theo quy trình này: *"đầu ra giờ khá oke rồi nên cái cách đối chiếu các công cụ khác nhau để cho ra kết quả tốt nhất về cả hình ảnh và âm thanh này khá ổn, lưu lại nhé."*
+
+**Cốt lõi đã được xác nhận là đúng**: mỗi quyết định (cắt ở đâu, chọn cảnh nào, mức nhạc bao nhiêu) không dựa vào MỘT công cụ, mà **đối chiếu nhiều công cụ**, mỗi công cụ trả lời phần nó giỏi nhất, và khi chúng mâu thuẫn thì **mở ra xem/nghe thật** chứ không tin công cụ nào mù quáng.
+
+**Ba lần đối chiếu này đã cứu lỗi thật trong buổi dựng 21/07:**
+1. **Hình**: Gemini gắn cờ clip 0043 "có người đang nói" → nhưng mở **ảnh lưới** thấy 10/10 khung robot đẹp không người → dùng được (nếu tin cờ thì mất clip đẹp nhất). Ngược lại clip 0045 cờ báo có người → ảnh lưới xác nhận đúng (MC cầm mic) → loại. Cùng một cờ, hai kết quả ngược nhau, chỉ ảnh lưới phân biệt được.
+2. **Âm thanh cắt**: `loc_thoai_that` cho mốc thô → nhưng **Whisper nghe lại lát cắt** phát hiện mất chữ "Nhưng nhà" → lùi biên 0.4s.
+3. **Âm thanh mix**: đo thấy chữ "nhà sách" nghe không rõ → đối chiếu voice gốc vs mix từng 0.1s → hoá ra MC ngắt hơi + nhạc nền lấp khoảng ngắt (không phải mất chữ, không phải SFX) → hạ nhạc nền riêng câu đó.
+
+**Đừng rút gọn thành "tin công cụ X".** Sức mạnh nằm ở chỗ đối chiếu + mở ra kiểm khi mâu thuẫn.
+
 ## 1. Nguyên tắc gốc
 
 Mỗi đoạn video có **đúng một câu hỏi chính**. Công cụ nào trả lời được câu đó thì công cụ đó **DẪN**. Các công cụ còn lại **không biến mất** — chúng chuyển sang vai **ĐỐI CHIẾU**, và vẫn có quyền phủ quyết ở những chỗ chúng giỏi hơn.
