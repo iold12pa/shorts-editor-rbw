@@ -5,6 +5,9 @@ Skill Claude Code giúp dựng shorts video Roboworld tự động từ footage 
 > ### 👉 Người mới đọc file này trước: **[HUONG-DAN-NGUOI-MOI.md](HUONG-DAN-NGUOI-MOI.md)**
 > Hướng dẫn cài + dùng cơ bản, viết cho người không rành kỹ thuật, đọc 5 phút.
 > File README bạn đang đọc thiên về kỹ thuật và quy tắc bảo trì repo.
+>
+> ### 📦 Chỉ cần cài/cập nhật (không cần đọc cách dùng): **[CAI-DAT-VA-CAP-NHAT.md](CAI-DAT-VA-CAP-NHAT.md)**
+> Bản rút gọn 2 phút, gửi thẳng cho đồng nghiệp qua Zalo cũng được.
 
 ## Cài đặt (máy đã có Claude Code)
 
