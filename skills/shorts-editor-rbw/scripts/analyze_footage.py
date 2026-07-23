@@ -215,23 +215,41 @@ def vad_speech_segments(path, model_path, duration):
         audio = np.frombuffer(raw, dtype=np.int16).astype("float32") / 32768.0
         if audio.size == 0:
             return []
-        win = 512  # Silero yeu cau khung 512 mau @ 16kHz (~32ms)
-        h = np.zeros((2, 1, 64), dtype="float32")
-        c = np.zeros((2, 1, 64), dtype="float32")
+        win = 512  # Silero yeu cau khung MOI 512 mau @ 16kHz (~32ms)
+        ctx_len = 64  # NGU CANH: 64 mau CUOI cua khung truoc, noi truoc khung moi
         sr = np.array(16000, dtype="int64")
+        # Hai ban ONNX Silero khac nhau ve cach truyen trang thai an (RNN state):
+        # ban cu dung 2 input rieng "h"/"c" (shape 2x1x64), ban moi (v5, dang dung
+        # tai model nay do that 23/07/2026) GOP lam 1 input "state" (shape 2x1x128)
+        # + 1 output "stateN". Doc dung ten input tu chinh model (get_inputs()) 1
+        # LAN, roi GIU state xuyen suot vong lap (KHONG reset ve 0 moi chunk).
+        #
+        # BUG DA VA + DA SUA (23/07/2026, do that bang clip那 that): ban dau code
+        # chi dua dung 512 mau/chunk -> xac suat luon xap xi 0 (0.0005-0.001) DU
+        # DANG LA DOAN CO THOAI RO — kiem tra bang metadata model (producer "spox",
+        # dung dinh dang export moi cua Silero) roi thu them 64 mau NGU CANH (context)
+        # tu cuoi chunk TRUOC noi vao DAU chunk hien tai (tong 576 mau/lan goi) —
+        # dung chuan streaming v5 cua Silero — xac suat nhay len 0.7-0.99 dung
+        # doan co giong nguoi that. Thieu buoc noi ngu canh nay la VAD cau doan
+        # sai o MOI clip, khong bao loi, rat de bo sot.
+        ten_input = {i.name for i in sess.get_inputs()}
+        dung_state_gop = "state" in ten_input
+        if dung_state_gop:
+            state = np.zeros((2, 1, 128), dtype="float32")
+        else:
+            h = np.zeros((2, 1, 64), dtype="float32")
+            c = np.zeros((2, 1, 64), dtype="float32")
+        context = np.zeros(ctx_len, dtype="float32")
         probs = []
         for i in range(0, len(audio) - win, win):
-            chunk = audio[i:i + win][None, :]
-            try:
+            moi = audio[i:i + win]
+            chunk = np.concatenate([context, moi])[None, :]
+            if dung_state_gop:
+                out, state = sess.run(None, {"input": chunk, "state": state, "sr": sr})
+            else:
                 out, h, c = sess.run(None, {"input": chunk, "h": h, "c": c, "sr": sr})
-            except Exception:
-                # mot so ban silero_vad.onnx dung ten input "state" thay vi h/c rieng
-                try:
-                    state = np.zeros((2, 1, 128), dtype="float32")
-                    out, state = sess.run(None, {"input": chunk, "state": state, "sr": sr})
-                except Exception:
-                    return None
             probs.append(float(out[0][0]))
+            context = moi[-ctx_len:]
         # gop cac khung co xac suat giong nguoi >=0.5 thanh doan lien tuc
         segs, cur0 = [], None
         for i, p in enumerate(probs):
