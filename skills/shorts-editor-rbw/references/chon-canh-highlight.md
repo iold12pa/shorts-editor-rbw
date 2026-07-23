@@ -1,10 +1,12 @@
 # Quy tắc chọn cảnh (highlight) từ nguồn thô — áp dụng chung cho cả 3 kiểu dựng
+<!-- tags: chung -->
 
 Viết 2026-07-15, dựa trên bằng chứng THẬT (không suy đoán): đối chiếu trực tiếp 1 buổi quay thô — `D:\VIDEO RBW\Edit video\30.Nhà sách Tràng An` (58 clip DJI, quay 2026-07-02) — với **2 video final khác nhau** dựng ra từ đúng nguồn đó: `HUY MKT\34.Nhà sách Tràng An (rv nhà sách)` và `HUY MKT\35.Uyên ads thuê` (quảng cáo cho thuê sự kiện). Cùng 1 buổi quay, 2 mục đích khác nhau → 2 cách chọn cảnh khác nhau, nhưng theo chung 1 bộ nguyên tắc bên dưới.
 
 **Con số thực tế cần nhớ**: 58 clip thô (tổng ~15-20 phút) → 2 video final ~52-63 giây MỖI VIDEO. Tỷ lệ "chọn lọc" cực gắt — phần lớn footage quay được sẽ KHÔNG được dùng, kể cả footage "đẹp". Đừng kỳ vọng dùng hết footage hay, việc của mình là CHỌN ĐÚNG, không phải DÙNG NHIỀU.
 
 ## 1. Khi nhiều take cùng nói 1 câu thoại — chọn theo tiêu chí gì
+<!-- tags: chung -->
 
 Buổi quay này có RẤT nhiều lần MC nói lặp lại cùng 1 câu kịch bản (để có nhiều lựa chọn khi dựng — đây là cách quay chủ động, nên khuyến khích khi tư vấn Sếp về cách quay). Ví dụ thực tế: câu "khối nghỉ hè đã đổ bộ, bố mẹ lại đau đầu" xuất hiện ở ít nhất 4 clip khác nhau (0014, 0015, 0018, 0019).
 
@@ -14,12 +16,14 @@ Thứ tự ưu tiên khi chọn giữa nhiều take CÙNG nội dung:
 3. Take có PHẢN ỨNG NGƯỜI THẬT tự nhiên (trẻ em cười, khách ngạc nhiên) được ưu tiên hơn take chỉ có MC diễn một mình
 
 ## 2. Khi nhiều B-roll gần giống nhau — chỉ 1 cái được dùng
+<!-- tags: chung -->
 
 Buổi quay có 5 clip lia cận kệ sách gần như giống hệt nhau (0031, 0033, 0034, 0039, 0044 — đều là "lia kệ sách, không robot", dùng làm nền cho đoạn thoại "4 khay đựng đồ"). Đây là kiểu **quay dự phòng** (backup coverage) — quay nhiều góc/nhiều lần cùng 1 loại cảnh để có lựa chọn, nhưng **thành phẩm chỉ dùng đúng 1**, phần còn lại là hàng dự phòng không lên hình.
 
 Áp dụng: khi rà index.json thấy nhiều clip cùng tag/mô tả gần giống nhau, đừng cố nhét tất cả vào — CHỌN 1 đại diện tốt nhất (rõ nét nhất, bố cục đẹp nhất, hoặc khớp nhịp cắt còn thiếu), bỏ qua phần còn lại.
 
 ## 3. Cảnh bị loại thẳng — nhận diện sớm để khỏi phí thời gian
+<!-- tags: chung -->
 
 Từ buổi quay này, các loại cảnh sau **hoàn toàn không lên video final** dù chất lượng kỹ thuật tốt ("quality": "tot"):
 - **Sai nhân vật/không khớp câu chuyện**: 2 clip MC NAM tự selfie (0057, 0059) — bản final xoay quanh MC Uyên (nữ), nên dù quay đẹp vẫn bị loại vì không đúng người dẫn dắt câu chuyện
@@ -29,6 +33,7 @@ Từ buổi quay này, các loại cảnh sau **hoàn toàn không lên video fi
 Nguyên tắc: khi rà source, GẠCH BỎ SỚM 2 loại này khỏi danh sách ứng viên để đỡ mất công cân nhắc.
 
 ## 3b. LUẬT CẤM CẢNH "MC-CUTAWAY" — áp dụng CẢ 3 KIỂU DỰNG (Sếp bắt lỗi 19/07/2026, 2 lần)
+<!-- tags: chung -->
 
 **Luật**: TUYỆT ĐỐI không dùng cảnh **"người đang đứng nói / nhìn trực diện máy quay"** làm B-roll/cutaway, nếu âm thanh phát tại chính giây đó **không phải giọng gốc đồng bộ của chính khoảnh khắc đó**. Khán giả thấy miệng người ta mấp máy mà tiếng lại là của người khác/của voice-over → lộ ngay là ghép ẩu.
 
@@ -41,6 +46,7 @@ Nguyên tắc: khi rà source, GẠCH BỎ SỚM 2 loại này khỏi danh sách
 **Bước rà soát BẮT BUỘC trước khi chốt mọi video (cả 3 kiểu)**: duyệt lại từng cảnh cutaway, tự hỏi *"trong khung này có ai đang nói/nhìn thẳng máy quay không, và tiếng đang phát có đúng là của chính họ tại chính lúc đó không?"* — sai một trong hai thì thay cảnh. Cảnh thay thế an toàn nhất đã dùng thực tế: người tương tác với robot (trẻ em chạm robot, khách nhảy nhót cạnh quầy).
 
 ### 3b-1. LỌC BẰNG CỜ NÀO — chỗ sai đi sai lại (Sếp bắt lỗi lần 3, 21/07/2026)
+<!-- tags: chung -->
 
 🔴 **`has_speech` KHÔNG dùng để lọc cảnh này được.** Đó là cờ **ÂM THANH** (Whisper có nghe ra tiếng không). Người trong hình mấp máy môi mà mic không bắt được — vì đứng xa, vì quay ngoài đường ồn — thì `has_speech` vẫn `false`. Lọt lưới hoàn toàn.
 
@@ -59,10 +65,12 @@ Ngày 21/07 đã dựng 2 video (Kiểu 1 + Kiểu 3) dùng nhầm **3 trong 4 c
 **Hệ quả dây chuyền phải biết**: lọc đúng thì số clip dùng được **tụt rất mạnh** (6 → 2). Không đủ clip mà vẫn cố dựng cho đủ thời lượng thì sẽ đẻ ra lỗi lặp cảnh ở mục 3d. **Thiếu clip sạch thì phải quét Gemini thêm clip mới, không được quay vòng lấy lại clip cũ.**
 
 ## 3d. CẤM LẶP CẢNH — tối kỵ ở CẢ 3 KIỂU (Sếp Huy chốt 21/07/2026, làm rõ thêm)
+<!-- tags: chung -->
 
 **Luật**: không lấy lại cùng một cảnh, và cũng không lấy 2 đoạn khác nhau của **cùng một cú máy** nếu người xem nhìn ra là "vẫn cảnh đó". Kể cả 2 clip **khác file** nhưng là 2 lần quay lại cùng một bối cảnh/động tác — nhìn vào vẫn thấy trùng — cũng tính là lặp.
 
 ### 3d-1. HAI TẦNG chống trùng — trong-video và giữa-các-video (Sếp làm rõ 21/07)
+<!-- tags: chung -->
 
 **Tầng 1 — TRONG một video**: không được lặp cảnh trong chính video đó. Đây là luật cứng, tuyệt đối.
 
@@ -81,6 +89,7 @@ Ngày 21/07 đã dựng 2 video (Kiểu 1 + Kiểu 3) dùng nhầm **3 trong 4 c
 **Ca thật 21/07**: video Kiểu 1 và Kiểu 3 đều dùng `0009` 3 lần, `0021` 3 lần, `0007` 2 lần, `0016` 2 lần. Sếp xem ra ngay từ 5-6 giây đầu.
 
 ## 3c. SOI ĐÚNG ĐOẠN SẼ CẮT, không tin khung đại diện của clip (bài học 20/07/2026)
+<!-- tags: chung -->
 
 Khi rà nhiều clip cùng lúc, cách nhanh là ghép mỗi clip 1 khung đại diện thành ảnh lưới. **Nhưng khung đó thường lấy ở giữa clip (~45%), còn đoạn định cắt lại nằm ở chỗ khác** — nội dung có thể khác hoàn toàn.
 
@@ -100,12 +109,14 @@ Cách làm (không có script sẵn — viết tại chỗ, ~10 dòng; *sửa 21
 **Kèm theo**: tên file clip có phần timestamp rất dễ gõ nhầm (`..._122541_0062_D` vs `..._122749_0062_D`). Tìm clip theo **mã 4 số** (`_0062_D`) chắc hơn gõ cả tên.
 
 ## 4. Cảnh dài (60s+) chỉ bị "khai thác" vài giây, không dùng nguyên clip
+<!-- tags: chung -->
 
 Buổi quay có nhiều clip rất dài do MC nói liên tục nhiều đoạn kịch bản trong 1 lần bấm quay (0023: 118.5s, 0035: 86.5s, 0051: 60.8s, 0045: 44.5s). Video final chỉ trích ra ĐÚNG câu cần dùng từ mỗi clip dài này, cắt bỏ phần còn lại (kể cả khi phần còn lại cũng có thoại).
 
 Áp dụng: đừng ngại clip dài — cứ xem hết transcript của nó, tìm ĐÚNG câu/đoạn cần cho kịch bản đang viết, cắt phần đó ra, KHÔNG cần dùng nguyên clip hay lo "phí" phần còn lại.
 
 ## 5. Nguyên tắc chọn cảnh mở đầu (hook) — theo từng kiểu dựng
+<!-- tags: chung -->
 
 Đã có nguyên tắc chung trong `style-mau.md` (reveal moment > tương tác người thật > chuyển động ấn tượng > cảnh hành chính), nhưng đối chiếu thêm với nhóm ADS (SH1/CC1/MT1 ads) cho thấy **hook phụ thuộc vào kiểu dựng đang dùng**:
 
@@ -114,6 +125,7 @@ Buổi quay có nhiều clip rất dài do MC nói liên tục nhiều đoạn k
 - **Kiểu 3 (voice over thêm vào, ghép nhiều cảnh)**: hook theo công thức "hiện trạng vấn đề" — LUÔN mở bằng cảnh MINH HOẠ CÁCH LÀM CŨ/THỦ CÔNG kém hiệu quả trước (người lau sàn tay, ke gạch bẩn cận cảnh...), rồi mới cắt sang giới thiệu robot ở giây thứ 8-12. Đây là mẫu số chung ở CẢ 3 video ADS-VO (SH1/CC1/MT1) — không dùng cảnh robot đẹp làm hook cho kiểu này, phải dựng đối lập vấn đề trước.
 
 ## 6. Cảnh "phải có" xuyên suốt thân video (không phân biệt kiểu dựng)
+<!-- tags: chung -->
 
 Đối chiếu toàn bộ 15 video đã phân tích sâu, các loại cảnh sau lặp lại ở hầu hết video và nên chủ động tìm khi rà source:
 - **Cận cảnh chi tiết khớp ĐÚNG với thông số đang nói/viết** (nói "27kg gọn nhẹ" → phải có cận tay cầm; nói "4 khay" → phải có cảnh khay mở ra) — không dùng cảnh robot chung chung để minh hoạ thông số cụ thể
@@ -122,5 +134,6 @@ Buổi quay có nhiều clip rất dài do MC nói liên tục nhiều đoạn k
 - **Robot di chuyển ở nhiều bối cảnh/góc khác nhau** nếu mục đích là chứng minh độ phủ (đặc biệt Kiểu 3)
 
 ## 7. Khi rà 1 buổi quay mới, việc đầu tiên nên làm
+<!-- tags: chung -->
 
 Trước khi viết kịch bản, sau khi có index.json đầy đủ: quét nhanh xem source có đủ 4 nhóm cảnh không — (a) ít nhất 1 cảnh hook mạnh đúng kiểu dựng sẽ chọn, (b) đủ cận cảnh khớp từng thông số dự kiến sẽ nhắc tới, (c) có phản ứng người thật hay không, (d) có cảnh kết/CTA tự nhiên hay không. Thiếu nhóm nào thì báo Sếp TRƯỚC khi viết kịch bản, đừng bịa cảnh không có.

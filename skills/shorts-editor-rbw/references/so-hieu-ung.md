@@ -1,4 +1,5 @@
 # Sổ hiệu ứng & năng lực dựng — bản đồ đầy đủ so với CapCut (lập 2026-07-17)
+<!-- tags: chung -->
 
 > Tổng hợp theo yêu cầu Sếp Huy: "tất cả chuyển cảnh, hiệu ứng... khiến edit video hơn, giống chức năng CapCut".
 > **Trạng thái**: ✅ đã dựng demo (chờ Sếp chấm) · 🔧 làm được ngay bằng đồ có sẵn (chưa demo) · 📦 cần cài thêm (miễn phí) · 💰 cần trả phí/duyệt chủ trương · ❌ không đáng làm.
@@ -6,6 +7,7 @@
 > 3 video demo cho Sếp chấm (Desktop máy legion): `DEMO HIEU UNG` (10 hiệu ứng chữ + 8 chuyển cảnh), `DEMO WOW` (10 món nâng cao), `DEMO BONUS` (4 món đặc biệt).
 
 ## A. HIỆU ỨNG CHỮ ĐỘNG
+<!-- tags: chung -->
 
 | # | Hiệu ứng | Trạng thái | Ghi chú kỹ thuật |
 |---|---|---|---|
@@ -25,6 +27,7 @@
 | A14 | Chữ bám theo vật chuyển động (tracking) | ❌ | đất của editor chuyên, không đáng cho shorts |
 
 ## B. CHUYỂN CẢNH
+<!-- tags: chung -->
 
 | # | Kiểu | Trạng thái | Ghi chú |
 |---|---|---|---|
@@ -35,6 +38,7 @@
 | B12 | **GL-TRANSITIONS — kho ~80 chuyển cảnh pro của giới editor** (khối 3D xoay, cửa lùa, gợn sóng, giọt nước, morph, glitch ký ức, zoom xuyên, mơ màng, gió cuốn, tổ ong...) | ✅ ĐÃ CÀI + DEMO#5 10 kiểu tuyển (GL 1-10) | chạy shader chính thức gl-transitions trên GPU máy qua `moderngl`; runner: `temp gl_runner.py` (sẽ đóng chính thức vào scripts/ sau khi Sếp chấm); muốn kiểu nào trong ~70 kiểu còn lại chỉ cần tải 1 file .glsl từ repo gl-transitions |
 
 ## C. HIỆU ỨNG HÌNH / TỐC ĐỘ
+<!-- tags: chung -->
 
 | # | Hiệu ứng | Trạng thái | Ghi chú |
 |---|---|---|---|
@@ -54,6 +58,7 @@
 | C14 | LUT màu điện ảnh (.cube) | 📦 miễn phí | tải LUT pack free + lut3d; cho "tông màu Roboworld" thống nhất |
 
 ## D. ÂM THANH
+<!-- tags: chung -->
 
 | # | Món | Trạng thái | Ghi chú |
 |---|---|---|---|
@@ -64,6 +69,7 @@
 | D5 | Tách giọng khỏi nhạc (vocal remover) | ❌ tạm | demucs nặng máy, nhu cầu chưa rõ |
 
 ## E. AI / TỰ ĐỘNG
+<!-- tags: chung -->
 
 | # | Món | Trạng thái | Ghi chú |
 |---|---|---|---|
@@ -75,6 +81,7 @@
 | E6 | Auto-caption theo template có sẵn kiểu CapCut | ✅ hơn CapCut | mình tự chủ style ASS theo brand, không lệ thuộc template |
 
 ## Đồ đã cài thêm cho mảng này (2026-07-17, đều miễn phí, chạy local)
+<!-- tags: chung -->
 
 - `librosa` (dò beat/tempo), `rembg` + model u2net ~170MB tại `~/.u2net/` (tách nền AI), `onnxruntime`.
 - `moderngl` (chạy shader GL-Transitions trên GPU — đã xác minh chạy tốt trên GTX 1650 Ti); shader nguồn tải từ `github.com/gl-transitions/gl-transitions` (giấy phép mở, dùng thương mại OK).
@@ -84,6 +91,7 @@
 - **`xfade` trên ffmpeg 8.x**: bắt buộc `fps=30,settb=AVTB` (fps TRƯỚC settb) ở CẢ 2 nhánh, offset lấy từ duration đo SAU concat — chi tiết ở `ffmpeg-recipes.md` mục 4c.
 
 ## BỘ SCRIPT HIỆU ỨNG có sẵn trong skill — `scripts/fx/` (bổ sung tài liệu 20/07/2026)
+<!-- tags: chung -->
 
 > **Vì sao mục này tồn tại**: 7 script dưới đây nằm trong skill từ 18/07 nhưng **không tài liệu nào nhắc tới**, nên phiên Claude sau không biết chúng có mà dùng. Hậu quả thật: ngày 20/07 tôi ngồi viết lại code dò phách trong scratchpad, trong khi `find_beats.py` đã nằm sẵn ngay đây. Ghi lại để không lặp lại.
 >
@@ -112,6 +120,7 @@ python "<skill-dir>\scripts\fx\find_beats.py" "<file nhac.mp3>" --tu 52 --dai 45
 `--tu` = giây bắt đầu đọc (dùng khi chỉ lấy "đoạn hay" giữa bài). Script in ra BPM, mốc từng phách, và bảng gợi ý: *cắt mỗi 8 phách → 3.53s/cảnh, mỗi 12 phách → 5.29s/cảnh*. **Lấy đúng mấy con số đó làm độ dài từng cảnh** là mọi cú cắt rơi vào nhịp. Cảnh hook và cảnh CTA nên để dài hơn (12 phách), cảnh giữa chạy nhanh (8 phách).
 
 ## NGUYÊN TẮC DÙNG từ giáo lý dựng phim + motion design (tra cứu nguồn ngành 17/07/2026)
+<!-- tags: chung -->
 
 **Chọn điểm cắt — Rule of Six của Walter Murch (editor huyền thoại, giản lược cho shorts):** khi phân vân cắt ở đâu, ưu tiên theo thứ tự: **CẢM XÚC (quan trọng nhất, đáng hơn cả 5 tiêu chí còn lại cộng lại) > tiến câu chuyện > đúng nhịp > hướng mắt người xem đang nhìn**. Phải hy sinh thì hy sinh từ dưới lên — không bao giờ hy sinh cảm xúc.
 
@@ -126,6 +135,7 @@ python "<skill-dir>\scripts\fx\find_beats.py" "<file nhac.mp3>" --tu 52 --dai 45
 Nguồn: StudioBinder/NoFilmSchool — Walter Murch Rule of Six; Material Design — Easing and duration; NN/g — Executing UX Animations; Demotion — Text Animation Secrets.
 
 ## Việc còn nợ trong sổ này
+<!-- tags: chung -->
 
 1. Sếp chấm 3 demo → đánh dấu món ĐẬU, ghi recipe chi tiết + luật liều lượng (hook→pop-in, số liệu→nhảy số, chuyển cảnh mạnh chỉ ở bước ngoặt, WOW tối đa 1-2 lần/video...).
 2. Món 🔧 nào Sếp muốn xem thì dựng demo bổ sung (nói tên là dựng).

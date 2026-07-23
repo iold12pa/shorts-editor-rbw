@@ -1,10 +1,12 @@
 # Sổ SFX — cây quyết định "khoảnh khắc nào dùng tiếng nào" (lập 2026-07-17)
+<!-- tags: chung -->
 
 > ⚠️ **CẬP NHẬT 19/07/2026 — luật nền của sổ này ĐÃ ĐỔI.** Luật gốc 03/07/2026 ("KHÔNG gắn SFX chỉ vì text vừa hiện", liều 3-5 SFX/video) **đã bị Sếp Huy thay** bằng luật mới: **mỗi thẻ chữ đều kèm 1 SFX pop hợp nghĩa** (kiểu TikTok/Reels, thực tế 14 lớp/55s) — xem `ffmpeg-recipes.md` mục 4b. Cây quyết định + ma trận bên dưới **vẫn dùng tốt cho lớp SFX-theo-hành-động**, nhưng phần liều lượng ở bước 4 đã lỗi thời, đọc theo bản vá ngay bên dưới.
 
 > Phần vẫn còn nguyên giá trị: **SFX khớp hành động cụ thể trong hình** (tiếng cờ lê khi vặn ốc, whoosh khi chuyển cảnh) — luật mới THÊM lớp text-pop chứ không bỏ lớp này.
 
 ## CÂY QUYẾT ĐỊNH (đi từ trên xuống, fail bước nào dừng bước đó)
+<!-- tags: chung -->
 
 1. **Trong hình có hành động/khoảnh khắc gì đang XẢY RA THẬT?** Có → đi tiếp lấy SFX hành động. Không có nhưng **có thẻ chữ xuất hiện** → gắn 1 SFX **pop hợp nghĩa chữ** (luật mới 19/07, xem bước 4 bản vá).
 2. **Khoảnh khắc đó có ÂM GỐC hay không?** (trẻ em cười, robot beep thật, tiếng khách reo) → DÙNG ÂM GỐC (volume 0.2-0.3 theo chuẩn), KHÔNG đè SFX giả lên tiếng thật hay.
@@ -17,10 +19,12 @@
 5. **Canh timing bằng số liệu, không áng chừng**: lấy mốc hành động từ sheet/scene_changes của index (hoặc soi frame), rồi đặt `adelay` theo công thức **`offset = mốc hành động − lead-in`** (mọi file SFX đều có đoạn câm ở đầu; bảng lead-in 11 file đã đo sẵn ở `ffmpeg-recipes.md` mục 4b — riser lệch tới 964ms nếu đặt sai). Tiếng dài cắt bằng `atrim` lấy phần cần.
 
 ## MA TRẬN: khoảnh khắc Roboworld → SFX trong kho (đã đo thời lượng)
+<!-- tags: chung -->
 
 > **Đếm lại thật 21/07/2026**: `SFX/Bo 35 SFX/` có **36 file**, cộng **3 file rời** ngay ngoài `SFX/` = **39 file**. Con số "38" ghi trước đây và tên folder "Bo 35 SFX" đều không khớp — khi cần chắc chắn thì liệt kê thư mục, đừng trích số từ tài liệu.
 
 ### Nhóm CHUYỂN ĐỘNG (robot/camera lướt)
+<!-- tags: chung -->
 | Khoảnh khắc trong hình | File | Ghi chú |
 |---|---|---|
 | Robot LƯỚT NGANG qua camera nhanh | `01 - Whoosh` (0.6s) hoặc `19 - Whoosh 2` (0.4s — gắt hơn) | đặt đúng frame robot gần camera nhất |
@@ -29,6 +33,7 @@
 | Build-up trước cú reveal/drop nhạc | `01 - riser-metallic` (2.8s) | kết thúc riser ĐÚNG mốc reveal |
 
 ### Nhóm VA CHẠM / NHẤN MẠNH
+<!-- tags: chung -->
 | Khoảnh khắc | File | Ghi chú |
 |---|---|---|
 | Freeze frame + thẻ tên robot đập vào | `26 - Cinematic hit` (3.4s — atrim lấy 1.2s đầu) | cú "trầm uy lực", hợp video nghiêm túc |
@@ -37,6 +42,7 @@
 | Đồ vật rơi/va trong hình | `16 - Bone crack`/`17 - Slap`/`30 - Glass shatter` | CHỈ khi đúng nghĩa đen; mặc định né (thiên meme) |
 
 ### Nhóm SỐ LIỆU / THÀNH QUẢ (dùng khi màn hình đang show số/kết quả)
+<!-- tags: chung -->
 | Khoảnh khắc | File | Ghi chú |
 |---|---|---|
 | Số liệu doanh thu/tiết kiệm CHỐT trên hình | `05 - Cash register` (0.9s) | đúng lúc số chốt, không lúc số đang chạy |
@@ -46,6 +52,7 @@
 | Thông báo "cấp đơn/nhận lệnh" trên UI mô phỏng | `12/13 - Iphone send/receive` | CHỈ khi hình có mô phỏng màn hình chat |
 
 ### Nhóm CẢM XÚC NGƯỜI XEM (cẩn thận nhất — dễ phá tông)
+<!-- tags: chung -->
 | Khoảnh khắc | File | Ghi chú |
 |---|---|---|
 | Cảnh dễ thương (robot mèo, trẻ em) KHÔNG có âm gốc tốt | `06 - Aww` (1.5s) | nếu âm gốc có tiếng cười thật → ưu tiên âm gốc |
@@ -55,6 +62,7 @@
 | Tiệc/khai trương/kết quả lớn | `23 - Party horn` (0.9s) | đúng bối cảnh lễ |
 
 ### Nhóm KỸ THUẬT / MÁY MÓC
+<!-- tags: chung -->
 | Khoảnh khắc | File | Ghi chú |
 |---|---|---|
 | Tay vặn ốc/sửa chữa robot TRONG HÌNH | `Ratchet Wrench Slow` (1.2s) | đúng nhịp tay vặn |
@@ -70,6 +78,7 @@
 | Pop nhẹ vật thể xuất hiện | `04 - Pop` (0.4s) | vật thể THẬT xuất hiện (ảnh SP bay vào), không phải text |
 
 ## NGUYÊN TẮC VÀNG từ giáo lý sound design (tra cứu nguồn ngành 17/07/2026 — bồi thêm cho cây quyết định)
+<!-- tags: chung -->
 
 1. **"Ngũ hành" SFX chuẩn ngành** khớp với kho mình: Whoosh (chuyển động/reveal) — Hit (chốt cú cắt mạnh/title slam) — Riser (dẫn lên đỉnh) — Ambience (nền không gian) — Braaam (trailer đại cảnh, ít hợp shorts Roboworld).
 2. **Đỉnh riser phải TRÙNG CHÍNH XÁC mốc reveal** — đặt riser sao cho điểm cao trào rơi đúng frame cắt/hiện thẻ, không phải "bắt đầu riser tại mốc".
@@ -81,6 +90,7 @@
 Nguồn: SFX Engine — Ultimate Guide to Sound Effects for Video Editing; Krotos — What is sound design; Editors Keys — Ultimate Guide to Sound Design.
 
 ## Nguồn bổ sung khi kho thiếu (xếp theo độ ưu tiên)
+<!-- tags: chung -->
 
 1. **Kho 38 file hiện tại** — nguồn chính. LƯU Ý license: phần lớn gốc YouTube Audio Library — về lý giấy phép chỉ chắc chắn cho YouTube; với FB/TikTok là vùng xám (rủi ro thấp với SFX ngắn, nhưng biết để không cãi được thì thay dần).
 2. 📦 **Freesound.org API** (key miễn phí, lọc license CC0 = thương mại thoải mái) — đấu tự động được như đã làm với Pexels; chờ Sếp gật tạo key.
@@ -89,6 +99,7 @@ Nguồn: SFX Engine — Ultimate Guide to Sound Effects for Video Editing; Kroto
 5. ❌ Né: BBC archive (phi thương mại), trending sounds TikTok (bản quyền), kho SFX "crack".
 
 ## Trạng thái duyệt
+<!-- tags: chung -->
 
 - Cây quyết định + ma trận trên là ĐỀ XUẤT dựa trên luật gốc 03/07 của Sếp — demo A/B `DEMO SFX A-B` trên Desktop để Sếp nghe thẩm; Sếp duyệt/chỉnh dòng nào sửa dòng đó rồi mới thành luật cứng.
 - Sau khi duyệt: mục 4b của ffmpeg-recipes sẽ trỏ về sổ này thay vì tự liệt kê.

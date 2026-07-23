@@ -1,78 +1,89 @@
-# Style "QUẢNG CÁO SẢN PHẨM (ADS)" — học từ 5 quảng cáo trong kho `HUY MKT`
+﻿# Style "QUáº¢NG CÃO Sáº¢N PHáº¨M (ADS)" â€” há»c tá»« 5 quáº£ng cÃ¡o trong kho `HUY MKT`
+<!-- tags: kieu-3 -->
 
-Phân tích 2026-07-15, nguồn: `18.SH1 ads`, `20.CC1 ads`, `21.MT1 ads`, `35.Uyên ads thuê`, `38.Bella + Dung RBW` (đều đã có `_phan_tich/index.json` + sheets điền đủ content/tags/key_moments). Đo màu/vị trí bằng cách trích frame full-res + numpy đọc pixel chính xác (không đoán bằng mắt), soi transition bằng lưới dày `fps=10,tile` quanh từng mốc `scene_changes`.
+PhÃ¢n tÃ­ch 2026-07-15, nguá»“n: `18.SH1 ads`, `20.CC1 ads`, `21.MT1 ads`, `35.UyÃªn ads thuÃª`, `38.Bella + Dung RBW` (Ä‘á»u Ä‘Ã£ cÃ³ `_phan_tich/index.json` + sheets Ä‘iá»n Ä‘á»§ content/tags/key_moments). Äo mÃ u/vá»‹ trÃ­ báº±ng cÃ¡ch trÃ­ch frame full-res + numpy Ä‘á»c pixel chÃ­nh xÃ¡c (khÃ´ng Ä‘oÃ¡n báº±ng máº¯t), soi transition báº±ng lÆ°á»›i dÃ y `fps=10,tile` quanh tá»«ng má»‘c `scene_changes`.
 
-**Khi nào dùng style này**: Sếp muốn video mang tính "quảng cáo sản phẩm" rõ ràng (nêu vấn đề → giới thiệu robot → thông số → CTA), khác với style ①②③ vốn thiên về nội dung/khoảnh khắc buổi quay. Style này KHÔNG phải 1 công thức duy nhất — là 1 rổ 5 biến thể, chọn biến thể theo ngân sách/thời gian có (xem mục "Khuyến nghị" cuối file).
+**Khi nÃ o dÃ¹ng style nÃ y**: Sáº¿p muá»‘n video mang tÃ­nh "quáº£ng cÃ¡o sáº£n pháº©m" rÃµ rÃ ng (nÃªu váº¥n Ä‘á» â†’ giá»›i thiá»‡u robot â†’ thÃ´ng sá»‘ â†’ CTA), khÃ¡c vá»›i style â‘ â‘¡â‘¢ vá»‘n thiÃªn vá» ná»™i dung/khoáº£nh kháº¯c buá»•i quay. Style nÃ y KHÃ”NG pháº£i 1 cÃ´ng thá»©c duy nháº¥t â€” lÃ  1 rá»• 5 biáº¿n thá»ƒ, chá»n biáº¿n thá»ƒ theo ngÃ¢n sÃ¡ch/thá»i gian cÃ³ (xem má»¥c "Khuyáº¿n nghá»‹" cuá»‘i file).
 
-## Tổng quan 5 biến thể đã soi
+## Tá»•ng quan 5 biáº¿n thá»ƒ Ä‘Ã£ soi
+<!-- tags: kieu-3 -->
 
-| # | Nguồn | Robot | Đặc điểm hình ảnh chính | Độ khó tái tạo bằng ffmpeg tay |
+| # | Nguá»“n | Robot | Äáº·c Ä‘iá»ƒm hÃ¬nh áº£nh chÃ­nh | Äá»™ khÃ³ tÃ¡i táº¡o báº±ng ffmpeg tay |
 |---|---|---|---|---|
-| A | SH1 ads 2.mp4 | PUDU SH1 | VO chuyên nghiệp + B-roll thật, thẻ chữ nền vàng, watermark góc, **toàn hard-cut** | **Dễ** — đúng năng lực hiện tại của skill |
-| B | CC1 ads 1.mp4 | PUDU CC1 | Reveal điện ảnh studio tối + badge giải thưởng + masked-wipe + thẻ từ-khóa chớp nhanh + outro logo animation | **Vừa** — outro logo animation đã có sẵn file dùng lại được (xem đính chính cuối file); phần reveal điện ảnh + masked-wipe vẫn cần quay riêng |
-| C | MT1 ads 2.mp4 | PUDU MT1 | Trộn **CGI 3D từ hãng PUDU** (robot xoay lơ lửng, wireframe map) với footage thật + transition light-flare | **Không tái tạo được phần CGI** bằng ffmpeg — chỉ dùng được nếu có sẵn asset CGI từ hãng |
-| D | Uyên order ads (V1/V2/V3) | BellaBot Pro (transcript ghi "Bella Pop Pro" — có thể nghe nhầm, hỏi lại Sếp nếu dùng tên này) | MC/UGC nói trực tiếp + sub karaoke cụm-từ + B-roll TÁI SỬ DỤNG từ thư viện có sẵn | **Dễ** — gần giống style ② đã có, chỉ khác cách viết kịch bản |
-| E | Bella + Dung RBW (Final.mp4) | BellaBot | Nhân viên Roboworld mặc đồng phục giới thiệu tại showroom thật + demo màn hình UI cận cảnh + karaoke | **Dễ-Trung bình** — cần nhân viên lên hình + quay tại văn phòng/showroom |
+| A | SH1 ads 2.mp4 | PUDU SH1 | VO chuyÃªn nghiá»‡p + B-roll tháº­t, tháº» chá»¯ ná»n vÃ ng, watermark gÃ³c, **toÃ n hard-cut** | **Dá»…** â€” Ä‘Ãºng nÄƒng lá»±c hiá»‡n táº¡i cá»§a skill |
+| B | CC1 ads 1.mp4 | PUDU CC1 | Reveal Ä‘iá»‡n áº£nh studio tá»‘i + badge giáº£i thÆ°á»Ÿng + masked-wipe + tháº» tá»«-khÃ³a chá»›p nhanh + outro logo animation | **Vá»«a** â€” outro logo animation Ä‘Ã£ cÃ³ sáºµn file dÃ¹ng láº¡i Ä‘Æ°á»£c (xem Ä‘Ã­nh chÃ­nh cuá»‘i file); pháº§n reveal Ä‘iá»‡n áº£nh + masked-wipe váº«n cáº§n quay riÃªng |
+| C | MT1 ads 2.mp4 | PUDU MT1 | Trá»™n **CGI 3D tá»« hÃ£ng PUDU** (robot xoay lÆ¡ lá»­ng, wireframe map) vá»›i footage tháº­t + transition light-flare | **KhÃ´ng tÃ¡i táº¡o Ä‘Æ°á»£c pháº§n CGI** báº±ng ffmpeg â€” chá»‰ dÃ¹ng Ä‘Æ°á»£c náº¿u cÃ³ sáºµn asset CGI tá»« hÃ£ng |
+| D | UyÃªn order ads (V1/V2/V3) | BellaBot Pro (transcript ghi "Bella Pop Pro" â€” cÃ³ thá»ƒ nghe nháº§m, há»i láº¡i Sáº¿p náº¿u dÃ¹ng tÃªn nÃ y) | MC/UGC nÃ³i trá»±c tiáº¿p + sub karaoke cá»¥m-tá»« + B-roll TÃI Sá»¬ Dá»¤NG tá»« thÆ° viá»‡n cÃ³ sáºµn | **Dá»…** â€” gáº§n giá»‘ng style â‘¡ Ä‘Ã£ cÃ³, chá»‰ khÃ¡c cÃ¡ch viáº¿t ká»‹ch báº£n |
+| E | Bella + Dung RBW (Final.mp4) | BellaBot | NhÃ¢n viÃªn Roboworld máº·c Ä‘á»“ng phá»¥c giá»›i thiá»‡u táº¡i showroom tháº­t + demo mÃ n hÃ¬nh UI cáº­n cáº£nh + karaoke | **Dá»…-Trung bÃ¬nh** â€” cáº§n nhÃ¢n viÃªn lÃªn hÃ¬nh + quay táº¡i vÄƒn phÃ²ng/showroom |
 
-Biến thể A/B/C dùng giọng đọc voice-over chuyên nghiệp (không lộ mặt người nói); D/E dùng người thật nói trực tiếp trên hình (MC hoặc nhân viên). **Cả 5 đều mở bằng câu hỏi/pain-point trong 3 giây đầu** — không có ngoại lệ.
+Biáº¿n thá»ƒ A/B/C dÃ¹ng giá»ng Ä‘á»c voice-over chuyÃªn nghiá»‡p (khÃ´ng lá»™ máº·t ngÆ°á»i nÃ³i); D/E dÃ¹ng ngÆ°á»i tháº­t nÃ³i trá»±c tiáº¿p trÃªn hÃ¬nh (MC hoáº·c nhÃ¢n viÃªn). **Cáº£ 5 Ä‘á»u má»Ÿ báº±ng cÃ¢u há»i/pain-point trong 3 giÃ¢y Ä‘áº§u** â€” khÃ´ng cÃ³ ngoáº¡i lá»‡.
 
-## Công thức kịch bản lời thoại (rút từ transcript 3 quảng cáo VO: SH1, CC1, MT1)
+## CÃ´ng thá»©c ká»‹ch báº£n lá»i thoáº¡i (rÃºt tá»« transcript 3 quáº£ng cÃ¡o VO: SH1, CC1, MT1)
+<!-- tags: kieu-3 -->
 
-Cả 3 video A/B/C dùng **gần như CÙNG MỘT khung sườn thoại**, chỉ đổi số liệu/tên sản phẩm — đây là công thức Roboworld đã dùng lặp lại, nên coi là chuẩn mặc định khi viết kịch bản VO chuyên nghiệp:
+Cáº£ 3 video A/B/C dÃ¹ng **gáº§n nhÆ° CÃ™NG Má»˜T khung sÆ°á»n thoáº¡i**, chá»‰ Ä‘á»•i sá»‘ liá»‡u/tÃªn sáº£n pháº©m â€” Ä‘Ã¢y lÃ  cÃ´ng thá»©c Roboworld Ä‘Ã£ dÃ¹ng láº·p láº¡i, nÃªn coi lÃ  chuáº©n máº·c Ä‘á»‹nh khi viáº¿t ká»‹ch báº£n VO chuyÃªn nghiá»‡p:
 
-1. **Hook nghi vấn (0-3s)**: nêu bối cảnh quy mô lớn ("nhà xưởng/kho bãi/bệnh viện/TTTM rộng hàng nghìn mét vuông") + đặt câu hỏi chê cách làm cũ ("mà cứ [làm thủ công] ư?")
-2. **Bắc cầu (3-8s)**: "Hôm nay cùng mình xem/trải nghiệm em robot này xử lý thế nào nhé"
-3. **Định danh sản phẩm (8-12s)**: "Đây là [Tên robot], robot [loại] tích hợp [tính năng nổi bật nhất]"
-4. **Liệt kê thông số (12-40s)**: cân nặng/kích thước → cách vận hành (tự động/cảm biến) → pin/thời lượng → năng suất so sánh (vd "gấp hàng chục lần thủ công") — MỖI thông số đi kèm 1 cảnh B-roll minh họa đúng thông số đó
-5. **CTA (cuối)**: "Trải nghiệm ngay [Tên robot] để thấy sự khác biệt nhé!" — công thức CTA cố định, gần như nguyên văn ở cả 3 video
+1. **Hook nghi váº¥n (0-3s)**: nÃªu bá»‘i cáº£nh quy mÃ´ lá»›n ("nhÃ  xÆ°á»Ÿng/kho bÃ£i/bá»‡nh viá»‡n/TTTM rá»™ng hÃ ng nghÃ¬n mÃ©t vuÃ´ng") + Ä‘áº·t cÃ¢u há»i chÃª cÃ¡ch lÃ m cÅ© ("mÃ  cá»© [lÃ m thá»§ cÃ´ng] Æ°?")
+2. **Báº¯c cáº§u (3-8s)**: "HÃ´m nay cÃ¹ng mÃ¬nh xem/tráº£i nghiá»‡m em robot nÃ y xá»­ lÃ½ tháº¿ nÃ o nhÃ©"
+3. **Äá»‹nh danh sáº£n pháº©m (8-12s)**: "ÄÃ¢y lÃ  [TÃªn robot], robot [loáº¡i] tÃ­ch há»£p [tÃ­nh nÄƒng ná»•i báº­t nháº¥t]"
+4. **Liá»‡t kÃª thÃ´ng sá»‘ (12-40s)**: cÃ¢n náº·ng/kÃ­ch thÆ°á»›c â†’ cÃ¡ch váº­n hÃ nh (tá»± Ä‘á»™ng/cáº£m biáº¿n) â†’ pin/thá»i lÆ°á»£ng â†’ nÄƒng suáº¥t so sÃ¡nh (vd "gáº¥p hÃ ng chá»¥c láº§n thá»§ cÃ´ng") â€” Má»–I thÃ´ng sá»‘ Ä‘i kÃ¨m 1 cáº£nh B-roll minh há»a Ä‘Ãºng thÃ´ng sá»‘ Ä‘Ã³
+5. **CTA (cuá»‘i)**: "Tráº£i nghiá»‡m ngay [TÃªn robot] Ä‘á»ƒ tháº¥y sá»± khÃ¡c biá»‡t nhÃ©!" â€” cÃ´ng thá»©c CTA cá»‘ Ä‘á»‹nh, gáº§n nhÆ° nguyÃªn vÄƒn á»Ÿ cáº£ 3 video
 
-Kịch bản MC/UGC (D/E) khác hẳn: không có thông số kỹ thuật dồn dập, thay bằng **pain-point cá nhân hóa + proof-point thương hiệu lớn** (xem case-studies.md — Golden Gate, Samsung, Viettel, May 10 đã có số liệu thật) + CTA mời inbox/nhắn tin thay vì "trải nghiệm ngay".
+Ká»‹ch báº£n MC/UGC (D/E) khÃ¡c háº³n: khÃ´ng cÃ³ thÃ´ng sá»‘ ká»¹ thuáº­t dá»“n dáº­p, thay báº±ng **pain-point cÃ¡ nhÃ¢n hÃ³a + proof-point thÆ°Æ¡ng hiá»‡u lá»›n** (xem case-studies.md â€” Golden Gate, Samsung, Viettel, May 10 Ä‘Ã£ cÃ³ sá»‘ liá»‡u tháº­t) + CTA má»i inbox/nháº¯n tin thay vÃ¬ "tráº£i nghiá»‡m ngay".
 
-## Hồ sơ chữ/màu đã đo (4 kiểu — số liệu đo pixel thật, không ước lượng)
+## Há»“ sÆ¡ chá»¯/mÃ u Ä‘Ã£ Ä‘o (4 kiá»ƒu â€” sá»‘ liá»‡u Ä‘o pixel tháº­t, khÃ´ng Æ°á»›c lÆ°á»£ng)
+<!-- tags: kieu-3 -->
 
-### 1. Thẻ chữ nền vàng 2 dòng (SH1, cũng là gốc của style ①②)
-- Màu nền: **#FEDB00** (≈ #FFD200 brand yellow đã dùng ở style ①② — xác nhận ĐÚNG 1 brand yellow xuyên suốt)
-- Chữ: đen, in hoa/thường lẫn, font condensed bold (kiểu Anton)
-- Kích thước: hộp bo góc rộng **~64.5% chiều rộng khung nội dung**, cao **~12.6% chiều cao khung**, căn giữa ngang
-- Vị trí: **66-79% chiều cao** (phần dưới khung, dưới logo/dưới robot)
-- **Đặc điểm riêng so với style ②**: thẻ TỒN TẠI XUYÊN QUA NHIỀU LẦN HARD-CUT của hình bên dưới — không đổi thẻ mỗi khi đổi cảnh, mà đổi theo nhịp lời thoại. 1 thẻ có thể phủ 2-3 cảnh B-roll khác nhau.
+### 1. Tháº» chá»¯ ná»n vÃ ng 2 dÃ²ng (SH1, cÅ©ng lÃ  gá»‘c cá»§a style â‘ â‘¡)
+<!-- tags: kieu-3 -->
+- MÃ u ná»n: **#FEDB00** (â‰ˆ #FFD200 brand yellow Ä‘Ã£ dÃ¹ng á»Ÿ style â‘ â‘¡ â€” xÃ¡c nháº­n ÄÃšNG 1 brand yellow xuyÃªn suá»‘t)
+- Chá»¯: Ä‘en, in hoa/thÆ°á»ng láº«n, font condensed bold (kiá»ƒu Anton)
+- KÃ­ch thÆ°á»›c: há»™p bo gÃ³c rá»™ng **~64.5% chiá»u rá»™ng khung ná»™i dung**, cao **~12.6% chiá»u cao khung**, cÄƒn giá»¯a ngang
+- Vá»‹ trÃ­: **66-79% chiá»u cao** (pháº§n dÆ°á»›i khung, dÆ°á»›i logo/dÆ°á»›i robot)
+- **Äáº·c Ä‘iá»ƒm riÃªng so vá»›i style â‘¡**: tháº» Tá»’N Táº I XUYÃŠN QUA NHIá»€U Láº¦N HARD-CUT cá»§a hÃ¬nh bÃªn dÆ°á»›i â€” khÃ´ng Ä‘á»•i tháº» má»—i khi Ä‘á»•i cáº£nh, mÃ  Ä‘á»•i theo nhá»‹p lá»i thoáº¡i. 1 tháº» cÃ³ thá»ƒ phá»§ 2-3 cáº£nh B-roll khÃ¡c nhau.
 
-### 2. Thẻ từ-khóa chớp nhanh không nền (CC1)
-- Chữ trắng đậm, hơi nghiêng, có motion-blur/glitch nhẹ lúc xuất hiện — KHÔNG có hộp nền
-- Cỡ chữ RẤT LỚN: cap-height **~12.5% chiều cao khung** (to hơn cả hook style ①②)
-- Vị trí: lệch trái (~33% margin trái, không căn giữa), dọc ở khoảng 56-68% chiều cao
-- Nhịp: MỖI TỪ <1 GIÂY, đổi từ đồng bộ chính xác với hard-cut hình bên dưới (ngược với kiểu 1 — ở đây chữ THEO cut, không persist)
-- Dùng cho chuỗi liệt kê nhanh (quét → hút → lau → tráng — tên 4 tác vụ của CC1)
+### 2. Tháº» tá»«-khÃ³a chá»›p nhanh khÃ´ng ná»n (CC1)
+<!-- tags: kieu-3 -->
+- Chá»¯ tráº¯ng Ä‘áº­m, hÆ¡i nghiÃªng, cÃ³ motion-blur/glitch nháº¹ lÃºc xuáº¥t hiá»‡n â€” KHÃ”NG cÃ³ há»™p ná»n
+- Cá»¡ chá»¯ Ráº¤T Lá»šN: cap-height **~12.5% chiá»u cao khung** (to hÆ¡n cáº£ hook style â‘ â‘¡)
+- Vá»‹ trÃ­: lá»‡ch trÃ¡i (~33% margin trÃ¡i, khÃ´ng cÄƒn giá»¯a), dá»c á»Ÿ khoáº£ng 56-68% chiá»u cao
+- Nhá»‹p: Má»–I Tá»ª <1 GIÃ‚Y, Ä‘á»•i tá»« Ä‘á»“ng bá»™ chÃ­nh xÃ¡c vá»›i hard-cut hÃ¬nh bÃªn dÆ°á»›i (ngÆ°á»£c vá»›i kiá»ƒu 1 â€” á»Ÿ Ä‘Ã¢y chá»¯ THEO cut, khÃ´ng persist)
+- DÃ¹ng cho chuá»—i liá»‡t kÃª nhanh (quÃ©t â†’ hÃºt â†’ lau â†’ trÃ¡ng â€” tÃªn 4 tÃ¡c vá»¥ cá»§a CC1)
 
-### 3. Karaoke cụm-từ (Uyên, Bella+Dung — TRÙNG với spec style ② đã có)
-- Giống hệt cơ chế đã ghi trong `style-voice-karaoke.md`: nền hộp đen, chữ trắng, từ đang đọc tô màu
-- Khác biệt nhỏ đã đo: màu tô ở đây là **vàng thuần #FEFF02** (≈#FFFF00) chứ không phải #FFD200 brand — vì 2 video này dùng preset caption tự động (kiểu CapCut) chứ không chỉnh tay theo brand. Bella+Dung dùng màu tô **đỏ #EC1C1C** thay vì vàng.
-- **Không cần tạo spec mới** — áp lại đúng công thức karaoke của style ②, chỉ đổi màu tô nếu Sếp muốn khớp video mẫu này.
+### 3. Karaoke cá»¥m-tá»« (UyÃªn, Bella+Dung â€” TRÃ™NG vá»›i spec style â‘¡ Ä‘Ã£ cÃ³)
+<!-- tags: kieu-3 -->
+- Giá»‘ng há»‡t cÆ¡ cháº¿ Ä‘Ã£ ghi trong `style-voice-karaoke.md`: ná»n há»™p Ä‘en, chá»¯ tráº¯ng, tá»« Ä‘ang Ä‘á»c tÃ´ mÃ u
+- KhÃ¡c biá»‡t nhá» Ä‘Ã£ Ä‘o: mÃ u tÃ´ á»Ÿ Ä‘Ã¢y lÃ  **vÃ ng thuáº§n #FEFF02** (â‰ˆ#FFFF00) chá»© khÃ´ng pháº£i #FFD200 brand â€” vÃ¬ 2 video nÃ y dÃ¹ng preset caption tá»± Ä‘á»™ng (kiá»ƒu CapCut) chá»© khÃ´ng chá»‰nh tay theo brand. Bella+Dung dÃ¹ng mÃ u tÃ´ **Ä‘á» #EC1C1C** thay vÃ¬ vÃ ng.
+- **KhÃ´ng cáº§n táº¡o spec má»›i** â€” Ã¡p láº¡i Ä‘Ãºng cÃ´ng thá»©c karaoke cá»§a style â‘¡, chá»‰ Ä‘á»•i mÃ u tÃ´ náº¿u Sáº¿p muá»‘n khá»›p video máº«u nÃ y.
 
-### 4. Tiêu đề đỏ nghiêng không nền (Bella+Dung)
-- Màu: **#EC1C1C** (đỏ thuần), font in nghiêng kiểu script/bold-italic (KHÁC Anton — Anton là condensed đứng, đây là chữ nghiêng bo tròn hơn)
-- Vị trí: ngay dưới logo, **16-24% chiều cao**, căn trái (~17% margin), không hộp nền, có viền/bóng trắng mỏng để nổi trên nền phức tạp
-- Dùng cho câu khẳng định ngắn 2 dòng kiểu USP ("Giao diện thân thiện / Tương tác niềm nở")
+### 4. TiÃªu Ä‘á» Ä‘á» nghiÃªng khÃ´ng ná»n (Bella+Dung)
+<!-- tags: kieu-3 -->
+- MÃ u: **#EC1C1C** (Ä‘á» thuáº§n), font in nghiÃªng kiá»ƒu script/bold-italic (KHÃC Anton â€” Anton lÃ  condensed Ä‘á»©ng, Ä‘Ã¢y lÃ  chá»¯ nghiÃªng bo trÃ²n hÆ¡n)
+- Vá»‹ trÃ­: ngay dÆ°á»›i logo, **16-24% chiá»u cao**, cÄƒn trÃ¡i (~17% margin), khÃ´ng há»™p ná»n, cÃ³ viá»n/bÃ³ng tráº¯ng má»ng Ä‘á»ƒ ná»•i trÃªn ná»n phá»©c táº¡p
+- DÃ¹ng cho cÃ¢u kháº³ng Ä‘á»‹nh ngáº¯n 2 dÃ²ng kiá»ƒu USP ("Giao diá»‡n thÃ¢n thiá»‡n / TÆ°Æ¡ng tÃ¡c niá»m ná»Ÿ")
 
-## Kiểu chuyển cảnh (transition) đã bắt được
+## Kiá»ƒu chuyá»ƒn cáº£nh (transition) Ä‘Ã£ báº¯t Ä‘Æ°á»£c
+<!-- tags: kieu-3 -->
 
-Soi lưới dày `fps=10,tile` quanh 10 mốc `scene_changes` khác nhau, phát hiện 3 kiểu:
+Soi lÆ°á»›i dÃ y `fps=10,tile` quanh 10 má»‘c `scene_changes` khÃ¡c nhau, phÃ¡t hiá»‡n 3 kiá»ƒu:
 
-1. **Hard cut** (SH1 toàn bộ, Uyên, Bella+Dung, phần lớn CC1/MT1) — cắt cứng, không hiệu ứng. **Đây vẫn là mặc định** của skill, không cần đổi gì.
-2. **Masked-wipe** (CC1 @13.1s): 1 vật thể tối (như cánh tay/panel) quét ngang qua ống kính che khuất khung hình trong ~0.3-0.4s rồi lộ ra cảnh mới phía sau — hiệu ứng composite quay thật, KHÔNG PHẢI filter `xfade=wipeleft` của ffmpeg (xfade wipe là 1 đường thẳng cứng ăn dần, còn cái này có motion-blur và vật thể thật che ống kính).
-3. **Light-flare/burst transition** (MT1 @19.2s): hiệu ứng tunnel ánh sáng trắng bùng nổ/zoom làm cầu nối giữa 2 cảnh — có thể ffmpeg giả lập gần đúng bằng `xfade=fadewhite` hoặc chèn 2-3 frame trắng/overexposed ở điểm cắt, nhưng sẽ không mượt bằng bản gốc (bản gốc là 1 shot dựng riêng, không phải filter).
+1. **Hard cut** (SH1 toÃ n bá»™, UyÃªn, Bella+Dung, pháº§n lá»›n CC1/MT1) â€” cáº¯t cá»©ng, khÃ´ng hiá»‡u á»©ng. **ÄÃ¢y váº«n lÃ  máº·c Ä‘á»‹nh** cá»§a skill, khÃ´ng cáº§n Ä‘á»•i gÃ¬.
+2. **Masked-wipe** (CC1 @13.1s): 1 váº­t thá»ƒ tá»‘i (nhÆ° cÃ¡nh tay/panel) quÃ©t ngang qua á»‘ng kÃ­nh che khuáº¥t khung hÃ¬nh trong ~0.3-0.4s rá»“i lá»™ ra cáº£nh má»›i phÃ­a sau â€” hiá»‡u á»©ng composite quay tháº­t, KHÃ”NG PHáº¢I filter `xfade=wipeleft` cá»§a ffmpeg (xfade wipe lÃ  1 Ä‘Æ°á»ng tháº³ng cá»©ng Äƒn dáº§n, cÃ²n cÃ¡i nÃ y cÃ³ motion-blur vÃ  váº­t thá»ƒ tháº­t che á»‘ng kÃ­nh).
+3. **Light-flare/burst transition** (MT1 @19.2s): hiá»‡u á»©ng tunnel Ã¡nh sÃ¡ng tráº¯ng bÃ¹ng ná»•/zoom lÃ m cáº§u ná»‘i giá»¯a 2 cáº£nh â€” cÃ³ thá»ƒ ffmpeg giáº£ láº­p gáº§n Ä‘Ãºng báº±ng `xfade=fadewhite` hoáº·c chÃ¨n 2-3 frame tráº¯ng/overexposed á»Ÿ Ä‘iá»ƒm cáº¯t, nhÆ°ng sáº½ khÃ´ng mÆ°á»£t báº±ng báº£n gá»‘c (báº£n gá»‘c lÃ  1 shot dá»±ng riÃªng, khÃ´ng pháº£i filter).
 
-**Kết luận thực dụng**: nếu Sếp muốn dựng style ADS nhanh bằng ffmpeg như hiện tại, dùng **hard-cut là chính** (biến thể A/D/E) — đã đủ chuyên nghiệp và đúng năng lực skill. Muốn có masked-wipe/CGI như CC1/MT1 thì cần quay riêng cảnh reveal hoặc thuê dựng motion graphics — ghi rõ giới hạn này khi Sếp yêu cầu, đừng nhận làm rồi ra bản kém hơn video mẫu.
+**Káº¿t luáº­n thá»±c dá»¥ng**: náº¿u Sáº¿p muá»‘n dá»±ng style ADS nhanh báº±ng ffmpeg nhÆ° hiá»‡n táº¡i, dÃ¹ng **hard-cut lÃ  chÃ­nh** (biáº¿n thá»ƒ A/D/E) â€” Ä‘Ã£ Ä‘á»§ chuyÃªn nghiá»‡p vÃ  Ä‘Ãºng nÄƒng lá»±c skill. Muá»‘n cÃ³ masked-wipe/CGI nhÆ° CC1/MT1 thÃ¬ cáº§n quay riÃªng cáº£nh reveal hoáº·c thuÃª dá»±ng motion graphics â€” ghi rÃµ giá»›i háº¡n nÃ y khi Sáº¿p yÃªu cáº§u, Ä‘á»«ng nháº­n lÃ m rá»“i ra báº£n kÃ©m hÆ¡n video máº«u.
 
-**Đính chính 2026-07-15 — outro logo animation KHÔNG cần dựng mới**: khảo sát thêm 10 folder khác trong HUY MKT phát hiện outro logo động y hệt CC1 (đen → 2 chấm đỏ → chữ R lắp ráp → card liên hệ) xuất hiện lặp lại ở NHIỀU video khác (Vinschool, Phúc Yên, Unbox Omnie...) — đây là 1 **file asset có sẵn** (`tìm theo TÊN FILE Logo Animation_1.mp4 trong ~/.claude/roboworld-assets/tai-nguyen-chung/`, 6s, 1080x1920, có bản card cá nhân hóa "Phương Uyên" — có thể còn bản card công ty chung ở nơi khác chưa tìm thấy), KHÔNG phải dựng riêng cho từng video. Tuy nhiên `references/style-mau.md` đã ghi rõ: **Sếp từng được hỏi và đã từ chối dùng outro card đỏ này**, chọn outro dọc hiện tại thay thế. Vì vậy: đây là THÔNG TIN để Sếp biết có sẵn, KHÔNG tự động đổi outro mặc định của skill — chỉ dùng nếu Sếp chủ động chọn lại cho video ADS.
+**ÄÃ­nh chÃ­nh 2026-07-15 â€” outro logo animation KHÃ”NG cáº§n dá»±ng má»›i**: kháº£o sÃ¡t thÃªm 10 folder khÃ¡c trong HUY MKT phÃ¡t hiá»‡n outro logo Ä‘á»™ng y há»‡t CC1 (Ä‘en â†’ 2 cháº¥m Ä‘á» â†’ chá»¯ R láº¯p rÃ¡p â†’ card liÃªn há»‡) xuáº¥t hiá»‡n láº·p láº¡i á»Ÿ NHIá»€U video khÃ¡c (Vinschool, PhÃºc YÃªn, Unbox Omnie...) â€” Ä‘Ã¢y lÃ  1 **file asset cÃ³ sáºµn** (`tÃ¬m theo TÃŠN FILE Logo Animation_1.mp4 trong ~/.claude/roboworld-assets/tai-nguyen-chung/`, 6s, 1080x1920, cÃ³ báº£n card cÃ¡ nhÃ¢n hÃ³a "PhÆ°Æ¡ng UyÃªn" â€” cÃ³ thá»ƒ cÃ²n báº£n card cÃ´ng ty chung á»Ÿ nÆ¡i khÃ¡c chÆ°a tÃ¬m tháº¥y), KHÃ”NG pháº£i dá»±ng riÃªng cho tá»«ng video. Tuy nhiÃªn `references/style-mau.md` Ä‘Ã£ ghi rÃµ: **Sáº¿p tá»«ng Ä‘Æ°á»£c há»i vÃ  Ä‘Ã£ tá»« chá»‘i dÃ¹ng outro card Ä‘á» nÃ y**, chá»n outro dá»c hiá»‡n táº¡i thay tháº¿. VÃ¬ váº­y: Ä‘Ã¢y lÃ  THÃ”NG TIN Ä‘á»ƒ Sáº¿p biáº¿t cÃ³ sáºµn, KHÃ”NG tá»± Ä‘á»™ng Ä‘á»•i outro máº·c Ä‘á»‹nh cá»§a skill â€” chá»‰ dÃ¹ng náº¿u Sáº¿p chá»§ Ä‘á»™ng chá»n láº¡i cho video ADS.
 
-## B-roll tái sử dụng (kỹ thuật rút từ Uyên ads)
+## B-roll tÃ¡i sá»­ dá»¥ng (ká»¹ thuáº­t rÃºt tá»« UyÃªn ads)
+<!-- tags: kieu-3 -->
 
-Uyên ads chèn cảnh KHÔNG quay riêng cho video này (hội thảo du lịch, hội chợ LEFASO, sự kiện có trẻ em — footage có sẵn trong thư viện) để minh họa luận điểm "dùng được ở mọi sự kiện", xen giữa các đoạn MC nói chính. Đây là cách tiết kiệm effort hợp lý khi kho footage cũ đã đủ đa dạng bối cảnh — **áp dụng được cho các buổi quay sau**: khi viết kịch bản ADS mới, kiểm tra trước index.json của các folder cũ xem có B-roll bối cảnh tương tự claim đang muốn đưa ra không, tránh phải quay lại từ đầu.
+UyÃªn ads chÃ¨n cáº£nh KHÃ”NG quay riÃªng cho video nÃ y (há»™i tháº£o du lá»‹ch, há»™i chá»£ LEFASO, sá»± kiá»‡n cÃ³ tráº» em â€” footage cÃ³ sáºµn trong thÆ° viá»‡n) Ä‘á»ƒ minh há»a luáº­n Ä‘iá»ƒm "dÃ¹ng Ä‘Æ°á»£c á»Ÿ má»i sá»± kiá»‡n", xen giá»¯a cÃ¡c Ä‘oáº¡n MC nÃ³i chÃ­nh. ÄÃ¢y lÃ  cÃ¡ch tiáº¿t kiá»‡m effort há»£p lÃ½ khi kho footage cÅ© Ä‘Ã£ Ä‘á»§ Ä‘a dáº¡ng bá»‘i cáº£nh â€” **Ã¡p dá»¥ng Ä‘Æ°á»£c cho cÃ¡c buá»•i quay sau**: khi viáº¿t ká»‹ch báº£n ADS má»›i, kiá»ƒm tra trÆ°á»›c index.json cá»§a cÃ¡c folder cÅ© xem cÃ³ B-roll bá»‘i cáº£nh tÆ°Æ¡ng tá»± claim Ä‘ang muá»‘n Ä‘Æ°a ra khÃ´ng, trÃ¡nh pháº£i quay láº¡i tá»« Ä‘áº§u.
 
-## Khuyến nghị khi Sếp muốn dựng video theo style ADS
+## Khuyáº¿n nghá»‹ khi Sáº¿p muá»‘n dá»±ng video theo style ADS
+<!-- tags: kieu-3 -->
 
-- Muốn nhanh, đúng năng lực ffmpeg hiện tại → chọn khung sườn A (VO + thẻ vàng + hard-cut) hoặc D/E (MC/nhân viên lên hình + karaoke) tùy có người sẵn sàng lên hình hay không
-- Muốn hoành tráng như CC1/MT1 (reveal điện ảnh, CGI, logo animation) → phải báo trước với Sếp đây là mức đầu tư khác (quay riêng/thuê motion graphics), skill hiện tại chỉ làm được phần B-roll + text + hard-cut, KHÔNG tự tạo được phần điện ảnh/CGI
-- Viết lời thoại VO → dùng đúng khung sườn 5 bước ở mục "Công thức kịch bản" phía trên, giữ câu CTA gần với mẫu đã có
-- Có claim kiểu "dùng được nhiều bối cảnh" → cân nhắc B-roll tái sử dụng như Uyên ads thay vì quay mới toàn bộ
+- Muá»‘n nhanh, Ä‘Ãºng nÄƒng lá»±c ffmpeg hiá»‡n táº¡i â†’ chá»n khung sÆ°á»n A (VO + tháº» vÃ ng + hard-cut) hoáº·c D/E (MC/nhÃ¢n viÃªn lÃªn hÃ¬nh + karaoke) tÃ¹y cÃ³ ngÆ°á»i sáºµn sÃ ng lÃªn hÃ¬nh hay khÃ´ng
+- Muá»‘n hoÃ nh trÃ¡ng nhÆ° CC1/MT1 (reveal Ä‘iá»‡n áº£nh, CGI, logo animation) â†’ pháº£i bÃ¡o trÆ°á»›c vá»›i Sáº¿p Ä‘Ã¢y lÃ  má»©c Ä‘áº§u tÆ° khÃ¡c (quay riÃªng/thuÃª motion graphics), skill hiá»‡n táº¡i chá»‰ lÃ m Ä‘Æ°á»£c pháº§n B-roll + text + hard-cut, KHÃ”NG tá»± táº¡o Ä‘Æ°á»£c pháº§n Ä‘iá»‡n áº£nh/CGI
+- Viáº¿t lá»i thoáº¡i VO â†’ dÃ¹ng Ä‘Ãºng khung sÆ°á»n 5 bÆ°á»›c á»Ÿ má»¥c "CÃ´ng thá»©c ká»‹ch báº£n" phÃ­a trÃªn, giá»¯ cÃ¢u CTA gáº§n vá»›i máº«u Ä‘Ã£ cÃ³
+- CÃ³ claim kiá»ƒu "dÃ¹ng Ä‘Æ°á»£c nhiá»u bá»‘i cáº£nh" â†’ cÃ¢n nháº¯c B-roll tÃ¡i sá»­ dá»¥ng nhÆ° UyÃªn ads thay vÃ¬ quay má»›i toÃ n bá»™

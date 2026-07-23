@@ -1,8 +1,10 @@
 # Từ lựa chọn của người dùng → tới sản phẩm
+<!-- tags: chung -->
 
 > **Luật Sếp Huy chốt 22/07/2026.** Nguyên văn: *"những cái tôi bạn xây dựng lại giờ nó không phải là chỉ để chọn và để đấy... nó là thứ trực tiếp ảnh hưởng đến video bạn làm ra. Hãy làm một bộ quy tắc để biến những đầu vào này của người dùng gần nhất với sản phẩm đó ra. Tuy nhiên về những quy tắc edit, quy tắc chọn cảnh thì vẫn phải tuyệt đối tuân theo những gì đã xây dựng từ đầu — cái này chỉ là dẫn dắt thôi. Và sẽ luôn phải có những phản biện từ bạn, từ nguồn thật, với những gì người dùng mong muốn."*
 
 ## 0. Ba tầng quyền — nhớ thứ tự này trước khi đọc tiếp
+<!-- tags: chung -->
 
 | Tầng | Là gì | Quyền |
 |---|---|---|
@@ -15,10 +17,12 @@
 ---
 
 ## 1. Bảng ánh xạ — mỗi lựa chọn đổi cái gì trong sản phẩm
+<!-- tags: chung -->
 
 Đây là phần cốt lõi: người dùng bấm xong thì **video phải khác đi thật**, không phải chỉ ghi vào biên bản.
 
 ### Hướng dựng
+<!-- tags: chung -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -27,6 +31,7 @@
 | **MC dẫn** | Lời có sẵn là **xương sống bất biến**, cấm sửa lời. Cảnh cắt theo nhịp thở của người nói. Mốc cắt lấy từ `loc_thoai_that.py`, **không lấy từ Whisper** |
 
 ### Số lượng video
+<!-- tags: chung -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -35,6 +40,7 @@
 | **Để tôi đề xuất** | Đếm cảnh sạch trước, chia cho ~7 cảnh/video, **báo con số kèm lý do** — không im lặng chọn |
 
 ### Kênh đăng
+<!-- tags: chung -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -43,6 +49,7 @@
 | **Cả hai** | Dựng một lần, xuất 2 bản. **Không chỉ khác logo** — bản cá nhân nên đổi cả câu chốt cho bớt mùi quảng cáo |
 
 ### Nhạc
+<!-- tags: chung -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -52,6 +59,7 @@
 | **Giữ tiếng gốc** | **Không đè nhạc.** Phải chọn cảnh có tiếng hiện trường đáng nghe — tiếng khách trầm trồ, tiếng robot chạy. Cảnh im lặng vô hồn thì loại |
 
 ### Giọng đọc (chỉ Voice-over)
+<!-- tags: kieu-3 -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -62,6 +70,7 @@
 | **Để tôi chọn** | Viết kịch bản trước → chọn giọng theo chất văn → **báo lại đã chọn ai và vì sao** |
 
 ### Mức phủ giọng
+<!-- tags: kieu-2, kieu-3 -->
 
 | Chọn | Sản phẩm phải khác thế nào |
 |---|---|
@@ -72,6 +81,7 @@
 ---
 
 ## 2. Xử lý câu mở — biến chữ người dùng gõ thành quyết định dựng
+<!-- tags: chung -->
 
 Câu mở là thứ **giàu thông tin nhất** trong cả bước hỏi. Bóc theo 4 nhóm, mỗi nhóm ra một quyết định cụ thể:
 
@@ -87,12 +97,14 @@ Câu mở là thứ **giàu thông tin nhất** trong cả bước hỏi. Bóc t
 ---
 
 ## 3. 🔴 PHẢN BIỆN BẮT BUỘC — ba tầng đối chiếu trước khi dựng
+<!-- tags: chung -->
 
 > Sếp: *"sẽ luôn phải có những phản biện từ bạn, từ nguồn thật, với những gì người dùng mong muốn."*
 
 Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 3 phép đối chiếu này trước:
 
 ### Tầng A — mong muốn ↔ TƯ LIỆU THẬT
+<!-- tags: chung -->
 
 Đối chiếu từng ý họ nêu với những gì máy đọc được. Câu hỏi phải trả lời: *"cảnh họ muốn có thật trong folder không?"*
 
@@ -101,6 +113,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 - Có nhưng chất lượng kém (rung, mờ, lọt người đang nói) → báo kèm phương án: dùng cảnh khác, hay chấp nhận?
 
 ### Tầng B — mong muốn ↔ LUẬT DỰNG
+<!-- tags: chung -->
 
 Ý họ có phạm luật đã đúc kết không? Các ca hay gặp:
 
@@ -114,6 +127,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 **Nguyên tắc**: luật thắng, nhưng **người dùng có quyền biết vì sao** và có quyền yêu cầu làm theo ý mình. Họ khăng khăng → làm theo, ghi lại là theo yêu cầu của họ.
 
 ### Tầng C — mong muốn ↔ HIỆU QUẢ THẬT
+<!-- tags: chung -->
 
 Đối chiếu với gu đã đúc kết từ video final Sếp duyệt (`gu-kieu-2-3.md`, `chon-canh-highlight.md`):
 
@@ -123,6 +137,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 - Chữ đè quá nhiều chữ, đọc không kịp trong thời lượng cảnh
 
 ### Trình bày phản biện thế nào
+<!-- tags: chung -->
 
 **Không phải bàn lùi.** Mỗi phản biện đủ 3 phần, gói trong 2-3 câu:
 
@@ -135,6 +150,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 ---
 
 ## 4. 🔴 PHẢN BIỆN CHỈ ÁP CHO NHÁNH "TRAO ĐỔI TIẾP" (Sếp Huy chốt 22/07/2026)
+<!-- tags: chung -->
 
 > Nguyên văn: *"nếu họ chọn làm luôn thì cứ làm, không cần phản biện, coi những gì họ nói là tham khảo thôi."*
 
@@ -148,6 +164,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 *Ví dụ*: họ viết "mở đầu bằng toàn cảnh khu du lịch". Luật hook nói toàn cảnh rộng yếu ở 3 giây đầu. → Nhánh **trao đổi tiếp**: phản biện, đề xuất cảnh khác. Nhánh **làm luôn**: mở bằng cảnh mạnh theo luật, đưa toàn cảnh vào giây thứ 4 — làm luôn, không hỏi.
 
 ### Nhưng vẫn DỪNG-BÁO ở 4 tình huống — đây KHÔNG phải phản biện
+<!-- tags: chung -->
 
 Phân biệt rõ: **phản biện** = góp ý về hướng làm *(đã bỏ ở nhánh này)*. **Dừng-báo** = không làm được, buộc phải hỏi:
 
@@ -157,5 +174,6 @@ Phân biệt rõ: **phản biện** = góp ý về hướng làm *(đã bỏ ở
 4. **Tốn tiền ngoài mức đã biết.**
 
 ### Giao hàng thì tóm tắt đã quyết gì
+<!-- tags: chung -->
 
 Không phải xin phép, chỉ là báo cáo: hook chọn góc nào, cảnh nào bị loại và vì sao, chỗ nào làm khác mô tả của họ. Để họ soi nhanh chứ không phải xem lại từ đầu.

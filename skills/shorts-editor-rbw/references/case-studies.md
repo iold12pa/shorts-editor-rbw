@@ -1,4 +1,5 @@
 # Case study khách hàng thật — Roboworld
+<!-- tags: chung -->
 
 Nguồn: `Hồ sơ năng lực RBW.pdf` (Sếp gửi 2026-07-10). Đây là số liệu/tên khách hàng
 THẬT, dùng để làm proof point trong kịch bản (số liệu cụ thể tăng độ tin cậy hơn nói
@@ -6,6 +7,7 @@ chung chung). Theo nguyên tắc ở `kichban-template.md`: chỉ nhắc tên kh
 footage đúng là quay tại đó — không gán nhầm case study này cho footage khác.
 
 ## 1. BellaBot & BellaBot Pro tại hệ thống nhà hàng Golden Gate
+<!-- tags: chung -->
 - Triển khai: 13 robot BellaBot Pro — GoGi House (1), Lẩu Cá Lách Cách (8), Kichi Kichi (4)
 - Diện tích: 500-600 m²/cơ sở | Thời gian triển khai: 2025
 - Bài toán: thiếu nhân sự phục vụ giờ cao điểm, quy trình chưa tối ưu, chi phí vận hành cao
@@ -15,6 +17,7 @@ footage đúng là quay tại đó — không gán nhầm case study này cho fo
 - Feedback khách: *"Robot rất tiện lợi, hỗ trợ vận hành hiệu quả và giúp tiết kiệm nhân lực cho nhà hàng."*
 
 ## 2. PUDU MT1 tại Nhà máy May 10 — Chi nhánh Bỉm Sơn
+<!-- tags: chung -->
 - Khách hàng: Chi nhánh Tổng công ty May 10 – Cty CP Xí nghiệp May Bỉm Sơn
 - Triển khai: 04 robot PUDU MT1, 2 tầng, 8.000 m²/tầng → tổng 16.000 m²
 - Thời gian: 27/06/2025 – 04/09/2025 | Thay thế: 3 nhân viên vệ sinh trước đây
@@ -25,6 +28,7 @@ footage đúng là quay tại đó — không gán nhầm case study này cho fo
 - Feedback khách: *"Robot mang lại sự tiện lợi, giúp vận hành hiệu quả và tối ưu nguồn nhân lực cho nhà máy."*
 
 ## 3. PUDU T300 tại Hi-Tech Việt Nam Apparel Factory
+<!-- tags: chung -->
 - Khách hàng: Công ty TNHH Hi-Tech Việt Nam Apparel — nhà máy Tây An, Duy Trung, Duy Xuyên, Quảng Nam
 - Triển khai: 03 robot vận chuyển PUDU T300, diện tích 6.000 m² | Thời gian: 10/2025
 - Bài toán: thiếu/khó tuyển nhân sự vận chuyển, nhân sự nghỉ đột xuất gây gián đoạn, chi phí cao
@@ -34,6 +38,7 @@ footage đúng là quay tại đó — không gán nhầm case study này cho fo
 - Feedback khách: *"Robot vận hành rất hiệu quả, không cần chỉnh..."* (trích đoạn gốc bị cắt trong PDF nguồn)
 
 ## Gợi ý dùng cho hook/CTA
+<!-- tags: chung -->
 Các số liệu trên phù hợp làm hook dạng "con số gây sốc" hoặc CTA có dẫn chứng, ví dụ:
 - "13 robot, tiết kiệm 75% chi phí vận hành — Golden Gate đã làm gì?"
 - "3 robot thay 7 nhân công — nhà máy may Quảng Nam đã làm như thế nào?"

@@ -1,6 +1,8 @@
 # QUY TRÌNH CHỌN CẢNH — công cụ nào dẫn, công cụ nào đối chiếu
+<!-- tags: chung -->
 
 ## 🔴 KHÔNG ĐỦ CHỖ ĐỂ LÀM TỬ TẾ THÌ DỪNG VÀ BÁO — CẤM CẮT XÉN (luật 22/07/2026, sau khi Sếp Huy trả về 3 video)
+<!-- tags: chung -->
 
 **Ca thật, phải nhớ**: cuối một phiên chat rất dài, skill được giao dựng 3 video từ folder 58 clip. Ngữ cảnh sắp cạn → thay vì báo, nó **tự cắt xén quy trình**: mở **4/58 ảnh lưới** rồi dựng cả 3 video từ đúng 5 clip.
 
@@ -27,6 +29,7 @@ Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực k
 ---
 
 ## 0. ĐÃ NGHIỆM THU BẰNG TAI SẾP — giữ nguyên cách này (Sếp chốt 21/07/2026)
+<!-- tags: chung -->
 
 > Nguyên văn Sếp sau khi xem 3 video dựng theo quy trình này: *"đầu ra giờ khá oke rồi nên cái cách đối chiếu các công cụ khác nhau để cho ra kết quả tốt nhất về cả hình ảnh và âm thanh này khá ổn, lưu lại nhé."*
 
@@ -40,6 +43,7 @@ Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực k
 **Đừng rút gọn thành "tin công cụ X".** Sức mạnh nằm ở chỗ đối chiếu + mở ra kiểm khi mâu thuẫn.
 
 ### 0b. VAI TRÒ THẬT của mắt AI (Gemini) — Sếp làm rõ 21/07
+<!-- tags: chung -->
 
 > Nguyên văn: *"vai trò thực sự của mắt AI đang là chọn ra được các khoảnh khắc đẹp chứ không phải xác định người có đang nói không. Tôi thấy cái đấy đang làm khá ổn rồi. Dù vậy càng nhiều con để đối chiếu thì càng tốt."*
 
@@ -52,6 +56,7 @@ Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực k
 **Thêm con mới thì được, NHƯNG không được phá con đang chạy** (đo thật 21/07): thử cài **MediaPipe** (đo môi động để biết ai đang nói) — đúng việc về lý thuyết, nhưng nó đòi `numpy 2.x` + protobuf cũ, xung đột với `numpy<2` (cv2 cần) và protobuf mới (google-genai cần). Cài vào là phá cả cv2 lẫn Gemini. **Đã gỡ.** Bài học: con đối chiếu mới phải **không đụng dependency** của con đang chạy — ưu tiên thứ dùng lib đã có (vd `cv2` có sẵn face detection, không cần cài gì) hơn là kéo cả bộ mới về.
 
 ## 1. Nguyên tắc gốc
+<!-- tags: chung -->
 
 Mỗi đoạn video có **đúng một câu hỏi chính**. Công cụ nào trả lời được câu đó thì công cụ đó **DẪN**. Các công cụ còn lại **không biến mất** — chúng chuyển sang vai **ĐỐI CHIẾU**, và vẫn có quyền phủ quyết ở những chỗ chúng giỏi hơn.
 
@@ -62,6 +67,7 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 ---
 
 ## 2. Phân vai theo loại đoạn
+<!-- tags: chung -->
 
 | Loại đoạn | Câu hỏi chính | Công cụ **DẪN** | Công cụ **ĐỐI CHIẾU** |
 |---|---|---|---|
@@ -72,6 +78,7 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 **Đọc bảng này cho đúng**: "DẪN" nghĩa là *lấy con số/lựa chọn từ đó*. "ĐỐI CHIẾU" nghĩa là *nếu nó mâu thuẫn thì phải dừng lại xem xét, không được lờ đi*.
 
 ### 2b. Hai cái bẫy khi đọc kết quả `loc_thoai_that` (đo thật 21/07)
+<!-- tags: chung -->
 
 **Bẫy 1 — trường `loi` báo DƯ CHỮ.** Nó ghép từ các đoạn Whisper *giao nhau* với lát cắt, nên hiện nhiều chữ hơn thực tế lát cắt chứa.
 
@@ -89,10 +96,12 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 ---
 
 ## 3. Bốn cổng mọi cảnh phải qua
+<!-- tags: chung -->
 
 Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 
 ### Cổng 1 — LOẠI (phủ quyết, không thương lượng)
+<!-- tags: chung -->
 
 | Điều kiện | Nguồn dữ liệu | Ngoại lệ duy nhất |
 |---|---|---|
@@ -103,12 +112,14 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 ⚠️ **`has_speech` KHÔNG dùng ở cổng này.** Đó là cờ âm thanh. Người mấp máy môi mà mic không bắt được vẫn lọt. Đo thật folder 30: lọc bằng `has_speech` sót **4/21 clip**.
 
 ### Cổng 2 — CHẤT LƯỢNG HÌNH
+<!-- tags: chung -->
 
 - Robot **ở giữa khung, chính diện, đang hoạt động** (ưu tiên cao nhất cho Kiểu 1 — xem `style-mau.md`)
 - `do_net` cao, không rung
 - Cờ `net-tung-doan` → phải chọn **đúng đoạn nét**, không lấy cả clip
 
 ### Cổng 3 — KHỚP NỘI DUNG
+<!-- tags: chung -->
 
 - Cảnh có minh hoạ đúng **thẻ chữ / lời đang nói tại chính giây đó** không?
 - Không khớp thì đổi cảnh **hoặc** đổi chữ — không để lệch.
@@ -116,6 +127,7 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 > Ca thật 21/07: thẻ "4 KHAY CHỞ ĐỦ THỨ" rơi vào cảnh khách bấm màn hình, còn "KHÁCH TỰ BẤM CHỌN" rơi vào cảnh robot đi. Phải canh lại theo mốc từng cảnh.
 
 ### Cổng 4 — ĐA DẠNG (chống lặp — tối kỵ)
+<!-- tags: chung -->
 
 - **Mỗi file nguồn xuất hiện tối đa 1 lần**; 2 lần chỉ khi hai đoạn khác hẳn nhau về góc máy và hành động.
 - Hai clip **khác file** nhưng là 2 lần quay lại cùng bối cảnh → vẫn tính là lặp.
@@ -124,6 +136,7 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 ---
 
 ## 4. ĐẾM TƯ LIỆU TRƯỚC KHI VIẾT KỊCH BẢN — bước mới, bắt buộc
+<!-- tags: chung -->
 
 **Sai lầm cũ**: viết kịch bản 10 cảnh trước, rồi đi tìm footage lấp vào. Không đủ thì kéo dãn cái đang có → đẻ ra lặp cảnh.
 
@@ -142,6 +155,7 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 ---
 
 ## 5. Ảnh lưới — bước rẻ nhất, hay bị bỏ nhất
+<!-- tags: chung -->
 
 `analyze_footage.py` **tạo sẵn 1 ảnh lưới cho MỖI clip** trong `Workspace/analysis/sheets/`, khung lấy đúng điểm đổi cảnh, **có nhãn giây trên từng khung**.
 
@@ -156,13 +170,16 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 ---
 
 ## 6. Nghiệm thu 2 TẦNG — tầng nội dung là tầng máy không đo được
+<!-- tags: chung -->
 
 Nghiệm thu cũ toàn tiêu chí đo bằng máy, nên **mọi con số xanh mà video vẫn sai**.
 
 ### Tầng A — kỹ thuật (máy đo, đã có sẵn)
+<!-- tags: chung -->
 Âm lượng -14 LUFS · 1080x1920 · chữ không tràn viền · không frame đen · thời lượng đúng.
 
 ### Tầng B — nội dung (BẮT BUỘC, chỉ mắt người làm được)
+<!-- tags: chung -->
 
 | Câu hỏi tự kiểm | Rớt thì làm gì |
 |---|---|

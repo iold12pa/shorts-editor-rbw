@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 25** — phát hành 23/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 26** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 25 (23/07/2026)`
+>    `📦 Đang ở Ver 26 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **26** | 23/07/2026 | `2026.07.23.6` | Gắn thẻ `get_rules.py` cho **14 file luật còn lại** (đủ 16/16 file). Đo thật bằng tiktoken trên toàn bộ kho: đọc lọc theo kiểu thay vì đọc nguyên 16 file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 14% (Kiểu 3)** — tổng baseline 100.977 token. Đã kiểm tra đúng đắn: nội dung riêng Kiểu 2 (vd công thức 2A/2B/2C) không lọt sang khi hỏi Kiểu 3, chỉ bảng tra cứu chung mới xuất hiện |
 | **25** | 23/07/2026 | `2026.07.23.5` | Giải quyết nhóm "Cao" trong danh sách việc còn thiếu: (a) test cache ElevenLabs bằng **API thật** — xác nhận 2 lần gọi cùng text/giọng ra file byte-giống-hệt nhau, không gọi lại API; (b) test luật chặn MC giả bằng **dữ liệu Gemini thật** (không giả lập) — dựng cảnh vi phạm thật từ clip đã quét trước đó, script bắt đúng; (c) đo thật 3 nghi vấn kỹ thuật Gemini nêu (VFR/HDR/lệch sample rate khi mix) trên footage thật — **cả 3 đều KHÔNG phải vấn đề thật**, ghi vào `ffmpeg-recipes.md` mục 0.2 để khỏi đo lại; (d) dọn folder test khỏi Workspace khách hàng thật |
 | **24** | 23/07/2026 | `2026.07.23.4` | 🔴 Công cụ MỚI `get_rules.py` — Giai đoạn 1 giải quyết gốc vấn đề "tốn token/hết session limit" (đã tham khảo ChatGPT + Gemini trước khi chọn hướng, xem `PROMPT-HOI-Y-TO-CHUC-LUAT-2026-07-23.md`). Gắn thẻ theo kiểu dựng ở từng MỤC (không phải cả file) trong 2 file luật lớn nhất — thí điểm trước khi làm hết 16 file. Đo thật bằng tiktoken: đọc lọc theo kiểu thay vì đọc nguyên file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 11% (Kiểu 3)**. Bắt được 1 bug thật khi test (comment PowerShell trong code block bị nhận nhầm thành heading, làm lọt nội dung sai kiểu) — đã sửa + xác nhận lại. Mặc định AN TOÀN: mục không gắn thẻ = luôn lấy (quên gắn thẻ không làm mất luật, chỉ mất phần tối ưu). CHƯA đụng SKILL.md (rủi ro cao, để Giai đoạn 2 sau khi công cụ này chứng minh ổn qua vài lần dùng thật) |
 | **23** | 23/07/2026 | `2026.07.23.3` | Công cụ MỚI `phan_tich_day_du.py` — gộp 3 bước phân tích miễn phí (`analyze_footage` + `do_ky_thuat` + `loc_thoai_that`) chạy nối tiếp trong 1 lệnh, in 1 báo cáo tổng thay vì tự đọc 3 log rời. Không gồm mắt AI Gemini (vẫn phải hỏi trước, tốn tiền). Đã chạy thật 2 vòng trên footage thật (folder 30): vòng đầu chạy đủ cả 3 bước từ đầu, vòng 2 xác nhận resume đúng (56s → 1.9s, không phân tích lại từ đầu) |
@@ -337,7 +338,7 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
 ## Quy trình chi tiết
 
-> 💡 **Đỡ tốn token khi đọc file luật (thêm 23/07/2026, thí điểm 2 file lớn nhất)**: `references/chon-kieu-dung.md` và `references/ffmpeg-recipes.md` đã gắn thẻ theo kiểu dựng ở từng mục. Biết chắc video đang làm là Kiểu mấy rồi thì dùng `python "<skill-dir>\scripts\get_rules.py" --file chon-kieu-dung.md --file ffmpeg-recipes.md --kieu <1|2|3>` thay vì `Read` nguyên file — đo thật: giảm 36% (Kiểu 1) / 24% (Kiểu 2) / 11% (Kiểu 3) token. Chưa chắc kiểu (lúc mới hỏi BƯỚC 1) thì cứ `Read` như cũ. 14 file luật còn lại CHƯA gắn thẻ — vẫn `Read` bình thường.
+> 💡 **Đỡ tốn token khi đọc file luật (thêm 23/07/2026, nay đã phủ ĐỦ 16/16 file)**: mọi file trong `references/` đã gắn thẻ theo kiểu dựng ở từng mục. Biết chắc video đang làm là Kiểu mấy rồi thì dùng `python "<skill-dir>\scripts\get_rules.py" --file <ten1.md> --file <ten2.md> ... --kieu <1|2|3>` thay vì `Read` nguyên file — đo thật trên toàn kho: giảm 36% (Kiểu 1) / 24% (Kiểu 2) / 14% (Kiểu 3) token. Chưa chắc kiểu (lúc mới hỏi BƯỚC 1) thì cứ `Read` như cũ. Nghi ngờ `get_rules.py` bỏ sót luật nào đó (dù thiết kế mặc định an toàn — mục không gắn thẻ luôn được lấy) → báo ngay, đây là công cụ còn mới.
 
 ### Bước 1 — Xác định source & lập workspace
 

@@ -3,6 +3,7 @@
 Phân tích 2026-07-13 (45s, 2160x3840, 30fps, đo cỡ chữ bằng frame quy về 1080x1920 + lưới 50px). Dạng video: **MC nói trực tiếp / voiceover AI + sub karaoke từng từ + thẻ từ khóa + nhạc nền**. Khác hoàn toàn style "text + nhạc" (style-mau.md) — hỏi Sếp chọn style TRƯỚC khi viết kịch bản.
 
 ## Bố cục 3 tầng text (tọa độ theo khung 1080x1920)
+<!-- tags: kieu-2, kieu-3 -->
 
 | Tầng | Vị trí | Cỡ chữ (ASS, PlayResY 1920) | Style |
 |---|---|---|---|
@@ -14,6 +15,7 @@ Phân tích 2026-07-13 (45s, 2160x3840, 30fps, đo cỡ chữ bằng frame quy v
 - Cách làm karaoke bằng ASS: mỗi cụm 2-4 từ = 1 Dialogue; trong cụm, tô vàng từ hiện tại bằng nhiều event nối tiếp (mỗi event 1 trạng thái màu) theo word-timestamp — timing lấy từ `voice\*-words.json` (ElevenLabs) hoặc Whisper (giọng MC thật).
 
 ## Cấu trúc & nhịp (đo từ video mẫu 45s)
+<!-- tags: kieu-2, kieu-3 -->
 
 1. **Hook 0-2s**: hình "lạ mắt" gây tò mò (không phải cảnh sản phẩm), 2 cắt nhanh 0.8-1s
 2. **Nêu vấn đề 2-9s**: MC + robot, chạm nỗi đau, thẻ từ khóa cảm xúc (ĐAU ĐẦU) + emoji đúng lúc lời nhắc tới
@@ -25,6 +27,7 @@ Phân tích 2026-07-13 (45s, 2160x3840, 30fps, đo cỡ chữ bằng frame quy v
 Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: emoji bay vào (~90px, gần thẻ từ khóa), mũi tên chỉ, 1 hiệu ứng chớp trắng chuyển đoạn (4 cắt trong 0.25s) ở bước ngoặt giữa video.
 
 ## Âm thanh (chuẩn bắt buộc của style này)
+<!-- tags: kieu-2, kieu-3 -->
 
 - **Giọng là chủ, nhạc là nền**: nhạc nền volume ~0.12-0.18 khi có giọng, có thể nâng 0.35-0.5 ở khoảng nghỉ/hook không lời. Cách tự động: sidechain ducking —
   ```
@@ -64,6 +67,7 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 > *(Khối này thêm 21/07/2026 sau một ca thật: phiên dựng đọc đúng file này để làm Kiểu 2 + Kiểu 3, nhưng file khi đó không nhắc gì luật nhạc → chọn nhầm nhạc trend có lời đè lên giọng MC cho cả 2 video, phải mix lại. Luật có ở `chon-kieu-dung.md` là chưa đủ — người dựng Kiểu 2/3 mở thẳng file này.)*
 
 ## Quy tắc VOICE GỐC MC (format ③ — học từ lỗi video-3, 2026-07-13)
+<!-- tags: kieu-2 -->
 
 1. **Cấm ghép tiếng take A vào hình take B nếu trong hình có người đang nói** — dù là cùng câu kịch bản, nhịp 2 take khác nhau → lệch khẩu hình lộ liễu. Trước khi dùng 1 clip làm B-roll đè voice, PHẢI xem sheet xác nhận không ai trong hình đang nói (index tag `on-camera`/`noi-mic` = cảnh báo đỏ).
 2. **Pattern chuẩn cho mỗi đoạn thoại**: mở bằng chính người nói trên hình 2-3s đầu (tiếng + hình CÙNG take → khớp môi tuyệt đối), sau đó mới cắt sang B-roll trong khi voice chạy tiếp. Voice-off 100% chỉ khi clip nguồn vốn là narration sau camera (0031/0039 kiểu lia kệ sách).
@@ -110,6 +114,7 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
 > **Mục đích chính**: MC nói chậm làm video nhàm. Luật này để **tua nhanh tiếng MC/người thu ĐÃ QUAY**, không phải để chỉnh giọng máy. *(Bản đầu của mục này hiểu nhầm thành chỉnh TTS — Sếp đã đính chính.)*
 
 ### Cách đo — CẮT HẾT KHOẢNG TRỐNG cho khách quan (Sếp chỉ 21/07)
+<!-- tags: kieu-2, kieu-3 -->
 
 > *"Lấy đoạn nào nói liên tục, tính ra trung bình bao nhiêu chữ trên 1 phút, cắt hết những đoạn trống đi cho khách quan. Video sau này cũng đo tương tự, xong lấy 2 cái chia tỉ lệ rồi tua theo."*
 
@@ -156,6 +161,7 @@ Script tự nghe bằng Whisper, đếm âm tiết, chia cho khoảng từ chữ
 ⚠️ **Phép đo KHÔNG ổn định trên file dưới ~10 giây** — cùng một file TTS 6.6s, Whisper lúc nhận 14 âm tiết lúc 23. Với giọng máy thì **đếm tay số âm tiết trong kịch bản rồi chia cho độ dài file** chắc hơn (mình biết chính xác lời).
 
 ### ⛔ Mức giọng máy edge-tts `--rate=+41%` — ĐÃ BỎ 22/07/2026, GIỮ ĐỂ TRA CỨU
+<!-- tags: lich-su -->
 
 > 🔴 **edge-tts ĐÃ BỎ 22/07/2026 — Sếp Huy nghe mẫu và kết luận ĐỌC MÉO, không dùng được.**
 > Mọi hướng dẫn edge-tts bên dưới **chỉ còn giá trị tra cứu lịch sử**, KHÔNG được dùng để tạo giọng đọc video nữa.
@@ -218,6 +224,7 @@ edge-tts --voice vi-VN-NamMinhNeural --rate=+41% --file <loi.txt> --write-media 
    - **Whisper GÁN NHẦM câu vào đoạn B-roll không tiếng**: ca thật video K2 — cụm "Chính xác luôn" bị kéo dài **19.93 → 31.53 (12 giây)** phủ hết đoạn B-roll, trong khi câu đó thực tế nằm ở giây 29.6. Cách sửa: dồn lại đúng mốc cảnh có thoại, giữ nguyên số event + tag màu.
 
 ## LUẬT VIẾT LỜI CHO GIỌNG AI (Kiểu 3) — đo thật 20/07/2026
+<!-- tags: kieu-3 -->
 
 **Mọi giọng TTS hiện có đều đọc SAI tên thương hiệu và thuật ngữ nước ngoài.** Đã kiểm chứng khách quan bằng cách cho Whisper nghe lại bản đọc:
 
@@ -235,6 +242,7 @@ edge-tts --voice vi-VN-NamMinhNeural --rate=+41% --file <loi.txt> --write-media 
 - Trước khi dựng, **luôn cho Whisper nghe lại bản TTS** để bắt từ đọc sai — rẻ và nhanh hơn nhiều so với phát hiện sau khi đã dựng xong.
 
 ## Khi nào KHÔNG dùng karaoke tô màu (rút từ khảo sát 2026-07-15, 10 folder HUY MKT)
+<!-- tags: kieu-2, kieu-3 -->
 
 So sánh video hướng dẫn kỹ thuật (`28.Hướng dẫn sử dụng SH1`, `30.Hướng dẫn vs SH1` — nhân viên thao tác trực tiếp + tự thuyết minh) với video marketing/review (`34.Nhà sách Tràng An`, nhóm ADS) cho thấy 2 mục đích dùng 2 kiểu phụ đề khác nhau:
 
@@ -246,10 +254,12 @@ Quy tắc chọn: hỏi mục đích video trước khi chọn — nếu Sếp m
 **Nhịp dựng video hướng dẫn kỹ thuật khác hẳn mọi style khác** (đo bằng scene_changes trên 2 video mẫu 28+30, xác nhận lại bằng lưới dày fps=8 tại vài mốc): trung bình **32-248 giây/cảnh** — gần như 1 cú máy liên tục, camera pan/zoom theo tay người thao tác thay vì cắt dựng. Ngược hẳn với mọi style marketing khác (1.8-4s/cảnh). Áp dụng: khi Sếp yêu cầu video hướng dẫn kỹ thuật, ĐỪNG cắt vụn theo thói quen "3-5s/cảnh" của style ① — giữ cảnh dài, để hành động thật của người thao tác dẫn dắt, chỉ cắt khi đổi hẳn góc quay/công đoạn.
 
 ## Biến thể "montage nhiều địa điểm" (voice over kể chuyện diện rộng)
+<!-- tags: kieu-3 -->
 
 Khác với video mẫu gốc (1 sản phẩm, đào sâu tính năng), một số video voice-over trong HUY MKT (`10.Vinschool-01`, `12.BV Phúc Yên`, `16.GGG SG1`) kể chuyện theo hướng **"xuất hiện ở nhiều nơi/nhiều bối cảnh"** — cắt qua nhiều địa điểm/sự kiện khác nhau dưới 1 lời dẫn xuyên suốt, KHÔNG có 1 người cố định lên hình. Nhịp cắt vừa phải (3.5-4.1s/cảnh, nhanh hơn hướng dẫn kỹ thuật nhưng chậm hơn ADS chuyên nghiệp). Dùng khi mục đích là chứng minh độ phủ/uy tín ("đã triển khai ở đây, ở đây, ở đây") thay vì bán 1 sản phẩm cụ thể. Karaoke sub như spec chính. Kết thúc bằng outro logo animation có sẵn (xem `style-mau.md` mục Outro).
 
 ## Nghiệm thu riêng cho style này (thêm vào checklist chung)
+<!-- tags: kieu-2, kieu-3 -->
 
 - Trích frame tại 2-3 mốc có sub: từ vàng phải đúng từ đang đọc (đối chiếu words.json), sub không đè lên thẻ từ khóa/logo
 - Đo loudness ra ≈ -14 LUFS
