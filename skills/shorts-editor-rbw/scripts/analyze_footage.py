@@ -167,6 +167,110 @@ def find_whisper_model():
     return None
 
 
+def find_vad_model():
+    for d in MODEL_DIRS:
+        p = os.path.join(d, "silero_vad.onnx")
+        if os.path.exists(p):
+            return p
+    return None
+
+
+_VAD_SESSION = None
+
+
+def _vad_session(model_path):
+    global _VAD_SESSION
+    if _VAD_SESSION is None:
+        import onnxruntime as ort
+        _VAD_SESSION = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+    return _VAD_SESSION
+
+
+def vad_speech_segments(path, model_path, duration):
+    """Silero VAD: doan nao THUC SU co giong nguoi (khong phan biet ai noi, chi
+    phan biet giong-nguoi voi nhac/tieng dong). Dung LOC BOT ao giac Whisper —
+    Whisper hay bia cau khi gap khoang lang/chi co nhac nen (luat 21-23/07/2026,
+    xem SKILL.md Buoc 4). KHONG thay the loc_thoai_that.py (do do am giong that,
+    phan biet duoc CA ai dang noi) — day chi la lop LOC THO truoc Whisper.
+
+    Tra ve: list [(t0, t1), ...] cac doan co giong nguoi, hoac None neu khong
+    doc/chay duoc (thieu onnxruntime/model/audio -> bo qua lop nay, khong chan
+    ca quy trinh)."""
+    try:
+        import numpy as np
+        sess = _vad_session(model_path)
+    except Exception:
+        return None
+    tmp_wav = None
+    try:
+        fd, tmp_wav = tempfile.mkstemp(suffix=".wav")
+        os.close(fd)
+        r = run([FFMPEG, "-y", "-v", "error", "-i", path, "-vn", "-ac", "1", "-ar", "16000",
+                 "-f", "wav", tmp_wav], timeout=max(300, int(duration * 4)))
+        if r.returncode != 0 or not os.path.exists(tmp_wav):
+            return None
+        import wave
+        with wave.open(tmp_wav, "rb") as wf:
+            raw = wf.readframes(wf.getnframes())
+        audio = np.frombuffer(raw, dtype=np.int16).astype("float32") / 32768.0
+        if audio.size == 0:
+            return []
+        win = 512  # Silero yeu cau khung 512 mau @ 16kHz (~32ms)
+        h = np.zeros((2, 1, 64), dtype="float32")
+        c = np.zeros((2, 1, 64), dtype="float32")
+        sr = np.array(16000, dtype="int64")
+        probs = []
+        for i in range(0, len(audio) - win, win):
+            chunk = audio[i:i + win][None, :]
+            try:
+                out, h, c = sess.run(None, {"input": chunk, "h": h, "c": c, "sr": sr})
+            except Exception:
+                # mot so ban silero_vad.onnx dung ten input "state" thay vi h/c rieng
+                try:
+                    state = np.zeros((2, 1, 128), dtype="float32")
+                    out, state = sess.run(None, {"input": chunk, "state": state, "sr": sr})
+                except Exception:
+                    return None
+            probs.append(float(out[0][0]))
+        # gop cac khung co xac suat giong nguoi >=0.5 thanh doan lien tuc
+        segs, cur0 = [], None
+        for i, p in enumerate(probs):
+            t = i * win / 16000.0
+            if p >= 0.5:
+                if cur0 is None:
+                    cur0 = t
+            else:
+                if cur0 is not None:
+                    segs.append((round(cur0, 2), round(t, 2)))
+                    cur0 = None
+        if cur0 is not None:
+            segs.append((round(cur0, 2), round(len(audio) / 16000.0, 2)))
+        return segs
+    except Exception:
+        return None
+    finally:
+        if tmp_wav and os.path.exists(tmp_wav):
+            try:
+                os.remove(tmp_wav)
+            except Exception:
+                pass
+
+
+def loc_theo_vad(segs, vad_segs):
+    """Bo cau Whisper KHONG trung bat ky doan VAD nao (nghi la ao giac — Whisper
+    bia chu khi gap khoang lang/nhac nen ma khong co giong nguoi that o do)."""
+    if not vad_segs:
+        return segs, 0
+    giu, bo = [], 0
+    for s in segs:
+        trung = any(s["t0"] < v1 and s["t1"] > v0 for v0, v1 in vad_segs)
+        if trung:
+            giu.append(s)
+        else:
+            bo += 1
+    return giu, bo
+
+
 def whisper_filter_ok():
     """Kiem tra ffmpeg dang dung CO filter whisper khong (may dong nghiep hay dinh
     ban ffmpeg cu tren PATH de len ban moi -> nghe loi bi bo qua IM LANG)."""
@@ -233,6 +337,10 @@ def main():
     if use_whisper and not model:
         print("[!] Chua co model Whisper (da tim: %s) -> phan voice se ghi 'chua nghe duoc',"
               " chay lai khi co model de nghe bo sung." % " ; ".join(MODEL_DIRS))
+    vad_model = find_vad_model() if use_whisper else None
+    if use_whisper and not vad_model:
+        print("[!] Chua co model Silero VAD (silero_vad.onnx) -> bo qua lop loc ao giac Whisper,"
+              " chay 'chuan_bi_may.py' de tu tai (model 2.3MB).")
     if model and not whisper_filter_ok():
         print("[LOI] ffmpeg dang dung KHONG co filter whisper: %s\n"
               "      -> May nay co the dinh ban ffmpeg cu tren PATH de len ban moi (can ffmpeg 8.x"
@@ -299,6 +407,13 @@ def main():
                 speech = []  # thuc su khong co tieng de nghe
             elif model:
                 speech = transcribe(path, model, dst, name, dur)
+                vad_bo = 0
+                if speech and vad_model:
+                    vad_segs = vad_speech_segments(path, vad_model, dur)
+                    speech, vad_bo = loc_theo_vad(speech, vad_segs)
+                    if vad_bo:
+                        print("  [VAD] loc bo %d cau Whisper khong trung doan co giong nguoi that (nghi ao giac)"
+                              % vad_bo, flush=True)
             else:
                 speech = None  # chua co model/filter -> danh dau "chua nghe duoc" de nghe bo sung sau
         except subprocess.TimeoutExpired:

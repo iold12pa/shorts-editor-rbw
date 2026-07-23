@@ -12,6 +12,7 @@ Usage:
                             [--update-index INDEX.json --key "relpath|size"]
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -22,6 +23,11 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ENV_PATH = os.path.expanduser("~/.claude/abs6-secrets.env")
+# CACHE THEO HASH (23/07/2026) — quet_mat_ai.py (quet ca folder) da tu cache qua
+# index.json (bo qua clip da co truong "gemini"). Cong cu nay quet 1 clip LE nen
+# khong di qua index — them cache rieng de goi lai cung 1 clip khong ton tien lan 2.
+# Hash theo ten+kich thuoc+mtime (nhanh) chu khong hash noi dung file (cham voi clip lon).
+CACHE_DIR = os.path.expanduser("~/.claude/roboworld-assets/cache/gemini_vision")
 
 PROMPT = """Bạn là biên tập viên video marketing cho công ty robot Roboworld (phân phối robot
 PUDU: robot phục vụ BellaBot, robot giao hàng, robot lễ tân, robot vệ sinh, T300...).
@@ -55,6 +61,12 @@ def load_key(name):
     sys.exit("Khong thay %s trong %s" % (name, ENV_PATH))
 
 
+def video_cache_key(path, model):
+    st = os.stat(path)
+    raw = "%s|%d|%d|%s" % (os.path.abspath(path), st.st_size, int(st.st_mtime), model)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video", required=True)
@@ -62,54 +74,69 @@ def main():
     ap.add_argument("--json")
     ap.add_argument("--update-index")
     ap.add_argument("--key")
+    ap.add_argument("--no-cache", action="store_true")
     a = ap.parse_args()
 
     if not os.path.exists(a.video):
         sys.exit("Khong thay video: %s" % a.video)
 
-    try:
-        from google import genai
-        from google.genai import types
-    except ImportError:
-        sys.exit("Chua cai SDK. Chay: python -m pip install google-genai")
+    ckey = video_cache_key(a.video, a.model)
+    cpath = os.path.join(CACHE_DIR, ckey + ".json")
+    data = None
+    if not a.no_cache and os.path.exists(cpath):
+        data = json.load(open(cpath, encoding="utf-8"))
+        print("CACHE (khong goi API — clip nay da quet truoc do, cung model): %s" % os.path.basename(a.video))
 
-    client = genai.Client(api_key=load_key("GEMINI_API_KEY"))
+    if data is None:
+        try:
+            from google import genai
+            from google.genai import types
+        except ImportError:
+            sys.exit("Chua cai SDK. Chay: python -m pip install google-genai")
 
-    size_mb = os.path.getsize(a.video) / 1e6
-    print("Gui clip len Gemini (%.1f MB): %s" % (size_mb, os.path.basename(a.video)))
-    f = client.files.upload(file=a.video)
-    # cho Gemini xu ly xong video (PROCESSING -> ACTIVE)
-    waited = 0
-    while getattr(f.state, "name", str(f.state)) == "PROCESSING":
-        time.sleep(2)
-        waited += 2
-        f = client.files.get(name=f.name)
-        if waited > 300:
-            sys.exit("Gemini xu ly video qua lau (>5 phut).")
-    if getattr(f.state, "name", str(f.state)) == "FAILED":
-        sys.exit("Gemini khong xu ly duoc video nay.")
+        client = genai.Client(api_key=load_key("GEMINI_API_KEY"))
 
-    t0 = time.time()
-    resp = client.models.generate_content(
-        model=a.model,
-        contents=[f, PROMPT],
-        config=types.GenerateContentConfig(response_mime_type="application/json",
-                                           temperature=0.2))
-    dt = time.time() - t0
-    try:
-        client.files.delete(name=f.name)  # don file tam tren cloud
-    except Exception:
-        pass
+        size_mb = os.path.getsize(a.video) / 1e6
+        print("Gui clip len Gemini (%.1f MB): %s" % (size_mb, os.path.basename(a.video)))
+        f = client.files.upload(file=a.video)
+        # cho Gemini xu ly xong video (PROCESSING -> ACTIVE)
+        waited = 0
+        while getattr(f.state, "name", str(f.state)) == "PROCESSING":
+            time.sleep(2)
+            waited += 2
+            f = client.files.get(name=f.name)
+            if waited > 300:
+                sys.exit("Gemini xu ly video qua lau (>5 phut).")
+        if getattr(f.state, "name", str(f.state)) == "FAILED":
+            sys.exit("Gemini khong xu ly duoc video nay.")
 
-    raw = (resp.text or "").strip()
-    m = re.search(r"\{.*\}", raw, re.S)
-    try:
-        data = json.loads(m.group(0) if m else raw)
-    except Exception:
-        print("[!] Gemini tra ve khong phai JSON hop le:\n" + raw)
-        return
+        t0 = time.time()
+        resp = client.models.generate_content(
+            model=a.model,
+            contents=[f, PROMPT],
+            config=types.GenerateContentConfig(response_mime_type="application/json",
+                                               temperature=0.2))
+        dt = time.time() - t0
+        try:
+            client.files.delete(name=f.name)  # don file tam tren cloud
+        except Exception:
+            pass
 
-    print("\n=== MAT AI GEMINI NHIN THAY (%.1fs) ===" % dt)
+        raw = (resp.text or "").strip()
+        m = re.search(r"\{.*\}", raw, re.S)
+        try:
+            data = json.loads(m.group(0) if m else raw)
+        except Exception:
+            print("[!] Gemini tra ve khong phai JSON hop le:\n" + raw)
+            return
+        print("\n=== MAT AI GEMINI NHIN THAY (%.1fs) ===" % dt)
+        try:
+            os.makedirs(CACHE_DIR, exist_ok=True)
+            json.dump(data, open(cpath, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        except Exception:
+            pass  # cache la toi uu, loi ghi cache khong lam hong ket qua da co
+    else:
+        print("\n=== MAT AI GEMINI NHIN THAY (tu cache) ===")
     print(json.dumps(data, ensure_ascii=False, indent=2))
 
     if a.json:

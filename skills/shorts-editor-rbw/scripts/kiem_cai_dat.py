@@ -17,10 +17,13 @@ CACH DUNG:
 
     # 2. Truoc khi giao hang, kiem lai:
     python kiem_cai_dat.py --kiem "<Workspace>/cai-dat-nguoi-dung.json" \
-        --final "<folder Final>"
+        --final "<folder Final>" \
+        --cong-thuc "<Workspace>/cong-thuc/video-1.json" --index "<Workspace>/analysis/index.json"
 
 TU DONG DO DUOC: so luong video · do phan giai · fps · thoi luong · LUFS ·
-                 co outro khong · co logo overlay khong
+                 co outro khong · co logo overlay khong · vung an toan chu
+                 (khong vuong UI TikTok/Reels) · luat cam canh MC gia (them
+                 23/07/2026 — CAN --cong-thuc + --index, xem luu_cong_thuc.py)
 PHAI KIEM BANG TAI/MAT: giong doc dung nguoi chua · nhac dung bai chua ·
                         muc phu giong · noi dung bam mo ta nguoi dung
 (script se LIET KE ro phan nay chu khong im lang bo qua)
@@ -147,6 +150,97 @@ def co_outro(path, dai, file_outro):
     return float(cv2.compareHist(ha, hb, cv2.HISTCMP_CORREL)) > 0.75
 
 
+def kiem_vung_an_toan_chu(path, dai):
+    """Kiem chu dot (burn-in) co roi vao vung UI TikTok/Reels hay che khong
+    (them 23/07/2026, Gemini de xuat trong dot ra soat 22-23/07).
+
+    UI TikTok/Reels thuong che ~15% tren cung (thanh trang thai/caption ngan)
+    va ~20% duoi cung (nut tuong tac, ten kenh, caption dai). Do bang canh: chu
+    burn-in luon co VIEN DEN dam + chu TRANG/VANG sang -> mat do canh (Canny
+    edge) trong vung do cao gap nhieu lan vung khong chu. Khong phai OCR — chi
+    la phep do THO de canh bao, khong thay the mat nguoi soi truoc khi giao."""
+    try:
+        import cv2
+        import numpy as np
+    except ImportError:
+        return None
+    cap = cv2.VideoCapture(path)
+    if not cap.isOpened():
+        return None
+    h_top_qua_cao, h_bot_qua_thap = 0, 0
+    tong = 0
+    # bo 10% dau/cuoi (hook/outro co the co chu chu dong o vi tri khac quy chuan)
+    for i in range(6):
+        t = dai * (0.15 + 0.70 * i / 5.0)
+        cap.set(cv2.CAP_PROP_POS_MSEC, t * 1000)
+        ok, f = cap.read()
+        if not ok:
+            continue
+        tong += 1
+        hgt, w = f.shape[:2]
+        gray = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, 80, 160)
+        vung_top = edges[0:int(hgt * 0.15), int(w * 0.15):int(w * 0.85)]
+        vung_bot = edges[int(hgt * 0.80):hgt, int(w * 0.15):int(w * 0.85)]
+        # nguong kinh nghiem: chu dam dac cho mat do canh > ~6%; nen video thuong < ~3%
+        if float(np.mean(vung_top > 0)) > 0.06:
+            h_top_qua_cao += 1
+        if float(np.mean(vung_bot > 0)) > 0.06:
+            h_bot_qua_thap += 1
+    cap.release()
+    if tong < 3:
+        return None
+    return {"nghi_chu_o_vung_tren": h_top_qua_cao >= max(2, tong // 2),
+            "nghi_chu_o_vung_duoi": h_bot_qua_thap >= max(2, tong // 2)}
+
+
+def kiem_mc_gia(cong_thuc_path, index_path):
+    """CHAN CUNG luat "cam canh MC gia" (them 23/07/2026, thay cho viec chi dan
+    Claude bang chu — luat chu tung bi VI PHAM 2 LAN o 2 kieu dung khac nhau
+    trong cung 1 buoi giao hang, cho thay day la loi HE THONG chu khong phai
+    nho quen 1 lan).
+
+    Doi chieu tung "canh" trong file cong-thuc (luu_cong_thuc.py) voi co
+    'co_nguoi_dang_noi' cua mat AI Gemini trong index.json: canh nao dung am
+    thanh KHAC nguon goc cua chinh clip do (am_thanh != "goc" — tuc dang dung
+    lam B-roll duoi tieng khac) MA clip do co nguoi dang noi truoc camera ->
+    VI PHAM, tra ve danh sach loi.
+
+    Gioi han: cho CHUA chay mat AI Gemini cho clip do thi khong doi chieu duoc
+    (bo qua, khong bao loi oan) — day la lop chan BO SUNG, khong thay viec tu
+    soi bang mat khi chua co co Gemini."""
+    if not os.path.exists(cong_thuc_path) or not os.path.exists(index_path):
+        return None  # thieu du lieu de doi chieu -> khong chan, de kiem() tu bao rieng
+    cong_thuc = json.load(open(cong_thuc_path, encoding="utf-8"))
+    idx = json.load(open(index_path, encoding="utf-8"))
+    clips = idx.get("clips", {})
+
+    def tim_clip(ten):
+        for k, v in clips.items():
+            rel = k.split("|")[0]
+            if os.path.basename(rel) == ten or rel == ten or rel.replace("\\", "/").endswith("/" + ten):
+                return v
+        return None
+
+    loi = []
+    for c in cong_thuc.get("canh", []):
+        ten_clip = c.get("clip", "")
+        am_thanh = c.get("am_thanh") or "goc"
+        if am_thanh == "goc" or not ten_clip:
+            continue
+        found = tim_clip(ten_clip)
+        if not found:
+            continue  # clip chua co trong index (chua analyze_footage) -> khong doi chieu duoc
+        g = found.get("gemini") or {}
+        if g.get("co_nguoi_dang_noi") is True:
+            loi.append(
+                "CAM MC GIA: canh '%s' (clip %s, %.1fs-%.1fs) co NGUOI DANG NOI theo mat AI, "
+                "nhung am thanh cua canh nay lay tu nguon khac ('%s') thay vi tieng goc dong bo — "
+                "dung lam B-roll kieu nay la vi pham luat cam canh MC gia."
+                % (c.get("nhan", "?"), ten_clip, c.get("t0", 0), c.get("t1", 0), am_thanh))
+    return loi
+
+
 def ghi_cai_dat(a):
     cai = {k: v for k, v in {
         "huong_dung": a.huong, "so_video": a.so_video, "kenh_dang": a.kenh,
@@ -243,6 +337,30 @@ def kiem(a):
             if logo is None:
                 canh_bao.append("%s: khong do duoc logo (thieu cv2?)" % ten)
 
+        # --- vung an toan chu (khong bi UI TikTok/Reels che) ---
+        an_toan = kiem_vung_an_toan_chu(v, d["dai"])
+        if an_toan is None:
+            canh_bao.append("%s: khong do duoc vung an toan chu (thieu cv2?)" % ten)
+        else:
+            if an_toan["nghi_chu_o_vung_tren"]:
+                canh_bao.append("%s: NGHI co chu/logo o vung 15%% tren cung — de bi thanh trang thai app che" % ten)
+            if an_toan["nghi_chu_o_vung_duoi"]:
+                canh_bao.append("%s: NGHI co chu o vung 20%% duoi cung — de bi nut tuong tac/caption app che" % ten)
+            if not an_toan["nghi_chu_o_vung_tren"] and not an_toan["nghi_chu_o_vung_duoi"]:
+                print("  Vung an toan chu     DAT (khong vuong UI tren/duoi)")
+
+    # --- luat cam canh MC gia (chan cung, doi chieu voi cong-thuc-dung neu co) ---
+    if a.cong_thuc and a.index:
+        mc_gia = kiem_mc_gia(a.cong_thuc, a.index)
+        if mc_gia is None:
+            canh_bao.append("Khong doi chieu duoc luat MC gia (thieu file cong-thuc hoac index.json)")
+        elif mc_gia:
+            loi.extend(mc_gia)
+        else:
+            print("\n  Luat cam canh MC gia   DAT (khong canh nao vi pham theo du lieu co)")
+    elif a.cong_thuc or a.index:
+        canh_bao.append("Can CA --cong-thuc VA --index de doi chieu luat MC gia — hien chi co 1 trong 2.")
+
     # --- phan may KHONG do duoc ---
     print("\n" + "=" * 72)
     print("MAY KHONG DO DUOC — PHAI TU KIEM BANG TAI/MAT:")
@@ -278,6 +396,8 @@ def main():
     ap.add_argument("--kiem", help="duong dan file cai dat de DOI CHIEU")
     ap.add_argument("--final", help="file video hoac folder Final can kiem")
     ap.add_argument("--file-outro", help="duong dan file outro goc (de so khop)")
+    ap.add_argument("--cong-thuc", help="file cong-thuc-dung (.json tu luu_cong_thuc.py) de doi chieu luat MC gia")
+    ap.add_argument("--index", help="file analysis/index.json (co truong 'gemini') de doi chieu luat MC gia")
     ap.add_argument("--huong", help="text+nhac | voice-over | mc-dan")
     ap.add_argument("--so-video", help="so luong video")
     ap.add_argument("--kenh", help="ca-nhan | page-cong-ty | ca-hai")

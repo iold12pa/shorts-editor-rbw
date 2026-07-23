@@ -11,10 +11,16 @@ Usage:
 - Xuat kem: .srt (cum 4-7 tu, cho sub thuong) va .json word-level (cho sub karaoke ASS).
 - Het quota / loi mang -> bao ro va exit 1. KHONG co giong thay the: edge-tts
   da bi bo 22/07/2026 (Sep Huy nghe mau, ket luan doc meo) -> DUNG BAO nguoi dung.
+- CACHE THEO HASH (23/07/2026): text+giong+model giong het lan truoc -> lay lai
+  file cu trong ~/.claude/roboworld-assets/cache/tts/, KHONG goi API. Sua 1 cau
+  trong kich ban roi dung lai ca video se chi ton tien cho DUNG cau da sua.
+  Tat cache (vd muon doc lai giong khac nhau cho cung 1 van ban): them --no-cache.
 """
 import base64
+import hashlib
 import json
 import os
+import shutil
 import sys
 import urllib.request
 
@@ -22,6 +28,13 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ENV_FILE = os.path.expanduser("~/.claude/abs6-secrets.env")
+
+# CACHE THEO HASH (them 23/07/2026) — Sep Huy hay yeu cau sua 1 cau chu trong kich
+# ban roi dung lai CA video, trong khi da so cau con lai giong het lan truoc. Khong
+# cache thi moi lan dung lai la goi lai API cho TOAN BO doan van, ton tien + cham.
+# Key cache = hash(text + voice + model) — text/giong/model giong het lan truoc thi
+# dung lai mp3/srt/words cu, khac dan mot chu cung la hash khac, tu goi lai API.
+CACHE_DIR = os.path.expanduser("~/.claude/roboworld-assets/cache/tts")
 
 # ===== GIONG DOC — CAP NHAT 22/07/2026, DOC KY TRUOC KHI DOI =====
 #
@@ -112,6 +125,43 @@ def words_to_srt(words, per_group=6):
     return "\n".join(lines)
 
 
+def cache_key(text, voice, model):
+    raw = "%s|%s|%s" % (text, voice, model)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
+
+
+def tu_cache(key, mp3_path, srt_path, words_path):
+    """Co ban ghi cache day du (it nhat mp3) -> copy ra dung noi can, tra True.
+    Thieu/hong -> tra False de goi API nhu binh thuong."""
+    c_mp3 = os.path.join(CACHE_DIR, key + ".mp3")
+    if not os.path.exists(c_mp3):
+        return False
+    try:
+        shutil.copyfile(c_mp3, mp3_path)
+        c_words = os.path.join(CACHE_DIR, key + ".words.json")
+        words = json.load(open(c_words, encoding="utf-8")) if os.path.exists(c_words) else []
+        if words_path and os.path.exists(c_words):
+            shutil.copyfile(c_words, words_path)
+        if srt_path and words:
+            open(srt_path, "w", encoding="utf-8").write(words_to_srt(words))
+        dur = words[-1]["end"] if words else 0
+        print("CACHE (khong goi API — text+giong+model giong het lan truoc)  %s  (%.1fs, %d tu)" % (
+            mp3_path, dur, len(words)))
+        return True
+    except Exception:
+        return False
+
+
+def ghi_cache(key, mp3_path, words):
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        shutil.copyfile(mp3_path, os.path.join(CACHE_DIR, key + ".mp3"))
+        json.dump(words, open(os.path.join(CACHE_DIR, key + ".words.json"), "w",
+                              encoding="utf-8"), ensure_ascii=False, indent=1)
+    except Exception:
+        pass  # cache la toi uu, loi ghi cache khong duoc lam hong ket qua da co
+
+
 def main():
     if len(sys.argv) < 3:
         sys.exit(__doc__)
@@ -119,10 +169,15 @@ def main():
     voice = sys.argv[sys.argv.index("--voice") + 1] if "--voice" in sys.argv else DEFAULT_VOICE
     srt_path = sys.argv[sys.argv.index("--srt") + 1] if "--srt" in sys.argv else None
     words_path = sys.argv[sys.argv.index("--words") + 1] if "--words" in sys.argv else None
+    no_cache = "--no-cache" in sys.argv
 
     text = open(txt_path, encoding="utf-8").read().strip()
     if not text:
         sys.exit("File loi doc rong: %s" % txt_path)
+
+    key = cache_key(text, voice, MODEL)
+    if not no_cache and tu_cache(key, mp3_path, srt_path, words_path):
+        return
 
     req = urllib.request.Request(
         "https://api.elevenlabs.io/v1/text-to-speech/%s/with-timestamps?output_format=mp3_44100_128" % voice,
@@ -171,6 +226,7 @@ def main():
         json.dump(words, open(words_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     if srt_path:
         open(srt_path, "w", encoding="utf-8").write(words_to_srt(words))
+    ghi_cache(key, mp3_path, words)
     dur = words[-1]["end"] if words else 0
     print("OK  %s  (%.1fs, %d tu)%s%s" % (
         mp3_path, dur, len(words),

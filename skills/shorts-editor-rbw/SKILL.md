@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 20** — phát hành 22/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 21** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 20 (22/07/2026)`
+>    `📦 Đang ở Ver 21 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **21** | 23/07/2026 | `2026.07.23.1` | Đợt nâng cấp theo bàn giao đêm 22→23/07 (chấm bởi ChatGPT + Gemini): 🔴 công cụ MỚI `luu_cong_thuc.py` — lưu công thức dựng (cảnh + toàn bộ lệnh ffmpeg) ra JSON + `.ps1` chạy lại được, thay luật văn xuôi hay bị áp dụng không đều · 🔴 **chặn cứng luật cấm cảnh MC giả** bằng máy trong `kiem_cai_dat.py` (đối chiếu công thức dựng với cờ `co_nguoi_dang_noi` của mắt AI) · Silero VAD lọc ảo giác Whisper trong `analyze_footage.py` · kiểm vùng an toàn chữ (tránh UI TikTok/Reels che) · cache theo hash cho ElevenLabs TTS + Gemini Vision (đỡ tốn tiền khi sửa lại 1 chi tiết nhỏ) · khai báo bù `rembg` còn thiếu trong `chuan_bi_may.py` |
 | **20** | 22/07/2026 | `2026.07.22.22` | 🔴 **CẤM CẮT XÉN QUY TRÌNH KHI SẮP HẾT NGỮ CẢNH** — Sếp trả về 3 video: mở 4/58 ảnh lưới, dựng cả 3 video từ đúng 5 clip, Kiểu 2 để nguyên 10 giây một cú máy. Luật: ước lượng trước, không đủ chỗ thì **DỪNG BÁO đề nghị phiên mới**, tuyệt đối không tự hạ chuẩn |
 | **19** | 22/07/2026 | `2026.07.22.21` | 🔴 **Công cụ MỚI `kiem_cai_dat.py`** — chắc chắn lựa chọn của người dùng được thực hiện thật: ghi ra file ngay sau khi hỏi, đối chiếu lại trước khi giao. Tự đo **có/không logo + outro**, số lượng, LUFS, khung hình; liệt kê phần phải kiểm bằng tai/mắt |
 | **18** | 22/07/2026 | `2026.07.22.20` | **Phản biện chỉ áp cho nhánh "trao đổi tiếp"**. Chọn *làm luôn* → mong muốn người dùng chỉ là **tham khảo**, xung đột thì im lặng theo luật dựng, không hỏi không báo. Vẫn dừng-báo ở 4 tình huống không làm được |
@@ -356,6 +357,8 @@ python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\a
 
 Script tự: bắt điểm đổi cảnh để trích khung đúng khoảnh khắc (không rải mù), ghép 1 ảnh lưới/clip có **nhãn timecode trên từng khung** (`analysis\sheets\`), nhận dạng lời nói trong clip bằng Whisper (transcript + timestamp, cần model trong `assets/models/` — chưa có thì tự bỏ qua), và ghi tất cả vào `analysis\index.json`. **Clip đã có trong index sẽ tự bỏ qua** — folder cũ thêm clip mới chỉ tốn phân tích phần mới.
 
+**Silero VAD lọc trước khi nghe (thêm 23/07/2026)**: nếu có model `silero_vad.onnx` (tự tải sẵn qua `chuan_bi_may.py`), script tự soi câu Whisper vừa nghe được với đoạn thời gian THỰC SỰ có giọng người (không phải nhạc/tiếng động) — câu nào Whisper "nghe" ra mà không trùng đoạn giọng người nào thì bị coi là ảo giác và loại bỏ, in ra dòng `[VAD] loc bo N cau...`. Không có model thì tự bỏ qua lớp này, không chặn quy trình. Đây là lớp lọc THÔ diễn ra trong lúc nghe — khác với lớp soi chéo Silero ở Bước 4 (dùng để chấm điểm xác suất giọng người cho từng đoạn `loc_thoai_that` đã tìm ra).
+
 **Bước 2b — ĐO KỸ THUẬT (chạy ngay sau khi index xong, trước khi đọc sheet)** — luật 20/07/2026:
 
 ```powershell
@@ -461,12 +464,17 @@ Tóm tắt 4 điều không được bỏ:
 
    🔴 **NGHIỆM THU TẦNG B — NỘI DUNG (bắt buộc, luật 21/07)**: mọi thứ ở trên là **tầng kỹ thuật máy đo được**. Ba lỗi Sếp bắt ngày 21/07 **không lỗi nào máy đo được**, mà mọi con số đều xanh. Trích 6-8 khung **ở 340px trở lên** rồi tự trả lời 5 câu trong `references/quy-trinh-chon-canh.md` mục 6: có cảnh nào thấy quen (lặp) không · có ai đang nói mà không nghe tiếng họ không · robot có phải nhân vật chính không · thẻ chữ có rơi đúng cảnh không · nhạc có át lời hoặc quá bé không. **Đừng báo "đạt chuẩn" khi mới chạy xong tầng kỹ thuật.**
 
+   🔴 **Chặn cứng bằng máy (thêm 23/07/2026)**: sau khi có file công thức dựng (mục 8 dưới đây) và đã chạy mắt AI Gemini cho các clip liên quan, chạy `kiem_cai_dat.py --kiem ... --final ... --cong-thuc "<workspace>\cong-thuc\video-N.json" --index "<workspace>\analysis\index.json"` — script tự đối chiếu từng cảnh B-roll với cờ `co_nguoi_dang_noi` và tự **chặn** (exit lỗi) nếu phát hiện vi phạm, cộng thêm cảnh báo vùng an toàn chữ (chữ có vướng vùng UI TikTok/Reels hay che 15% trên/20% dưới không). Đây là lớp chặn BỔ SUNG — chỉ hoạt động với clip ĐÃ quét mắt AI, **không thay được việc tự soi bằng mắt dưới đây**.
    **3 phép rà bắt buộc thêm (bài học 19/07/2026 — Sếp bắt lỗi thật, xem `chon-canh-highlight.md` mục 3b + `style-voice-karaoke.md`):**
    - **Rà cutaway**: duyệt từng cảnh chèn, loại mọi cảnh có người đang nói/nhìn trực diện máy quay mà tiếng phát tại đó không phải giọng gốc đồng bộ của chính họ. Áp dụng cho CẢ 3 kiểu dựng (Sếp đã bắt lỗi này ở cả Kiểu 1 lẫn Kiểu 2C).
    - **Rà sub karaoke**: đọc soát toàn bộ sub Whisper trước khi burn, soi kỹ tên riêng + từ tiếng Anh (Roboworld, Tràng An, BellaBot, PUDU, Customize...) — 1 buổi từng có 11 lỗi nghe. Sửa theo VỊ TRÍ TỪ trong từng event, không thay cả dòng (mất tô màu).
    - **Rà biên cắt thoại**: mọi lát cắt "câu đứng riêng" phải cho Whisper nghe lại chính lát cắt đó xác nhận đủ chữ — khoảng im ≥0.3s có thể chỉ là MC ngắt hơi giữa câu (ca thật: cắt mất "BellaBot Pro").
 
-8. **Lưu công thức dựng** (luật từ 19/07/2026): ghi lại toàn bộ chuỗi lệnh ffmpeg đã dùng thành `<workspace>\build.ps1` (kèm tên clip + mốc thời gian mỗi bước) — **không cần chạy lại tự động, chỉ để tham chiếu**. Lý do: khi Sếp yêu cầu sửa 1 lỗi cụ thể sau đó, có script gốc thì chỉ cần đọc + sửa 1 tham số; không có thì phải dò ngược bằng cách trích hàng loạt frame + đối chiếu timestamp thủ công (đã xảy ra thật ngày 19/07, rất tốn thời gian).
+8. 🔴 **Lưu công thức dựng — BẮT BUỘC, dùng đúng lệnh, không tự viết tay** (luật từ 19/07/2026, đóng thành công cụ 23/07/2026 vì luật viết bằng chữ từng bị áp dụng không đều — "có lúc làm có lúc quên", nguyên văn phản hồi của Sếp 23/07). Ngay sau khi dựng xong 1 video (trước khi sang Bước 5), ghép 1 file JSON tho theo đúng khung trong docstring `scripts/luu_cong_thuc.py` (danh sách cảnh đã dùng kèm clip/mốc giây/nguồn âm thanh, toàn bộ lệnh ffmpeg đã chạy theo đúng thứ tự) rồi chạy:
+   ```powershell
+   python "<skill-dir>\scripts\luu_cong_thuc.py" --ghi "<workspace>\cong-thuc\video-N.json" --tu-du-lieu "<file JSON tho vừa ghép>"
+   ```
+   Script tự sinh kèm `video-N.ps1` — mở ra là thấy từng lệnh ffmpeg tách khối có nhãn, sửa đúng 1 tham số (đổi nhạc, chỉnh 1 câu chữ...) rồi chạy lại đúng khối đó, **không phải dò ngược bằng cách trích hàng loạt frame + đối chiếu timestamp thủ công** (đã xảy ra thật ngày 19/07, rất tốn thời gian). File này còn được `kiem_cai_dat.py` dùng để **chặn cứng luật cấm cảnh MC giả** — xem mục nghiệm thu bên dưới.
 
 ### Bước 5 — Bàn giao (LUÔN làm đủ cả 2 phần, không chỉ giao video)
 

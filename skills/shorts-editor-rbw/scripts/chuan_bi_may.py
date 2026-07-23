@@ -41,6 +41,7 @@ THU_VIEN = [
     ("google.genai", "google-genai",     "mat mat AI Gemini"),
     ("onnxruntime",  "onnxruntime",      "mat lop soi cheo Silero VAD khi do moc thoai"),
     ("soundfile",    "soundfile",        "mot so buoc doc/ghi wav se loi"),
+    ("rembg",        "rembg",            "mat tach nen anh san pham (scripts/fx/make_cutout.py)"),
 ]
 
 MODEL_FILES = [
@@ -58,7 +59,12 @@ KEYS = [
     ("GROQ_API_KEY",       "du phong, it dung",                   False),
 ]
 
-# DAU VAN TAY KEY CHUAN (key Gemini doi ngay 22/07/2026 — ban cu da ngung dung).
+# DAU VAN TAY KEY CHUAN (Sep Huy nhap key MOI 22/07/2026 — key cu da bi XOA).
+# Boi canh 22/07: Sep xoa key cu vi thay the la trong billing. Da lap ho so thanh
+# toan dang TO CHUC (Cong ty Co phan Tap doan Roboworld, co ma so thue) nhung CHUA
+# gan duoc the — the Visa Debit bi Google tu choi (loi OR_CCR_104 "the tra truoc
+# khong duoc chap nhan", do dai so dau the bi xep nham nhom). Key dang dung vi vay
+# co the van la ngan Free tier — CHUA XAC NHAN thuoc project nao.
 # Luu HASH chu khong luu key: hash KHONG suy nguoc ra key duoc nen de trong repo
 # public van an toan, ma van du de biet may nao dang cam NHAM key.
 # Vi sao can: key SAI van chay duoc binh thuong (vd key Gemini tai khoan CA NHAN
@@ -66,7 +72,7 @@ KEYS = [
 # Doi key chuan: chay script nay voi --hash roi thay so duoi day + tang version plugin.
 #
 # MOI MAY MOT KEY RIENG THI GHI THANH DANH SACH (them 22/07/2026):
-#   "GEMINI_API_KEY": ["hash_may_1", "hash_may_2", "hash_may_3"],
+#   "GEMINI_API_KEY": ["hash_may_Sep", "hash_may_ADMIN", "hash_may_anh_Chien"],
 # Vi sao co the can: goi Gemini FREE cho ~20 luot MOI NGAY TREN MOI KEY. Ba may
 # dung CHUNG mot key thi chia nhau 20 luot (moi may ~6 clip/ngay); moi may mot key
 # rieng thi moi may du 20 luot. Nhung khi do bang trang thai se bao "SAI KEY" tren
