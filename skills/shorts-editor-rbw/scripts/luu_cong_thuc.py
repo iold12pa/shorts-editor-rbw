@@ -58,12 +58,25 @@ if hasattr(sys.stdout, "reconfigure"):
 BAT_BUOC = ["video", "canh", "lenh_ffmpeg", "output"]
 
 
+_PS1_AN_TOAN = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-:\\/")
+
+
 def _ps1_quote(s):
-    """Bao 1 tham so ffmpeg thanh dang an toan de dan vao PowerShell."""
+    """Bao 1 tham so ffmpeg thanh dang an toan de dan vao PowerShell.
+
+    BUG DA VA (23/07/2026, phat hien khi CHAY THAT file .ps1 sinh ra tren 1
+    lenh ffmpeg co filter_complex): ban dau chi quote khi gap khoang trang/`"`/
+    `$`/backtick — BO SOT `;` `[` `]` `(` `)` `&` `|` `{` `}`, tat ca deu la ky
+    tu PowerShell tu hieu thanh cu phap rieng (vd `;` ngat cau lenh, `[...]`
+    hieu thanh ep kieu). Lenh filter_complex cua ffmpeg dung day du cac ky tu
+    nay -> PowerShell bao loi "Missing type name after '['" ngay khi chay,
+    default output khong dung duoc. Sua: quote MAC DINH, CHI bo qua khi moi
+    ky tu trong chuoi thuoc tap AN TOAN da liet ke (nguoc lai cach cu la
+    "quote khi thay ky tu nguy hiem" — de sot ky tu moi chua nghi toi)."""
     s = str(s)
-    if s == "" or any(c in s for c in ' \t"$`'):
-        return '"%s"' % s.replace('`', '``').replace('"', '`"').replace('$', '`$')
-    return s
+    if s != "" and all(c in _PS1_AN_TOAN for c in s):
+        return s
+    return '"%s"' % s.replace('`', '``').replace('"', '`"').replace('$', '`$')
 
 
 def sinh_ps1(cong_thuc):
