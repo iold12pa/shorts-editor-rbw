@@ -132,7 +132,7 @@ Nhận đủ đầu vào rồi **không được lao vào dựng ngay**. Chạy 
 Đối chiếu với gu đã đúc kết từ video final Sếp duyệt (`gu-kieu-2-3.md`, `chon-canh-highlight.md`):
 
 - Hook mở bằng "Xin chào" → **luật đinh: không bao giờ**
-- Nhịp cắt quá thưa so với công thức của kiểu đó (2A ~2s · 2B ~5.3s · 2C ~3s/cảnh)
+- Nhịp cắt quá thưa so với công thức của kiểu đó (2A 1.8-2.1s · 2B ~5.3s · 2C ~3s/cảnh — bảng đầy đủ mọi kiểu: `quy-trinh-chon-canh.md` mục 4b)
 - CTA nhét giữa video thay vì cuối
 - Chữ đè quá nhiều chữ, đọc không kịp trong thời lượng cảnh
 

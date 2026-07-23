@@ -1,6 +1,8 @@
 # QUY TRÌNH CHỌN CẢNH — công cụ nào dẫn, công cụ nào đối chiếu
 <!-- tags: chung -->
 
+> **Phân biệt với `chon-canh-highlight.md`** (2 tên gần giống nhau, dễ nhầm — làm rõ 24/07/2026): file NÀY là **QUY TRÌNH/THỦ TỤC bắt buộc** — 4 cổng lọc, đếm tư liệu trước khi viết kịch bản, cấm lặp cảnh, giới hạn độ dài 1 cảnh (xem bảng nhịp cắt chuẩn ở mục dưới). File `chon-canh-highlight.md` là quy tắc **THẨM MỸ** — cảnh nào đẹp/đáng lên hình. Cần biết "làm đúng thứ tự các bước" → đọc file này; cần biết "cảnh nào đẹp" → đọc `chon-canh-highlight.md`. Thường phải đọc CẢ HAI khi chọn cảnh thật.
+
 ## 🔴 KHÔNG ĐỦ CHỖ ĐỂ LÀM TỬ TẾ THÌ DỪNG VÀ BÁO — CẤM CẮT XÉN (luật 22/07/2026, sau khi Sếp Huy trả về 3 video)
 <!-- tags: chung -->
 
@@ -157,6 +159,26 @@ Xét theo thứ tự. Rớt cổng nào thì loại luôn, không xét tiếp.
 🔴 **Thiếu tư liệu là một dạng BỊ CHẶN — áp luật DỪNG-BÁO.** Luật cũ chỉ nói về *lỗi/bị chặn kỹ thuật*; nay mở rộng sang **thiếu nguyên liệu**. Tự xoay xở bằng cách lấy lại clip cũ là **sai quy trình**, kể cả khi video vẫn xuất ra được.
 
 > Ca thật 21/07: folder 30 lọc đúng chỉ còn **2 clip sạch** trong 21 clip đã quét. Đáng lẽ phải dừng báo ngay; thay vào đó đã quay vòng lấy lại clip → Sếp thấy lặp ngay 5-6 giây đầu.
+
+---
+
+## 4b. BẢNG NHỊP CẮT CHUẨN — tra nhanh, đừng lặp số ở nơi khác (gom 24/07/2026)
+<!-- tags: chung -->
+
+Độ dài "1 cảnh nên giữ mấy giây" có nhiều mốc khác nhau tùy kiểu/công thức con — **cùng chủ đề nhưng KHÔNG mâu thuẫn nhau**, mỗi số áp cho đúng 1 ngữ cảnh. Trước đây các số này rải rác ở 4 file khác nhau (dễ đọc nhầm là xung đột khi không biết đang ở kiểu nào) — nay gom về đây làm 1 nguồn duy nhất, các file khác chỉ trỏ tới bảng này.
+
+| Kiểu / công thức con | Nhịp cắt chuẩn | Ghi chú |
+|---|---|---|
+| **Kiểu 1 — nhánh montage** | 2.7-3.9s/cảnh | Dạng ads/khoe nhiều cảnh (`style-mau.md` mục "Nhịp dựng") |
+| **Kiểu 1 — nhánh "1 cú máy đẹp"** | 0-2 điểm cắt/cả video (có thể tới 14-30s không cắt) | Cảnh đẹp thì để yên, text+nhạc gánh nhịp — KHÔNG mặc định Kiểu 1 phải cắt nhiều |
+| **Kiểu 2 — công thức 2A** | 1.8-2.1s/cảnh | Một-mạch-kể-chuyện (`gu-kieu-2-3.md`) |
+| **Kiểu 2 — công thức 2B** | ~5.3s/cảnh | Listicle-từng-câu, chốt FOMO |
+| **Kiểu 2 — công thức 2C / B-roll đè thoại** | ~3s/cảnh, giới hạn cứng **6s** (cảnh giữa) / **9s** (cảnh đầu-cuối, hook/CTA) | Có máy chặn cứng: `kiem_cai_dat.py` → `kiem_canh_qua_dai()`. Không áp cho chính cảnh MC đang nói đồng bộ — xem `quy-trinh-chon-canh.md` mục đầu file |
+| **Kiểu 3 — B-roll dưới voice-over** | 1.8-2.5s/cảnh | `style-voice-karaoke.md` |
+| **Kiểu 3 — 1 cảnh tĩnh khi MC nói dài** | Được, NHƯNG thẻ chữ phải đổi mỗi ~2.5s | "Màn hình không đứng yên quá ~2.5s" — hình không đổi thì CHỮ phải đổi (`style-voice-karaoke.md`) |
+| **Nhịp cắt trung bình chung Kiểu 2/3** | ~2.6s/cảnh | Con số tham khảo khi chưa rõ công thức con nào (`style-voice-karaoke.md`) |
+
+Muốn tính nhịp cắt theo đúng BPM bài nhạc (Kiểu 1) thì dùng công cụ đo riêng, không tra bảng này: `so-hieu-ung.md` → script đo phách, gợi ý "cắt mỗi 8 phách / 12 phách".
 
 ---
 

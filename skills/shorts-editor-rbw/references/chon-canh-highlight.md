@@ -1,6 +1,8 @@
 # Quy tắc chọn cảnh (highlight) từ nguồn thô — áp dụng chung cho cả 3 kiểu dựng
 <!-- tags: chung -->
 
+> **Phân biệt với `quy-trinh-chon-canh.md`** (2 tên gần giống nhau, dễ nhầm — làm rõ 24/07/2026): file NÀY là quy tắc **THẨM MỸ** — cảnh nào đẹp/đáng lên hình, đúc kết từ đối chiếu clip thô thật với video final thật. File `quy-trinh-chon-canh.md` là **QUY TRÌNH/THỦ TỤC bắt buộc** — 4 cổng lọc, đếm tư liệu trước khi viết kịch bản, cấm lặp cảnh, giới hạn độ dài 1 cảnh. Cần biết "cảnh nào đẹp" → đọc file này; cần biết "làm đúng thứ tự các bước" → đọc `quy-trinh-chon-canh.md`. Thường phải đọc CẢ HAI khi chọn cảnh thật.
+
 Viết 2026-07-15, dựa trên bằng chứng THẬT (không suy đoán): đối chiếu trực tiếp 1 buổi quay thô — `D:\VIDEO RBW\Edit video\30.Nhà sách Tràng An` (58 clip DJI, quay 2026-07-02) — với **2 video final khác nhau** dựng ra từ đúng nguồn đó: `HUY MKT\34.Nhà sách Tràng An (rv nhà sách)` và `HUY MKT\35.Uyên ads thuê` (quảng cáo cho thuê sự kiện). Cùng 1 buổi quay, 2 mục đích khác nhau → 2 cách chọn cảnh khác nhau, nhưng theo chung 1 bộ nguyên tắc bên dưới.
 
 **Con số thực tế cần nhớ**: 58 clip thô (tổng ~15-20 phút) → 2 video final ~52-63 giây MỖI VIDEO. Tỷ lệ "chọn lọc" cực gắt — phần lớn footage quay được sẽ KHÔNG được dùng, kể cả footage "đẹp". Đừng kỳ vọng dùng hết footage hay, việc của mình là CHỌN ĐÚNG, không phải DÙNG NHIỀU.

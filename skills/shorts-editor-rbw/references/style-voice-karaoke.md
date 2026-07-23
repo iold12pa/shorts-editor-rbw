@@ -26,6 +26,8 @@ Phân tích 2026-07-13 (45s, 2160x3840, 30fps, đo cỡ chữ bằng frame quy v
 
 Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: emoji bay vào (~90px, gần thẻ từ khóa), mũi tên chỉ, 1 hiệu ứng chớp trắng chuyển đoạn (4 cắt trong 0.25s) ở bước ngoặt giữa video.
 
+> So sánh nhịp cắt này với các kiểu/công thức khác: bảng gộp tại `quy-trinh-chon-canh.md` mục 4b.
+
 ## Âm thanh (chuẩn bắt buộc của style này)
 <!-- tags: kieu-2, kieu-3 -->
 

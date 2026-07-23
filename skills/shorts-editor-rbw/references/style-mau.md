@@ -56,6 +56,10 @@ Chỉ dùng cảnh "chuẩn bị/hành chính" (mở hộp đồ, xếp dụng c
 ## Nhịp dựng
 <!-- tags: kieu-1 -->
 - Cảnh 3-5 giây, ưu tiên cảnh robot chuyển động + phản ứng người thật (trẻ em, công nhân, khách)
+- **2 nhánh nhịp chuẩn vàng** (chuyển từ `gu-kieu-2-3.md` ngày 24/07/2026 — đây mới đúng là nhà của luật Kiểu 1, file kia chỉ nên chứa Kiểu 2/3):
+  - **Nhánh montage nhịp**: cắt 2.7-3.9s/cảnh (19.5, 20.5, 48.Omnie) — dạng ads/khoe nhiều cảnh.
+  - **Nhánh "1 cú máy đẹp + text"**: 0-2 điểm cắt cho cả video (T300 tiệc cưới 29.6s KHÔNG cắt lần nào; 41.Bella 14s/cảnh; 11.Vinschool 22s/cảnh) — cảnh đẹp thì ĐỂ YÊN cho chạy, text + nhạc gánh nhịp. **ĐỪNG mặc định Kiểu 1 là phải cắt nhiều.**
+  - **Chữ ký mở màn "Ok, let's go"**: 1 câu thoại cực ngắn làm phát súng lệnh rồi vào nhạc (xuất hiện 2 mẫu: 18.5 Quái vật + 48.Omnie) — được phép dùng thoại "1 câu mồi" trong video Kiểu 1.
 - Mở đầu bằng cảnh mạnh nhất + hook vàng
 - Kết hợp footage DJI (mượt, rộng) làm cảnh chính + iPhone (cận, đời thường) làm cảnh chen
 - **Chuyển cảnh GIỮA CÁC CẢNH: 100% hard-cut** — đã kiểm tra bằng lưới dày (fps=8, quanh từng điểm scene_change) trên 4 video style này (Vinschool, Phúc Yên 2, Unbox Omnie, GGG Hà Nội), không thấy crossfade/wipe nào. Đừng tự thêm hiệu ứng chuyển cảnh giữa các cảnh trong thân video.

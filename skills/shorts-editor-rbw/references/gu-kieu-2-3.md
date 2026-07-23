@@ -8,6 +8,8 @@
 
 **Nhận diện công thức nào: nhìn SOURCE trước.** MC nói 1 take dài liền mạch → 2A. Mỗi câu quay 1 clip riêng (tên file đặt theo câu) → 2B. Câu đắt rải rác nhiều take/nhiều clip → 2C.
 
+> So sánh nhịp cắt của 3 công thức này với các kiểu/nhánh khác: bảng gộp tại `quy-trinh-chon-canh.md` mục 4b.
+
 ### 2A — "MỘT MẠCH KỂ CHUYỆN" (mẫu vàng: 45.Xử lí robot lỗi 51.8s, 47.Cáp treo 85.9s)
 <!-- tags: kieu-2 -->
 - Giữ MẠCH của take chính (mọi câu cùng 1 clip nguồn), chọn lọc nhẹ: nội dung giải đáp/giới thiệu giữ ~80% câu (45: giữ 12/15); nội dung HÀNH TRÌNH/trải nghiệm chỉ giữ ~20% làm phần dẫn (47: 10/55) — phần còn lại của video để HÌNH + NHẠC tự kể, không lời.
@@ -101,11 +103,7 @@ Cấu trúc 9 nhịp đã kiểm chứng:
 | Danh tiếng khách + bước ngoặt | "Tập đoàn nhựa sinh học lớn nhất VN... ngày nói lời tạm biệt xe có người lái" (APX) |
 - Luật nỗi đau: phải là **NỖI ĐAU NGÀNH CỤ THỂ** người trong nghề gật gù ("chỉ thừa bám vào thành phẩm, mất thời gian gỡ chỉ khỏi áo" — Nam Sơn), không nói nỗi đau chung chung.
 
-### Kiểu 1 chuẩn vàng — 2 nhánh nhịp (bồi cho style-mau.md khi dựng)
-<!-- tags: kieu-1 -->
-- **Nhánh montage nhịp**: cắt 2.7-3.9s/cảnh (19.5, 20.5, 48.Omnie) — dạng ads/khoe nhiều cảnh.
-- **Nhánh "1 cú máy đẹp + text"**: 0-2 điểm cắt cho cả video (T300 tiệc cưới 29.6s KHÔNG cắt lần nào; 41.Bella 14s/cảnh; 11.Vinschool 22s/cảnh) — cảnh đẹp thì ĐỂ YÊN cho chạy, text + nhạc gánh nhịp. ĐỪNG mặc định Kiểu 1 là phải cắt nhiều.
-- **Chữ ký mở màn "Ok, let's go"**: 1 câu thoại cực ngắn làm phát súng lệnh rồi vào nhạc (xuất hiện 2 mẫu: 18.5 Quái vật + 48.Omnie) — được phép dùng thoại "1 câu mồi" trong video Kiểu 1.
+> **Chuyển đi 24/07/2026**: luật "Kiểu 1 chuẩn vàng — 2 nhánh nhịp" từng nằm ở đây đã dọn sang `style-mau.md` mục "Nhịp dựng" — file `gu-kieu-2-3.md` (tên đã nói rõ) chỉ nên chứa luật Kiểu 2/3, quy trình dựng Kiểu 1 không đọc file này nên nội dung Kiểu 1 để ở đây coi như vô hình.
 
 ### Còn nợ
 <!-- tags: chung -->
