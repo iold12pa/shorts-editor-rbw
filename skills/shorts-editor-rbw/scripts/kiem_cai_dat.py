@@ -23,7 +23,11 @@ CACH DUNG:
 TU DONG DO DUOC: so luong video · do phan giai · fps · thoi luong · LUFS ·
                  co outro khong · co logo overlay khong · vung an toan chu
                  (khong vuong UI TikTok/Reels) · luat cam canh MC gia (them
-                 23/07/2026 — CAN --cong-thuc + --index, xem luu_cong_thuc.py)
+                 23/07/2026 — CAN --cong-thuc + --index, xem luu_cong_thuc.py) ·
+                 luat "Kieu 2 khong duoc giu nguyen cu may dai ~3s/canh" (them
+                 23/07/2026 sau khi Sep Huy bat canh hanh lang 12.1s trong
+                 video-3 Ba Na Hills — CAN --cong-thuc, --index de loai tru
+                 dung canh MC dang noi dong bo, xem kiem_canh_qua_dai())
 PHAI KIEM BANG TAI/MAT: giong doc dung nguoi chua · nhac dung bai chua ·
                         muc phu giong · noi dung bam mo ta nguoi dung
 (script se LIET KE ro phan nay chu khong im lang bo qua)
@@ -31,6 +35,7 @@ PHAI KIEM BANG TAI/MAT: giong doc dung nguoi chua · nhac dung bai chua ·
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -241,6 +246,77 @@ def kiem_mc_gia(cong_thuc_path, index_path):
     return loi
 
 
+def kiem_canh_qua_dai(cong_thuc_path, index_path):
+    """CHAN CUNG luat "Kieu 2 khong duoc giu nguyen cu may dai" (them 23/07/2026,
+    sau khi Sep Huy bat 1 canh 12.1s lien tuc trong video-3 Ba Na Hills — luat
+    van da co san bang chu trong quy-trinh-chon-canh.md tu 21/07 ("cong thuc 2C
+    la ~3s/canh... de nguyen 10 giay mot khung la loi, khong phai phong cach")
+    nhung chi la LUAT CHU nen bi lo, giong het duong luat "cam canh MC gia" tung
+    bi lo 2 lan truoc khi co kiem_mc_gia() chan cung ben tren.
+
+    QUAN TRONG — luat nay CHI ap cho B-ROLL (canh khong co nguoi dang noi dong
+    bo), KHONG ap cho chinh canh MC dang noi truoc camera: cau thoai dai bao
+    nhieu giay thi canh MC do duoc phep dai bay nhieu giay, vi "loi co san la
+    xuong song bat bien" (tu-lua-chon-den-san-pham.md) — cat ngang mat MC dang
+    noi moi la loi, khong phai giu canh dai. Phan biet bang chinh co
+    'co_nguoi_dang_noi' cua mat AI Gemini trong index.json (dung lai logic cua
+    kiem_mc_gia): co=True VA am_thanh bat dau bang "goc" (tieng dong bo that,
+    khong phai muon tu clip khac) -> day la canh MC dan, BO QUA. Con lai (khong
+    co ai dang noi, hoac co nguoi noi nhung dang dung lam B-roll duoi tieng
+    khac) -> ap luat ~3s/canh.
+
+    Chi ap dung cho Kieu 2 — Kieu 1 duoc PHEP giu 1 cu may dai neu canh dep
+    (xem gu-kieu-2-3.md: "DUNG mac dinh Kieu 1 la phai cat nhieu", T300 tiec
+    cuoi 29.6s khong cat lan nao). Kieu 3 co luat rieng ve doi text (~2.5s).
+
+    Doc do dai THUC TE tren man hinh (chia cho he so tempo neu canh do da duoc
+    tang toc — vd am_thanh ghi "goc-tempo-1.5x"), khong phai do dai cat tho.
+    Cho phep canh DAU va canh CUOI (hook/CTA) dai hon 1 chut theo dung quy uoc
+    "canh hook va CTA nen de dai hon" (so-hieu-ung.md)."""
+    if not os.path.exists(cong_thuc_path):
+        return None
+    d = json.load(open(cong_thuc_path, encoding="utf-8"))
+    if d.get("kieu_dung") != "Kieu 2":
+        return []  # luat nay chi ap cho Kieu 2, xem docstring
+
+    clips = {}
+    if index_path and os.path.exists(index_path):
+        idx = json.load(open(index_path, encoding="utf-8"))
+        clips = idx.get("clips", {})
+
+    def co_nguoi_dang_noi(ten_clip):
+        for k, v in clips.items():
+            rel = k.split("|")[0]
+            if os.path.basename(rel) == ten_clip or rel == ten_clip or rel.replace("\\", "/").endswith("/" + ten_clip):
+                return (v.get("gemini") or {}).get("co_nguoi_dang_noi")
+        return None  # chua quet mat AI cho clip nay -> khong biet, coi nhu B-roll de an toan
+
+    canh = d.get("canh", [])
+    n = len(canh)
+    loi = []
+    for i, c in enumerate(canh):
+        am_thanh = c.get("am_thanh") or "goc"
+        ten_clip = c.get("clip", "")
+        if am_thanh.startswith("goc") and co_nguoi_dang_noi(ten_clip) is True:
+            continue  # canh MC dan dong bo that -> dai bao nhieu cung duoc, bo qua
+
+        t0, t1 = c.get("t0", 0), c.get("t1", 0)
+        dai_cat = t1 - t0
+        m = re.search(r"tempo-([\d.]+)x", am_thanh)
+        speed = float(m.group(1)) if m else 1.0
+        dai_thuc = dai_cat / speed
+        gioi_han = 9.0 if i == 0 or i == n - 1 else 6.0
+        if dai_thuc > gioi_han:
+            loi.append(
+                "CANH QUA DAI (Kieu 2, B-roll): '%s' (clip %s) keo dai %.1fs LIEN TUC 1 goc may "
+                "(gioi han %.1fs cho vi tri nay) — vi pham luat quy-trinh-chon-canh.md "
+                "'~3s/canh, de nguyen 1 khung dai la loi khong phai phong cach'. "
+                "Sua: cat highlight 3-4s + chen canh khac (uu tien), hoac tua nhanh theo "
+                "duong cong 1x-cao diem-1x xem ffmpeg-recipes.md muc 2."
+                % (c.get("nhan", "?"), ten_clip, dai_thuc, gioi_han))
+    return loi
+
+
 def ghi_cai_dat(a):
     cai = {k: v for k, v in {
         "huong_dung": a.huong, "so_video": a.so_video, "kenh_dang": a.kenh,
@@ -360,6 +436,14 @@ def kiem(a):
             print("\n  Luat cam canh MC gia   DAT (khong canh nao vi pham theo du lieu co)")
     elif a.cong_thuc or a.index:
         canh_bao.append("Can CA --cong-thuc VA --index de doi chieu luat MC gia — hien chi co 1 trong 2.")
+
+    # --- luat "Kieu 2 khong duoc giu nguyen cu may dai" (chan cung) ---
+    if a.cong_thuc:
+        qua_dai = kiem_canh_qua_dai(a.cong_thuc, a.index)
+        if qua_dai:
+            loi.extend(qua_dai)
+        elif qua_dai == []:
+            print("  Luat canh qua dai (K2) DAT (khong canh nao vuot gioi han, hoac khong phai Kieu 2)")
 
     # --- phan may KHONG do duoc ---
     print("\n" + "=" * 72)

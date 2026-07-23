@@ -22,6 +22,12 @@ Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực k
 - **Người dùng cho phép dùng lại cảnh cũ ≠ cho phép xào 5 clip trong một video.** Hiểu nới rộng theo hướng có lợi cho mình là sai. Cho phép trùng **giữa video mới và video cũ**; **trong cùng một video vẫn cấm lặp**.
 - **Kiểu 2 không được giữ nguyên cú máy dài**: công thức 2C là **~3s/cảnh**, thoại dài phải **cắt B-roll đè lên** trong khi tiếng chạy liền mạch. Để nguyên 10 giây một khung là lỗi, không phải phong cách.
 
+> 🔴 **TÁI PHẠM 23/07/2026 — luật trên chỉ nằm bằng CHỮ nên vẫn bị lơ, y hệt bài học "cấm cảnh MC giả" từng bị lơ 2 lần trước khi có công cụ chặn cứng.** Ca thật: video-3 "Bà Nà Hills" (folder 37), cảnh robot lau hành lang giữ nguyên **12.1 giây một cú máy tĩnh** (chỉ 1 clip `IMG_4775`) — đúng dạng lỗi bảng trên đã ghi từ 21/07 ("mỗi đoạn 9-10 giây một cú máy tĩnh"), tái diễn ở clip khác. Sếp Huy bắt lỗi, chỉ rõ 2 cách sửa: **(1) cắt lấy đoạn highlight 3-4s, phần còn lại chèn cảnh khác** (ưu tiên — xem cách làm ở mục "Ví dụ sửa thật" ngay dưới), hoặc **(2) tua nhanh cả cú máy** theo đường cong tốc độ, thấp nhất luôn ≥1x — không bao giờ tua chậm hơn thực tế (công thức + lệnh ffmpeg mẫu: `references/ffmpeg-recipes.md` mục 2b).
+>
+> **Đã đóng thành công cụ chặn cứng** (giống mô hình `kiem_mc_gia()`): `scripts/kiem_cai_dat.py` hàm `kiem_canh_qua_dai()` — đọc file công-thức-dựng (`luu_cong_thuc.py`), với **Kiểu 2**: cảnh nào **không phải chính MC đang nói đồng bộ** (đối chiếu `co_nguoi_dang_noi` của mắt AI, giống cách phân biệt trong luật MC giả) mà dài quá **6s** (cảnh giữa) hoặc **9s** (cảnh đầu/cuối — cho phép hook/CTA dài hơn chút) thì **CHẶN, không cho giao hàng**. Chạy kèm `--cong-thuc` khi gọi `--kiem` là tự bắt được, không cần nhớ tay.
+>
+> **Ví dụ sửa thật (video-3, 23/07)**: cảnh hành lang 12.1s → chẻ thành 3 cảnh (`IMG_4775` highlight 3.5s + `IMG_4712` sảnh POV 3.3s + `IMG_4756` robot qua rào nhung 3.3s, 2 cảnh sau dùng lại clip đã duyệt ở video-1) + tốc độ nhẹ 1.2x mỗi cảnh cho đỡ cảm giác robot đi chậm. Từ 1 cú máy đơn điệu → 3 góc máy khác nhau, đúng nhịp Kiểu 2.
+
 > Sếp Huy chốt 21/07/2026, sau khi xem 3 video và bắt 3 lỗi nội dung mà toàn bộ hệ nghiệm thu kỹ thuật đều báo "đạt".
 >
 > **Yêu cầu gốc của Sếp**: *"đoạn nào cần cắt theo thoại thì ưu tiên cắt bằng âm thanh, đoạn nào không có thoại thì dùng hình ảnh để lấy chuẩn cái đẹp nhất, linh hoạt cho từng trường hợp nhưng phải cho ra đầu ra tốt nhất. Khi chọn hình ảnh hay âm thanh thì dùng dữ liệu từ TẤT CẢ các công cụ để đưa ra quyết định cuối cùng."*

@@ -136,6 +136,30 @@ ffmpeg -y -ss 5 -to 9 -i source\clip02.mp4 `
 - Nguồn HEVC/10-bit lỗi: thêm `-map 0:v:0 -map 0:a:0?` và cứ re-encode như trên là chuẩn hóa xong.
 - Tăng tốc cảnh (timelapse robot chạy): thêm `setpts=PTS/2` vào cuối -vf (2x) và `-an`.
 
+## 2b. Tua nhanh cảnh robot di chuyển chậm — luật Sếp Huy 23/07/2026
+<!-- tags: kieu-1, kieu-2, kieu-3 -->
+
+**Vì sao**: robot dọn dẹp/di chuyển tự động vốn đi khá chậm ngoài đời — quay đúng tốc độ thật nhìn đơ, không hấp dẫn. Sếp Huy chỉ đạo: *"trong các video có cảnh robot bạn hãy tua đi cho hấp dẫn"*, và mô tả rõ 2 kiểu tua Sếp hay dùng — cả hai đều áp dụng được, tùy cảnh:
+
+**Cách 1 — tua đều (flat)**: `setpts=PTS/1.5` (giữ nguyên `-an` nếu cảnh không cần âm gốc, hoặc thêm `atempo=1.5` nếu muốn giữ tiếng ambient khớp tốc độ hình — xem mục 2 ở trên). Mức 1.5x là mặc định Sếp hay dùng; cảnh cần nhẹ tay hơn thì 1.2-1.3x.
+
+**Cách 2 — tua đường cong (ease-in/ease-out)**: tốc độ tăng dần lên đỉnh rồi giảm về lại — **nhưng điểm THẤP NHẤT của đường cong luôn ≥ 1x, không bao giờ tua CHẬM hơn tốc độ quay thật** (nguyên văn Sếp: *"tua đường cong thì nơi thấp nhất cx là 1x rồi"*). Cách làm đơn giản, không cần công thức toán phức tạp: chia cảnh làm 3 đoạn theo tỉ lệ ~30%-40%-30% rồi cắt + tăng tốc riêng từng đoạn, sau đó ghép lại — hiệu ứng nghe/nhìn giống hệt 1 đường cong chậm-nhanh-chậm mà không cần filter phức tạp:
+
+```powershell
+# Vi du: canh 12s, muon dinh diem 1.5x o giua, hai dau van 1x
+# Doan 1 (0-30%, 1.0x): 0.0s -> 3.6s
+ffmpeg -y -ss 0.0 -to 3.6 -i clip.mp4 -vf "scale=-2:1920,crop=1080:1920,fps=30" -c:v libx264 -preset fast -crf 18 -pix_fmt yuv420p -c:a aac -ar 48000 s_a.mp4
+# Doan 2 (30-70%, 1.5x): 3.6s -> 8.4s (goc), rut con 3.2s sau khi tua
+ffmpeg -y -ss 3.6 -to 8.4 -i clip.mp4 -vf "scale=-2:1920,crop=1080:1920,fps=30,setpts=PTS/1.5" -af "atempo=1.5" -c:v libx264 -preset fast -crf 18 -pix_fmt yuv420p -c:a aac -ar 48000 s_b.mp4
+# Doan 3 (70-100%, 1.0x): 8.4s -> 12.0s
+ffmpeg -y -ss 8.4 -to 12.0 -i clip.mp4 -vf "scale=-2:1920,crop=1080:1920,fps=30" -c:v libx264 -preset fast -crf 18 -pix_fmt yuv420p -c:a aac -ar 48000 s_c.mp4
+# Ghep 3 doan lai bang concat (muc 3) la ra 1 canh co "duong cong" toc do
+```
+
+- Đây là kỹ thuật xấp xỉ đường cong bằng 3 bước rời rạc (không phải hàm liên tục) — đủ mượt cho mắt người xem, không cần công cụ remap PTS phức tạp. Muốn mượt hơn thì chia 5 đoạn thay vì 3 (vd 1.0x-1.2x-1.5x-1.2x-1.0x).
+- Cảnh **hook và CTA/kết thúc có chữ cần đọc** thì KHÔNG tua (giữ 1.0x) — tua nhanh làm chữ khó đọc kịp (xem `so-hieu-ung.md`, quy ước "cảnh hook và CTA nên để dài hơn").
+- Kỹ thuật này cũng là cách thực tế nhất để phá vỡ 1 cú máy dài thành nhiều đoạn ngắn khi cần tuân luật **Kiểu 2 "~3s/cảnh"** (`quy-trinh-chon-canh.md`) — vừa cắt ngắn cảnh vừa có tốc độ khác nhau giữa các đoạn, đỡ nhàm hơn là chỉ cắt suông.
+
 ## 3. Ghép cảnh (concat)
 <!-- tags: chung -->
 

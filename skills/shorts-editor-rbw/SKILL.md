@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 27** — phát hành 23/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 28** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 27 (23/07/2026)`
+>    `📦 Đang ở Ver 28 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **28** | 23/07/2026 | `2026.07.23.8` | 🔴 3 bài học thật từ 1 buổi dựng video-3 "Bà Nà Hills" (folder 37, Kiểu 2), Sếp Huy bắt lỗi trực tiếp: (1) **bẫy mốc cắt `loc_thoai_that.py`** — cột `t0/t1` chỉ là đoạn sạch-mic-nhất, KHÔNG phải biên trọn câu; dùng nhầm làm cắt cụt lủn 2 câu MC (mất cả cụm "thử thách đặc biệt" lẫn "Gaussium Omni của RoboWorld") — đã ghi rõ bẫy + luật xác nhận biên bằng nghe-lại vào `SKILL.md` Bước 4; (2) **`tua_nhanh_thoai.py` từng đứng lẻ ngoài checklist** nên bị quên hẳn — nay bắt buộc chạy kiểm tốc độ nói (dù kết quả có thể là "không cần tua") cho mọi Kiểu 2/3 có giọng người; (3) 🔴 **công cụ MỚI `kiem_canh_qua_dai()` trong `kiem_cai_dat.py`** — chặn cứng luật "Kiểu 2 không được giữ nguyên cú máy dài ~3s/cảnh" (`quy-trinh-chon-canh.md`, luật có từ 21/07 nhưng chỉ nằm bằng chữ nên bị lơ lần 2 y hệt bài học MC-giả trước đây); tự loại trừ đúng cảnh MC đang nói đồng bộ (đối chiếu mắt AI) để không báo nhầm. Kèm luật MỚI `ffmpeg-recipes.md` mục 2b: tua cảnh robot di chuyển chậm cho hấp dẫn (1.5x đều, hoặc đường cong 1x-đỉnh-1x — không bao giờ tua chậm hơn 1x). |
 | **27** | 23/07/2026 | `2026.07.23.7` | 🔴 Vá bug thật `loc_thoai_that.py` — folder tên có `[ ]` (vd `[13.07.26] Bà Nà Hills`, rất phổ biến trong cách đặt tên buổi quay) làm `glob.glob` hiểu nhầm ngoặc vuông thành ký tự đại diện, **báo "KHÔNG TÌM THẤY FILE" cho 100% clip mà không hề báo lỗi** — phát hiện khi dựng thật video từ folder 37 (39 clip, 37 clip có thoại, trước khi vá là 0/37 lấy được mốc cắt). Sửa bằng `os.walk` thay glob, đúng cách các script khác trong skill đã làm. Xác nhận lại bằng chạy thật: sau vá ra đủ 37/37 clip có dữ liệu |
 | **26** | 23/07/2026 | `2026.07.23.6` | Gắn thẻ `get_rules.py` cho **14 file luật còn lại** (đủ 16/16 file). Đo thật bằng tiktoken trên toàn bộ kho: đọc lọc theo kiểu thay vì đọc nguyên 16 file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 14% (Kiểu 3)** — tổng baseline 100.977 token. Đã kiểm tra đúng đắn: nội dung riêng Kiểu 2 (vd công thức 2A/2B/2C) không lọt sang khi hỏi Kiểu 3, chỉ bảng tra cứu chung mới xuất hiện |
 | **25** | 23/07/2026 | `2026.07.23.5` | Giải quyết nhóm "Cao" trong danh sách việc còn thiếu: (a) test cache ElevenLabs bằng **API thật** — xác nhận 2 lần gọi cùng text/giọng ra file byte-giống-hệt nhau, không gọi lại API; (b) test luật chặn MC giả bằng **dữ liệu Gemini thật** (không giả lập) — dựng cảnh vi phạm thật từ clip đã quét trước đó, script bắt đúng; (c) đo thật 3 nghi vấn kỹ thuật Gemini nêu (VFR/HDR/lệch sample rate khi mix) trên footage thật — **cả 3 đều KHÔNG phải vấn đề thật**, ghi vào `ffmpeg-recipes.md` mục 0.2 để khỏi đo lại; (d) dọn folder test khỏi Workspace khách hàng thật |
@@ -417,6 +418,16 @@ python "<skill-dir>\scripts\loc_thoai_that.py" --index "<workspace>\analysis\ind
   - **BẢN TỐT NHẤT** khi MC nói lại cùng một câu nhiều lần (chọn bản to nhất = gần mic nhất)
   - **XA MIC** khi cách sàn nhiễu < 15 dB
   - **NGHI Ê-KÍP** khi là lời chỉ đạo/quên thoại chứ không phải nội dung
+
+  🔴 **BẪY THẬT 23/07/2026 — mốc t0/t1 trả về CHỈ LÀ đoạn sạch-mic-nhất, KHÔNG PHẢI biên trọn vẹn của cả câu.** Ca thật: script báo đoạn `5.90 → 7.80` với `noi:` là cả câu dài "và hôm nay thì em Hoàng không biết chơi cái gì ở trên này cả vì em Hoàng đã có một thử thách rất đặc biệt" — nhưng 1.9 giây KHÔNG THỂ chứa hết câu đó (tính ra ~630 từ/phút, vô lý). Cắt đúng y hệt khung `t0-t1` này thì audio thật sự chỉ có "và hôm nay thì em Hoàng không biết chơi cái gì ở trên" — **mất hẳn nửa sau câu, kể cả đúng cụm "thử thách đặc biệt" đang định dùng làm hook**. Nguyên nhân: cột `noi:` lấy nguyên transcript Whisper của cả cụm audio quanh đó (có thể dài hơn khung `t0-t1` nhiều), còn `t0-t1` chỉ đánh dấu đúng đoạn cách sàn nhiễu tốt nhất — hai con số phục vụ 2 mục đích khác nhau, KHÔNG được dùng lẫn.
+
+  **LUẬT SỬA**: trước khi cắt bất kỳ đoạn nào từ `loc_thoai_that.py` làm cảnh MC dẫn, PHẢI xác nhận biên thật bằng cách mở rộng khung ra 2 phía (vài giây) rồi cho máy nghe lại chính đoạn mở rộng đó (dùng `analyze_footage.transcribe()` hoặc lệnh whisper filter trực tiếp — xem ví dụ ở `style-voice-karaoke.md` mục 3), tìm đúng điểm bắt đầu/kết thúc CÂU HOÀN CHỈNH rồi mới chốt `t0/t1` để cắt. Đây chính là bước "Rà biên cắt thoại" đã ghi ở mục nghiệm thu tầng B (Bước 4 dựng video) — bằng chứng 23/07 cho thấy bỏ qua bước này là cắt cụt câu thật, không phải rủi ro lý thuyết.
+
+  🔴 **BẮT BUỘC — chạy kiểm tốc độ nói trước khi giao (bổ sung 23/07/2026)**: `scripts/tua_nhanh_thoai.py` từng chỉ là công cụ đứng lẻ, KHÔNG nằm trong checklist bắt buộc nào — hậu quả thật: một phiên dựng xong cả video Kiểu 2 mà quên hẳn không chạy, tới khi Sếp hỏi thẳng "đã speed up theo quy tắc tôi bảo chưa" mới lộ ra. **Với mọi video Kiểu 2 (MC dẫn) và Kiểu 3 dùng giọng người thu**, ngay sau khi cắt xong đoạn thoại chính (đã xác nhận đủ câu ở trên), chạy:
+  ```powershell
+  python "<skill-dir>\scripts\tua_nhanh_thoai.py" "<đoạn video/audio đã cắt>" --am-tiet <đếm tay số âm tiết trong lời>
+  ```
+  Script tự đo tốc độ nói thật (đã cắt khoảng trống) và so với chuẩn 363 âm tiết/phút — báo "đã đủ nhanh, không cần tua" (như ca 23/07: MC đo được 612 và 507 âm tiết/phút, nhanh hơn chuẩn sẵn) hoặc tự tua theo đúng hệ số cần thiết (trần 1.6x). **Chạy CHECK là bắt buộc dù kết quả có thể là "không cần làm gì"** — mục đích là đừng bỏ sót bước, không phải luôn luôn phải tua.
 - **PHÂN CÔNG 3 CÔNG CỤ — đừng dùng nhầm việc** (chốt 21/07 sau khi Sếp chấm tai 4 ca):
 
   | Công cụ | Trả lời câu hỏi | Đừng dùng nó để |
