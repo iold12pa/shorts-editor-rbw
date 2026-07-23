@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 24** — phát hành 23/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 25** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 24 (23/07/2026)`
+>    `📦 Đang ở Ver 25 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **25** | 23/07/2026 | `2026.07.23.5` | Giải quyết nhóm "Cao" trong danh sách việc còn thiếu: (a) test cache ElevenLabs bằng **API thật** — xác nhận 2 lần gọi cùng text/giọng ra file byte-giống-hệt nhau, không gọi lại API; (b) test luật chặn MC giả bằng **dữ liệu Gemini thật** (không giả lập) — dựng cảnh vi phạm thật từ clip đã quét trước đó, script bắt đúng; (c) đo thật 3 nghi vấn kỹ thuật Gemini nêu (VFR/HDR/lệch sample rate khi mix) trên footage thật — **cả 3 đều KHÔNG phải vấn đề thật**, ghi vào `ffmpeg-recipes.md` mục 0.2 để khỏi đo lại; (d) dọn folder test khỏi Workspace khách hàng thật |
 | **24** | 23/07/2026 | `2026.07.23.4` | 🔴 Công cụ MỚI `get_rules.py` — Giai đoạn 1 giải quyết gốc vấn đề "tốn token/hết session limit" (đã tham khảo ChatGPT + Gemini trước khi chọn hướng, xem `PROMPT-HOI-Y-TO-CHUC-LUAT-2026-07-23.md`). Gắn thẻ theo kiểu dựng ở từng MỤC (không phải cả file) trong 2 file luật lớn nhất — thí điểm trước khi làm hết 16 file. Đo thật bằng tiktoken: đọc lọc theo kiểu thay vì đọc nguyên file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 11% (Kiểu 3)**. Bắt được 1 bug thật khi test (comment PowerShell trong code block bị nhận nhầm thành heading, làm lọt nội dung sai kiểu) — đã sửa + xác nhận lại. Mặc định AN TOÀN: mục không gắn thẻ = luôn lấy (quên gắn thẻ không làm mất luật, chỉ mất phần tối ưu). CHƯA đụng SKILL.md (rủi ro cao, để Giai đoạn 2 sau khi công cụ này chứng minh ổn qua vài lần dùng thật) |
 | **23** | 23/07/2026 | `2026.07.23.3` | Công cụ MỚI `phan_tich_day_du.py` — gộp 3 bước phân tích miễn phí (`analyze_footage` + `do_ky_thuat` + `loc_thoai_that`) chạy nối tiếp trong 1 lệnh, in 1 báo cáo tổng thay vì tự đọc 3 log rời. Không gồm mắt AI Gemini (vẫn phải hỏi trước, tốn tiền). Đã chạy thật 2 vòng trên footage thật (folder 30): vòng đầu chạy đủ cả 3 bước từ đầu, vòng 2 xác nhận resume đúng (56s → 1.9s, không phân tích lại từ đầu) |
 | **22** | 23/07/2026 | `2026.07.23.2` | 🔴 **Vá gốc lỗi "nhạc hot" đêm 22/07** (video Bà Nà Hills, máy ADMIN không hiểu — không phải do thiếu tài liệu, tài liệu đã ghi rõ từ lâu): `chuan_bi_may.py` từng **dừng hẳn việc đối chiếu Drive** một khi máy đã có ≥80 file trong kho tài nguyên, kể cả khi chạy đầy đủ (không `--nhanh`) — máy vượt mốc 80 file TRƯỚC lúc Sếp thêm folder mới vào Drive sẽ **vĩnh viễn báo "OK" mà không bao giờ thấy file mới, im lặng, không lỗi**. Sửa: chế độ đầy đủ giờ LUÔN gọi lại `tai_kho_tai_nguyen.py` (dùng `--continue` nên vẫn nhanh với máy đã có sẵn kho). Kèm vá 1 lỗi phát sinh khi test fix này: `chay()` trong `chuan_bi_may.py` thiếu `encoding="utf-8"`, vỡ `UnicodeDecodeError` khi lệnh con in tên file tiếng Việt có dấu — bug cũ ít lộ vì đường gọi hiếm khi chạy, nay chạy thường xuyên hơn nên phải vá cùng lúc. Đã chạy thật xác nhận sạch (kho đối chiếu đúng 135 file, gồm cả `Nhạc hot`). |

@@ -2,6 +2,19 @@
 
 Đọc file này trước khi dựng video đầu tiên trong phiên. Mọi lệnh viết cho PowerShell trên Windows.
 
+## 0.2. Ba nghi vấn kỹ thuật Gemini nêu 22/07/2026 — ĐÃ ĐO THẬT 23/07/2026, không còn là suy đoán
+<!-- tags: chung -->
+
+Trong đợt rà soát kiến trúc 22-23/07, Gemini nêu 3 nghi vấn kỹ thuật (VFR clip điện thoại, lệch màu HDR/SDR, lệch sample rate khi mix — mục 6.11 bàn giao). Đã đo thật trên footage thật (`IMG_4843.MOV`, HEVC, folder `03.VNPT`) và bằng lệnh mix thật (mục 5):
+
+| Nghi vấn | Đo được | Kết luận |
+|---|---|---|
+| **VFR (khung hình biến thiên)** làm trôi mốc cắt | Đo trực tiếp khoảng cách 328 khung liên tiếp: lệch tối đa giữa 2 khoảng cách chỉ **1.67ms**, hệ số biến thiên 0.39% | **KHÔNG phải vấn đề thật** trên mẫu đã đo — thực chất gần như CFR, nhiễu làm tròn bình thường |
+| **Lệch màu HDR (iPhone) vs SDR** | `color_transfer=bt709` (SDR chuẩn), không phải `arib-std-b67`/`smpte2084` (HLG/PQ = HDR) | **KHÔNG phải HDR** — ít nhất với clip iPhone đã kiểm |
+| **Lệch sample rate khi mix** (nhạc 44.1kHz, footage 48kHz) | Mix thật bằng đúng lệnh `amix` ở mục 5: log hiện `libswresample` tự resample 44.1→48kHz TRƯỚC khi mix; output đúng chính xác 6.000000s cho yêu cầu `-t 6`, không lệch tốc độ/cao độ | **KHÔNG phải vấn đề thật** — ffmpeg filtergraph tự thương lượng format, không cần resample tay thêm |
+
+**Giới hạn của phép đo này**: mới đo **1 clip mẫu** (không phải khảo sát toàn bộ 35 folder), và phần "lệch sample rate" mới kiểm bằng thời lượng khớp (loại được lỗi tốc độ/cao độ sai) chứ chưa nghe kiểm chất lượng âm thanh bằng tai. Nghi ngờ tái diễn ở clip khác (đặc biệt video quay bằng máy đời cũ/app quay lạ) → đo lại bằng đúng cách trên, đừng suy đoán lại từ đầu.
+
 ## 0. Quy tắc chung (đọc kỹ — tránh 90% lỗi)
 <!-- tags: chung -->
 
