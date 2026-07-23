@@ -1,6 +1,6 @@
 {
   "name": "shorts-editor-rbw",
-  "version": "2026.07.23.1",
+  "version": "2026.07.23.2",
   "description": "San xuat shorts video thanh pham cho ROBOWORLD tu footage buoi quay — phan tich source, de xuat kich ban theo 3 kieu dung (highlight+nhac / theo loi thoai san co / ghep canh+voice-over), tu dung bang ffmpeg theo dung style Roboworld va xuat video + caption ra thu muc Final.",
   "author": {
     "name": "Roboworld"

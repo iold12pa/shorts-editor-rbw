@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 21** — phát hành 23/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 22** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 21 (23/07/2026)`
+>    `📦 Đang ở Ver 22 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **22** | 23/07/2026 | `2026.07.23.2` | 🔴 **Vá gốc lỗi "nhạc hot" đêm 22/07** (video Bà Nà Hills, máy ADMIN không hiểu — không phải do thiếu tài liệu, tài liệu đã ghi rõ từ lâu): `chuan_bi_may.py` từng **dừng hẳn việc đối chiếu Drive** một khi máy đã có ≥80 file trong kho tài nguyên, kể cả khi chạy đầy đủ (không `--nhanh`) — máy vượt mốc 80 file TRƯỚC lúc Sếp thêm folder mới vào Drive sẽ **vĩnh viễn báo "OK" mà không bao giờ thấy file mới, im lặng, không lỗi**. Sửa: chế độ đầy đủ giờ LUÔN gọi lại `tai_kho_tai_nguyen.py` (dùng `--continue` nên vẫn nhanh với máy đã có sẵn kho). Kèm vá 1 lỗi phát sinh khi test fix này: `chay()` trong `chuan_bi_may.py` thiếu `encoding="utf-8"`, vỡ `UnicodeDecodeError` khi lệnh con in tên file tiếng Việt có dấu — bug cũ ít lộ vì đường gọi hiếm khi chạy, nay chạy thường xuyên hơn nên phải vá cùng lúc. Đã chạy thật xác nhận sạch (kho đối chiếu đúng 135 file, gồm cả `Nhạc hot`). |
 | **21** | 23/07/2026 | `2026.07.23.1` | Đợt nâng cấp theo bàn giao đêm 22→23/07 (chấm bởi ChatGPT + Gemini): 🔴 công cụ MỚI `luu_cong_thuc.py` — lưu công thức dựng (cảnh + toàn bộ lệnh ffmpeg) ra JSON + `.ps1` chạy lại được, thay luật văn xuôi hay bị áp dụng không đều · 🔴 **chặn cứng luật cấm cảnh MC giả** bằng máy trong `kiem_cai_dat.py` (đối chiếu công thức dựng với cờ `co_nguoi_dang_noi` của mắt AI) · Silero VAD lọc ảo giác Whisper trong `analyze_footage.py` · kiểm vùng an toàn chữ (tránh UI TikTok/Reels che) · cache theo hash cho ElevenLabs TTS + Gemini Vision (đỡ tốn tiền khi sửa lại 1 chi tiết nhỏ) · khai báo bù `rembg` còn thiếu trong `chuan_bi_may.py` |
 | **20** | 22/07/2026 | `2026.07.22.22` | 🔴 **CẤM CẮT XÉN QUY TRÌNH KHI SẮP HẾT NGỮ CẢNH** — Sếp trả về 3 video: mở 4/58 ảnh lưới, dựng cả 3 video từ đúng 5 clip, Kiểu 2 để nguyên 10 giây một cú máy. Luật: ước lượng trước, không đủ chỗ thì **DỪNG BÁO đề nghị phiên mới**, tuyệt đối không tự hạ chuẩn |
 | **19** | 22/07/2026 | `2026.07.22.21` | 🔴 **Công cụ MỚI `kiem_cai_dat.py`** — chắc chắn lựa chọn của người dùng được thực hiện thật: ghi ra file ngay sau khi hỏi, đối chiếu lại trước khi giao. Tự đo **có/không logo + outro**, số lượng, LUFS, khung hình; liệt kê phần phải kiểm bằng tai/mắt |

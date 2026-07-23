@@ -98,8 +98,16 @@ def co(mod):
 
 
 def chay(cmd, timeout=900):
+    # BUG DA VA (23/07/2026): thieu encoding="utf-8" -> subprocess doc output
+    # theo bang ma he thong (cp1252 tren Windows), vo UnicodeDecodeError ngay
+    # khi lenh con in ten file tieng Viet co dau (vd gdown liet ke ten tu Drive
+    # qua tai_kho_tai_nguyen.py). Loi nay truoc gio it lo vi nhanh "kho tai
+    # nguyen >=80 file" thoat som, hau nhu khong bao gio goi lai lenh con —
+    # sua chinh nhanh do (xem ngay tren) khien duong nay chay THUONG XUYEN HON,
+    # nen phai va luon o day.
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout,
+                           encoding="utf-8", errors="replace")
         return p.returncode, (p.stdout or "") + (p.stderr or "")
     except Exception as e:
         return 1, str(e)
@@ -364,14 +372,28 @@ def main():
             bang.append((nhan, "LOI tai — thu lai sau"))
 
     # --- 5. Kho tai nguyen ---
+    # BUG DA VA + DA SUA (23/07/2026, truy ra tu ca that: video Ba Na Hills dem
+    # 22/07, may ADMIN khong "hieu" nhac hot du file luat da ghi ro tu truoc).
+    # Nguyen nhan GOC khong phai thieu tai lieu (folder 'Nhac hot' da duoc mo ta
+    # ro trong style-mau.md/chon-kieu-dung.md tu lau) — ma la CODE o day: mot
+    # khi may da co >=80 file thi NHANH THOAI VE OK va KHONG BAO GIO goi lai
+    # tai_kho_tai_nguyen.py NUA, ke ca khi chay day du (khong --nhanh). May nao
+    # vuot moc 80 file TRUOC luc Sep them folder 'Nhac hot' vao Drive se vinh
+    # vien bao "OK" ma khong bao gio thay file moi, im lang, khong loi.
+    # Sua: che do DAY DU (khong --kiem, khong --nhanh) LUON goi lai
+    # tai_kho_tai_nguyen.py de doi chieu voi Drive that (--continue nen chi tai
+    # phan thieu, khong tai lai tu dau — vAn nhanh voi may da co san kho).
+    # Chi mode --kiem (can nhanh, khong cham mang) moi dung tat so_file>=80.
     so_file = sum(len(f) for _, _, f in os.walk(KHO)) if os.path.isdir(KHO) else 0
-    if so_file >= 80:
-        bang.append(("Kho tai nguyen cong ty", "OK (%d file)" % so_file))
-    elif a.kiem or a.nhanh:
+    if a.kiem:
         bang.append(("Kho tai nguyen cong ty",
-                     "THIEU (%d file)%s" % (so_file, " — bo qua vi --nhanh" if a.nhanh else "")))
+                     "OK (%d file)" % so_file if so_file >= 80 else "THIEU (%d file)" % so_file))
+    elif a.nhanh:
+        bang.append(("Kho tai nguyen cong ty",
+                     "OK (%d file, chua doi chieu Drive vi --nhanh)" % so_file if so_file >= 80
+                     else "THIEU (%d file) — bo qua vi --nhanh" % so_file))
     else:
-        print("\n[kho] tai kho logo/nhac/SFX tu Drive (~180MB)...", flush=True)
+        print("\n[kho] doi chieu kho logo/nhac/SFX voi Drive (--continue, chi tai phan thieu)...", flush=True)
         chay([sys.executable, os.path.join(SKILL_DIR, "scripts", "tai_kho_tai_nguyen.py")],
              timeout=3600)
         so_file = sum(len(f) for _, _, f in os.walk(KHO)) if os.path.isdir(KHO) else 0
