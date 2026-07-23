@@ -45,7 +45,6 @@ Usage:
     python loc_thoai_that.py --index <index.json> --folder <thu muc goc> [--limit N]
 """
 import argparse
-import glob
 import json
 import os
 import subprocess
@@ -444,12 +443,20 @@ def main():
         if a.limit:
             can = can[:a.limit]
         print("Quet %d clip co thoai trong: %s\n" % (len(can), a.folder))
+        # BUG DA VA (23/07/2026, phat hien qua dung THAT tren folder ten co
+        # "[13.07.26] Ba Na Hills"): glob.glob hieu '[...]' la ky tu dai dien,
+        # KHONG PHAI ngoac vuong that -> khong bao gio khop duong dan that,
+        # tra ve "KHONG TIM THAY FILE" cho MOI clip ma khong bao loi (dung y
+        # loi da ghi o ffmpeg-recipes.md muc 0.3, nhung script nay truoc do
+        # chua duoc va). Sua: quet bang os.walk (khong glob) nhu cac script
+        # khac trong skill da lam (vd quet_mat_ai.py ham find_clip).
+        muc_file = {}
+        for root, _d, files in os.walk(a.folder):
+            for f in files:
+                muc_file.setdefault(f, os.path.join(root, f))
         xong = 0
         for c in can:
-            src = None
-            for p in glob.glob(os.path.join(a.folder, "**", c["file"]), recursive=True):
-                src = p
-                break
+            src = muc_file.get(c["file"])
             if not src:
                 print("CLIP: %s  -> KHONG TIM THAY FILE, bo qua" % c["file"])
                 continue

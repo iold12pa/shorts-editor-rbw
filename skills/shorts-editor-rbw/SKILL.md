@@ -5,19 +5,20 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 26** — phát hành 23/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 27** — phát hành 23/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 26 (23/07/2026)`
+>    `📦 Đang ở Ver 27 (23/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
 
 | Ver | Ngày | Số máy đọc | Có gì mới |
 |---|---|---|---|
+| **27** | 23/07/2026 | `2026.07.23.7` | 🔴 Vá bug thật `loc_thoai_that.py` — folder tên có `[ ]` (vd `[13.07.26] Bà Nà Hills`, rất phổ biến trong cách đặt tên buổi quay) làm `glob.glob` hiểu nhầm ngoặc vuông thành ký tự đại diện, **báo "KHÔNG TÌM THẤY FILE" cho 100% clip mà không hề báo lỗi** — phát hiện khi dựng thật video từ folder 37 (39 clip, 37 clip có thoại, trước khi vá là 0/37 lấy được mốc cắt). Sửa bằng `os.walk` thay glob, đúng cách các script khác trong skill đã làm. Xác nhận lại bằng chạy thật: sau vá ra đủ 37/37 clip có dữ liệu |
 | **26** | 23/07/2026 | `2026.07.23.6` | Gắn thẻ `get_rules.py` cho **14 file luật còn lại** (đủ 16/16 file). Đo thật bằng tiktoken trên toàn bộ kho: đọc lọc theo kiểu thay vì đọc nguyên 16 file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 14% (Kiểu 3)** — tổng baseline 100.977 token. Đã kiểm tra đúng đắn: nội dung riêng Kiểu 2 (vd công thức 2A/2B/2C) không lọt sang khi hỏi Kiểu 3, chỉ bảng tra cứu chung mới xuất hiện |
 | **25** | 23/07/2026 | `2026.07.23.5` | Giải quyết nhóm "Cao" trong danh sách việc còn thiếu: (a) test cache ElevenLabs bằng **API thật** — xác nhận 2 lần gọi cùng text/giọng ra file byte-giống-hệt nhau, không gọi lại API; (b) test luật chặn MC giả bằng **dữ liệu Gemini thật** (không giả lập) — dựng cảnh vi phạm thật từ clip đã quét trước đó, script bắt đúng; (c) đo thật 3 nghi vấn kỹ thuật Gemini nêu (VFR/HDR/lệch sample rate khi mix) trên footage thật — **cả 3 đều KHÔNG phải vấn đề thật**, ghi vào `ffmpeg-recipes.md` mục 0.2 để khỏi đo lại; (d) dọn folder test khỏi Workspace khách hàng thật |
 | **24** | 23/07/2026 | `2026.07.23.4` | 🔴 Công cụ MỚI `get_rules.py` — Giai đoạn 1 giải quyết gốc vấn đề "tốn token/hết session limit" (đã tham khảo ChatGPT + Gemini trước khi chọn hướng, xem `PROMPT-HOI-Y-TO-CHUC-LUAT-2026-07-23.md`). Gắn thẻ theo kiểu dựng ở từng MỤC (không phải cả file) trong 2 file luật lớn nhất — thí điểm trước khi làm hết 16 file. Đo thật bằng tiktoken: đọc lọc theo kiểu thay vì đọc nguyên file giảm **36% token (Kiểu 1) / 24% (Kiểu 2) / 11% (Kiểu 3)**. Bắt được 1 bug thật khi test (comment PowerShell trong code block bị nhận nhầm thành heading, làm lọt nội dung sai kiểu) — đã sửa + xác nhận lại. Mặc định AN TOÀN: mục không gắn thẻ = luôn lấy (quên gắn thẻ không làm mất luật, chỉ mất phần tối ưu). CHƯA đụng SKILL.md (rủi ro cao, để Giai đoạn 2 sau khi công cụ này chứng minh ổn qua vài lần dùng thật) |
