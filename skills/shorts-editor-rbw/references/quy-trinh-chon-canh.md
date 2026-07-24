@@ -63,6 +63,33 @@ Kho có **34 clip robot, 38 clip hình tốt**. Dùng đúng 5. Sếp: *"cực k
 
 **Thêm con mới thì được, NHƯNG không được phá con đang chạy** (đo thật 21/07): thử cài **MediaPipe** (đo môi động để biết ai đang nói) — đúng việc về lý thuyết, nhưng nó đòi `numpy 2.x` + protobuf cũ, xung đột với `numpy<2` (cv2 cần) và protobuf mới (google-genai cần). Cài vào là phá cả cv2 lẫn Gemini. **Đã gỡ.** Bài học: con đối chiếu mới phải **không đụng dependency** của con đang chạy — ưu tiên thứ dùng lib đã có (vd `cv2` có sẵn face detection, không cần cài gì) hơn là kéo cả bộ mới về.
 
+## 0c. 🔴 PHÂN LOẠI TRƯỚC — ĐO SÂU SAU (Sếp Huy chốt 24/07/2026: routing công cụ theo KIỂU DỰNG)
+
+> Nguyên văn Sếp: *"bộ quy tắc này chỉ nên áp dụng nếu xác định clip này là MC dẫn thôi — còn nếu không phải clip MC dẫn mà cứ đi bắt lỗi thoại thì chẳng để làm gì... logic chọn công cụ để lọc từ clip thô về từng dạng phải linh hoạt, để giảm thời lượng quét, thời gian và tài nguyên."*
+
+**Sai cũ**: dây chuyền chạy MỌI tầng cho MỌI clip bất kể kiểu dựng — Whisper nghe hết 58 clip cả khi dựng Kiểu 1 không cần một chữ thoại; `loc_thoai_that` + luật chọn take/câu cụt chạy cả trên clip sẽ chỉ làm B-roll câm.
+
+**Nguyên tắc mới**: luồng hỏi đã cho biết **kiểu dựng ngay khi nhận source** → dùng nó để định tuyến. **Chỉ trả chi phí cho tầng mà kiểu dựng đó thật sự cần.**
+
+### Bảng định tuyến công cụ × kiểu dựng
+
+| Công cụ (chi phí) | Kiểu 1 — text+nhạc | Kiểu 2 — MC dẫn | Kiểu 3 — voice-over |
+|---|---|---|---|
+| Metadata + ảnh lưới (≈0đ, nhanh) | ✅ | ✅ | ✅ |
+| `do_ky_thuat` (≈0đ, 1-2s/clip) | ✅ | ✅ | ✅ |
+| **Whisper full** (chậm nhất, ~⅓ thời lượng clip) | ❌ chạy `--no-whisper` | ✅ nhưng **chỉ clip có tiếng người** | ❌ chạy `--no-whisper` |
+| `loc_thoai_that` + luật take/câu cụt | ❌ **không chạy** | ✅ chỉ clip là **ứng viên A-roll** | ❌ **không chạy** |
+| Gemini (tốn tiền) | tuỳ duyệt — chấm cảnh đẹp | tuỳ duyệt — chấm khoảnh khắc + cờ người nói | tuỳ duyệt — chấm cảnh đẹp |
+| Cờ "có người đang nói" (để né cảnh mấp máy miệng) | ✅ cần (từ ảnh lưới/Gemini) | ✅ | ✅ cần |
+
+### Ba điều làm cho đúng
+
+1. **Kiểu 1/3: gọi `analyze_footage.py` với `--no-whisper`** — tiết kiệm phần chậm nhất của cả dây chuyền. Hai kiểu này chỉ cần biết clip nào **có người đang nói để NÉ** (lấy từ ảnh lưới + cờ Gemini), không cần biết họ nói gì.
+2. **Kiểu 2: Whisper + `loc_thoai_that` cũng chỉ chạy trên clip CÓ TIẾNG NGƯỜI** (cờ `has_audio`/mức âm từ tầng rẻ lọc trước), và toàn bộ luật chọn take · bắt câu cụt · rà biên **chỉ áp cho ứng viên A-roll** — clip định dùng làm B-roll thì phân tích thoại của nó là công vô ích.
+3. **Đổi kiểu giữa chừng không mất gì**: index tự resume — người dùng đổi từ Kiểu 1 sang Kiểu 2 thì chạy lại `analyze_footage.py` không có `--no-whisper`, nó chỉ nghe bổ sung phần thiếu, không làm lại từ đầu.
+
+**Mốc đo để thấy đáng**: folder 30 có 58 clip ≈ 45 phút footage — Whisper full mất ~15 phút máy chạy; Kiểu 1 bỏ qua được toàn bộ khoản đó.
+
 ## 1. Nguyên tắc gốc
 <!-- tags: chung -->
 

@@ -5,13 +5,13 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 30** — phát hành 24/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 31** — phát hành 24/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 30 (24/07/2026)`
+>    `📦 Đang ở Ver 31 (24/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.
@@ -339,8 +339,13 @@ Tự bỏ qua clip đã phân tích ở lần gọi trước (mỗi bước con 
 <details><summary>Chi tiết từng bước con (đọc khi cần gọi riêng lẻ)</summary>
 
 ```powershell
+# Kiểu 2 (MC dẫn) — cần nghe thoại:
 python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\analysis"
+# Kiểu 1 / Kiểu 3 — KHÔNG cần thoại, bỏ qua phần chậm nhất:
+python "<skill-dir>\scripts\analyze_footage.py" "<folder-source>" "<workspace>\analysis" --no-whisper
 ```
+
+🔴 **ĐỊNH TUYẾN THEO KIỂU DỰNG (Sếp Huy chốt 24/07/2026)** — luồng hỏi đã cho biết kiểu dựng ngay khi nhận source, dùng nó để **chỉ trả chi phí cho tầng kiểu đó cần**: Kiểu 1/3 chạy `--no-whisper` (2 kiểu này chỉ cần biết clip nào có người nói để NÉ, không cần biết nói gì); `loc_thoai_that` + luật chọn take/câu cụt **chỉ chạy cho Kiểu 2, và chỉ trên ứng viên A-roll**. Đổi kiểu giữa chừng chạy lại không mất gì (index tự nghe bổ sung). Bảng định tuyến đầy đủ: `references/quy-trinh-chon-canh.md` mục 0c.
 
 Script tự: bắt điểm đổi cảnh để trích khung đúng khoảnh khắc (không rải mù), ghép 1 ảnh lưới/clip có **nhãn timecode trên từng khung** (`analysis\sheets\`), nhận dạng lời nói trong clip bằng Whisper (transcript + timestamp, cần model trong `assets/models/` — chưa có thì tự bỏ qua), và ghi tất cả vào `analysis\index.json`. **Clip đã có trong index sẽ tự bỏ qua** — folder cũ thêm clip mới chỉ tốn phân tích phần mới.
 
