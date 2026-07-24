@@ -5,13 +5,13 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 31** — phát hành 24/07/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 32** — phát hành 24/07/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
 > 1. Ai hỏi "đang bản nào / có bản mới không" → **trả lời bằng số Ver này**, vd *"Đang ở Ver 0 (22/07/2026)"*. KHÔNG đọc dãy số ngày tháng cho người dùng nghe — dãy đó là số máy đọc, người nghe không nhớ nổi.
 > 2. **Câu trả lời ĐẦU TIÊN của mỗi phiên chat mới** phải mở bằng đúng 1 dòng ngắn, rồi mới vào việc:
->    `📦 Đang ở Ver 31 (24/07/2026)`
+>    `📦 Đang ở Ver 32 (24/07/2026)`
 >    Chỉ 1 lần/phiên, không lặp lại ở các câu sau.
 >
 > **Vì sao tồn tại 2 con số** (đọc kỹ trước khi định "dọn cho gọn"): trường `version` trong `plugin.json` giữ dạng ngày `2026.07.22.x` vì **máy dùng đúng trường đó để so sánh xem có bản mới không — nó bắt buộc phải TĂNG DẦN**. Hạ xuống `0` là mọi máy trong team hiểu nhầm thành bản cũ hơn, `claude plugin update` sẽ **từ chối cập nhật vĩnh viễn**, phải gỡ-cài-lại từng máy (thứ Sếp đã chốt 17/07/2026 là không bao giờ làm nữa). Số **Ver** là **tên gọi cho người** — dễ nhắn Zalo, dễ hỏi nhau giữa các máy. **Phát hành bản mới thì tăng CẢ HAI**: Ver +1 và số máy đọc theo ngày.

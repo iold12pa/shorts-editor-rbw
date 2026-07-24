@@ -112,7 +112,15 @@ Sai lầm phải tránh: **dùng một công cụ cho mọi việc**, hoặc **d
 
 **Đọc bảng này cho đúng**: "DẪN" nghĩa là *lấy con số/lựa chọn từ đó*. "ĐỐI CHIẾU" nghĩa là *nếu nó mâu thuẫn thì phải dừng lại xem xét, không được lờ đi*.
 
-### 2b. Hai cái bẫy khi đọc kết quả `loc_thoai_that` (đo thật 21/07)
+### 2b. BA cái bẫy khi đọc kết quả `loc_thoai_that` (2 bẫy đo 21/07 + bẫy ngoài trời đo 24/07)
+
+**Bẫy 3 — NGOÀI TRỜI / vlog selfie: cờ XA MIC phán oan HÀNG LOẠT** (đo thật 24/07/2026, folder 37 Bà Nà Hills).
+
+> Ca thật: 5 take MC selfie ngoài trời — máy phán **"0/18 đoạn dùng được, XA MIC toàn bộ"** (cách sàn chỉ 4-12dB, dưới ngưỡng 15). Nhưng đối chiếu chéo: **Silero 0.88-1.00** (chắc chắn giọng người) · **Whisper nghe trọn từng câu** · **ảnh lưới cho thấy MC cách máy nửa cánh tay**. Cả dòng cảnh báo "người nói ở xa/ngoài khung" cũng sai.
+>
+> Nguyên nhân: **sàn nhiễu ngoài trời cao** (-23 đến -31dB, so với -43dB trong nhà) — gió + ồn môi trường nâng sàn, nén khoảng "cách sàn" xuống dù giọng nghe rõ. **Ngưỡng 15dB hiệu chỉnh trong nhà sách, không mang được ra ngoài trời.**
+>
+> → **LUẬT**: sàn nhiễu clip cao hơn ~-32dB (ngoài trời/ồn lớn) thì cờ XA MIC **mất giá trị tuyệt đối** — đừng loại thẳng. Chấm bằng bộ 3 tín hiệu thay thế: **Silero ≥0.9 + Whisper nghe trọn câu + ảnh lưới thấy người nói sát máy** → coi là thoại dùng được, xếp diện **NGHE KIỂM TAI** trước khi dựng. Cách sàn khi đó chỉ dùng để **so tương đối giữa các take trong cùng clip** (vẫn đúng), không dùng làm ngưỡng loại.
 <!-- tags: chung -->
 
 **Bẫy 1 — trường `loi` báo DƯ CHỮ.** Nó ghép từ các đoạn Whisper *giao nhau* với lát cắt, nên hiện nhiều chữ hơn thực tế lát cắt chứa.
