@@ -81,7 +81,7 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
    python "<skill-dir>\scripts\loc_thoai_that.py" <clip.mp4> --index <index.json>
    ```
 
-   Nó đo trực tiếp trên âm thanh gốc 2 chỉ số: **mức so với sàn nhiễu của chính clip đó** (không dùng ngưỡng tuyệt đối — sàn nhiễu cả kho trải từ -20 đến -49 dB, mọi ngưỡng cố định đều sai) và **độ ấm** = 100-400Hz / 2-6kHz (giọng người gần mic thì ấm; loa robot, tiếng vọng từ xa thì mỏng và chói). Trả về từng đoạn kèm mốc vào/ra, cờ **XA MIC**, cờ **NGHI Ê-KÍP**, và tự chọn **bản take to nhất** khi MC nói lại nhiều lần.
+   Nó đo trực tiếp trên âm thanh gốc 2 chỉ số: **mức so với sàn nhiễu của chính clip đó** (không dùng ngưỡng tuyệt đối — sàn nhiễu cả kho trải từ -20 đến -49 dB, mọi ngưỡng cố định đều sai) và **độ ấm** = 100-400Hz / 2-6kHz (giọng người gần mic thì ấm; loa robot, tiếng vọng từ xa thì mỏng và chói). Trả về từng đoạn kèm mốc vào/ra, cờ **XA MIC**, cờ **NGHI Ê-KÍP**, và tự chọn **bản take to nhất** khi MC nói lại nhiều lần — ⚠️ cờ này chỉ là **gợi ý theo mức thu**; chọn take cuối cùng phải chấm cả 3 tiêu chí (nội dung trọn vẹn · mức thu · hình), xem mục 5a bên dưới (Sếp sửa 24/07/2026).
 
    - **Cách sàn ≥ 15 dB** = nói vào máy, dùng được · **8-15 dB** = xa, cân nhắc · **< 8 dB** = không tính là thoại.
    - Nghiệm thu 21/07 trên 3 ca tai Sếp đã chấm: **đúng cả 3**.
@@ -191,7 +191,15 @@ edge-tts --voice vi-VN-NamMinhNeural --rate=+41% --file <loi.txt> --write-media 
 **Bẫy khi so tốc độ — dễ ra kết luận sai**: phải đo hai bên **cùng một thước**. Ban đầu đã so nhầm — mẫu đo theo *khoảng từ chữ đầu đến chữ cuối*, còn giọng máy lại tính theo *cả độ dài file* (gồm khoảng lặng đầu/cuối). Cùng một file `+45%` ra **272** hay **311** tuỳ cách tính — lệch đủ để chỉnh sai hẳn một mức.
 
 4. **Sau khi ghép voice track, chạy Whisper lại trên chính track thành phẩm** để lấy mốc sub thật — không đặt sub theo tỉ lệ ước lượng.
-5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take: (a) câu có NHIỀU take → lấy take CUỐI (thường là bản đạt); (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.
+5. **Transcript sạch KHÔNG có nghĩa là take sạch** (bài học lần 2, video-3: đoạn 0039 văn bản đọc ổn nhưng tai nghe là take lỗi). Quy tắc chọn take — **Sếp Huy sửa 24/07/2026 trên ca thật clip 0045/0046, THAY luật cũ 13/07 "lấy take CUỐI"**:
+
+   (a) 🔴 **Câu có nhiều take: KHÔNG auto ưu tiên take sau/take cuối.** Thứ tự quay không phải căn cứ (nguyên văn Sếp: *"2 đoạn thoại cùng nội dung thì thoại sau hay trước không quá quan trọng, không cứ là sau thì auto ưu tiên"*). Chấm bằng **3 tiêu chí thật**, take nào thắng tổng hợp thì lấy: **① nội dung trọn vẹn** (đọc transcript — xem mục a2) · **② mức thu** (cách sàn, độ ấm — máy đo sẵn) · **③ hình** (bố cục khung, soi ảnh lưới). Cờ "BẢN TỐT NHẤT" của `loc_thoai_that` chọn theo mức to — chỉ là **gợi ý**, không phải phán quyết.
+
+   (a2) 🔴 **ĐỌC TRANSCRIPT ĐỂ BẮT CÂU CỤT — suy được từ chữ, không cần nghe.** Ca thật clip 0045 đoạn 34.40–43.50: mọi số đều xanh (cách sàn 23.8dB, ấm 0.91, Gemini 8/10) nhưng transcript kết thúc lửng ở *"...màn hình quảng cáo 18.5"* — số đo lơ lửng không có danh từ theo sau, rồi MC ngắt ~nửa giây và quay sang nói với ê-kíp (*"chắc phải cho nó đi..."*). Dấu hiệu câu cụt đọc ra từ text: kết thúc ở con số/giới từ/liên từ lơ lửng · ý chưa đóng · ngay sau đó là lời ê-kíp. Take như vậy = **take lỗi**, dù kỹ thuật đạt.
+
+   (b) câu chỉ có 1 take duy nhất, nhất là dạng voice-off narration → xếp loại NGHI VẤN; (c) văn bản có từ lặp/chèn bất thường ("tiếp tục *lại* làm việc", "à à", từ đệm) = dấu hiệu vấp, tránh dùng; (d) khi trình kịch bản duyệt, LIỆT KÊ RÕ các take thuộc diện nghi vấn để Sếp nghe kiểm chứng đúng đoạn đó trước khi dựng — tai người là bộ lọc cuối, transcript không thay được.
+
+5b. **Nối 2 đoạn thoại trong CÙNG một cú máy** (Sếp Huy dạy 24/07/2026): hai đoạn dùng được nằm cùng clip nhưng cách nhau một khúc thừa (vd 0045: đoạn 23.80–32.40 và 34.40–43.50, giữa là 2 giây rác) → **cắt bỏ khúc thừa, giữ lại ~0.2s khoảng thở** ở mối nối để nghe liền mạch tự nhiên. Trong một cú máy người ta hoàn toàn có thể nói 2 câu cách nhau — người xem không thấy gãy. Đừng vì khúc rác ở giữa mà bỏ cả cặp đoạn, cũng đừng giữ nguyên cả khoảng im dài.
 
 6. **Sub karaoke do Whisper sinh ra PHẢI rà tay từng cụm trước khi burn** (bài học 19/07/2026 — 1 buổi dựng bắt **11 lỗi nghe** trong sub tự động). Whisper nghe tiếng Việt sai nhiều nhất ở **tên riêng, tên thương hiệu và thuật ngữ tiếng Anh** — đúng những chữ không được phép sai:
 
