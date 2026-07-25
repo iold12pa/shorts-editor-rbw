@@ -187,6 +187,94 @@ def luu_key(ten):
     print("Da luu %s vao %s (%d ky tu). KHONG in gia tri ra man hinh." % (ten, ENV_KEY, len(val)))
 
 
+def nhap_key_bang_powershell():
+    """Phuong an du phong khi may KHONG co tkinter (bai hoc 24/07/2026 — mot may
+    dong nghiep thieu tkinter, Claude ben do lam theo goi y stdin CU o day, ket qua
+    la nguoi dung phai go/dan key ngay trong lenh PowerShell ma Claude nhin thay —
+    pha dung nguyen tac "Claude chi CHAY lenh, khong bao gio thay gia tri key".
+
+    Cach sua: van giu dung nguyen tac cua hop thoai tkinter — Claude chi mo 1 TIEN
+    TRINH RIENG, nguoi dung tu go vao do, gia tri ghi thang xuong file, Claude
+    khong doc duoc. O day dung PowerShell (moi may Windows deu co san, khong phu
+    thuoc tkinter) mo trong 1 CUA SO CONSOLE MOI HAN TOAN (CREATE_NEW_CONSOLE) —
+    tach khoi console dang chay lenh nay — voi Read-Host -AsSecureString (che dau
+    inputt) roi tu ghi vao file, khong bao gio in gia tri that ra bat ky luong nao
+    ma Python/Claude doc duoc.
+    """
+    import subprocess
+    import tempfile
+
+    da_co = doc_keys()
+    items = []
+    for ten, dung_de, _ in KEYS:
+        ghi_chu = " (DA CO, de trong Enter neu khong doi)" if da_co.get(ten) else ""
+        items.append('    @{Name="%s"; Desc="%s%s"}' % (ten, dung_de, ghi_chu))
+    keys_block = ",\n".join(items)
+
+    script = u"""$OutputEncoding = [System.Text.Encoding]::UTF8
+$EnvFile = "%s"
+$Keys = @(
+%s
+)
+
+Write-Host "=== NHAP API KEY - ROBOWORLD ===" -ForegroundColor Yellow
+Write-Host "Dan key vao roi Enter (an theo dau *). De trong + Enter neu khong doi." -ForegroundColor Gray
+Write-Host "Key di thang vao may ban, KHONG qua chat, KHONG len mang.`n" -ForegroundColor Gray
+
+$existing = @{}
+if (Test-Path -LiteralPath $EnvFile) {
+    Get-Content -LiteralPath $EnvFile -Encoding UTF8 | ForEach-Object {
+        if ($_ -match '^([A-Za-z_][A-Za-z0-9_]*)=(.*)$') { $existing[$matches[1]] = $matches[2] }
+    }
+}
+
+$saved = @()
+foreach ($k in $Keys) {
+    $sec = Read-Host -Prompt $k.Desc -AsSecureString
+    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
+    $plain = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+    [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+    if ($plain -and $plain.Trim() -ne "") {
+        $existing[$k.Name] = $plain.Trim()
+        $saved += $k.Name
+    }
+    $plain = $null
+    $sec = $null
+}
+
+if ($saved.Count -gt 0) {
+    New-Item -ItemType Directory -Force -Path (Split-Path $EnvFile) | Out-Null
+    $lines = $existing.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
+    Set-Content -LiteralPath $EnvFile -Value $lines -Encoding UTF8
+    Write-Host ("`nDa luu: " + ($saved -join ", ") + "  (KHONG hien gia tri)") -ForegroundColor Green
+} else {
+    Write-Host "`nBan chua nhap key nao." -ForegroundColor Yellow
+}
+Write-Host "`nBam Enter de dong cua so nay..." -ForegroundColor Gray
+Read-Host | Out-Null
+""" % (os.path.normpath(ENV_KEY).replace("\\", "\\\\"), keys_block)
+
+    fd, ps1 = tempfile.mkstemp(suffix=".ps1", prefix="rbw_nhap_key_")
+    os.close(fd)
+    # utf-8-sig (co BOM): bat buoc de PowerShell 5.1 doc dung dau tieng Viet trong
+    # script - thieu BOM no doan nham ma trang (giong bay da ghi trong ffmpeg-recipes).
+    with open(ps1, "w", encoding="utf-8-sig") as f:
+        f.write(script)
+
+    print("May khong co tkinter — mo cua so PowerShell RIENG de ban tu nhap key an toan...")
+    try:
+        CREATE_NEW_CONSOLE = 0x00000010
+        subprocess.run(
+            ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ps1],
+            creationflags=CREATE_NEW_CONSOLE,
+        )
+    finally:
+        try:
+            os.remove(ps1)
+        except OSError:
+            pass
+
+
 def nhap_key_bang_hop_thoai():
     """Mo hop thoai nho de nguoi dung DAN key vao — gia tri di thang tu clipboard
     vao file tren o cung, KHONG di qua chat, KHONG len may chu nao.
@@ -210,9 +298,7 @@ def nhap_key_bang_hop_thoai():
         import tkinter as tk
         from tkinter import messagebox
     except ImportError:
-        print("May khong co tkinter — dung cach stdin: "
-              '"<gia-tri>" | python chuan_bi_may.py --luu-key TEN_KEY')
-        return
+        return nhap_key_bang_powershell()
 
     da_co = doc_keys()
     root = tk.Tk()
