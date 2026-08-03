@@ -249,7 +249,11 @@ Nghiệm thu cũ toàn tiêu chí đo bằng máy, nên **mọi con số xanh m�
 | Xem lại từ đầu — có cảnh nào **thấy quen** không? | Có = đang lặp, thay cảnh |
 | Có ai trong hình **đang nói mà không nghe tiếng họ** không? | Có = vi phạm cổng 1, thay cảnh |
 | Robot có phải **nhân vật chính** của mọi cảnh không? (Kiểu 1) | Không = cảnh thừa, thay |
+| Robot có nằm **1/3 GIỮA khung hình** trong TỪNG cảnh không? (Kiểu 1) | Không = đi tìm cảnh khác trong source — **còn source chưa mở ảnh lưới thì PHẢI mở tìm tiếp, không dùng tạm cảnh robot lệch khung** (Sếp Huy bắt lỗi 03/08/2026: video dựng xong nhiều cảnh robot lệch khung trong khi mới khai thác 6/47 clip của buổi quay) |
+| Robot có **thật sự đang di chuyển** trong từng cảnh không? (khi người dùng yêu cầu cảnh động) | Kiểm bằng cách trích frame ĐẦU + CUỐI mỗi đoạn, so vị trí robot — cùng chỗ = đứng yên, thay (ca thật 03/08: cảnh nhìn sheet tưởng đang chạy, soi frame đầu-cuối mới lộ robot đứng cạnh xe đẩy suốt 4 giây) |
 | Từng thẻ chữ có rơi đúng cảnh minh hoạ nó không? | Không = canh lại mốc chữ |
 | Nghe thử: nhạc có át lời không, hay nhạc quá bé? | Xem `ffmpeg-recipes.md` mục 5 — mức nhạc khác nhau giữa giọng thu thật và giọng máy |
 
-**Cách làm tầng B**: trích 6-8 khung **ở 340px trở lên**, xem một lượt, tự trả lời 5 câu trên. Đừng báo "đạt chuẩn" khi mới chỉ chạy xong tầng A.
+**Cách làm tầng B**: trích 6-8 khung **ở 340px trở lên**, xem một lượt, tự trả lời 7 câu trên. Đừng báo "đạt chuẩn" khi mới chỉ chạy xong tầng A.
+
+**Vì sao 2 câu về vị trí + chuyển động phải kiểm bằng FRAME chứ không tin ảnh lưới** (bài học 03/08/2026): ảnh lưới lấy khung cách nhau vài giây — robot "trông có vẻ giữa khung" ở 1 khung đại diện nhưng cả đoạn định cắt có thể lệch; và 2 khung giống nhau trên sheet không phân biệt được robot đang đi hay đứng. Cách kiểm đúng: sau khi chốt mốc cắt, trích frame ĐẦU + CUỐI của chính đoạn đó (cùng cỡ, ghép lưới so cặp) — vừa thấy vị trí trong khung, vừa thấy có dịch chuyển không.
