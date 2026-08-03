@@ -89,10 +89,26 @@ def do_lufs(path):
 def co_logo_overlay(path, dai):
     """Do xem co logo overlay tinh o vung GIUA-TREN khong.
 
-    Cach do: lay 5 khung rai deu trong phan than video, cat rieng vung logo
-    (giua ngang, ~8-16% chieu cao), so cac khung voi nhau. Logo overlay la anh
-    TINH de len moi khung -> vung do gan nhu khong doi giua cac khung, trong khi
-    canh quay thi doi lien tuc.
+    SUA LAI HOAN TOAN 2026-08-03 (bat that khi kiem video-1-cc1-di-chuyen-go-
+    vinh-phuc.mp4: co logo dung chuan nhung script bao "THIEU logo"). Hai loi
+    chong nhau:
+    1. Vung do CU (8%-16% chieu cao) nam DUOI logo thuc te. Logo wordmark
+       ROBOWORLD ngang (vd "Logo ngang trang.png", ty le ~5:1) scale ve rong
+       480px theo dung style-mau.md ("mep tren ~40-60px, rong ~480-500px") chi
+       cao ~96px -> logo nam o 50-146px (2.6%-7.6% chieu cao 1920px), KHONG
+       phai 8%-16%. Vung cu do trung vao canh quay doi lien tuc -> luon bao SAI.
+    2. Ke ca sua dung vi tri, cach so "lech trung binh tung diem anh" van sai:
+       logo PNG la WORDMARK CO NEN TRONG SUOT — do that: chi ~21% dien tich
+       hop logo la pixel DAC (chu/icon trang), 79% con lai la nen trong suot
+       (footage lo qua). Vung kiem tra vi the van bi FOOTAGE (thay doi manh
+       giua cac canh) chi phoi, trung binh lech van cao (~45-50) du dung vi tri.
+
+    Cach do MOI: thay vi trung binh lech GIUA CAC CANH, tinh DO LECH CHUAN
+    (std) THEO TUNG DIEM ANH qua 5 khung. Pixel thuoc net chu logo (luon trang,
+    luon dung 1 cho) -> std ~0 o MOI khung. Pixel thuoc nen (thay doi theo canh)
+    -> std lon. Dem % pixel "on dinh + sang" (std thap VA do sang cao) trong
+    vung — co logo se ra ~13% (da do that), khong co logo ra 0%. Nguong 3% de
+    co bien do an toan giua 2 muc do that o tren.
 
     Tra ve: True (co) / False (khong) / None (khong do duoc)."""
     try:
@@ -112,16 +128,19 @@ def co_logo_overlay(path, dai):
         if not ok:
             continue
         h, w = f.shape[:2]
-        vung = f[int(h * 0.08):int(h * 0.16), int(w * 0.30):int(w * 0.70)]
+        # Vung KHOP vi tri logo thuc te: 1.5%-9% chieu cao (bao trum 50-146px
+        # cua logo chuan tren khung 1920px, co bien du cho logo thap/cao hon
+        # chut it), giua ngang 30%-70% chieu rong.
+        vung = f[int(h * 0.015):int(h * 0.09), int(w * 0.30):int(w * 0.70)]
         khung.append(cv2.cvtColor(vung, cv2.COLOR_BGR2GRAY).astype("float32"))
     cap.release()
     if len(khung) < 3:
         return None
-    # do lech trung binh giua cac khung o vung logo
-    lech = [float(np.mean(np.abs(khung[i] - khung[i + 1]))) for i in range(len(khung) - 1)]
-    tb = sum(lech) / len(lech)
-    # vung logo tinh -> lech rat nho. Canh quay doi -> lech lon.
-    return tb < 6.0
+    arr = np.stack(khung, axis=0)  # (so_khung, H, W)
+    std = arr.std(axis=0)
+    sang = arr.mean(axis=0)
+    on_dinh_sang = (std < 8.0) & (sang > 180)
+    return float(on_dinh_sang.mean()) > 0.03
 
 
 def co_outro(path, dai, file_outro):
