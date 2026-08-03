@@ -170,6 +170,14 @@ def main():
     srt_path = sys.argv[sys.argv.index("--srt") + 1] if "--srt" in sys.argv else None
     words_path = sys.argv[sys.argv.index("--words") + 1] if "--words" in sys.argv else None
     no_cache = "--no-cache" in sys.argv
+    # --model (them 03/08/2026, Sep Huy yeu cau giong CAM XUC hon cho video
+    # Kieu 3): cho phep doi model tung lan goi, vd "eleven_v3" (dien cam nhat).
+    # Mac dinh van eleven_turbo_v2_5 — on dinh + re; CAM lui ve multilingual_v2
+    # (doc meo tieng Viet, do that 22/07/2026). Cache tu tach theo model nen
+    # doi model khong lam lan lon file cu.
+    global MODEL
+    if "--model" in sys.argv:
+        MODEL = sys.argv[sys.argv.index("--model") + 1]
 
     text = open(txt_path, encoding="utf-8").read().strip()
     if not text:

@@ -5,7 +5,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 36** — phát hành 03/08/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 37** — phát hành 03/08/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
