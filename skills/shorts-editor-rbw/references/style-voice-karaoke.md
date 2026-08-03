@@ -8,7 +8,7 @@ Phân tích 2026-07-13 (45s, 2160x3840, 30fps, đo cỡ chữ bằng frame quy v
 | Tầng | Vị trí | Cỡ chữ (ASS, PlayResY 1920) | Style |
 |---|---|---|---|
 | Logo ROBOWORLD | giữa-trên, mép trên ~40-60px, rộng ~480px | — | trắng, nhỏ gọn |
-| **Thẻ từ khóa** (keyword card) | y ≈ 320-460 (~17-24% chiều cao), giữa ngang | **95-100pt**, chữ ĐEN IN HOA | hộp NỀN VÀNG bo góc (cao ~140px, rộng theo chữ + padding ~60px); biến thể: nền đỏ chữ trắng cho ý nhấn mạnh (BELLABOT PRO, KHAI TRƯƠNG BÙNG NỔ) |
+| **Thẻ từ khóa** (keyword card) | y ≈ 320-460 (~17-24% chiều cao), giữa ngang | **115-120pt**, chữ ĐEN IN HOA *(nâng từ 95-100pt — Sếp Huy chỉnh 03/08/2026 sau khi xem video-2 CC1 Go Vĩnh Phúc: "các thẻ chữ cho kích thước to hơn nữa"; 120pt đã test thẻ dài nhất "TẠI GO VĨNH PHÚC" không tràn viền 1080px)* | hộp NỀN VÀNG bo góc (cao ~140px, rộng theo chữ + padding ~60px); biến thể: nền đỏ chữ trắng cho ý nhấn mạnh (BELLABOT PRO, KHAI TRƯƠNG BÙNG NỔ) |
 | **Sub karaoke** | tâm chữ ~80% chiều cao (baseline ~1555, Alignment 2 + MarginV ≈ 340-370) | **66pt** — GIỮ ĐÚNG cỡ này, đã đo từ video mẫu, KHÔNG tự phóng to | trắng bold, viền đen dày + bóng; **TỪ ĐANG NÓI tô VÀNG #FFD200**; mỗi cụm 1 dòng 2-4 từ, đổi theo giọng |
 
 - Sub karaoke dùng font đậm bo tròn (video mẫu không phải Anton — Anton chỉ dùng cho thẻ từ khóa; sub dùng font sans đậm như Montserrat ExtraBold nếu có, không có thì Anton vẫn chấp nhận được).
@@ -42,7 +42,7 @@ Nhịp cắt trung bình 2.6s/cảnh. Điểm nhấn thị giác rải đều: e
   ```
   Nghiệm thu: đo lại bằng `ffmpeg -i final.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=summary -f null -` — Input Integrated phải ra ≈ -14 (±1). Ghi kết quả đo vào báo cáo bàn giao.
 - Giọng: ElevenLabs (scripts/elevenlabs_tts.py, xuất words.json làm karaoke) — giọng do Sếp chỉ định (4 giọng, xem `chon-kieu-dung.md`); lỗi/chặn thì **DỪNG BÁO và chờ quyết**. **KHÔNG có phương án thay thế** — edge-tts đã bị loại 22/07/2026 vì Sếp nghe thấy đọc méo.
-- SFX theo **luật hiện hành 19/07/2026**: mỗi thẻ chữ 1 SFX "pop" hợp nghĩa + các SFX khớp hành động trong hình (mục 4b ffmpeg-recipes). *(Câu cũ ở đây ghi "vẫn theo nguyên tắc cũ, khớp hành động cụ thể" — đó là luật 03/07 đã bị bãi bỏ, sửa 21/07.)*
+- SFX theo **luật hiện hành 03/08/2026 — 3 mốc Ý**: hook 1.5s đầu · mỗi lần ĐỔI THÔNG ĐIỆP · CTA-kết, cộng SFX khớp hành động thật trong hình; hard-cut cùng thông điệp để im (mục 4b ffmpeg-recipes + `so-sfx.md`). *(Các bản luật cũ 03/07 "chỉ khớp hành động" và 19/07 "mỗi thẻ chữ 1 pop" đều đã bị thay.)*
 
 > ## 🔴 TRƯỚC KHI CHỌN NHẠC CHO KIỂU 2/3 — ĐỌC LUẬT NÀY
 >
