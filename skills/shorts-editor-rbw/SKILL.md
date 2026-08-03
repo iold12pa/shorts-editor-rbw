@@ -5,7 +5,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 34** — phát hành 03/08/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 35** — phát hành 03/08/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
@@ -304,8 +304,8 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
       - **Lý do luật gốc**: 2 giọng chồng lên nhau bắt tai người nghe chia sự chú ý, lời dẫn bị nuốt — hạ volume nhạc KHÔNG cứu được. Nhóm B thoát luật vì sau 1-2 câu đầu không còn giọng nào để chồng lên nữa.
       - Không chắc bài có giọng hát hay không → **nghe kiểm trước khi dùng** (folder `POP tươi sáng` có lẫn bài có lời). **Kiểu 1 không áp luật này.**
   - **Nhạc sinh bằng AI (ElevenLabs Music — option mở rộng, cần gói trả phí)**: chỉ dùng khi (a) người dùng chủ động yêu cầu "nhạc đo ni theo video", hoặc (b) kho không có bài hợp VÀ người dùng đồng ý. Chạy `python "<skill-dir>\scripts\elevenlabs_music.py" "<mô tả nhạc>" <output.mp3> --length-ms <độ dài video>` — gói Free sẽ lỗi, khi đó DỪNG BÁO "cần gói ElevenLabs trả phí", không tự thay bằng nguồn nhạc khác.
-  - **Sound effect**: kho SFX trong `SFX/Bo 35 SFX` (vd `08 - Woosh fire transition.mp3`) — ưu tiên dùng kho này trước khi tải thêm. **Đếm thật 21/07/2026: 36 file trong folder đó + 3 file rời ngay ngoài `SFX/` = 39 file.** Tên folder "Bo 35 SFX" và các con số "35"/"38" trong tài liệu cũ đều KHÔNG khớp thực tế — đừng tin số, cứ liệt kê thư mục khi cần. **Luật hiện hành (19/07/2026): MỖI thẻ chữ đều kèm 1 SFX "pop" hợp nghĩa, CỘNG các SFX khớp hành động trong hình** — mật độ kiểu TikTok/Reels, ~14 lớp/55s. Chi tiết + bảng lead-in đã đo sẵn: ffmpeg-recipes mục 4b; cây chọn tiếng: `so-sfx.md`.
-    > ⚠️ Luật cũ 03/07/2026 ("chỉ dùng SFX khi khớp hành động cụ thể, đừng gắn SFX chỉ vì text vừa xuất hiện") **đã bị Sếp Huy bãi bỏ ngày 19/07** sau khi xem video-1 Tràng An thấy SFX còn thưa. Câu đó từng còn sót ở đây tới 21/07 — nếu gặp lại ở file nào khác thì đó là tàn dư, gỡ đi.
+  - **Sound effect**: kho SFX trong `SFX/Bo 35 SFX` (vd `08 - Woosh fire transition.mp3`) — ưu tiên dùng kho này trước khi tải thêm. **Đếm thật 21/07/2026: 36 file trong folder đó + 3 file rời ngay ngoài `SFX/` = 39 file.** Tên folder "Bo 35 SFX" và các con số "35"/"38" trong tài liệu cũ đều KHÔNG khớp thực tế — đừng tin số, cứ liệt kê thư mục khi cần. **Luật hiện hành (03/08/2026, Sếp chỉ đạo làm lại): SFX theo 3 MỐC Ý bắt buộc — hook 1.5s đầu · mỗi lần ĐỔI THÔNG ĐIỆP (không phải mỗi thẻ chữ/mỗi lần cắt cảnh) · CTA-kết — CỘNG các SFX khớp hành động thật trong hình. Hard-cut cùng thông điệp thì để im.** Chi tiết + bảng lead-in đã đo sẵn: ffmpeg-recipes mục 4b; cây chọn tiếng + bảng âm thanh đo được của cả kho: `so-sfx.md`.
+    > ⚠️ Cả 2 luật cũ đều đã bị thay: 03/07 ("chỉ khi khớp hành động", 3-5 SFX) bị thay 19/07; 19/07 ("mỗi thẻ chữ 1 pop", ~14 lớp/55s) bị thay 03/08 sau khi Sếp nghe lại thấy tiếng chọn sai vai (vụ "Ding" không phải "ting") và mật độ đếm cơ học theo chữ. Gặp câu chữ của 2 bản cũ ở file nào khác thì đó là tàn dư, gỡ đi.
   - **Ảnh sản phẩm không nền**: folder `Ảnh sản phẩm ko nền/<tên robot>/` — dùng khi kịch bản cần ghép ảnh sản phẩm rời (không phải cảnh quay), vd làm thumbnail hoặc card thông số.
 
 ## Quy trình chi tiết
@@ -462,7 +462,7 @@ Tóm tắt 4 điều không được bỏ:
 2. Ghép cảnh (concat)
 3. Burn text ASS font Anton (hook vàng + text trắng, vị trí dưới logo — spec trong style-mau.md); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
 4. Nối **outro dọc** vào cuối bằng crossfade (xem mục 4d trong recipes) — **CHỈ khi video đăng page công ty**. Kênh cá nhân thì BỎ HẲN bước này (luật 21/07, xem recipes mục 5d).
-5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — ElevenLabs qua `scripts/elevenlabs_tts.py`) + **sound effect theo luật 19/07/2026: MỖI thẻ chữ đều kèm 1 SFX pop hợp nghĩa (kiểu TikTok/Reels, dày ~14 lớp/55s), CỘNG các SFX khớp hành động trong hình**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
+5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — ElevenLabs qua `scripts/elevenlabs_tts.py`) + **sound effect theo luật 03/08/2026: 3 mốc Ý bắt buộc (hook 1.5s đầu · mỗi lần đổi thông điệp · CTA-kết), CỘNG các SFX khớp hành động thật trong hình — hard-cut cùng thông điệp để im**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
 6. Xuất thẳng ra **`<folder buổi quay>\Final\video-N-<slug>.mp4`** (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
 7. **Tự nghiệm thu bắt buộc**: trích 4-5 frame (rải cả trong thân video lẫn đoạn outro) + Read kiểm tra (chữ đủ to, không tràn viền, không thừa dấu câu, logo không đè text và tự ẩn đúng lúc trước outro, hình không méo, không frame đen); ffprobe xác nhận thời lượng; **đo âm lượng bằng loudnorm** (lệnh đo trong ffmpeg-recipes mục 6) — chuẩn giao hàng là **-14 LUFS (±1)**, lệch thì mix lại. Sai thì sửa và dựng lại trước khi bàn giao.
 
@@ -498,7 +498,7 @@ Tóm tắt 4 điều không được bỏ:
 | Logo | Trắng, giữa-trên, rộng ~480px, cách mép trên ~50px, hiện suốt PHẦN THÂN video, tự ẩn trước khi outro bắt đầu |
 | Intro/Outro | Không dùng intro. **Outro dọc luôn có** (file có sẵn, nối bằng crossfade — mục 4d recipes) |
 | Dấu câu | Viết gọn, không thừa dấu (vd "ROBOT?" chứ không "ROBOT?!") — rà lại trước khi burn text |
-| Âm thanh | Nhạc nền là chính; âm gốc footage 0-30% khi có tiếng hay (robot, tiếng cười); **SFX: mỗi thẻ chữ 1 pop + SFX khớp hành động** (luật 19/07, xem mục Sound effect ở trên) |
+| Âm thanh | Nhạc nền là chính; âm gốc footage 0-30% khi có tiếng hay (robot, tiếng cười); **SFX: 3 mốc Ý (hook · đổi thông điệp · CTA) + SFX khớp hành động** (luật 03/08, xem mục Sound effect ở trên) |
 
 ## Xử lý sự cố nhanh
 

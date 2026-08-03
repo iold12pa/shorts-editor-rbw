@@ -221,22 +221,26 @@ Burn vào video (đường dẫn TƯƠNG ĐỐI + fontsdir, xem quy tắc 0.1):
 ffmpeg -y -i temp\ghep.mp4 -vf "ass=temp/video-1.ass:fontsdir=fonts" -c:v libx264 -preset fast -crf 18 -c:a copy temp\ghep_sub.mp4
 ```
 
-## 4b. Sound effect (SFX) — dùng DÀY theo kiểu TikTok/Reels
+## 4b. Sound effect (SFX) — có CHỦ ĐÍCH theo Ý, không rải theo chữ
 <!-- tags: chung -->
 
 Nguồn an toàn: **YouTube Studio → Thư viện âm thanh → tab "Hiệu ứng âm thanh"** (`https://studio.youtube.com/channel/<id>/music`, cùng tài khoản/cùng cách tải với nhạc nền — nút "Tải xuống" xuất hiện khi hover từng dòng, xem mục 1b). Tìm bằng từ khoá tiếng Anh mô tả âm thanh (vd "whoosh", "wrench", "chime", "click") vì thư viện không có bản tiếng Việt. Kho sẵn có: `kho tài nguyên: tìm theo tên thư mục SFX/Bo 35 SFX trong ~/.claude/roboworld-assets/tai-nguyen-chung/` — cây quyết định chọn tiếng nào xem `so-sfx.md`.
 
-### Luật 1 — MỖI thẻ chữ đều kèm 1 SFX "pop" (Sếp Huy chốt 19/07/2026, THAY luật cũ 03/07/2026)
+### Luật 1 — SFX theo 3 MỐC Ý, không theo từng thẻ chữ (Sếp Huy chỉ đạo làm lại 03/08/2026, THAY luật 19/07/2026)
 <!-- tags: chung -->
 
-> **Luật cũ ngày 03/07/2026 nay KHÔNG còn hiệu lực**: luật đó ghi "KHÔNG gắn SFX chỉ vì text vừa xuất hiện — SFX phải khớp hành động cụ thể trong hình", chốt liều 3-5 SFX/video. Sếp xem video-1 Tràng An bản v3 (19/07) thấy còn thưa, được hỏi rõ "luật mới mâu thuẫn luật cũ, chọn cái nào" → **Sếp chọn luật mới thành chuẩn**.
+> **Lịch sử 3 đời luật**: bản gốc 03/07 ("chỉ gắn khi khớp hành động", 3-5 SFX/video) → bản 19/07 ("mỗi thẻ chữ bắt buộc 1 pop", ~14 lớp/55s — Sếp thấy bản 03/07 thưa quá) → **bản hiện hành 03/08** (Sếp nghe lại thấy bộ quy tắc có vấn đề: tiếng chọn sai vai — vụ "Ding" không phải "ting", mật độ đếm cơ học theo chữ). Bản mới tổng hợp từ nguồn ngành 2026 + đo sóng âm thật cả kho — chi tiết đầy đủ và lý do nằm ở **`so-sfx.md`** (đã viết lại toàn bộ cùng ngày), mục này chỉ tóm tắt phần dùng khi dựng.
 
-**Luật hiện hành**: **mỗi thẻ chữ xuất hiện đều được gắn 1 SFX "pop"** phù hợp NGHĨA của chữ (không random) — đây là cảm giác dày SFX kiểu TikTok/Reels. Mật độ thực tế đã dựng: **14 lớp SFX / 55 giây** (video-1 v4).
+**Luật hiện hành — 3 mốc BẮT BUỘC có SFX:**
+1. **Hook (1.5 giây đầu)** — tiếng "neo" người xem trước khi họ vuốt qua.
+2. **Mỗi lần ĐỔI THÔNG ĐIỆP** — đúng lúc dòng chữ đổi sang Ý mới. 1 dòng chữ giữ nguyên qua nhiều lần cắt cảnh thì CHỈ 1 SFX ở đầu đoạn, không lặp theo từng cắt hình.
+3. **CTA/kết** — khoảnh khắc chốt trước outro.
 
-- **Chọn loại tiếng theo nghĩa**: chữ hook → `04 - Pop`; tên sản phẩm/thông báo → `14 - Apple notification`; chữ mang cảm giác công nghệ ("CUSTOMIZE...") → `24 - Glitch`; chữ mang nghĩa bùng nổ ("KHAI TRƯƠNG BÙNG NỔ") → `29 - Boom`; còn lại → Pop/chime.
+**KHÔNG bắt buộc SFX** ở hard-cut thường trong lúc vẫn cùng 1 thông điệp — để im (nguyên tắc "im lặng là vũ khí"). SFX-theo-hành-động (whoosh robot lướt, tiếng khớp hành động thật trong hình) vẫn cộng thêm bình thường theo ma trận `so-sfx.md`. Mật độ tự nhiên ra ~4-6 lớp cho video Kiểu 1 chuẩn 30-40s; video nhiều khoảnh khắc hành động thật thì cao hơn tự nhiên — không ép đếm đủ số.
+
+- **Chọn loại tiếng theo nghĩa Ý + ĐỐI CHIẾU bảng âm thanh đo được trong `so-sfx.md`** (mục "PHÂN LOẠI THEO ÂM THANH ĐO ĐƯỢC" — chọn theo tên file đã gây lỗi thật vụ "Ding"): hook → `04 - Pop`; xác nhận/chốt ý nhẹ → `14 - Apple notification` (thay vai trò cũ của Ding — Ding thành phương án phụ); chữ công nghệ → `24 - Glitch`; nghĩa bùng nổ/CTA mạnh → `29 - Boom`.
 - **Chỉ dùng "sound quốc dân" AN TOÀN cho brand B2B** (pop/notification/boom/glitch/chime). **CẤM** loại troll/meme (Bruh, Wasted, SpongeBob...) — không hợp thương hiệu Roboworld + có rủi ro bản quyền (nghiên cứu 19/07).
-- **Ngoại lệ (giữ nguyên, KHÔNG bị luật mới thay)**: thẻ chữ nào trùng mốc (~trong 1s) với 1 SFX hành động/transition đã có sẵn (riser, ding, fire, hit...) thì **KHÔNG thêm pop chồng lên** — vẫn giữ luật "không chồng quá 2 lớp SFX cùng lúc". Thực tế video-1 v4: 8/11 thẻ được gắn pop, 3 thẻ bỏ qua vì trùng mốc.
-- SFX gắn với **hành động trong hình** (whoosh lúc chuyển cảnh, ding lúc chốt) vẫn giữ nguyên như cũ — luật mới chỉ THÊM lớp text-pop, không bỏ lớp hành động.
+- **Không chồng quá 2 lớp SFX cùng lúc**: mốc Ý trùng (~trong 1s) với 1 SFX hành động/transition đã có sẵn (riser, fire, hit...) thì **KHÔNG thêm tiếng chồng lên**.
 
 ### Luật 2 — Đặt SFX theo ĐỈNH âm, không theo đầu file (Peak Impact Rule)
 <!-- tags: chung -->
