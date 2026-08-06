@@ -22,11 +22,12 @@ ROBOWORLD - BỨT PHÁ CÙNG ROBOT
 📗 Fanpage: facebook.com/roboworld.official
 ♥️ Youtube: youtube.com/@Roboworldvietnam
 📹 Tiktok: tiktok.com/@roboworldvn_official
-📌 Offices:
-CS1: Sapphire Palace, 4 P. Chính Kinh, Phường Thanh Xuân, Hà Nội.
-CS2: Vinacomin Tower, số 3 Dương Đình Nghệ, Phường Yên Hòa, TP. Hà Nội.
-CS3: N1-5 Trường Sơn, Phường Hoà Hưng, TP. Hồ Chí Minh.
-CS4: Toà nhà Dali, 24C Phan Đăng Lưu, Phường Gia Định, TP. Hồ Chí Minh.
+📌Offices:
+CS1: Tòa nhà Sapphire Palace, số 4 Chính Kinh, Phường Thanh Xuân, Hà Nội.
+CS2: Tòa nhà Vinacomin Tower, số 3 Dương Đình Nghệ, Phường Yên Hòa, Hà Nội.
+CS3: Tòa nhà Thông Tấn Xã Việt Nam, số 81 Quang Trung, Phường Hải Châu, Đà Nẵng.
+CS4: N1-5 Trường Sơn, Phường Hoà Hưng, Hồ Chí Minh.
+CS5: Tòa nhà Dali, số 24C Phan Đăng Lưu, Phường Gia Định, Hồ Chí Minh.
 ```
 
 ## PHẦN 4 – HASHTAG
