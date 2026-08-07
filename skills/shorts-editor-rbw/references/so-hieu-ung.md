@@ -11,7 +11,7 @@
 
 | # | Hiệu ứng | Trạng thái | Ghi chú kỹ thuật |
 |---|---|---|---|
-| A1 | Nảy bật vào (pop-in bounce) | ✅ DEMO#1-1 | ASS \t scale overshoot |
+| A1 | Nảy bật vào (pop-in bounce) | ✅ **ĐẬU — CHUẨN từ 07/08/2026 (Ver 41): mặc định MỌI thẻ chữ** | ASS \t scale overshoot — recipe + liều lượng ở `ffmpeg-recipes.md` mục 4 |
 | A2 | Đập từng từ theo nhịp | ✅ DEMO#1-2 | event/từ + punch scale |
 | A3 | Gõ máy chữ | ✅ DEMO#1-3 | event/ký tự |
 | A4 | Quét hiện chữ (wipe reveal) | ✅ DEMO#1-4 | \t \clip |

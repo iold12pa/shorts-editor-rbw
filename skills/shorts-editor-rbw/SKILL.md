@@ -5,7 +5,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 40** — phát hành 06/08/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 41** — phát hành 07/08/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
@@ -460,7 +460,7 @@ Tóm tắt 4 điều không được bỏ:
 
 1. Cắt & chuẩn hóa từng cảnh về 1080x1920/30fps theo bảng phân cảnh
 2. Ghép cảnh (concat)
-3. Burn text ASS font Anton (hook vàng + text trắng, vị trí dưới logo — spec trong style-mau.md); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
+3. Burn text ASS font Anton theo **spec V4 07/08/2026** (viền dày + pop-in nảy; hook/CTA 2 tầng to-bé vàng 160/trắng 105; thân bài trắng 105, tô vàng ≤1 cụm/thẻ — spec trong style-mau.md, mẫu file ở recipes mục 4); copy `Anton-Regular.ttf` vào `<workspace>\fonts\` và dùng `fontsdir`
 4. Nối **outro dọc** vào cuối bằng crossfade (xem mục 4d trong recipes) — **CHỈ khi video đăng page công ty**. Kênh cá nhân thì BỎ HẲN bước này (luật 21/07, xem recipes mục 5d).
 5. Overlay logo giữa-trên — **CHỈ khi video đăng page công ty** (chỉ trong phần thân video, tự ẩn trước khi outro bắt đầu — outro đã có logo riêng) + trộn nhạc nền (và voiceover nếu kịch bản có — ElevenLabs qua `scripts/elevenlabs_tts.py`) + **sound effect theo luật 03/08/2026: 3 mốc Ý bắt buộc (hook 1.5s đầu · mỗi lần đổi thông điệp · CTA-kết), CỘNG các SFX khớp hành động thật trong hình — hard-cut cùng thông điệp để im**; mọi SFX đặt theo công thức `offset = mốc hành động − lead-in` (bảng lead-in 11 file đã đo sẵn ở mục 4b recipes — không đo lại). Nguồn: kho `Bo 35 SFX`, cây chọn tiếng trong `so-sfx.md`
 6. Xuất thẳng ra **`<folder buổi quay>\Final\video-N-<slug>.mp4`** (H.264 CRF 20, AAC). Chuyển cảnh: cắt cứng là mặc định cho nhịp nhanh; chỉ crossfade khi có bước ngoặt nội dung (đổi địa điểm/thời gian, hoặc nối outro) — xem mục 4c
@@ -492,9 +492,9 @@ Tóm tắt 4 điều không được bỏ:
 |---|---|
 | Khung hình | 1080x1920 dọc (9:16), 30fps — đăng phủ mọi nền tảng (Reels/TikTok/Shorts) |
 | Thời lượng | 30-60s |
-| Font | **Anton** in hoa, viền/bóng đen (file trong assets/fonts của skill), có fade in/out nhẹ |
-| Hook mở đầu | Vàng #FFD200, **130-135pt** (đã tăng 2 lần sau góp ý "chữ nhỏ" — luôn test render 1 frame trước khi dựng cả video, xem style-mau.md), 2-3 dòng, ngay dưới logo |
-| Text nội dung | Trắng, **85-90pt**, 1-2 dòng, dưới logo, mỗi ý 3-8s |
+| Font | **Anton** in hoa, **viền đen DÀY + bóng mềm** (spec V4 07/08/2026 — recipes mục 4); thẻ VÀO bằng **pop-in nảy** đúng phách nhạc, ra fade 200ms |
+| Hook mở đầu | **2 TẦNG to-bé**: dòng chính vàng #FFD200 **160pt** + dòng phụ trắng **105pt** (lịch sử tăng 100→118→135→160 vì luôn bị chê nhỏ — test render 1 frame trước khi dựng cả video), ngay dưới logo. **CTA-kết dùng cùng công thức 2 tầng** |
+| Text nội dung | Trắng, **105pt**, 1-2 dòng, dưới logo, mỗi ý 3-8s; tô vàng tối đa **1 cụm bán hàng/thẻ** |
 | Logo | Trắng, giữa-trên, rộng ~480px, cách mép trên ~50px, hiện suốt PHẦN THÂN video, tự ẩn trước khi outro bắt đầu |
 | Intro/Outro | Không dùng intro. **Outro dọc luôn có** (file có sẵn, nối bằng crossfade — mục 4d recipes) |
 | Dấu câu | Viết gọn, không thừa dấu (vd "ROBOT?" chứ không "ROBOT?!") — rà lại trước khi burn text |

@@ -15,11 +15,12 @@ Video mẫu KHÔNG có voiceover — câu chuyện kể bằng **text đè Anton
 
 ## Text đè (font Anton — `assets/fonts/Anton-Regular.ttf`, hỗ trợ tiếng Việt)
 <!-- tags: chung -->
-- **Hook mở đầu**: IN HOA, màu **vàng ~#FFD200**, viền/bóng đen đậm, cỡ **130-135pt** theo khung 1080x1920. Lịch sử: bắt đầu 100pt → 118pt → 135pt, cả 2 lần tăng đều do Sếp phản hồi "chữ vẫn nhỏ" — 130-135pt là mốc hiện tại đã được duyệt, coi đây là baseline mặc định, KHÔNG lùi về mức thấp hơn trừ khi Sếp nói. 2-3 dòng, đặt ngay **dưới logo** (bắt đầu ~11-13% chiều cao khung). Ví dụ mẫu: "BELLABOT PRO TẠI VINSCHOOL".
-- **Text nội dung**: IN HOA, màu **trắng**, viền đen, cỡ **85-90pt** (cùng lịch sử tăng dần như trên, từ 66→78→90pt), 1-2 dòng, cùng vị trí dưới logo. Mỗi text 1 ý ngắn (5-9 từ), giữ 3-8 giây tùy độ dài cảnh nền. Ví dụ mẫu: "TƯƠNG TÁC BIỂU CẢM THÂN THIỆN", "THU HÚT SỰ CHÚ Ý CỦA MỌI NGƯỜI".
+- **SPEC V4 — Sếp chấm 07/08/2026, THAY spec cũ (hook 130-135 viền mỏng / text 85-90)**: mọi thẻ chữ Anton IN HOA **viền đen DÀY + bóng đổ mềm** (số đo ASS đầy đủ + mẫu file ở `ffmpeg-recipes.md` mục 4).
+- **Hook mở đầu và CTA-kết: bắt buộc 2 TẦNG to-bé** — dòng chính màu **vàng ~#FFD200 cỡ 160pt viền 14**, dòng phụ **trắng 105pt viền 11** (công thức thẻ "DEMO MIỄN PHÍ / COMMENT NGAY BÊN DƯỚI" Sếp duyệt). Đặt ngay **dưới logo**. Lịch sử cỡ chữ: 100 → 118 → 135 → 160, mọi lần tăng đều do Sếp chê "chữ nhỏ" — KHÔNG lùi về mức thấp hơn trừ khi Sếp nói.
+- **Text nội dung (thân bài)**: IN HOA, màu **trắng**, cỡ **105pt viền 11**, 1-2 dòng, cùng vị trí dưới logo. Mỗi text 1 ý ngắn (5-9 từ), giữ 3-8 giây tùy độ dài cảnh nền. **Được tô vàng tối đa 1 CỤM TỪ mỗi thẻ** — chỉ cụm mang nghĩa bán hàng ("CÙNG LÚC", "ÊM") — không tô cả dòng, không quá 1 cụm.
 - Biến thể MT1: text trắng 2 dòng đặt thấp (~65-75% chiều cao) — dùng khi cảnh phía trên rối, che mất chủ thể.
 - **Trước khi dựng cả video, LUÔN render thử 1 frame** với cỡ chữ + xuống dòng dự kiến rồi Read để mắt kiểm tra không tràn viền — đừng tính toán lý thuyết (đo bằng mm/pixel suông dễ sai vì Anton là font hẹp/condensed, khó ước lượng chính xác). Cách làm: burn ASS test lên 1 frame tĩnh của cảnh sẽ dùng, xem qua, chỉnh cỡ/số dòng nếu cần, rồi mới áp dụng cho toàn bộ kịch bản.
-- **Hiệu ứng ra/vào cho text**: mặc định luôn dùng fade nhẹ (`\fad(200~300,250~300)` trong ASS) thay vì text bật/tắt cứng — cảm giác chuyên nghiệp hơn mà không phô. Đây là hiệu ứng tối thiểu bắt buộc; hiệu ứng mạnh hơn (bounce, scale-in) chỉ thêm khi kịch bản thật sự cần nhấn, tránh dùng tràn lan.
+- **Hiệu ứng vào thẻ: pop-in nảy là MẶC ĐỊNH** (Sếp chấm 07/08/2026 — THAY luật cũ "mặc định fade nhẹ, bounce chỉ khi cần nhấn"): dòng bật vào có độ nảy ~0.34s, dòng thứ 2 vào trễ 0.12s, ra bằng fade 200ms; **mốc vào thẻ rơi đúng phách nhạc** (`scripts/fx/find_beats.py`). Recipe đầy đủ ở `ffmpeg-recipes.md` mục 4.
 - **Dấu câu gọn gàng**: không để thừa dấu (vd hook không viết "ROBOT?!" — chỉ 1 dấu, chọn "?" hoặc "!" theo đúng tông câu, không cả hai). Đọc lại toàn bộ text trong kịch bản trước khi burn để bắt lỗi này.
 
 ## KIỂU 1 PHẢI TẬP TRUNG VÀO ROBOT (Sếp Huy chốt 21/07/2026)

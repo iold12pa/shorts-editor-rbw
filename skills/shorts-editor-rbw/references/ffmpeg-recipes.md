@@ -186,7 +186,7 @@ Text kể chuyện bằng font **Anton in hoa** (spec vị trí/màu học từ 
 Copy-Item "<skill-dir>\assets\fonts\Anton-Regular.ttf" fonts\
 ```
 
-Mẫu ASS chuẩn (hook vàng + text trắng, đều nằm dưới logo giữa-trên):
+Mẫu ASS chuẩn — **spec V4 "viền dày + nảy vào", Sếp Huy chấm 07/08/2026 trên test video 82** (THAY spec cũ hook 135/viền 6 + text 90/viền 5 — bản cũ bị chê "chữ không nổi bật, khác Anton trong CapCut"):
 
 ```
 [Script Info]
@@ -194,21 +194,26 @@ ScriptType: v4.00+
 PlayResX: 1080
 PlayResY: 1920
 WrapStyle: 0
+ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Hook,Anton,135,&H0000D2FF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,1,0,1,6,3,8,60,60,215,163
-Style: Text,Anton,90,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,1,0,1,5,2,8,60,60,225,163
-Style: TextDuoi,Anton,90,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,1,0,1,5,2,2,60,60,480,163
+Style: HookBig,Anton,160,&H0000D2FF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,1,14,7,8,50,50,205,163
+Style: HookSub,Anton,105,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,1,11,6,8,50,50,215,163
+Style: Text,Anton,105,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,1,11,6,8,50,50,215,163
+Style: TextDuoi,Anton,105,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,1,0,1,11,6,2,50,50,480,163
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:03.50,Hook,,0,0,0,,BELLABOT PRO\NTẠI VINSCHOOL
-Dialogue: 0,0:00:03.50,0:00:07.00,Text,,0,0,0,,TƯƠNG TÁC BIỂU CẢM THÂN THIỆN
-Dialogue: 0,0:00:07.00,0:00:10.50,Text,,0,0,0,,THU HÚT SỰ CHÚ Ý CỦA MỌI NGƯỜI
+Dialogue: 0,0:00:00.00,0:00:03.97,HookBig,,0,0,0,,{\an8\pos(540,205)\blur0.8\fscx0\fscy0\t(0,140,\fscx116\fscy116)\t(140,340,\fscx100\fscy100)\fad(0,200)}ROBOT GÂY SỐT
+Dialogue: 0,0:00:00.12,0:00:03.97,HookSub,,0,0,0,,{\an8\pos(540,420)\blur0.8\fscx0\fscy0\t(0,140,\fscx116\fscy116)\t(140,340,\fscx100\fscy100)\fad(0,200)}TẠI GO VĨNH PHÚC
+Dialogue: 0,0:00:03.97,0:00:14.56,Text,,0,0,0,,{\blur0.8\fscx0\fscy0\t(0,120,\fscx112\fscy112)\t(120,300,\fscx100\fscy100)\fad(0,200)}TỰ QUÉT · HÚT · LAU\NCHÀ SÀN {\1c&H0000D2FF&}CÙNG LÚC
 ```
 
-- **Cỡ chữ 135pt (Hook) / 90pt (Text) là mốc ĐÃ DUYỆT** sau 2 lần Sếp phản hồi "chữ nhỏ" (xem lịch sử đầy đủ ở `style-mau.md`) — đây là baseline mặc định, KHÔNG tự ý lùi về cỡ nhỏ hơn.
+- **Pop-in nảy là hiệu ứng VÀO mặc định của MỌI thẻ chữ** (thay luật cũ "mặc định fade nhẹ"): scale 0→116%→100% trong ~0.34s (thẻ hook/CTA), 0→112%→100% trong ~0.30s (thẻ thân bài); **dòng thứ 2 vào TRỄ 0.12s**; ra bằng `\fad(0,200)`; luôn kèm `\blur0.8` cho viền/bóng mềm. **Mốc VÀO thẻ nắn về phách nhạc** — chạy `scripts/fx/find_beats.py` rồi đặt Start của event đúng mốc phách (đã làm thật trên video 82: BPM 136 → mốc 3.97/14.56/24.71).
+- **Hook và CTA bắt buộc 2 TẦNG to-bé** (công thức thẻ "DEMO MIỄN PHÍ / COMMENT NGAY BÊN DƯỚI" Sếp duyệt): dòng chính `HookBig` vàng 160pt tại `\pos(540,205)`, dòng phụ `HookSub` trắng 105pt tại `\pos(540,420)`.
+- **Điểm màu thân bài**: được tô vàng `{\1c&H0000D2FF&}` tối đa **1 cụm từ mỗi thẻ**, chỉ cụm mang nghĩa bán hàng ("CÙNG LÚC", "ÊM"...); cụm nằm giữa dòng thì trả màu trắng `{\1c&HFFFFFF&}` ngay sau cụm. KHÔNG tô cả dòng.
+- **Cỡ 160pt (dòng chính hook/CTA) / 105pt (thân bài + dòng phụ) là mốc ĐÃ DUYỆT 07/08/2026** — tiếp nối lịch sử "chữ luôn bị chê nhỏ" (100→118→135→160), KHÔNG tự ý lùi về cỡ nhỏ hơn.
 - **Nội dung text luôn IN HOA** (đúng style mẫu; Anton vốn thiết kế cho chữ hoa).
 - Màu ASS là **&HAABBGGRR** (đảo ngược RGB): vàng #FFD200 → `&H0000D2FF`; trắng → `&H00FFFFFF`. Nghi ngờ màu thì burn thử 1 frame và Read để xem — đừng tin công thức suông.
 - `Alignment: 8` = giữa-trên; `MarginV: 215-225` đặt text ngay dưới logo (logo chiếm vùng ~40-190px đầu khung). Style `TextDuoi` (Alignment 2, cách đáy 480px) dùng khi phần trên khung hình rối/che chủ thể — như video mẫu MT1.
