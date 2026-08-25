@@ -44,6 +44,7 @@ CS5: Tòa nhà Dali, số 24C Phan Đăng Lưu, Phường Gia Định, Hồ Chí
 | PUDU MT1 series | `#MT1series #PuduMT1 #PuduMT1Max #PuduMT1Vac #MT1 #MT1Max #MT1Vac #Robotvesinh #Robotlausan #Robothutbui #Robotvesinhnhamay` |
 | PUDU T300/T600/T150 | `#PuduT300 #T300 #PuduT600 #T600 #PuduT150 #T150 #PuduT600Underride #T600Underride #Robotvanchuyen #Robotvanchuyennhamay #Robotbedo #Robotbehang #AGV #AMR #AMRRobot #AGVRobot` |
 | PUDU CC1 series | `#PuduCC1 #CC1 #PuduCC1Pro #CC1Pro #Robotvesinh #Robotlausan #Robothutbui #Robotvesinhnhamay` |
+| PUDU MP2000 | `#MP2000 #PuduMP2000 #Robotxenang #Xenangtuhanh #Xenangkhongnguoilai #Xenangrobot #Robotvanchuyennhamay #AMRForklift #AGV #AMR #logistics #khothongminh` |
 | Omnie (Gausium) | `#Omnie #GausiumOmnie #Gausium #Robotvesinh #Robotlausan #Robothutbui #Robotvesinhnhamay` |
 | Beetle (Gausium) | `#Beetle #GausiumBeetle #Gausium #Robotvesinh #Robotlausan #Robothutbui` |
 | Phantas (Gausium) | `#Phantas #GausiumPhantas #Gausium #Robotvesinh #Robotlausan #Robothutbui` |
