@@ -133,6 +133,18 @@ Biến thể T600 dạng gầm thấp (luồn gầm kệ hàng), cùng tải tr�
 - Kích thước: 84.5×50×25.5 cm | Khối lượng: 94 kg | Tải trọng tối đa: 600 kg
 - Tốc độ: 0.2-1.2 m/s | Hoạt động: 12h liên tục | Sạc: 2h | Điều hướng: LiDAR SLAM
 
+### PUDU MP2000 (nguồn: báo cáo webinar PUDU 05/08/2026 — CHƯA có trong Hồ sơ năng lực)
+<!-- tags: chung -->
+Robot XE NÂNG pallet tự hành — sản phẩm mở màn dòng xe nâng không người lái của PUDU, ra mắt chính thức 17/08/2026. Tự nhìn đường, tự tìm pallet, tự xúc, tự chở, tự đặt xuống, tự về trạm sạc.
+- Kích thước: 158.5×91×187 cm | Khối lượng: 420 kg | Tải trọng: 2.000 kg (nguyên pallet hàng nặng)
+- Nâng càng: 80→200 mm — chỉ nhấc pallet KHỎI SÀN để chở, không xếp lên kệ cao
+- Tốc độ: 1.2 m/s có tải / 1.6 m/s không tải | Xúc 1 pallet ~20 giây
+- Pin LiFePO4 51.2V 60Ah: chạy 6h có tải / 12h không tải | Sạc đầy 2h, tự về trạm
+- Điều hướng: 3D LiDAR + VSLAM — KHÔNG dán mã QR, không cải tạo kho, triển khai vài phút (đối thủ 2–8 tuần)
+- Chịu pallet đặt lệch 15 cm / xoay lệch 15° vẫn xúc được; hợp pallet 1.2×0.8 m và 1.2×1.0 m
+- ⚠️ Độ chính xác đỗ: ±5 cm khi chạy thường, ±1 cm CHỈ KHI lắp marker tại trạm — kịch bản/caption đừng hứa ±1 cm cho mọi vị trí
+- ⚠️ Số liệu cần đối chiếu tài liệu chính thức PUDU (báo cáo dặn xác nhận lại sau ngày ra mắt) trước khi đưa vào báo giá/thông số in ấn
+
 ## Ghi chú khi dùng cho video
 <!-- tags: chung -->
 - Roboworld là **tổng đại lý/nhà phân phối chính thức PUDU Robotics tại Việt Nam** (từ 10/2023) — khi nói về robot dòng PUDU, có thể nhắc "Roboworld phân phối chính hãng PUDU tại Việt Nam" nếu kịch bản cần nhấn uy tín.
