@@ -2,6 +2,10 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-10-13 (Ver 43)
+
+**Chữ nhấn mạnh đổi hẳn cách làm**: không hiện cả dòng rồi tô vàng nữa — chỉ hiện đúng cụm từ khoá, bật lên ngay khoảnh khắc người nói bắt đầu từ đó. Mốc từng từ đo bằng script mới `scripts/do_moc_tu.py` (Whisper tìm nhị phân + nghe lại xác nhận, kiểm lần cuối trên file thành phẩm). Thêm luật cảnh mở hành lang tua nhanh "lướt qua", 15 giây đầu không cắt dồn dập, và ghi nhận vidstab làm tệ hơn ở hội trường đông người (đo thật 14,7 → 21,0).
+
 ## 2026-10-12 (Ver 42)
 
 **Kiểu dựng mới cho kênh Quang Huy Robot: 2A "người nói trước camera + khung nổi" và 2B "voice POV + chèn full màn"** — spec ở `references/style-noi-chuyen-va-voice-pov.md`, rút từ 7 vòng Sếp Huy chấm trên video 64 và 65. Điểm chính: đo video mẫu bằng lệnh trước khi dựng (chữ/giây, màu, mật độ chèn, toạ độ); chèn cảnh phải khớp NGHĨA câu nói, ưu tiên video trend của kênh, trích đúng khoảnh khắc hay nhất; hook không che mặt; chữ highlight vàng gần mỗi ý; SFX tiền xu khi nói giá; ảnh bìa là khung đầu; kiểm kiến thức trên web và sửa lời sai bằng hộp chữ. Script mẫu `scripts/mau_voice_pov.py`.

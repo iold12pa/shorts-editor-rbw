@@ -1,7 +1,8 @@
-# MAU Kieu 2B "voice POV + chen full man" (ban dung that video 65 VEC, 12/10/2026).
-# Spec: references/style-noi-chuyen-va-voice-pov.md. Chep sang Workspace, sua D/BROLL/TEXTS/TOTAL/SPEED roi chay:
+# MAU Kieu 2B "voice POV + chen full man" (ban dung that video 65 VEC, Sep duyet 13/10/2026).
+# Spec: references/style-noi-chuyen-va-voice-pov.md. Chep sang Workspace, sua D/BROLL/KEYS/TOTAL/SPEED roi chay:
 #   python mau_voice_pov.py <thu muc lam viec co base.mov> [assets|compose|sfx|all]
-# base.mov = clip giong da cat sach (chua tang toc). Moc trong BROLL/TEXTS ghi theo base.mov.
+# base.mov = clip giong da cat sach (chua tang toc). Moc trong BROLL/KEYS ghi theo base.mov.
+# Moc KEYS do bang scripts/do_moc_tu.py roi NGHE LAI xac nhan.
 import os, random, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
@@ -20,9 +21,8 @@ TOTAL = 103.45
 
 # (bat dau, ket thuc, file, src_tu, src_den, tam_x)  -> toc do tu khop: (src_den-src_tu)/(ket thuc-bat dau)
 BROLL = [
-    (0.40, 7.30, J("DJI_20260911153758_0352_D.MP4"), 0.0, 7.0, 0.5),    # "giua rat nhieu gian hang" -> doc hanh lang (anh so 1)
-    (7.30, 11.70, J("DJI_20260910144057_0217_D.MP4"), 0.5, 5.5, 0.5),   # "vi du cuc ky de ap dung" -> gian kin ghe nguoi xem
-    (11.70, 15.70, J("DJI_20260911153758_0352_D.MP4"), 14.0, 20.0, 0.55), # "day la gian hang cua ben em" -> lia ra man LED gian RBW
+    (0.40, 7.30, J("DJI_20260911153758_0352_D.MP4"), 0.0, 17.0, 0.5),   # "giua rat nhieu gian hang" -> LUOT doc hanh lang toi gian RBW (x2.5, Sep: "nhanh han de cam giac luot qua")
+    (7.30, 11.70, J("DJI_20260910144057_0217_D.MP4"), 0.5, 5.5, 0.5),   # "vi du cuc ky de ap dung" -> gian kin ghe nguoi xem (canh tinh, do chong mat)
     (41.20, 47.10, J("DJI_20260911094923_0007_D.MP4"), 0.0, 7.5, 0.5),  # "chay ra ngoai hanh lang moi khach"
     (47.10, 52.00, J("DJI_20260909102948_0005_D.MP4"), 0.0, 6.5, 0.45), # "khach dung lai tuong tac" -> khach vay BellaBot
     (52.00, 55.90, J("IMG_6803.MOV"), 1.0, 5.5, None),                  # dong nguoi quanh robot (clip doc)
@@ -33,23 +33,18 @@ BROLL = [
     (92.30, 95.00, J("IMG_6804.MOV"), 13.0, 16.5, None),
     (95.00, 100.00, J("DJI_20260909102917_0003_D.MP4"), 0.0, 6.0, 0.42), # "lien he em" -> Huy tu van khach
 ]
-TEXTS = [  # (bat dau, ket thuc, ten, dong chu; *...* = to vang)
-    (1.0, 7.2, "x_noibat", ["Làm sao để gian hàng", "*nổi bật* giữa hội chợ?"]),
-    (16.2, 21.6, "x_vitri", ["VEC 2026 · *Sảnh 2 · Gian 17*"]),
-    (21.8, 27.3, "x_kchto", ["Không *to nhất* –", "không ở *ngay cửa vào*"]),
-    (29.4, 34.0, "x_loidi", ["*Lối đi chung*", "= rất nhiều người qua lại"]),
-    (34.3, 41.0, "x_chay", ["Cho robot *chạy liên tục*"]),
-    (44.2, 47.0, "x_moi", ["*Mời kẹo – phát tờ rơi*"]),
-    (48.0, 55.8, "x_dunglai", ["Khách *tự dừng lại* tương tác"]),
-    (56.0, 61.7, "x_mkt", ["Marketing cực tốt", "*không cần con người*"]),
-    (63.5, 70.8, "x_tunhien", ["*Tự nhiên* – không bị mời chào"]),
-    (73.6, 77.2, "x_cuoi", ["Vuốt mặt – *robot cười*"]),
-    (77.4, 82.0, "x_ne", ["*Tự né người*", "không bao giờ va chạm"]),
-    (85.0, 89.2, "x_khay", ["Để *danh thiếp, tờ rơi, sản phẩm*"]),
-    (90.5, 95.0, "x_top", ["Gian hàng *nổi bật nhất* hội chợ"]),
-    (97.5, 103.45, "x_cta", ["Muốn dùng robot cho hội chợ, nhà hàng?", "Liên hệ *Quang Huy Robot*"]),
+# TU KHOA: hien DUNG cum tu, bat len NGAY moc nguoi noi bat dau tu do (moc do bang do_moc_tu.py + nghe lai xac nhan)
+KEYS = [
+    (6.60, "NỔI BẬT?"), (10.06, "DỄ ÁP DỤNG"), (20.00, "SẢNH 2 · GIAN 17"),
+    (25.27, "KHÔNG TO NHẤT"), (26.91, "KHÔNG Ở|CỬA VÀO"), (30.87, "LỐI ĐI CHUNG"),
+    (36.36, "CHẠY LIÊN TỤC"), (45.50, "MỜI KẸO"), (46.53, "PHÁT TỜ RƠI"),
+    (50.98, "TỰ DỪNG LẠI"), (56.50, "MARKETING|CỰC TỐT"), (59.60, "KHÔNG CẦN|CON NGƯỜI"),
+    (65.45, "TỰ NHIÊN"), (69.45, "ĐÁNG YÊU"), (77.04, "ROBOT CƯỜI"), (78.36, "TỰ NÉ NGƯỜI"),
+    (85.60, "DANH THIẾP"), (94.20, "NỔI BẬT NHẤT"), (102.60, "LIÊN HỆ|QUANG HUY ROBOT"),
 ]
-SFX = {"whoosh": ("19 - Whoosh 2.mp3", 0.30), "pop": ("04 - Pop.mp3", 0.40), "ding": ("34 - Ding.mp3", 0.35)}
+HOLD = 1.6        # giu khung cuoi them (giay, theo base) cho CTA kip doc
+KEY_MAX = 1.7     # moi tu khoa hien toi da (giay base), hoac toi tu ke tiep
+SFX = {"whoosh": ("19 - Whoosh 2.mp3", 0.30), "pop": ("04 - Pop.mp3", 0.45), "ding": ("34 - Ding.mp3", 0.35)}
 
 
 def brush(d, x0, y0, x1, y1, rnd):
@@ -93,9 +88,29 @@ def fit(im, w, h, fx=0.5, fy=0.5):
     return im.crop((x, y, x + w, y + h))
 
 
+def key_png(name, text, scale):
+    lines = text.split("|"); size = int((156 if len(lines) == 1 else 128) * scale)
+    f = ImageFont.truetype(PHUDU, size)
+    c = Image.new("RGBA", (1080, 1920), (0, 0, 0, 0)); d = ImageDraw.Draw(c)
+    lh = int(size * 1.1); top = 1400 - lh * len(lines) // 2
+    while max(d.textlength(l, font=f) for l in lines) > 1050:   # qua dai thi thu nho
+        size -= 4; f = ImageFont.truetype(PHUDU, size); lh = int(size * 1.1)
+    sh = Image.new("RGBA", c.size, (0, 0, 0, 0)); sd = ImageDraw.Draw(sh)
+    for i, l in enumerate(lines):
+        x = (1080 - d.textlength(l, font=f)) / 2; y = top + i * lh
+        sd.text((x + 6, y + 9), l, font=f, fill=(0, 0, 0, 190))
+    c.alpha_composite(sh.filter(ImageFilter.GaussianBlur(5)))
+    for i, l in enumerate(lines):
+        x = (1080 - d.textlength(l, font=f)) / 2; y = top + i * lh
+        col = (255, 255, 255) if (text.startswith("LIÊN HỆ") and i == 1) else HL
+        d.text((x, y), l, font=f, fill=col, stroke_width=max(6, size // 14), stroke_fill=(10, 10, 10))
+    c.save(os.path.join(A, name + ".png"))
+
+
 def assets():
-    for _, _, n, l in TEXTS:
-        pill(n, l, 50 if len(max(l, key=len)) > 30 else 56)
+    for k, (_, t) in enumerate(KEYS):
+        for tag, sc in (("a", 1.18), ("b", 1.07), ("c", 1.0)):   # 3 co -> hieu ung nay 0.1s
+            key_png(f"k{k}{tag}", t, sc)
     # ANH BIA: tren = gian RBW kin nguoi, duoi = can mat meo BellaBot
     top = grab(J("DJI_20260910144057_0217_D.MP4"), 3.0, os.path.join(A, "_t.png"), GRADE)
     bot = grab(J("IMG_6857.MOV"), 79.0, os.path.join(A, "_b.png"), GRADE)
@@ -127,20 +142,28 @@ def compose():
             geo = f"crop=ih*9/16:ih:(iw-ih*9/16)*{cx}:0,scale=1080:1920"
         fc.append(f"[{idx}:v:0]{geo},{GRADE},fps=30,setsar=1,setpts=(PTS-STARTPTS)*{k_fit:.4f}+{a}/TB,format=yuv420p[c{k}]")
         fc.append(f"{last}[c{k}]overlay=0:0:eof_action=pass:enable='between(t,{a},{b})'[o{k}]"); last = f"[o{k}]"; idx += 1
-    for k, (a, b, n, _) in enumerate(TEXTS + [(0.0, 0.4, "cover", None)]):
+    ov = []
+    for k, (t, _) in enumerate(KEYS):
+        end = min(t + KEY_MAX, KEYS[k + 1][0] - 0.05) if k + 1 < len(KEYS) else TOTAL + HOLD
+        ov += [(t, t + 0.05, f"k{k}a"), (t + 0.05, t + 0.10, f"k{k}b"), (t + 0.10, end, f"k{k}c")]
+    ov.append((0.0, 0.4, "cover"))
+    for k, (a, b, n) in enumerate(ov):
         args += ["-loop", "1", "-t", "120", "-i", os.path.join(A, n + ".png")]
         fc.append(f"[{idx}:v]format=rgba[p{k}]")
-        fc.append(f"{last}[p{k}]overlay=0:0:enable='between(t,{a},{b})'[q{k}]"); last = f"[q{k}]"; idx += 1
-    fc.append(f"{last}trim=0:{TOTAL},setpts=(PTS-STARTPTS)/{SPEED},format=yuv420p[vout]")
-    fc.append(f"[0:a]atrim=0:{TOTAL},asetpts=PTS-STARTPTS,atempo={SPEED}[aout]")
+        fc.append(f"{last}[p{k}]overlay=0:0:enable='between(t,{a:.3f},{b:.3f})'[q{k}]"); last = f"[q{k}]"; idx += 1
+    # giu khung cuoi HOLD giay de CTA kip doc
+    fc.insert(0, f"[0:v]tpad=stop_mode=clone:stop_duration={HOLD}[bg0]")
+    fc[1] = fc[1].replace("[0:v]", "[bg0]", 1)
+    fc.append(f"{last}trim=0:{TOTAL + HOLD},setpts=(PTS-STARTPTS)/{SPEED},format=yuv420p[vout]")
+    fc.append(f"[0:a]atrim=0:{TOTAL},asetpts=PTS-STARTPTS,apad=pad_dur={HOLD},atempo={SPEED}[aout]")
     args += ["-filter_complex", ";".join(fc), "-map", "[vout]", "-map", "[aout]", "-r", "30",
              "-c:v", "libx264", "-preset", "medium", "-crf", "17", "-c:a", "pcm_s16le", os.path.join(W, "comp.mov")]
     subprocess.run(args, check=True)
 
 
 def sfx():
-    ev = [("whoosh", a - 0.05) for a, *_ in BROLL] + [("pop", a - 0.05) for a, _, n, _ in TEXTS if n != "x_cta"]
-    ev += [("ding", 97.45)]
+    ev = [("whoosh", a - 0.05) for a, *_ in BROLL] + [("pop", t) for t, _ in KEYS[:-1]]
+    ev += [("ding", KEYS[-1][0])]
     args = ["ffmpeg", "-v", "error", "-y", "-i", os.path.join(W, "comp.mov")]; fc = []
     for k, (n, t) in enumerate(ev):
         f, vol = SFX[n]; args += ["-i", os.path.join(SFXD, f)]; ms = max(0, int(t / SPEED * 1000))

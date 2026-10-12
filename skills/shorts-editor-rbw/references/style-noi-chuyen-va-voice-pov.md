@@ -71,11 +71,20 @@
 - Sếp chọn cách xử lý: **giữ giọng, hiện hộp chữ sửa đè** (ghi rõ con số đúng), không thu lại.
 - Caption máy sinh (Gemini) cũng hay phóng đại, ví dụ "đông khách gấp mấy lần". Đọc lại và sửa trước khi bàn giao.
 
-### 1.6. Chữ highlight
-- Gần như **mỗi ý một hộp chữ**. Từ khoá tô **nền vàng `#FFDE3C`**, cú pháp `*...*` trong dòng chữ.
-- Kiểu hộp như mẫu 63: **mỗi dòng một nền trắng bo góc riêng**, chữ đen đậm (Segoe UI Bold 50–56px), tâm y≈1500.
-- Thêm hình minh hoạ khi hợp. Ví dụ "Pin chưa quá tốt" kèm biểu tượng pin yếu màu đỏ; "pin trâu hơn" kèm pin đầy màu xanh (vẽ bằng PIL, không cần tải).
-- Nhãn mục lớn (ví dụ "PHÂN KHÚC 1 / DƯỚI 300 TRIỆU"): font **DT Phudu Black** trắng viền đen, nền xanh `#40B6F0` kiểu nét cọ.
+### 1.6. Chữ nhấn mạnh — TỪ KHOÁ BẬT ĐÚNG LÚC NÓI (Sếp chốt 13/10/2026, THAY luật "hộp chữ cả dòng" 12/10)
+- 🔴 **CẤM hiện cả câu/cả dòng trước rồi tô vàng từ khoá.** Người xem đọc trước mất, tới lúc nghe thì hết bất ngờ. Nguyên văn Sếp: *"từ nào cần highlight thì từ đấy mới xuất hiện thôi và xuất hiện ngay lập tức"*.
+- Chỉ hiện **đúng cụm từ khoá** (1–4 chữ), bật lên **đúng khoảnh khắc người nói bắt đầu từ đó** (sai số ≤ 0,1 giây).
+- Kiểu chữ:
+  - DT Phudu Black khoảng 156px, **vàng `#FFDE3C` viền đen dày + bóng**, tâm y≈1400.
+  - Cụm dài thì tách 2 dòng (`"KHÔNG CẦN|CON NGƯỜI"`). Chữ rộng hơn 1050px thì tự thu nhỏ.
+  - Hiệu ứng nảy: cỡ 118% → 107% → 100% trong 0,1 giây (3 ảnh PNG), kèm tiếng Pop.
+  - Mỗi từ hiện tối đa 1,7 giây hoặc tới từ kế tiếp.
+- **Lấy mốc từ:** Whisper ffmpeg chỉ cho mốc theo câu, nên dùng `scripts/do_moc_tu.py`. Cách làm: tìm nhị phân điểm cắt lớn nhất mà khúc nghe được vẫn còn trọn từ khoá. Sau đó **bắt buộc nghe lại**: cắt khúc bắt đầu từ mốc vừa tìm cho Whisper nghe, câu phải bắt đầu bằng đúng từ khoá. Xuất xong kiểm lần nữa trên file thành phẩm (mốc ÷ hệ số tăng tốc).
+- Chọn từ khoá: **từ mang thông tin** (con số, vị trí, kết quả, lợi ích), khoảng 1 từ mỗi 5 giây. Bỏ từ Whisper nghe không chắc. Ví dụ video 65 đã bỏ "va chạm".
+- CTA cuối (`"LIÊN HỆ|QUANG HUY ROBOT"`, dòng 2 màu trắng): giữ khung cuối thêm khoảng 1,6 giây (`tpad=stop_mode=clone` + `apad`) cho kịp đọc.
+- Hộp chữ trắng cả dòng chỉ còn dùng để **sửa sai sự thật** (mục 1.5), ví dụ "Figure tại nhà máy BMW (Mỹ)…".
+- Biểu tượng minh hoạ (pin yếu đỏ / pin đầy xanh) vẫn dùng được, đặt cạnh từ khoá.
+- Nhãn mục lớn (ví dụ "PHÂN KHÚC 1 / DƯỚI 300 TRIỆU"): font DT Phudu Black trắng viền đen, nền xanh `#40B6F0` kiểu nét cọ. **Cũng phải hiện đúng lúc nói.**
 
 ### 1.7. SFX (cho cuốn)
 
@@ -131,10 +140,14 @@ Mặt Huy trong khung quay iPhone (1080x1920) chiếm **y≈590–1350** (cằm 
 - Clip DJI 4K ngang → cắt dọc 9:16 quanh tâm chủ thể: `crop=ih*9/16:ih:(iw-ih*9/16)*tam_x:0,scale=1080:1920`. Từ 4K cắt ra vẫn nét.
 - 🔴 **Tốc độ cảnh chèn tự khớp câu nói**: chọn đoạn nguồn [s0,s1] rồi kéo hoặc nén về đúng độ dài câu, `setpts=(PTS-STARTPTS)*(độ dài câu)/(s1-s0)`. Giữ hệ số trong khoảng 0,7–1,6 để không giật hoặc lê thê.
 - **Nhặt cảnh gian hàng ĐÔNG NGƯỜI** cho các câu "khách dừng lại", "nổi bật nhất". Cuối bài dồn liền 2–3 cảnh đông nhất.
-- Câu mở kiểu "giữa rất nhiều gian hàng…" → **cảnh dọc hành lang hội chợ** (nhìn dọc dãy gian, mái vòm). Sếp chọn `DJI_20260911153758_0352_D.MP4` giây 0–7 cho video 65.
+- Câu mở kiểu "giữa rất nhiều gian hàng…" → **cảnh dọc hành lang hội chợ** (nhìn dọc dãy gian, mái vòm), **tua nhanh khoảng 2,5x cho cảm giác LƯỚT QUA**. Sếp chê bản chạy 1x là "hơi chậm". Video 65: `DJI_20260911153758_0352_D.MP4` giây 0–17 nén vào 6,9 giây, lướt từ đầu hành lang tới gian RBW.
+- 🔴 **Đầu video đừng cắt dồn dập** (Sếp chê "chóng mặt"): 15 giây đầu tối đa 2 cảnh chèn, cảnh thứ 2 nên là cảnh tĩnh (khách ngồi xem). Bỏ các cảnh lia trùng ý.
+- **Chống rung vidstab: ĐỪNG dùng cho cảnh quay tay trong hội trường đông người.** Đo thật video 65: độ lệch khung liền kề tăng từ 14,7 lên 21,0 (tệ hơn), vì người đi lại và sàn bóng làm bộ dò bám nhầm. Muốn bớt chóng mặt thì bớt nhát cắt, đừng trông vào chống rung.
 - Đoạn người nói đang **demo trực tiếp** (vuốt mặt robot, đứng chắn cho robot né) → **giữ cảnh gốc**, chỉ thêm chữ. Không chèn đè lên phần demo.
 
 ## 4. Script mẫu
+`scripts/do_moc_tu.py`: dò mốc bắt đầu từng từ khoá (mục 1.6).
+
 `scripts/mau_voice_pov.py`: bản dựng video 65, đủ 4 bước.
 - `assets`: ảnh bìa + hộp chữ
 - `compose`: ghép cảnh chèn có tốc độ tự khớp + chữ + tăng tốc
