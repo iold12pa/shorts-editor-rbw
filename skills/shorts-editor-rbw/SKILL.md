@@ -5,7 +5,7 @@ description: Sản xuất shorts video thành phẩm cho ROBOWORLD từ folder f
 
 # Shorts Editor — ROBOWORLD
 
-> # 📦 BẢN HIỆN TẠI: **Ver 41** — phát hành 07/08/2026
+> # 📦 BẢN HIỆN TẠI: **Ver 42** — phát hành 12/10/2026
 >
 > **LUẬT BÁO BẢN (Sếp Huy chốt 22/07/2026) — áp dụng trên MỌI MÁY:**
 >
@@ -123,6 +123,7 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
    | Luật chọn cảnh nào lên hình / cảnh nào bỏ | `references/chon-canh-highlight.md` |
    | Style hình/chữ/nhạc Kiểu 1 (highlight) | `references/style-mau.md` |
    | Luật voice gốc / sub karaoke / Kiểu 2-3 | `references/style-voice-karaoke.md` |
+   | Kiểu 2A "người nói trước camera + khung nổi" / Kiểu 2B "voice POV + chèn full màn" (kênh Quang Huy Robot) | `references/style-noi-chuyen-va-voice-pov.md` |
    | Style video quảng cáo bán hàng | `references/style-ads-huy.md` |
    | Câu hỏi đầu vào / checklist thiếu-đủ | `references/chon-kieu-dung.md` |
    | Caption / hashtag / từ khóa | `references/caption-format.md` |
@@ -227,7 +228,7 @@ Người dùng KHÔNG chạy lệnh này cũng không sao — lần đầu nhờ
 
 0b. **Chi tiết checklist thiếu-đủ vẫn theo `references/chon-kieu-dung.md`** (file này tách riêng để dễ cập nhật — thêm/sửa câu hỏi thì sửa trong đó, không sửa SKILL.md): hỏi người dùng chọn 1 trong **3 KIỂU DỰNG**, rồi kiểm tra đã đủ nguyên liệu bắt buộc cho đúng kiểu đó chưa, thiếu gì hỏi ngay — đừng viết kịch bản khi còn thiếu mục bắt buộc. Tóm tắt 3 kiểu (chi tiết + checklist đầy đủ nằm trong file trên):
    - **Kiểu 1 — Highlight + chữ + nhạc** (có source, không cần thoại; spec: `references/style-mau.md`)
-   - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`)
+   - **Kiểu 2 — Dựng theo lời thoại có sẵn** (source đã có người nói đồng bộ lúc quay; spec: mục "Quy tắc VOICE GỐC MC" trong `references/style-voice-karaoke.md`). 🔴 Nếu là **người nói thẳng vào camera** (2A) hoặc **quay POV có giọng thuyết minh** (2B) → BẮT BUỘC đọc thêm `references/style-noi-chuyen-va-voice-pov.md` (luật Sếp chấm 7 vòng 12/10/2026: tăng tốc, màu, chèn cảnh khớp nghĩa, hook không che mặt, chữ highlight vàng, SFX tiền xu, ảnh bìa)
    - **Kiểu 3 — Ghép cảnh + thêm voice-over mới** (giọng AI hoặc thu riêng, không đồng bộ lúc quay; spec: `references/style-voice-karaoke.md` phần karaoke sub, hoặc `references/style-ads-huy.md` nếu kịch bản dạng quảng cáo bán hàng)
    Người dùng nói rõ kiểu + đủ nguyên liệu ngay trong tin đầu thì không hỏi lại — chỉ hỏi đúng phần còn thiếu.
 

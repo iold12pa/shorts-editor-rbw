@@ -58,6 +58,7 @@ Hỏi **theo nhánh**, không dồn hết mọi câu cho mọi người. Chọn 
 1. **Chọn nhạc — bản quyền hay không bản quyền**
 2. **Số lượng video**
 3. **Câu mở** — nhánh này nhấn mạnh hỏi **buổi quay diễn ra ở đâu, có gì**, vì lời MC đã có sẵn trong clip nên thứ cần nhất là bối cảnh để chọn đúng đoạn.
+4. 🔴 **Người dùng gửi kèm VIDEO MẪU** ("học phong cách video này") → đo mẫu bằng lệnh (chữ/giây, độ bão hoà màu, số cảnh chèn/phút, toạ độ khung + chữ) TRƯỚC khi hỏi. Người nói trước camera hoặc quay POV có giọng → theo `style-noi-chuyen-va-voice-pov.md`; chỉ hỏi thứ file đó chưa trả lời (cảnh nào là cảnh "đích danh", tiêu đề bìa, cách xử lý lời nói sai sự thật).
 
 ### 🔴 CÂU MỞ PHẢI LÀ MỘT LƯỢT RIÊNG — DỪNG LẠI CHỜ HỌ GÕ
 <!-- tags: chung -->

@@ -2,6 +2,10 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-10-12 (Ver 42)
+
+**Kiểu dựng mới cho kênh Quang Huy Robot: 2A "người nói trước camera + khung nổi" và 2B "voice POV + chèn full màn"** — spec ở `references/style-noi-chuyen-va-voice-pov.md`, rút từ 7 vòng Sếp Huy chấm trên video 64 và 65. Điểm chính: đo video mẫu bằng lệnh trước khi dựng (chữ/giây, màu, mật độ chèn, toạ độ); chèn cảnh phải khớp NGHĨA câu nói, ưu tiên video trend của kênh, trích đúng khoảnh khắc hay nhất; hook không che mặt; chữ highlight vàng gần mỗi ý; SFX tiền xu khi nói giá; ảnh bìa là khung đầu; kiểm kiến thức trên web và sửa lời sai bằng hộp chữ. Script mẫu `scripts/mau_voice_pov.py`.
+
 ## 2026-07-21
 
 **Vá lỗi phát hành — quan trọng nhất đợt này.** Sửa file trong `skills/` mà quên tăng `version` trong `.claude-plugin/plugin.json` thì `claude plugin update` báo "đã là bản mới nhất" và **không máy nào nhận được luật mới**. Đã dính thật: 2 commit luật nhạc sáng 21/07 nằm kẹt trên GitHub. Nay: (a) luật bắt buộc tăng version ghi vào SKILL.md, (b) hook `pre-push` trên máy quản trị **chặn push** nếu quên — đã test đúng ca lỗi.
