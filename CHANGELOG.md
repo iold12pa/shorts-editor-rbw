@@ -2,6 +2,10 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-10-13 (Ver 44)
+
+Cắt khoảng lặng chặt hơn: dò lần cuối bằng Silero VAD và Whisper nghe lại, vì ở hội trường ồn cách đo năng lượng sót nhiều quãng lặng. Cảnh hành lang mở đầu chỉ lấy đoạn đi thẳng, không lấy đoạn lia vào gian. Script mẫu tự dời mọi mốc khi cắt thêm.
+
 ## 2026-10-13 (Ver 43)
 
 **Chữ nhấn mạnh đổi hẳn cách làm**: không hiện cả dòng rồi tô vàng nữa — chỉ hiện đúng cụm từ khoá, bật lên ngay khoảnh khắc người nói bắt đầu từ đó. Mốc từng từ đo bằng script mới `scripts/do_moc_tu.py` (Whisper tìm nhị phân + nghe lại xác nhận, kiểm lần cuối trên file thành phẩm). Thêm luật cảnh mở hành lang tua nhanh "lướt qua", 15 giây đầu không cắt dồn dập, và ghi nhận vidstab làm tệ hơn ở hội trường đông người (đo thật 14,7 → 21,0).

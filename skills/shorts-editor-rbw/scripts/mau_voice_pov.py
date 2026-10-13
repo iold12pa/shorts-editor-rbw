@@ -1,7 +1,7 @@
 # MAU Kieu 2B "voice POV + chen full man" (ban dung that video 65 VEC, Sep duyet 13/10/2026).
-# Spec: references/style-noi-chuyen-va-voice-pov.md. Chep sang Workspace, sua D/BROLL/KEYS/TOTAL/SPEED roi chay:
-#   python mau_voice_pov.py <thu muc lam viec co base.mov> [assets|compose|sfx|all]
-# base.mov = clip giong da cat sach (chua tang toc). Moc trong BROLL/KEYS ghi theo base.mov.
+# Spec: references/style-noi-chuyen-va-voice-pov.md. Chep sang Workspace, sua D/BROLL/KEYS/REMOVE/TOTAL0/SPEED roi chay:
+#   python mau_voice_pov.py <thu muc lam viec co base.mov> [base2|assets|compose|sfx|all]
+# base.mov = clip giong da cat (chua tang toc). Moc BROLL/KEYS ghi theo base.mov; REMOVE cat them lang -> M() doi moc.
 # Moc KEYS do bang scripts/do_moc_tu.py roi NGHE LAI xac nhan.
 import os, random, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -17,11 +17,11 @@ BOLD = r"C:\Windows\Fonts\segoeuib.ttf"
 BLUE = (64, 182, 240); HL = (255, 222, 60)
 SPEED = 1.15
 GRADE = "eq=saturation=1.25:contrast=1.06"
-TOTAL = 103.45
+TOTAL0 = 103.45
 
 # (bat dau, ket thuc, file, src_tu, src_den, tam_x)  -> toc do tu khop: (src_den-src_tu)/(ket thuc-bat dau)
 BROLL = [
-    (0.40, 7.30, J("DJI_20260911153758_0352_D.MP4"), 0.0, 17.0, 0.5),   # "giua rat nhieu gian hang" -> LUOT doc hanh lang toi gian RBW (x2.5, Sep: "nhanh han de cam giac luot qua")
+    (0.40, 7.30, J("DJI_20260911153758_0352_D.MP4"), 0.0, 6.6, 0.5),   # "giua rat nhieu gian hang" -> CHI doan di thang giua hanh lang 0-6.6s (Sep 13/10: chua lia vao gian)
     (7.30, 11.70, J("DJI_20260910144057_0217_D.MP4"), 0.5, 5.5, 0.5),   # "vi du cuc ky de ap dung" -> gian kin ghe nguoi xem (canh tinh, do chong mat)
     (41.20, 47.10, J("DJI_20260911094923_0007_D.MP4"), 0.0, 7.5, 0.5),  # "chay ra ngoai hanh lang moi khach"
     (47.10, 52.00, J("DJI_20260909102948_0005_D.MP4"), 0.0, 6.5, 0.45), # "khach dung lai tuong tac" -> khach vay BellaBot
@@ -42,8 +42,39 @@ KEYS = [
     (65.45, "TỰ NHIÊN"), (69.45, "ĐÁNG YÊU"), (77.04, "ROBOT CƯỜI"), (78.36, "TỰ NÉ NGƯỜI"),
     (85.60, "DANH THIẾP"), (94.20, "NỔI BẬT NHẤT"), (102.60, "LIÊN HỆ|QUANG HUY ROBOT"),
 ]
+# Cat them tren base.mov (Sep 13/10: "nhieu khoang trong thoai"). Moc o tren van ghi theo base.mov goc,
+# M() doi sang base2.mov. Do: Silero VAD + Whisper nghe lai tung quang.
+REMOVE = [(0.0, 1.72), (4.51, 4.71), (47.20, 47.30), (55.80, 55.91), (60.38, 63.94),
+          (74.11, 74.28), (79.55, 79.72), (89.44, 90.28)]
+def M(t):
+    d = 0.0
+    for a, b in REMOVE:
+        if t >= b: d += b - a
+        elif t > a: d += t - a
+    return round(t - d, 3)
 HOLD = 1.6        # giu khung cuoi them (giay, theo base) cho CTA kip doc
 KEY_MAX = 1.7     # moi tu khoa hien toi da (giay base), hoac toi tu ke tiep
+TOTAL = M(TOTAL0)
+BROLL = [(M(a), M(b), f, s0, s1, cx) for a, b, f, s0, s1, cx in BROLL]
+KEYS = [(M(t), x) for t, x in KEYS]
+
+
+def base2():
+    """base.mov -> base2.mov: bo cac quang REMOVE (fade 20ms 2 dau moi doan cho khoi tach)."""
+    keep, cur = [], 0.0
+    for a, b in REMOVE:
+        if a > cur: keep.append((cur, a))
+        cur = b
+    keep.append((cur, TOTAL0))
+    p = []
+    for i, (a, b) in enumerate(keep):
+        d = b - a
+        p.append(f"[0:v]trim={a}:{b},setpts=PTS-STARTPTS[v{i}];[0:a]atrim={a}:{b},asetpts=PTS-STARTPTS,"
+                 f"afade=t=in:d=0.02,afade=t=out:st={max(0, d - 0.03):.3f}:d=0.03[a{i}];")
+    fc = "".join(p) + "".join(f"[v{i}][a{i}]" for i in range(len(keep))) + f"concat=n={len(keep)}:v=1:a=1[v][a]"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(W, "base.mov"), "-filter_complex", fc,
+                    "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "fast", "-crf", "16", "-c:a", "pcm_s16le",
+                    os.path.join(W, "base2.mov")], check=True)
 SFX = {"whoosh": ("19 - Whoosh 2.mp3", 0.30), "pop": ("04 - Pop.mp3", 0.45), "ding": ("34 - Ding.mp3", 0.35)}
 
 
@@ -131,7 +162,7 @@ def assets():
 
 
 def compose():
-    args = ["ffmpeg", "-v", "error", "-y", "-i", os.path.join(W, "base.mov")]
+    args = ["ffmpeg", "-v", "error", "-y", "-i", os.path.join(W, "base2.mov")]
     fc = [f"[0:v]{GRADE}[b0]"]; last = "[b0]"; idx = 1
     for k, (a, b, f, s0, s1, cx) in enumerate(BROLL):
         args += ["-ss", str(s0), "-t", f"{s1 - s0 + 0.3:.2f}", "-i", f]
@@ -175,6 +206,7 @@ def sfx():
     subprocess.run(args, check=True)
 
 
+if STEP in ("all", "base2"): base2(); print("base2 ok")
 if STEP in ("all", "assets"): assets(); print("assets ok")
 if STEP in ("all", "compose"): compose(); print("compose ok")
 if STEP in ("all", "sfx"): sfx(); print("sfx ok")

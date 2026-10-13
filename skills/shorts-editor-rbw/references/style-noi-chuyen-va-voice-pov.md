@@ -21,7 +21,8 @@
 
 ### 1.1. Cắt thoại
 - Bỏ mọi câu vấp, câu nói lại, "ừ ừ", "à à". Lấy **lần nói trọn vẹn cuối cùng** của mỗi ý.
-- Quãng lặng dài hơn 0,45 giây → rút còn khoảng 0,24 giây.
+- Quãng lặng dài hơn 0,2 giây → rút còn khoảng 0,12 giây. Bản đầu video 65 rút còn 0,24 giây vẫn bị Sếp chê "nhiều khoảng trống thoại" (13/10).
+- 🔴 **Dò quãng lặng lần cuối bằng Silero VAD** (`analyze_footage.vad_speech_segments`) trên bản đã cắt, rồi Whisper nghe lại từng quãng lớn hơn 0,3 giây. Bắt buộc với môi trường ồn: cách đo năng lượng bị nền ồn lấp, sót mất 8 giây lặng ở video 65 (1,7 giây đầu video toàn tiếng ồn, 3,6 giây lặng giữa bài, chữ "Mà" lửng). Xuất xong chạy lại VAD trên file thành phẩm: **không còn quãng lặng nào lớn hơn 0,3 giây**.
 - Cắt xong **bắt buộc cho Whisper nghe lại từng chỗ nối**. Whisper nghe lát RỘNG (8 giây) chuẩn hơn lát ngắn.
 - **Môi trường ồn** (hội trường, triển lãm): `loc_thoai_that.py` sẽ ra 0 đoạn, vì giọng chỉ cao hơn sàn ồn khoảng 6 dB (đo thật ở VEC: sàn -25,7 dB). Làm thay thế bằng 2 bước:
   - (a) Whisper nghe từng khúc 8 giây, mỗi khúc gối lên khúc trước 2 giây, để đọc lời và bắt chỗ vấp.
@@ -140,7 +141,7 @@ Mặt Huy trong khung quay iPhone (1080x1920) chiếm **y≈590–1350** (cằm 
 - Clip DJI 4K ngang → cắt dọc 9:16 quanh tâm chủ thể: `crop=ih*9/16:ih:(iw-ih*9/16)*tam_x:0,scale=1080:1920`. Từ 4K cắt ra vẫn nét.
 - 🔴 **Tốc độ cảnh chèn tự khớp câu nói**: chọn đoạn nguồn [s0,s1] rồi kéo hoặc nén về đúng độ dài câu, `setpts=(PTS-STARTPTS)*(độ dài câu)/(s1-s0)`. Giữ hệ số trong khoảng 0,7–1,6 để không giật hoặc lê thê.
 - **Nhặt cảnh gian hàng ĐÔNG NGƯỜI** cho các câu "khách dừng lại", "nổi bật nhất". Cuối bài dồn liền 2–3 cảnh đông nhất.
-- Câu mở kiểu "giữa rất nhiều gian hàng…" → **cảnh dọc hành lang hội chợ** (nhìn dọc dãy gian, mái vòm), **tua nhanh khoảng 2,5x cho cảm giác LƯỚT QUA**. Sếp chê bản chạy 1x là "hơi chậm". Video 65: `DJI_20260911153758_0352_D.MP4` giây 0–17 nén vào 6,9 giây, lướt từ đầu hành lang tới gian RBW.
+- Câu mở kiểu "giữa rất nhiều gian hàng…" → **cảnh dọc hành lang hội chợ** (nhìn dọc dãy gian, mái vòm), **tua nhanh cho cảm giác LƯỚT QUA** (Sếp chê bản chạy 1x là "hơi chậm"). 🔴 **Chỉ lấy đoạn camera ĐI THẲNG giữa hành lang, cắt TRƯỚC lúc camera lia vào gian hàng.** Soi lưới 0,5 giây để tìm giây bắt đầu lia. Video 65: `DJI_20260911153758_0352_D.MP4` giây 0–6,6 (lia vào gian từ giây 6,8).
 - 🔴 **Đầu video đừng cắt dồn dập** (Sếp chê "chóng mặt"): 15 giây đầu tối đa 2 cảnh chèn, cảnh thứ 2 nên là cảnh tĩnh (khách ngồi xem). Bỏ các cảnh lia trùng ý.
 - **Chống rung vidstab: ĐỪNG dùng cho cảnh quay tay trong hội trường đông người.** Đo thật video 65: độ lệch khung liền kề tăng từ 14,7 lên 21,0 (tệ hơn), vì người đi lại và sàn bóng làm bộ dò bám nhầm. Muốn bớt chóng mặt thì bớt nhát cắt, đừng trông vào chống rung.
 - Đoạn người nói đang **demo trực tiếp** (vuốt mặt robot, đứng chắn cho robot né) → **giữ cảnh gốc**, chỉ thêm chữ. Không chèn đè lên phần demo.
