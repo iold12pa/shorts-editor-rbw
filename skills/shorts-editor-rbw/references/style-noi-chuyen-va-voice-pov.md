@@ -105,13 +105,17 @@
 - Giọng ở bước mix cuối: `highpass=f=80`; môi trường ồn thêm `afftdn=nf=-30`. **Chỉ lọc ở bước mix cuối**, không lọc trước khi đo thoại.
 - Không nhạc nền (mẫu 63 không có; đo sàn ồn bản mẫu bằng bản gốc).
 
-### 1.8. Ảnh bìa (bắt buộc)
+### 1.8. Ảnh bìa (bắt buộc) — chữ KIỂU KÊNH, đổi màu theo từng video (Sếp chốt 13/10/2026)
 - **Bìa = khung đầu tiên của video** (hiện khoảng 0,4 giây) + xuất kèm file `<tên>-Cover.jpg` cạnh video.
-- Bố cục mẫu 63:
-  - Nửa trên (0–1150) là mặt người hoặc cảnh chính.
-  - Tiêu đề 3 dòng in hoa DT Phudu Black khoảng 112–118px, nền xanh nét cọ, đặt đè đường nối (tâm y≈960).
-  - Nửa dưới (1150–1920) là ảnh robot rõ nét, đúng chủ đề.
-- Chọn khung **sắc nét, không nhoè chuyển động, mắt mở**. Soi ảnh bìa xong mới xuất (đã 3 lần chọn sai khung: nhoè, mắt nhắm, mặt robot bị cắt).
+- Bố cục: **nửa trên (0–1150)** là mặt người hoặc cảnh chính đông người; **nửa dưới (1150–1920)** là ảnh robot rõ nét. Sếp duyệt giữ bố cục này. Ảnh full 1 khung cũng được nếu có ảnh mạnh.
+- 🔴 **Chữ tiêu đề theo kiểu bìa kênh Quang Huy Robot** (rút từ khoảng 50 bìa thật trong `HUY MKT`). **CẤM lặp mãi 1 kiểu**: bản cũ "chữ trắng trên nền xanh nét cọ" bị chê *"video nào cũng chữ đấy màu đấy, hơi nhạt"*.
+  - Chữ đặt **thẳng lên ảnh**, không hộp nền. DT Phudu Black khoảng 150–170px, 3–4 dòng, tâm ở đường nối hai nửa (y≈960).
+  - **Mỗi dòng một màu**: cụm từ khoá màu hồng `#FF40A0`, xanh lá `#6EFF50`, xanh ngọc `#3CE1FF`, vàng `#FFDE28` hoặc cam; phần còn lại trắng. Từ khoá có thể bỏ trong ngoặc kép `"..."` hoặc ô vàng chữ đen. Kết câu bằng `???` hoặc `!!!`.
+  - **Viền đôi**: viền trắng mảnh bên trong + viền xanh than `#12183C` dày bên ngoài + bóng mờ.
+  - 🔴 **Phải dễ đọc**: thêm **dải tối mờ dần** phía sau chữ (độ mờ tối đa ~150/255, làm mềm, không có cạnh — không phải hộp). Thu nhỏ xem ở 180x320 vẫn đọc rõ mới đạt.
+  - **Đổi màu và kiểu mỗi video**, không lặp bộ màu của video liền trước trong cùng kênh.
+- Code sẵn: `scripts/bia_kenh.py` (`ve_tieu_de`, `nen`).
+- Chọn khung **sắc nét, không nhoè chuyển động, mắt mở**. Soi ảnh bìa xong mới xuất.
 
 ### 1.9. Âm lượng, logo, outro
 - Chuẩn **-14 LUFS**, đỉnh ≤ -1,5 dBTP: loudnorm đo 2 lượt, lượt 2 `linear=true`.
@@ -148,6 +152,7 @@ Mặt Huy trong khung quay iPhone (1080x1920) chiếm **y≈590–1350** (cằm 
 
 ## 4. Script mẫu
 `scripts/do_moc_tu.py`: dò mốc bắt đầu từng từ khoá (mục 1.6).
+`scripts/bia_kenh.py`: vẽ tiêu đề bìa kiểu kênh (mục 1.8).
 
 `scripts/mau_voice_pov.py`: bản dựng video 65, đủ 4 bước.
 - `assets`: ảnh bìa + hộp chữ

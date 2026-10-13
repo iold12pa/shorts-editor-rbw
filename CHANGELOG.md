@@ -2,6 +2,10 @@
 
 File này ghi lại các thay đổi đáng chú ý theo ngày, mới nhất ở trên cùng. Xem chi tiết đầy đủ từng thay đổi bằng lịch sử commit trên GitHub.
 
+## 2026-10-13 (Ver 45)
+
+Ảnh bìa đổi chữ sang kiểu bìa kênh Quang Huy Robot: không nền hộp, mỗi dòng một màu, viền đôi, dải tối mờ sau chữ cho dễ đọc, đổi bộ màu theo từng video. Script `scripts/bia_kenh.py`.
+
 ## 2026-10-13 (Ver 44)
 
 Cắt khoảng lặng chặt hơn: dò lần cuối bằng Silero VAD và Whisper nghe lại, vì ở hội trường ồn cách đo năng lượng sót nhiều quãng lặng. Cảnh hành lang mở đầu chỉ lấy đoạn đi thẳng, không lấy đoạn lia vào gian. Script mẫu tự dời mọi mốc khi cắt thêm.
